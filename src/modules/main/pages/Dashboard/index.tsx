@@ -3,8 +3,10 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { Platform, Text } from 'react-native';
 import Button from '../../../../components/Button';
-import DateTimePickerComponent from '../../../../components/GeneralComponents/DateTimePickerComponent';
+import DateTimeLineView from '../../../../components/DateTimeLineView';
+import DateTimePickerComponent from '../../../../components/DateTimePickerComponent';
 import { useAuth } from '../../../../hooks/auth';
+import MyEventsButton from '../../components/MyEventsButton';
 
 import {
   Container,
@@ -58,28 +60,18 @@ const Dashboard: React.FC = () => {
             {user.name}
           </UserName>
         </HeaderTitle>
-        <ProfileButton>
+        <ProfileButton onPress={navigateToProfile}>
           <UserAvatar source={{ uri: user.avatar_url }} />
         </ProfileButton>
       </Header>
       <Body>
+        <DateTimeLineView date={new Date()} />
         <Title>
           Usuário:
           {' '}
           {user.name}
         </Title>
-        <Button onPress={navigateToProfile}>Profile</Button>
-        <Button onPress={handleSignOut}>Sair</Button>
-        <OpenDatePickerButton>
-          <OpenDatePickerButtonText onPress={handleToggleDatePicker}>
-            Selecionar Data
-          </OpenDatePickerButtonText>
-        </OpenDatePickerButton>
-        {showDatePicker && (
-          <Text>DateTimePicker</Text>
-        // <DateTimePickerComponent handleChange={(e: any) => handleDateChange(e)}
-        // mode="date" value={new Date()} />
-        )}
+        <MyEventsButton />
       </Body>
     </Container>
   );

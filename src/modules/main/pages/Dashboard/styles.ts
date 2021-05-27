@@ -19,7 +19,7 @@ export const Title = styled.Text`
   font-size: 24px;
   color: ${theme.TextColor3};
   font-family: 'RobotoSlab-Medium';
-  margin: 64px auto 24px;
+  margin: 12px auto 24px;
 `;
 
 export const Header = styled.View`

@@ -9,7 +9,6 @@ export const Container = styled.View`
   align-items: center;
   justify-content: center;
   padding: 0 24px ${Platform.OS === 'ios' ? 40 : 120}px;
-
 `;
 export const Title = styled.Text`
   width: 100%;
