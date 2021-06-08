@@ -17,8 +17,6 @@ import {
   Body,
   ProfileButton,
   UserAvatar,
-  OpenDatePickerButton,
-  OpenDatePickerButtonText,
 } from './styles';
 
 interface IDatePickerResults {
@@ -27,28 +25,12 @@ interface IDatePickerResults {
 }
 
 const Dashboard: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const navigation = useNavigation();
-
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const navigateToProfile = useCallback(() => {
     navigation.navigate('Profile');
   }, [navigation]);
-
-  const handleSignOut = useCallback(() => {
-    signOut();
-  }, [signOut]);
-
-  const handleToggleDatePicker = useCallback(() => {
-    setShowDatePicker((state) => state);
-  }, []);
-
-  const handleDateChange = useCallback(({ event, date }: IDatePickerResults) => {
-    Platform.OS === 'android' && setShowDatePicker(false);
-    date && date !== undefined && setSelectedDate(date);
-  }, []);
 
   return (
     <Container>

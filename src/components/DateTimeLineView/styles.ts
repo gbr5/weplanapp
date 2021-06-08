@@ -3,7 +3,7 @@ import { theme } from '../../global';
 
 export const Container = styled.View`
   width: 100%;
-  height: 24px;
+  height: 40px;
   justify-content: center;
 `;
 
