@@ -7,7 +7,9 @@ import IEventGuestDTO from '../dtos/IEventGuestDTO';
 import IEventMemberDTO from '../dtos/IEventMemberDTO';
 import IEventOwnerDTO from '../dtos/IEventOwnerDTO';
 import IShowEventDTO from '../dtos/IShowEventDTO';
+import ICreateEventDTO from '../dtos/ICreateEventDTO';
 import api from '../services/api';
+import ICeateEventDTO from '../dtos/ICreateEventDTO';
 
 interface IEventContextData {
   selectedEvent: IEventDTO;
@@ -20,6 +22,7 @@ interface IEventContextData {
   getEventsAsMember(): void;
   getEventsAsGuest(): void;
   getNextEvent(): void;
+  createEvent(data: ICeateEventDTO): void;
 }
 
 const EventContext = createContext({} as IEventContextData);
@@ -73,12 +76,28 @@ const EventProvider: React.FC = ({ children }) => {
   const selectEvent = useCallback((data: IEventDTO) => {
     setSelectedEvent(data);
   }, []);
+  const createEvent = useCallback(async ({
+    name, date, event_type, isDateDefined,
+  }: ICreateEventDTO) => {
+    try {
+      const event = await api.post('/events', {
+        name,
+        date,
+        event_type,
+        isDateDefined,
+      });
+      event && event.data && selectEvent(event.data);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }, [selectEvent]);
 
   return (
     <EventContext.Provider
       value={{
         selectedEvent,
         nextEvent,
+        createEvent,
         eventsAsOwner,
         eventsAsGuest,
         eventsAsMember,
