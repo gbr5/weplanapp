@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
-import { useAuth } from '../../../../hooks/auth';
+import Button from '../../../../components/Button';
 import { useEvent } from '../../../../hooks/event';
 import DefineEventName from '../../components/DefineEventName';
 
 import {
-  Container, Title, CloseButton, CloseIcon,
+  Container, Title, CloseButton, CloseIcon, EventName,
 } from './styles';
 
 interface IProps {
@@ -21,8 +21,15 @@ const CreateEvent: React.FC<IProps> = ({
   const [eventName, setEventName] = useState('');
 
   const handleCreateEvent = useCallback(() => {
-    console.log('eu');
-  }, []);
+    const now = new Date();
+    createEvent({
+      date: new Date(now.setMonth(now.getMonth() + 1)),
+      event_type: 'Social',
+      isDateDefined: false,
+      name: eventName,
+    });
+  }, [createEvent, eventName]);
+  // }, []);
 
   const handleEventNameField = useCallback((props: boolean) => {
     setEventNameField(props);
@@ -47,12 +54,17 @@ const CreateEvent: React.FC<IProps> = ({
       </CloseButton>
       <Title>Novo Evento</Title>
 
-      {eventNameField && (
+      {eventNameField ? (
         <DefineEventName
           loading={loading}
           closeWindow={() => handleEventNameField(false)}
           defineName={(name: string) => handleEventName(name)}
         />
+      ) : (
+        <>
+          <EventName>{eventName}</EventName>
+          <Button onPress={handleCreateEvent}>Criar Evento</Button>
+        </>
       )}
 
     </Container>

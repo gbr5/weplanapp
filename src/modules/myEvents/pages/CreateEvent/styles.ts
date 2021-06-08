@@ -23,6 +23,14 @@ export const Title = styled.Text`
   margin-right: 12px;
 `;
 
+export const EventName = styled.Text`
+  padding: 5px;
+  font-size: 24px;
+  color: ${theme.TextColor5};
+  font-family: 'RobotoSlab-Medium';
+  margin-right: 12px;
+`;
+
 export const CloseButton = styled.TouchableOpacity`
   height: 24px;
   width: 24px;
