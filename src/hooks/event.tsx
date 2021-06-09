@@ -87,10 +87,12 @@ const EventProvider: React.FC = ({ children }) => {
         isDateDefined,
       });
       event && event.data && selectEvent(event.data);
+      event && event.data && getNextEvent();
+      event && event.data && getEventsAsOwner();
     } catch (err) {
       throw new Error(err);
     }
-  }, [selectEvent]);
+  }, [selectEvent, getEventsAsOwner, getNextEvent]);
 
   return (
     <EventContext.Provider
