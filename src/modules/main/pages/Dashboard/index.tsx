@@ -16,12 +16,6 @@ const Dashboard: React.FC = () => {
     <Container>
       <Header />
       <Body>
-        <DateTimeLineView date={new Date()} />
-        <Title>
-          Usuário:
-          {' '}
-          {user.name}
-        </Title>
         <MyEventsSection />
       </Body>
     </Container>

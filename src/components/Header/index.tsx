@@ -10,6 +10,7 @@ import {
   ProfileButton,
   UserAvatar,
 } from './styles';
+import MenuButton from '../MenuButton';
 
 const Header: React.FC = () => {
   const { user } = useAuth();
@@ -21,6 +22,7 @@ const Header: React.FC = () => {
 
   return (
     <Container>
+      <MenuButton />
       <Logo source={logoImg} />
       <ProfileButton onPress={navigateToProfile}>
         {user.avatar_url ? (

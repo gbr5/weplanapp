@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 import Button from '../../../../components/Button';
+import WindowContainer from '../../../../components/WindowContainer';
 import { useEvent } from '../../../../hooks/event';
-import DefineEventName from '../../components/DefineEventName';
+import DefineEventName from '../DefineEventName';
 
 import {
   Container, Title, CloseButton, CloseIcon, EventName,
@@ -48,26 +49,32 @@ const CreateEvent: React.FC<IProps> = ({
   }, [handleEventNameField]);
 
   return (
-    <Container>
-      <CloseButton onPress={handleCloseWindow}>
-        <CloseIcon name="x" size={24} />
-      </CloseButton>
-      <Title>Novo Evento</Title>
+    <WindowContainer
+      closeWindow={handleCloseWindow}
+      height="70%"
+      left="2%"
+      top="5%"
+      width="96%"
+      zIndex={15}
+    >
+      <Container>
+        <Title>Novo Evento</Title>
 
-      {eventNameField ? (
-        <DefineEventName
-          loading={loading}
-          closeWindow={() => handleEventNameField(false)}
-          defineName={(name: string) => handleEventName(name)}
-        />
-      ) : (
-        <>
-          <EventName>{eventName}</EventName>
-          <Button onPress={handleCreateEvent}>Criar Evento</Button>
-        </>
-      )}
+        {eventNameField ? (
+          <DefineEventName
+            loading={loading}
+            closeWindow={() => handleEventNameField(false)}
+            defineName={(name: string) => handleEventName(name)}
+          />
+        ) : (
+          <>
+            <EventName>{eventName}</EventName>
+            <Button onPress={handleCreateEvent}>Criar Evento</Button>
+          </>
+        )}
+      </Container>
 
-    </Container>
+    </WindowContainer>
   );
 };
 

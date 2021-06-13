@@ -14,4 +14,9 @@ export const theme = {
   SuccessBackgroundColor: '#e6fffa',
   ErrorColor: '#c53030',
   ErrorBackgroundColor: '#fddede',
+
+  RedBackgroundColor: 'rgba(250, 40, 0, 0.5)',
+
+  FontRobotoMedium: 'RobotoSlab-Medium',
+  FontRobotoRegular: 'RobotoSlab-Regular',
 };

@@ -4,21 +4,18 @@ import { theme } from '../../../../global';
 
 export const Container = styled.View`
   flex-direction: column;
-  position: absolute;
-  z-index: 2;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  height: 80%;
-  background-color: ${theme.SecondaryColor};
-  top: 5%;
-  left: 5%;
+  background-color: ${theme.TextColor3}
+  width: 90%;
+  height: 88%;
+  border-radius: 16px;
+  padding: 8px;
+  margin: 16px;
 `;
 
 export const Title = styled.Text`
   padding: 5px;
   font-size: 24px;
-  color: ${theme.TextColor5};
+  color: ${theme.TextColor1};
   font-family: 'RobotoSlab-Medium';
   margin-right: 12px;
 `;
@@ -26,7 +23,7 @@ export const Title = styled.Text`
 export const EventName = styled.Text`
   padding: 5px;
   font-size: 24px;
-  color: ${theme.TextColor5};
+  color: ${theme.TextColor1};
   font-family: 'RobotoSlab-Medium';
   margin-right: 12px;
 `;
