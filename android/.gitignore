@@ -17,3 +17,4 @@ pc-api-4621041603320302246-721-584b189a8693.json
 
 *.keystore
 *.jks
+*.hprof
