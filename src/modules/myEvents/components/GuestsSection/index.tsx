@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import { useMyEvent } from '../../../../hooks/myEvent';
-import GuestSectionButton from '../../pages/GuestSectionButton';
+import GuestSectionButton from '../GuestSectionButton';
 import {
   Container,
   GuestMainMenu,
@@ -12,7 +12,11 @@ import {
   AddGuestIcon,
 } from './styles';
 
-const GuestsSection: React.FC = () => {
+interface IProps {
+  handleNewGuestForm: () => void;
+}
+
+const GuestsSection: React.FC<IProps> = ({ handleNewGuestForm }) => {
   const { guests, myGuests } = useMyEvent();
   const [allGuestsSection, setAllGuestsSection] = useState(true);
   const [myGuestsSection, setMyGuestsSection] = useState(false);
@@ -28,46 +32,48 @@ const GuestsSection: React.FC = () => {
   }, []);
 
   return (
-    <Container>
-      <AddGuestButton>
-        <AddGuestButtonText>Adicionar Convidado</AddGuestButtonText>
-        <AddGuestIcon><Icon name="user-plus" size={24} /></AddGuestIcon>
-      </AddGuestButton>
-      <GuestMainMenu>
-        <GuestMainMenuButton
-          active={allGuestsSection}
-          onPress={openAllGuests}
-        >
-          <GuestMainMenuButtonText active={allGuestsSection}>Todos</GuestMainMenuButtonText>
-        </GuestMainMenuButton>
-        <GuestMainMenuButton
-          active={myGuestsSection}
-          onPress={openMyGuests}
-        >
-          <GuestMainMenuButtonText active={myGuestsSection}>Meus</GuestMainMenuButtonText>
-        </GuestMainMenuButton>
-      </GuestMainMenu>
-      {allGuestsSection && guests.map((guest) => {
-        const index = guests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
-        return (
-          <GuestSectionButton
-            guest={guest}
-            index={index}
-            key={guest.id}
-          />
-        );
-      })}
-      {myGuestsSection && myGuests.map((guest) => {
-        const index = myGuests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
-        return (
-          <GuestSectionButton
-            guest={guest}
-            index={index}
-            key={guest.id}
-          />
-        );
-      })}
-    </Container>
+    <>
+      <Container>
+        <AddGuestButton onPress={handleNewGuestForm}>
+          <AddGuestButtonText>Adicionar Convidado</AddGuestButtonText>
+          <AddGuestIcon><Icon name="user-plus" size={24} /></AddGuestIcon>
+        </AddGuestButton>
+        <GuestMainMenu>
+          <GuestMainMenuButton
+            active={allGuestsSection}
+            onPress={openAllGuests}
+          >
+            <GuestMainMenuButtonText active={allGuestsSection}>Todos</GuestMainMenuButtonText>
+          </GuestMainMenuButton>
+          <GuestMainMenuButton
+            active={myGuestsSection}
+            onPress={openMyGuests}
+          >
+            <GuestMainMenuButtonText active={myGuestsSection}>Meus</GuestMainMenuButtonText>
+          </GuestMainMenuButton>
+        </GuestMainMenu>
+        {allGuestsSection && guests.map((guest) => {
+          const index = guests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
+          return (
+            <GuestSectionButton
+              guest={guest}
+              index={index}
+              key={guest.id}
+            />
+          );
+        })}
+        {myGuestsSection && myGuests.map((guest) => {
+          const index = myGuests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
+          return (
+            <GuestSectionButton
+              guest={guest}
+              index={index}
+              key={guest.id}
+            />
+          );
+        })}
+      </Container>
+    </>
   );
 };
 

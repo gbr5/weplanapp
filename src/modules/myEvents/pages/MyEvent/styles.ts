@@ -25,5 +25,6 @@ export const EventName = styled.Text`
 
 export const Body = styled.ScrollView`
   flex: 1;
+  height: 100%;
   background-color: ${theme.TextColor4};
 `;

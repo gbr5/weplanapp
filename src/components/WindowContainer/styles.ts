@@ -8,4 +8,7 @@ export const Container = styled.View`
   border-radius: 16px;
   align-items: center;
   justify-content: center;
+  paddingVertical: 40px;
+  paddingHorizontal: 16px;
+  flex: 1;
 `;

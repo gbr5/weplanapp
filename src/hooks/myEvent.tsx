@@ -8,7 +8,6 @@ import React, {
 import api from '../services/api';
 
 import { useAuth } from './auth';
-import { useEvent } from './event';
 
 import IEventGuestDTO from '../dtos/IEventGuestDTO';
 import IEventInfoDTO from '../dtos/IEventInfoDTO';
@@ -16,6 +15,7 @@ import IEventMemberDTO from '../dtos/IEventMemberDTO';
 import IEventOwnerDTO from '../dtos/IEventOwnerDTO';
 import IEventSupplierDTO from '../dtos/IEventSupplierDTO';
 import IEventDTO from '../dtos/IEventDTO';
+import IAddNewEventGuestDTO from '../dtos/IAddNewEventGuestDTO';
 
 interface MyEventContextType {
   selectedEvent: IEventDTO;
@@ -42,6 +42,7 @@ interface MyEventContextType {
   getEventGuests: () => Promise<void>;
   getSuppliers: () => Promise<void>;
   selectEventSection: (e: string) => void;
+  addNewGuest: (data: IAddNewEventGuestDTO) => Promise<void>;
 }
 
 const MyEventContext = createContext({} as MyEventContextType);
@@ -177,6 +178,22 @@ const MyEventProvider: React.FC = ({ children }) => {
     getEventOwners,
   ]);
 
+  const addNewGuest = useCallback(async ({ first_name, last_name }: IAddNewEventGuestDTO) => {
+    try {
+      await api.post(`events/${selectedEvent.id}/guests`, {
+        first_name,
+        last_name,
+        description: ' ',
+        weplanUser: false,
+        confirmed: false,
+        user_id: '0',
+      });
+      getEventGuests();
+    } catch (err) {
+      throw new Error(err);
+    }
+  }, [selectedEvent, getEventGuests]);
+
   return (
     <MyEventContext.Provider
       value={{
@@ -204,6 +221,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         getEventOwners,
         getSuppliers,
         selectEventSection,
+        addNewGuest,
       }}
     >
       {children}
