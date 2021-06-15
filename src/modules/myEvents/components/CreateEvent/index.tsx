@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
 import Button from '../../../../components/Button';
@@ -6,7 +7,7 @@ import { useEvent } from '../../../../hooks/event';
 import DefineEventName from '../DefineEventName';
 
 import {
-  Container, Title, CloseButton, CloseIcon, EventName,
+  Container, Title, EventName,
 } from './styles';
 
 interface IProps {
@@ -16,21 +17,23 @@ interface IProps {
 const CreateEvent: React.FC<IProps> = ({
   handleCloseWindow,
 }) => {
+  const navigation = useNavigation();
   const { createEvent } = useEvent();
   const [eventNameField, setEventNameField] = useState(true);
   const [loading, setLoading] = useState(false);
   const [eventName, setEventName] = useState('');
 
-  const handleCreateEvent = useCallback(() => {
+  const handleCreateEvent = useCallback(async () => {
     const now = new Date();
-    createEvent({
+    await createEvent({
       date: new Date(now.setMonth(now.getMonth() + 1)),
       event_type: 'Social',
       isDateDefined: false,
       name: eventName,
     });
-  }, [createEvent, eventName]);
-  // }, []);
+    handleCloseWindow();
+    navigation.navigate('MyEvent');
+  }, [createEvent, navigation, eventName, handleCloseWindow]);
 
   const handleEventNameField = useCallback((props: boolean) => {
     setEventNameField(props);

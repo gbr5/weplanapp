@@ -27,18 +27,3 @@ export const EventName = styled.Text`
   font-family: 'RobotoSlab-Medium';
   margin-right: 12px;
 `;
-
-export const CloseButton = styled.TouchableOpacity`
-  height: 24px;
-  width: 24px;
-  margin-left: 12px;
-  position: absolute;
-  top: 5%;
-  right: 5%;
-`;
-
-export const CloseIcon = styled(Icons)`
-  background-color: ${theme.PrimaryColor};
-  color: ${theme.TextColor1};
-  border-radius: 50px;
-`;

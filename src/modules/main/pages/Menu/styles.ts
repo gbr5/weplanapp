@@ -19,17 +19,6 @@ export const Logo = styled.Image`
   margin-top: 16px;
 `;
 
-export const GoBack = styled.TouchableOpacity`
-  position: absolute;
-  top: 50px;
-  left: 16px;
-  background-color: rgba(200,200,200,0.1);
-  border-radius: 8px;
-  align-items: center;
-  justify-content: center;
-  padding-right: 2px;
-`;
-
 export const Body = styled.View`
   flex: 1;
   padding: 16px;

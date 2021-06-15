@@ -23,7 +23,7 @@ const MyEventsAsMember: React.FC = () => {
           eventsAsMember
           && eventsAsMember.length > 0
             && eventsAsMember.map((event) => (
-              <EventButton>
+              <EventButton key={event.id}>
                 <Name>
                   {event.event.name}
                 </Name>

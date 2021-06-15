@@ -12,24 +12,21 @@ import api from '../services/api';
 import ICeateEventDTO from '../dtos/ICreateEventDTO';
 
 interface IEventContextData {
-  selectedEvent: IEventDTO;
   nextEvent: IShowEventDTO;
   eventsAsOwner: IEventOwnerDTO[];
   eventsAsMember: IEventMemberDTO[];
   eventsAsGuest: IEventGuestDTO[];
-  selectEvent(data: IEventDTO): void;
   getEventsAsOwner(): void;
   getEventsAsMember(): void;
   getEventsAsGuest(): void;
   getNextEvent(): void;
-  createEvent(data: ICeateEventDTO): void;
+  createEvent(data: ICeateEventDTO): Promise<IEventDTO>;
 }
 
 const EventContext = createContext({} as IEventContextData);
 
 // eslint-disable-next-line react/prop-types
 const EventProvider: React.FC = ({ children }) => {
-  const [selectedEvent, setSelectedEvent] = useState({} as IEventDTO);
   const [nextEvent, setNextEvent] = useState({} as IShowEventDTO);
   const [eventsAsOwner, setEventsAsOwner] = useState<IEventOwnerDTO[]>([]);
   const [eventsAsMember, setEventsAsMember] = useState<IEventMemberDTO[]>([]);
@@ -73,9 +70,6 @@ const EventProvider: React.FC = ({ children }) => {
       throw new Error(err);
     }
   }, []);
-  const selectEvent = useCallback((data: IEventDTO) => {
-    setSelectedEvent(data);
-  }, []);
   const createEvent = useCallback(async ({
     name, date, event_type, isDateDefined,
   }: ICreateEventDTO) => {
@@ -86,24 +80,22 @@ const EventProvider: React.FC = ({ children }) => {
         event_type,
         isDateDefined,
       });
-      event && event.data && selectEvent(event.data);
       event && event.data && getNextEvent();
       event && event.data && getEventsAsOwner();
+      return event.data;
     } catch (err) {
       throw new Error(err);
     }
-  }, [selectEvent, getEventsAsOwner, getNextEvent]);
+  }, [getEventsAsOwner, getNextEvent]);
 
   return (
     <EventContext.Provider
       value={{
-        selectedEvent,
         nextEvent,
         createEvent,
         eventsAsOwner,
         eventsAsGuest,
         eventsAsMember,
-        selectEvent,
         getEventsAsOwner,
         getEventsAsMember,
         getEventsAsGuest,

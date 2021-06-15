@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import { useAuth } from '../../../../hooks/auth';
@@ -9,23 +8,18 @@ import {
   SignOutButton,
   MenuOption,
   ButtonText,
-  GoBack,
   Header,
   Logo,
   Body,
 } from './styles';
 import ShortConfirmationWindow from '../../../../components/ShortConfirmationWindow';
 import CreateEvent from '../../../myEvents/components/CreateEvent';
+import BackButton from '../../../../components/BackButton';
 
 const Menu: React.FC = () => {
   const { signOut } = useAuth();
-  const navigation = useNavigation();
   const [confirmationWindow, setConfirmationWindow] = useState(false);
   const [createEventWindow, setCreateEventWindow] = useState(false);
-
-  const goBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
 
   const handleConfirmSignOut = useCallback((e: boolean) => {
     setConfirmationWindow(e);
@@ -51,9 +45,7 @@ const Menu: React.FC = () => {
         <CreateEvent handleCloseWindow={() => handleCreateEventWindow(false)} />
       )}
       <Header>
-        <GoBack onPress={goBack}>
-          <Icon size={40} name="chevron-left" />
-        </GoBack>
+        <BackButton />
         <Logo source={logoImg} />
       </Header>
       <Body>

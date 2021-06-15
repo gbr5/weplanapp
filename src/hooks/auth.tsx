@@ -8,7 +8,6 @@ import React, {
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
-// import { useToast } from './toast';
 
 interface IUser {
   id: string;
