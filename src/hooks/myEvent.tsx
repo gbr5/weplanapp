@@ -1,5 +1,4 @@
 import React, {
-  useCallback,
   useContext,
   createContext,
   useState,
@@ -36,11 +35,6 @@ interface MyEventContextType {
   currentSection: string;
   selectEvent: (event: IEventDTO) => void;
   calculateTotalEventCost: () => void;
-  getEventInfo: () => Promise<void>;
-  getEventOwners: () => Promise<void>;
-  getEventMembers: () => Promise<void>;
-  getEventGuests: () => Promise<void>;
-  getSuppliers: () => Promise<void>;
   selectEventSection: (e: string) => void;
   addNewGuest: (data: IAddNewEventGuestDTO) => Promise<void>;
 }
@@ -67,23 +61,28 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [isOwner, setIsOwner] = useState(false);
   const [currentSection, setCurrentSection] = useState('Dashboard');
 
-  // useEffect(() => {
-  //   async function loadStorageData() {
-  //     const data = await AsyncStorage.multiGet([
-  //       `@WePlan-Party:${selectedEvent.name}eventInfo`,
-  //       `@WePlan-Party:${selectedEvent.name}owners`,
-  //       `@WePlan-Party:${selectedEvent.name}members`,
-  //       `@WePlan-Party:${selectedEvent.name}guests`,
-  //     ]);
-  //   }
-  // }, [selectedEvent]);
-
-  const selectEventSection = useCallback((e: string) => {
+  function unsetEventVariables() {
+    setEventInfo({} as IEventInfoDTO);
+    setOwners([]);
+    setMembers([]);
+    setGuests([]);
+    setHiredSuppliers([]);
+    setNotHiredSuppliers([]);
+    setMyGuests([]);
+    setNumberOfGuests(0);
+    setMyNumberOfGuests(0);
+    setMyGuestsConfirmed(0);
+    setConfirmedGuests(0);
+    setIsOwner(false);
+    setTotalEventCost(0);
+    setAvailableNumberOfGuests(0);
+  }
+  function selectEventSection(e: string) {
     setCurrentSection(e);
-  }, []);
-  const getEventGuests = useCallback(async () => {
+  }
+  async function getEventGuests(eventId: string) {
     try {
-      const response = await api.get<IEventGuestDTO[]>(`/events/${selectedEvent.id}/guests`);
+      const response = await api.get<IEventGuestDTO[]>(`/events/${eventId}/guests`);
       if (response.data && response.data.length > 0) {
         setGuests(response.data);
         setConfirmedGuests(response.data.filter((guest) => guest.confirmed).length);
@@ -95,32 +94,32 @@ const MyEventProvider: React.FC = ({ children }) => {
     } catch (err) {
       throw new Error(err);
     }
-  }, [selectedEvent, user]);
+  }
 
-  const getEventInfo = useCallback(async () => {
+  async function getEventInfo(eventId: string) {
     try {
-      const response = await api.get<IEventInfoDTO>(`/events/${selectedEvent.id}/event-info`);
+      const response = await api.get<IEventInfoDTO>(`/events/${eventId}/event-info`);
       setEventInfo(response.data);
       setNumberOfGuests(response.data.number_of_guests);
     } catch (err) {
       throw new Error(err);
     }
-  }, [selectedEvent]);
+  }
 
-  const getEventMembers = useCallback(async () => {
+  async function getEventMembers(eventId: string) {
     try {
       const response = await api
-        .get<IEventMemberDTO[]>(`events/${selectedEvent.id}/event-members`);
+        .get<IEventMemberDTO[]>(`events/${eventId}/event-members`);
       setMembers(response.data);
     } catch (err) {
       throw new Error(err);
     }
-  }, [selectedEvent]);
+  }
 
-  const getEventOwners = useCallback(async () => {
+  async function getEventOwners(eventId: string) {
     try {
       const response = await api
-        .get<IEventOwnerDTO[]>(`events/${selectedEvent.id}/event-owners`);
+        .get<IEventOwnerDTO[]>(`events/${eventId}/event-owners`);
       response.data.map((xOwner) => {
         xOwner.userEventOwner.id === user.id && setIsOwner(true);
         return xOwner;
@@ -129,9 +128,9 @@ const MyEventProvider: React.FC = ({ children }) => {
     } catch (err) {
       throw new Error(err);
     }
-  }, [selectedEvent, user]);
+  }
 
-  const calculateTotalEventCost = useCallback(() => {
+  function calculateTotalEventCost() {
     const totalCost: number = hiredSuppliers
       .map((supplier) => {
         let cost = 0;
@@ -144,12 +143,12 @@ const MyEventProvider: React.FC = ({ children }) => {
       })
       .reduce((a, b) => a + b, 0);
     setTotalEventCost(totalCost);
-  }, [hiredSuppliers]);
+  }
 
-  const getSuppliers = useCallback(async () => {
+  async function getSuppliers(eventId: string) {
     try {
       const response = await api
-        .get<IEventSupplierDTO[]>(`events/event-suppliers/${selectedEvent.id}`);
+        .get<IEventSupplierDTO[]>(`events/event-suppliers/${eventId}`);
       setNotHiredSuppliers(
         response.data.filter((selected) => !selected.isHired),
       );
@@ -160,25 +159,22 @@ const MyEventProvider: React.FC = ({ children }) => {
     } catch (err) {
       throw new Error(err);
     }
-  }, [selectedEvent, calculateTotalEventCost]);
+  }
 
-  const selectEvent = useCallback((data: IEventDTO) => {
+  function selectEvent(data: IEventDTO) {
+    if (data.id !== selectedEvent.id) {
+      unsetEventVariables();
+      getEventInfo(data.id);
+      getEventGuests(data.id);
+      getEventOwners(data.id);
+      getEventMembers(data.id);
+      getSuppliers(data.id);
+    }
     setCurrentSection('Dashboard');
     setSelectedEvent(data);
-    getSuppliers();
-    getEventGuests();
-    getEventInfo();
-    getEventMembers();
-    getEventOwners();
-  }, [
-    getSuppliers,
-    getEventGuests,
-    getEventInfo,
-    getEventMembers,
-    getEventOwners,
-  ]);
+  }
 
-  const addNewGuest = useCallback(async ({ first_name, last_name }: IAddNewEventGuestDTO) => {
+  async function addNewGuest({ first_name, last_name }: IAddNewEventGuestDTO) {
     try {
       await api.post(`events/${selectedEvent.id}/guests`, {
         first_name,
@@ -188,11 +184,11 @@ const MyEventProvider: React.FC = ({ children }) => {
         confirmed: false,
         user_id: '0',
       });
-      getEventGuests();
+      getEventGuests(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     }
-  }, [selectedEvent, getEventGuests]);
+  }
 
   return (
     <MyEventContext.Provider
@@ -215,11 +211,6 @@ const MyEventProvider: React.FC = ({ children }) => {
         currentSection,
         selectEvent,
         calculateTotalEventCost,
-        getEventGuests,
-        getEventInfo,
-        getEventMembers,
-        getEventOwners,
-        getSuppliers,
         selectEventSection,
         addNewGuest,
       }}

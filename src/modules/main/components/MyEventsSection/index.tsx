@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useEffect } from 'react';
 import { useEvent } from '../../../../hooks/event';
 import MyEventsAsHost from '../MyEventsAsHost';
 import MyEventsAsMember from '../MyEventsAsMember';
@@ -10,7 +9,7 @@ import {
 } from './styles';
 
 const MyEventsSection: React.FC = () => {
-  const { getNextEvent, getEventsAsOwner, nextEvent } = useEvent();
+  const { getNextEvent, getEventsAsOwner } = useEvent();
 
   useEffect(() => {
     getNextEvent();
