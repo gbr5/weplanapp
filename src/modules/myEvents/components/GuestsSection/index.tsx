@@ -4,6 +4,7 @@ import { useMyEvent } from '../../../../hooks/myEvent';
 import GuestSectionButton from '../GuestSectionButton';
 import {
   Container,
+  GuestsContainer,
   GuestMainMenu,
   GuestMainMenuButton,
   GuestMainMenuButtonText,
@@ -52,26 +53,29 @@ const GuestsSection: React.FC<IProps> = ({ handleNewGuestForm }) => {
             <GuestMainMenuButtonText active={myGuestsSection}>Meus</GuestMainMenuButtonText>
           </GuestMainMenuButton>
         </GuestMainMenu>
-        {allGuestsSection && guests.map((guest) => {
-          const index = guests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
-          return (
-            <GuestSectionButton
-              guest={guest}
-              index={index}
-              key={guest.id}
-            />
-          );
-        })}
-        {myGuestsSection && myGuests.map((guest) => {
-          const index = myGuests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
-          return (
-            <GuestSectionButton
-              guest={guest}
-              index={index}
-              key={guest.id}
-            />
-          );
-        })}
+        <GuestsContainer>
+
+          {allGuestsSection && guests.map((guest) => {
+            const index = guests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
+            return (
+              <GuestSectionButton
+                guest={guest}
+                index={index}
+                key={guest.id}
+              />
+            );
+          })}
+          {myGuestsSection && myGuests.map((guest) => {
+            const index = myGuests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
+            return (
+              <GuestSectionButton
+                guest={guest}
+                index={index}
+                key={guest.id}
+              />
+            );
+          })}
+        </GuestsContainer>
       </Container>
     </>
   );

@@ -9,6 +9,9 @@ export const Container = styled.View<IProps>`
   flex-direction: row;
   align-items: center;
   background-color: ${theme.TextColor3};
+  marginVertical: 8px;
+  min-height: 48px;
+  border-radius: 8px;
 
   ${(props) => props.isMine
     && css`
@@ -20,7 +23,8 @@ export const GuestIndex = styled.Text`
   font-family: ${theme.FontRobotoRegular};
   font-size: 20px;
   text-align: center;
-  width: 16px;
+  width: 24px;
+  marginHorizontal: 8px;
 `;
 
 export const GuestName = styled.Text<IProps>`

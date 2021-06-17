@@ -34,6 +34,7 @@ interface MyEventContextType {
   isOwner: boolean;
   currentSection: string;
   selectEvent: (event: IEventDTO) => void;
+  editGuestConfirmation: (data: IEventGuestDTO) => Promise<void>;
   calculateTotalEventCost: () => void;
   selectEventSection: (e: string) => void;
   addNewGuest: (data: IAddNewEventGuestDTO) => Promise<void>;
@@ -190,6 +191,20 @@ const MyEventProvider: React.FC = ({ children }) => {
     }
   }
 
+  async function editGuestConfirmation(data: IEventGuestDTO) {
+    try {
+      await api.put(`events/${data.event_id}/guests/${data.id}`, {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        description: data.description,
+        confirmed: !data.confirmed,
+      });
+      getEventGuests(data.event_id);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   return (
     <MyEventContext.Provider
       value={{
@@ -213,6 +228,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         calculateTotalEventCost,
         selectEventSection,
         addNewGuest,
+        editGuestConfirmation,
       }}
     >
       {children}

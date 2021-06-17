@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
 import IEventGuestDTO from '../../../../dtos/IEventGuestDTO';
 import { useAuth } from '../../../../hooks/auth';
+import { useMyEvent } from '../../../../hooks/myEvent';
 
 import {
   Container,
@@ -24,10 +25,15 @@ const GuestSectionButton: React.FC<IProps> = ({
 }) => {
   const { user } = useAuth();
   const navigation = useNavigation();
+  const { editGuestConfirmation } = useMyEvent();
 
   const navigateToGuest = useCallback(() => {
     navigation.navigate('');
   }, [navigation]);
+
+  const handleEditGuestConfirmation = useCallback(async () => {
+    await editGuestConfirmation(guest);
+  }, [guest, editGuestConfirmation]);
 
   return (
     <Container isMine={guest.host_id === user.id}>
@@ -45,8 +51,8 @@ const GuestSectionButton: React.FC<IProps> = ({
           <Icon name="edit-2" size={30} />
         )}
       </GoToGuestButton>
-      <GuestConfirmationButton>
-        {guest.confirmed ? (
+      <GuestConfirmationButton onPress={handleEditGuestConfirmation}>
+        {guest.host_id === user.id && guest.confirmed ? (
           <Icon name="check-square" size={30} />
         ) : (
           <Icon name="square" size={30} />

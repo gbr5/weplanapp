@@ -65,3 +65,9 @@ export const AddGuestButtonText = styled.Text`
 export const AddGuestIcon = styled.View`
   margin-left: 8px;
 `;
+
+export const GuestsContainer = styled.ScrollView`
+  flex: 1;
+  max-height: 600px;
+  marginVertical: 8px;
+`;
