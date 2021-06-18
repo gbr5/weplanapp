@@ -25,11 +25,12 @@ const GuestSectionButton: React.FC<IProps> = ({
 }) => {
   const { user } = useAuth();
   const navigation = useNavigation();
-  const { editGuestConfirmation } = useMyEvent();
+  const { editGuestConfirmation, selectGuest } = useMyEvent();
 
   const navigateToGuest = useCallback(() => {
-    navigation.navigate('');
-  }, [navigation]);
+    selectGuest(guest);
+    navigation.navigate('EventGuest');
+  }, [navigation, selectGuest, guest]);
 
   const handleEditGuestConfirmation = useCallback(async () => {
     await editGuestConfirmation(guest);
@@ -37,7 +38,7 @@ const GuestSectionButton: React.FC<IProps> = ({
 
   return (
     <Container isMine={guest.host_id === user.id}>
-      <GoToGuestButton>
+      <GoToGuestButton onPress={navigateToGuest}>
         <GuestIndex>{index}</GuestIndex>
         <GuestName isMine={guest.host_id === user.id}>
           {guest.first_name}

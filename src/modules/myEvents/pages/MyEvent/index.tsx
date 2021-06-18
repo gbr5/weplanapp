@@ -2,13 +2,12 @@ import React, { useCallback, useState } from 'react';
 
 import { useMyEvent } from '../../../../hooks/myEvent';
 
-import BackButton from '../../../../components/BackButton';
 import MainMenu from '../../components/MainMenu';
 import NewGuestForm from '../../components/NewGuestForm';
+import PageHeader from '../../../../components/PageHeader';
 
 import {
   Container,
-  Header,
   EventName,
   Body,
   DashboardButton,
@@ -29,12 +28,11 @@ const MyEvent: React.FC = () => {
         <NewGuestForm closeWindow={() => handleNewGuestForm(false)} />
       )}
       <Container>
-        <Header>
-          <BackButton />
+        <PageHeader>
           <DashboardButton onPress={() => selectEventSection('Dashboard')}>
             <EventName>{selectedEvent.name}</EventName>
           </DashboardButton>
-        </Header>
+        </PageHeader>
         <Body>
           <MainMenu />
           {currentSection === 'Guests' && (

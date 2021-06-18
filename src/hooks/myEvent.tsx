@@ -25,6 +25,7 @@ interface MyEventContextType {
   notHiredSuppliers: IEventSupplierDTO[];
   guests: IEventGuestDTO[];
   myGuests: IEventGuestDTO[];
+  selectedGuest: IEventGuestDTO;
   numberOfGuests: number;
   myGuestsConfirmed: number;
   confirmedGuests: number;
@@ -34,17 +35,19 @@ interface MyEventContextType {
   isOwner: boolean;
   currentSection: string;
   selectEvent: (event: IEventDTO) => void;
+  selectGuest: (guest: IEventGuestDTO) => void;
   editGuestConfirmation: (data: IEventGuestDTO) => Promise<void>;
   calculateTotalEventCost: () => void;
   selectEventSection: (e: string) => void;
   addNewGuest: (data: IAddNewEventGuestDTO) => Promise<void>;
+  editGuest: (data: IEventGuestDTO) => Promise<void>;
 }
 
 const MyEventContext = createContext({} as MyEventContextType);
 
-// eslint-disable-next-line react/prop-types
 const MyEventProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({} as IEventDTO);
   const [eventInfo, setEventInfo] = useState({} as IEventInfoDTO);
   const [owners, setOwners] = useState<IEventOwnerDTO[]>([]);
@@ -53,6 +56,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [notHiredSuppliers, setNotHiredSuppliers] = useState<IEventSupplierDTO[]>([]);
   const [guests, setGuests] = useState<IEventGuestDTO[]>([]);
   const [myGuests, setMyGuests] = useState<IEventGuestDTO[]>([]);
+  const [selectedGuest, setSelectedGuest] = useState({} as IEventGuestDTO);
   const [myGuestsConfirmed, setMyGuestsConfirmed] = useState(0);
   const [numberOfGuests, setNumberOfGuests] = useState(0);
   const [confirmedGuests, setConfirmedGuests] = useState(0);
@@ -91,6 +95,10 @@ const MyEventProvider: React.FC = ({ children }) => {
         setMyGuests(guestsMine);
         setMyNumberOfGuests(guestsMine.length);
         setMyGuestsConfirmed(guestsMine.filter((guest) => guest.confirmed === true).length);
+        const oldSelectedGuest = response.data.find(
+          (thisGuest) => thisGuest.id === selectedGuest.id,
+        );
+        oldSelectedGuest !== undefined && setSelectedGuest(oldSelectedGuest);
       }
     } catch (err) {
       throw new Error(err);
@@ -175,6 +183,10 @@ const MyEventProvider: React.FC = ({ children }) => {
     setSelectedEvent(data);
   }
 
+  function selectGuest(guest: IEventGuestDTO) {
+    setSelectedGuest(guest);
+  }
+
   async function addNewGuest({ first_name, last_name }: IAddNewEventGuestDTO) {
     try {
       await api.post(`events/${selectedEvent.id}/guests`, {
@@ -205,10 +217,29 @@ const MyEventProvider: React.FC = ({ children }) => {
     }
   }
 
+  async function editGuest(data: IEventGuestDTO) {
+    try {
+      await api.put(`events/${data.event_id}/guests/${data.id}`, {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        description: data.description,
+        confirmed: data.confirmed,
+      });
+      getEventGuests(data.event_id);
+      setLoading(true);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <MyEventContext.Provider
       value={{
+        editGuest,
         selectedEvent,
+        selectedGuest,
         eventInfo,
         owners,
         members,
@@ -225,6 +256,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         isOwner,
         currentSection,
         selectEvent,
+        selectGuest,
         calculateTotalEventCost,
         selectEventSection,
         addNewGuest,

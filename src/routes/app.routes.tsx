@@ -5,6 +5,7 @@ import Profile from '../modules/main/pages/Profile';
 import Dashboard from '../modules/main/pages/Dashboard';
 import Menu from '../modules/main/pages/Menu';
 import MyEvent from '../modules/myEvents/pages/MyEvent';
+import EventGuest from '../modules/myEvents/pages/EventGuest';
 
 // import { theme } from '../global';
 
@@ -27,6 +28,7 @@ const AppRoutes: React.FC = () => (
     <App.Screen name="Menu" component={Menu} />
 
     <App.Screen name="MyEvent" component={MyEvent} />
+    <App.Screen name="EventGuest" component={EventGuest} />
   </App.Navigator>
 );
 
