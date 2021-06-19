@@ -8,6 +8,7 @@ import WindowContainer from '../../../../components/WindowContainer';
 
 import { Container, FormQuestion, Title } from './styles';
 import Button from '../../../../components/Button';
+import { useEventGuests } from '../../../../hooks/eventGuests';
 
 interface IFormData {
   first_name: string;
@@ -21,7 +22,8 @@ interface IProps {
 const EditGuestName: React.FC<IProps> = ({ closeWindow }) => {
   const formRef = useRef<FormHandles>(null);
   const inputRef = useRef<TextInput>(null);
-  const { editGuest, selectedGuest } = useMyEvent();
+  const { selectedGuest } = useMyEvent();
+  const { editGuest } = useEventGuests();
 
   const handleSubmit = useCallback(async ({ last_name, first_name }: IFormData) => {
     await editGuest({

@@ -18,11 +18,24 @@ import {
   ConfirmationButton,
   ConfirmationButtonText,
 } from './styles';
+import { useEventGuests } from '../../../../hooks/eventGuests';
+import EditGuestContact from '../../components/EditGuestContact';
+import IGuestContactDTO from '../../../../dtos/IGuestContactDTO';
+import GuestContactSection from '../../components/GuestContactSection';
+import CreateGuestContactWindow from '../../components/CreateGuestContactWindow';
 
 const EventGuest: React.FC = () => {
-  const { selectedGuest, editGuestConfirmation } = useMyEvent();
+  const { selectedGuest } = useMyEvent();
+  const {
+    editGuestConfirmation,
+    loading,
+    selectGuestContact,
+    selectedGuestContact,
+  } = useEventGuests();
   const [editGuestNameWindow, setEditGuestNameWindow] = useState(false);
   const [editGuestDescriptionWindow, setEditGuestDescriptionWindow] = useState(false);
+  const [guestContactWindow, setGuestContactWindow] = useState(false);
+  const [createContactWindow, setCreateContactWindow] = useState(false);
 
   const handleEditGuestConfirmation = useCallback(() => {
     editGuestConfirmation(selectedGuest);
@@ -35,6 +48,17 @@ const EventGuest: React.FC = () => {
   const handleEditGuestDescriptionWindow = useCallback((e: boolean) => {
     setEditGuestDescriptionWindow(e);
   }, []);
+  const openGuestContactWindow = useCallback(() => {
+    setGuestContactWindow(true);
+  }, []);
+  const closeGuestContactWindow = useCallback(() => {
+    setGuestContactWindow(false);
+    selectGuestContact({} as IGuestContactDTO);
+  }, [selectGuestContact]);
+
+  const handleCreateContactWindow = useCallback((e: boolean) => {
+    setCreateContactWindow(e);
+  }, []);
 
   return (
     <Container>
@@ -43,6 +67,16 @@ const EventGuest: React.FC = () => {
       )}
       {editGuestDescriptionWindow && (
         <EditGuestDescription closeWindow={() => handleEditGuestDescriptionWindow(false)} />
+      )}
+      {guestContactWindow && selectedGuestContact && selectedGuestContact.id && (
+        <EditGuestContact
+          closeWindow={closeGuestContactWindow}
+        />
+      )}
+      {createContactWindow && (
+        <CreateGuestContactWindow
+          closeWindow={() => handleCreateContactWindow(false)}
+        />
       )}
       <PageHeader><Title>Convidado</Title></PageHeader>
       <Body>
@@ -72,10 +106,18 @@ const EventGuest: React.FC = () => {
           onPress={handleEditGuestConfirmation}
           isConfirmed={selectedGuest.confirmed}
         >
-          <ConfirmationButtonText isConfirmed={selectedGuest.confirmed}>
-            {selectedGuest.confirmed ? 'Confirmado' : 'Não Confirmado'}
-          </ConfirmationButtonText>
+          {loading ? (
+            <Icon name="loader" size={30} />
+          ) : (
+            <ConfirmationButtonText isConfirmed={selectedGuest.confirmed}>
+              {selectedGuest.confirmed ? 'Confirmado' : 'Não Confirmado'}
+            </ConfirmationButtonText>
+          )}
         </ConfirmationButton>
+        <GuestContactSection
+          openContactWindow={openGuestContactWindow}
+          openCreateContactWindow={() => handleCreateContactWindow(true)}
+        />
       </Body>
     </Container>
   );

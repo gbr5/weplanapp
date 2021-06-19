@@ -13,6 +13,7 @@ import {
   GuestIndex,
   GuestName,
 } from './styles';
+import { useEventGuests } from '../../../../hooks/eventGuests';
 
 interface IProps {
   index: number;
@@ -25,7 +26,8 @@ const GuestSectionButton: React.FC<IProps> = ({
 }) => {
   const { user } = useAuth();
   const navigation = useNavigation();
-  const { editGuestConfirmation, selectGuest } = useMyEvent();
+  const { selectGuest } = useMyEvent();
+  const { editGuestConfirmation } = useEventGuests();
 
   const navigateToGuest = useCallback(() => {
     selectGuest(guest);

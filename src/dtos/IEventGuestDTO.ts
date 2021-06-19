@@ -1,4 +1,4 @@
-import IGuestContactInfoDTO from './IGuestContactInfoDTO';
+import IGuestContactDTO from './IGuestContactDTO';
 import IUserDTO from './IUserDTO';
 import IWeplanGuestDTO from './IWeplanGuestDTO';
 
@@ -13,6 +13,6 @@ export default interface IEventGuestDTO {
   weplanUser: boolean;
   host: IUserDTO;
   weplanGuest: IWeplanGuestDTO;
-  guestContactInfos: IGuestContactInfoDTO[];
+  contacts: IGuestContactDTO[];
   event_avatar_url?: string;
 }

@@ -3,8 +3,6 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import { TextInput } from 'react-native';
 
-import { useMyEvent } from '../../../../hooks/myEvent';
-
 import Input from '../../../../components/Input';
 
 import {
@@ -14,6 +12,7 @@ import {
 } from './styles';
 import Button from '../../../../components/Button';
 import WindowContainer from '../../../../components/WindowContainer';
+import { useEventGuests } from '../../../../hooks/eventGuests';
 
 interface IFormData {
   first_name: string;
@@ -27,7 +26,7 @@ interface IProps {
 const NewGuestForm: React.FC<IProps> = ({
   closeWindow,
 }) => {
-  const { addNewGuest } = useMyEvent();
+  const { addNewGuest, loading } = useEventGuests();
   const formRef = useRef<FormHandles>(null);
   const inputRef = useRef<TextInput>(null);
 
@@ -76,9 +75,10 @@ const NewGuestForm: React.FC<IProps> = ({
         </Form>
       </Container>
       <Button
+        loading={loading}
         onPress={() => formRef.current?.submitForm()}
       >
-        Entrar
+        Salvar
       </Button>
     </WindowContainer>
   );

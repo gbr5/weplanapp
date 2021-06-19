@@ -18,6 +18,7 @@ import IAddNewEventGuestDTO from '../dtos/IAddNewEventGuestDTO';
 
 interface MyEventContextType {
   selectedEvent: IEventDTO;
+  loading: boolean;
   eventInfo: IEventInfoDTO;
   owners: IEventOwnerDTO[];
   members: IEventMemberDTO[];
@@ -35,12 +36,10 @@ interface MyEventContextType {
   isOwner: boolean;
   currentSection: string;
   selectEvent: (event: IEventDTO) => void;
+  getEventGuests: (eventId: string) => Promise<void>;
   selectGuest: (guest: IEventGuestDTO) => void;
-  editGuestConfirmation: (data: IEventGuestDTO) => Promise<void>;
   calculateTotalEventCost: () => void;
   selectEventSection: (e: string) => void;
-  addNewGuest: (data: IAddNewEventGuestDTO) => Promise<void>;
-  editGuest: (data: IEventGuestDTO) => Promise<void>;
 }
 
 const MyEventContext = createContext({} as MyEventContextType);
@@ -187,57 +186,11 @@ const MyEventProvider: React.FC = ({ children }) => {
     setSelectedGuest(guest);
   }
 
-  async function addNewGuest({ first_name, last_name }: IAddNewEventGuestDTO) {
-    try {
-      await api.post(`events/${selectedEvent.id}/guests`, {
-        first_name,
-        last_name,
-        description: ' ',
-        weplanUser: false,
-        confirmed: false,
-        user_id: '0',
-      });
-      getEventGuests(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-
-  async function editGuestConfirmation(data: IEventGuestDTO) {
-    try {
-      await api.put(`events/${data.event_id}/guests/${data.id}`, {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        description: data.description,
-        confirmed: !data.confirmed,
-      });
-      getEventGuests(data.event_id);
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-
-  async function editGuest(data: IEventGuestDTO) {
-    try {
-      await api.put(`events/${data.event_id}/guests/${data.id}`, {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        description: data.description,
-        confirmed: data.confirmed,
-      });
-      getEventGuests(data.event_id);
-      setLoading(true);
-    } catch (err) {
-      throw new Error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
     <MyEventContext.Provider
       value={{
-        editGuest,
+        loading,
+        getEventGuests,
         selectedEvent,
         selectedGuest,
         eventInfo,
@@ -259,8 +212,6 @@ const MyEventProvider: React.FC = ({ children }) => {
         selectGuest,
         calculateTotalEventCost,
         selectEventSection,
-        addNewGuest,
-        editGuestConfirmation,
       }}
     >
       {children}
