@@ -12,6 +12,7 @@ export const Container = styled.View<IProps>`
   marginVertical: 8px;
   min-height: 48px;
   border-radius: 8px;
+  width: 100%;
 
   ${(props) => props.isMine
     && css`
@@ -25,6 +26,13 @@ export const GuestIndex = styled.Text`
   text-align: center;
   width: 24px;
   marginHorizontal: 8px;
+`;
+
+export const GuestNameContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 85%;
 `;
 
 export const GuestName = styled.Text<IProps>`

@@ -27,7 +27,7 @@ interface EventGuestsContextType {
 const EventGuestsContext = createContext({} as EventGuestsContextType);
 
 const EventGuestsProvider: React.FC = ({ children }) => {
-  const { selectedEvent, getEventGuests } = useMyEvent();
+  const { selectedEvent, getEventGuests, selectGuest } = useMyEvent();
   const [loading, setLoading] = useState(false);
   const [selectedGuestContact, setSelectedGuestContact] = useState({} as IGuestContactDTO);
 
@@ -52,6 +52,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
 
   async function editGuestConfirmation(data: IEventGuestDTO) {
     try {
+      selectGuest(data);
       setLoading(true);
       await api.put(`events/${data.event_id}/guests/${data.id}`, {
         first_name: data.first_name,
@@ -64,6 +65,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       throw new Error(err);
     } finally {
       setLoading(false);
+      selectGuest({} as IEventGuestDTO);
     }
   }
 

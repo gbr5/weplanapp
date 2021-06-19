@@ -23,8 +23,8 @@ export const EventName = styled.Text`
   font-size: 32px;
 `;
 
-export const Body = styled.ScrollView`
-  flex: 1;
+export const Body = styled.View`
   height: 100%;
+  width: 100%;
   background-color: ${theme.TextColor4};
 `;

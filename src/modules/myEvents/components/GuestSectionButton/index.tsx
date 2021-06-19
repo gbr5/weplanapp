@@ -11,12 +11,13 @@ import {
   GoToGuestButton,
   GuestConfirmationButton,
   GuestIndex,
+  GuestNameContainer,
   GuestName,
 } from './styles';
 import { useEventGuests } from '../../../../hooks/eventGuests';
 
 interface IProps {
-  index: number;
+  index?: number;
   guest: IEventGuestDTO;
 }
 
@@ -26,8 +27,8 @@ const GuestSectionButton: React.FC<IProps> = ({
 }) => {
   const { user } = useAuth();
   const navigation = useNavigation();
-  const { selectGuest } = useMyEvent();
-  const { editGuestConfirmation } = useEventGuests();
+  const { selectGuest, selectedGuest } = useMyEvent();
+  const { editGuestConfirmation, loading } = useEventGuests();
 
   const navigateToGuest = useCallback(() => {
     selectGuest(guest);
@@ -41,26 +42,32 @@ const GuestSectionButton: React.FC<IProps> = ({
   return (
     <Container isMine={guest.host_id === user.id}>
       <GoToGuestButton onPress={navigateToGuest}>
-        <GuestIndex>{index}</GuestIndex>
-        <GuestName isMine={guest.host_id === user.id}>
-          {guest.first_name}
-          {' '}
-          {guest.last_name}
-        </GuestName>
-        {guest.weplanGuest && guest.weplanGuest.id && (
-          <Icon name="user" size={30} />
-        )}
-        {guest.host_id === user.id && (
-          <Icon name="edit-2" size={30} />
-        )}
+        {index && <GuestIndex>{index}</GuestIndex>}
+        <GuestNameContainer>
+          <GuestName isMine={guest.host_id === user.id}>
+            {guest.first_name}
+            {' '}
+            {guest.last_name}
+          </GuestName>
+          {guest.weplanGuest && guest.weplanGuest.id && (
+            <Icon name="user" size={30} />
+          )}
+          {guest.host_id === user.id && (
+            <Icon name="edit-2" size={30} />
+          )}
+        </GuestNameContainer>
       </GoToGuestButton>
-      <GuestConfirmationButton onPress={handleEditGuestConfirmation}>
-        {guest.host_id === user.id && guest.confirmed ? (
-          <Icon name="check-square" size={30} />
-        ) : (
-          <Icon name="square" size={30} />
-        )}
-      </GuestConfirmationButton>
+      {loading && selectedGuest.id === guest.id ? (
+        <Icon name="loader" size={30} />
+      ) : (
+        <GuestConfirmationButton onPress={handleEditGuestConfirmation}>
+          {guest.host_id === user.id && guest.confirmed ? (
+            <Icon name="check-square" size={30} />
+          ) : (
+            <Icon name="square" size={30} />
+          )}
+        </GuestConfirmationButton>
+      )}
     </Container>
   );
 };

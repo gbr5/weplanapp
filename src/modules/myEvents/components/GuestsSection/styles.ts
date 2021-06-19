@@ -2,8 +2,9 @@ import styled, { css } from 'styled-components/native';
 import { theme } from '../../../../global';
 
 export const Container = styled.View`
-  flex: 1;
-  paddingVertical: 8px;
+  height: 80%;
+  padding-top: 8px;
+  padding-bottom: 160px;
   paddingHorizontal: 16px;
 `;
 

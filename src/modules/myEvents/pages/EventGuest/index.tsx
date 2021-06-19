@@ -83,34 +83,50 @@ const EventGuest: React.FC = () => {
         <InfoContainer>
           <InfoLabel>Anfitrião:</InfoLabel>
           <GuestName>
-            {selectedGuest.host.name}
+            {selectedGuest && selectedGuest.id && selectedGuest.host.name}
           </GuestName>
         </InfoContainer>
         <InfoContainer onPress={() => handleEditGuestNameWindow(true)}>
           <InfoLabel>Nome:</InfoLabel>
           <GuestName>
-            {selectedGuest.first_name}
+            {selectedGuest && selectedGuest.id && selectedGuest.first_name}
             {' '}
-            {selectedGuest.last_name}
+            {selectedGuest && selectedGuest.id && selectedGuest.last_name}
           </GuestName>
           <Icon size={30} name="edit-2" />
         </InfoContainer>
         <InfoContainer onPress={() => handleEditGuestDescriptionWindow(true)}>
           <InfoLabel>Descrição:</InfoLabel>
           <GuestName>
-            {selectedGuest.description}
+            {selectedGuest && selectedGuest.id && selectedGuest.description}
           </GuestName>
           <Icon size={30} name="edit-2" />
         </InfoContainer>
         <ConfirmationButton
           onPress={handleEditGuestConfirmation}
-          isConfirmed={selectedGuest.confirmed}
+          isConfirmed={
+            selectedGuest
+            && !!selectedGuest.id
+            && selectedGuest.confirmed
+          }
         >
           {loading ? (
             <Icon name="loader" size={30} />
           ) : (
-            <ConfirmationButtonText isConfirmed={selectedGuest.confirmed}>
-              {selectedGuest.confirmed ? 'Confirmado' : 'Não Confirmado'}
+            <ConfirmationButtonText
+              isConfirmed={
+                selectedGuest
+                && !selectedGuest.id
+                && selectedGuest.confirmed
+              }
+            >
+              {
+                selectedGuest
+                && !selectedGuest.id
+                && selectedGuest.confirmed
+                  ? 'Confirmado'
+                  : 'Não Confirmado'
+              }
             </ConfirmationButtonText>
           )}
         </ConfirmationButton>
