@@ -5,8 +5,6 @@ import SignIn from '../modules/auth/pages/SignIn';
 import ForgotPassword from '../modules/auth/pages/ForgotPassword';
 import SignUp from '../modules/auth/pages/SignUp';
 
-// import { theme } from '../global';
-
 const Auth = createStackNavigator();
 
 const AuthRoutes: React.FC = () => (

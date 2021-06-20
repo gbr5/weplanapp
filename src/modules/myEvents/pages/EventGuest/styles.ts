@@ -1,46 +1,46 @@
 import styled, { css } from 'styled-components/native';
-import { theme } from '../../../../global';
+import theme from '../../../../global/styles/theme';
 
 export const Container = styled.View`
   flex: 1;
 `;
 
 export const Title = styled.Text`
-  font-family: ${theme.FontRobotoMedium};
+  font-family: ${theme.fonts.roboto_medium};
   font-size: 32px;
   text-align: center;
-  color: ${theme.PrimaryColor};
+  color: ${theme.color.primary};
   margin-top: 16px;
 `;
 
 export const Body = styled.ScrollView`
   padding: 16px;
-  background: ${theme.BackgroundColor};
+  background: ${theme.color.background};
   flex: 1;
 `;
 
 export const GuestName = styled.Text`
-  font-family: ${theme.FontRobotoMedium};
+  font-family: ${theme.fonts.roboto_medium};
   font-size: 24px;
 `;
 
 export const InfoLabel = styled.Text`
-  font-family: ${theme.FontRobotoRegular};
+  font-family: ${theme.fonts.roboto};
   font-size: 18px;
   position: absolute;
-  color: ${theme.TextColor4};
+  color: ${theme.color.text5};
   top: 0px;
   left: 4px;
 `;
 
 export const InfoContainer = styled.TouchableOpacity`
-  background-color: ${theme.TextColor3};
+  background-color: ${theme.color.text3};
   width: 100%;
   flex-direction: row;
-  paddingHorizontal: 16px;
-  paddingVertical: 8px;
+  padding: 0 16px;
+  padding: 8px 0;
   min-height: 80px;
-  marginVertical: 8px;
+  margin: 8px 0;
   align-items: center;
   justify-content: space-between;
   border-radius: 4px;
@@ -51,27 +51,27 @@ interface IButtonProps {
 }
 
 export const ConfirmationButton = styled.TouchableOpacity<IButtonProps>`
-  background-color: ${theme.PrimaryColor};
+  background-color: ${theme.color.primary};
   width: 100%;
   height: 48px;
-  marginVertical: 8px;
+  margin: 8px 0;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
 
   ${(props) => !props.isConfirmed
     && css`
-      background-color: ${theme.SecondaryColor};
+      background-color: ${theme.color.secondary};
     `}
 `;
 
 export const ConfirmationButtonText = styled.Text<IButtonProps>`
-  font-family: ${theme.FontRobotoMedium};
   font-size: 24px;
-  color: ${theme.TextColor1};
+  font-family: ${theme.fonts.roboto_medium};
+  color: ${theme.color.text1};
 
   ${(props) => !props.isConfirmed
     && css`
-      color: ${theme.TextColor5};
+      color: ${theme.color.text6};
     `}
 `;

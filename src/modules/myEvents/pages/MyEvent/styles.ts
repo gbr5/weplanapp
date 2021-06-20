@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { theme } from '../../../../global';
+import theme from '../../../../global/styles/theme';
 
 export const Container = styled.View`
   flex: 1;
@@ -18,13 +18,13 @@ export const DashboardButton = styled.TouchableOpacity`
 `;
 
 export const EventName = styled.Text`
-  font-family: ${theme.FontRobotoMedium};
-  color: ${theme.PrimaryColor};
+  font-family: ${theme.fonts.roboto_medium};
+  color: ${theme.color.primary};
   font-size: 32px;
 `;
 
 export const Body = styled.View`
   height: 100%;
   width: 100%;
-  background-color: ${theme.TextColor4};
+  background-color: ${theme.color.text5};
 `;

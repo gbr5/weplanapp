@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { Platform } from 'react-native';
-import { theme } from '../../../../global';
+import theme from '../../../../global/styles/theme';
 
 export const Container = styled.View`
   flex: 1;
@@ -15,8 +15,8 @@ export const Title = styled.Text`
   width: 100%;
   text-align: center;
   font-size: 24px;
-  color: ${theme.TextColor5};
-  font-family: 'RobotoSlab-Medium';
+  color: ${theme.color.text6};
+  font-family: ${theme.fonts.roboto_medium};
   margin: 64px auto 24px;
 `;
 
@@ -33,8 +33,8 @@ export const ForgotPasswordButton = styled.TouchableOpacity`
 
 export const ForgotPasswordText = styled.Text`
   font-size: 16px;
-  color: ${theme.TextColor5};
-  font-family: 'RobotoSlab-Regular';
+  color: ${theme.color.text6};
+  font-family: ${theme.fonts.roboto};
 `;
 
 export const CreateAccountButton = styled.TouchableOpacity`
@@ -42,7 +42,7 @@ export const CreateAccountButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   padding: 16px 0 ${16 + getBottomSpace()}px;
-  background: ${theme.SecondaryColor};
+  background: ${theme.color.secondary};
   width: 100%;
   border-top-width: 1px;
   border-color: #232129;
@@ -50,11 +50,11 @@ export const CreateAccountButton = styled.TouchableOpacity`
 
 export const CreateAccountText = styled.Text`
   font-size: 20px;
-  color: ${theme.PrimaryColor};
-  font-family: 'RobotoSlab-Medium';
+  color: ${theme.color.primary};
+  font-family: ${theme.fonts.roboto_medium};
 `;
 
 export const Icon = styled(FeatherIcon)`
-  color: ${theme.PrimaryColor};
+  color: ${theme.color.primary};
   margin-right: 16px;
 `;

@@ -7,8 +7,6 @@ import Menu from '../modules/main/pages/Menu';
 import MyEvent from '../modules/myEvents/pages/MyEvent';
 import EventGuest from '../modules/myEvents/pages/EventGuest';
 
-// import { theme } from '../global';
-
 const App = createStackNavigator();
 
 const AppRoutes: React.FC = () => (

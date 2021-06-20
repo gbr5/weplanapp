@@ -8,7 +8,7 @@ import * as Sentry from '@sentry/react-native';
 import AppProvider from './hooks';
 import Routes from './routes';
 
-import { theme } from './global';
+import theme from './global/styles/theme';
 
 Sentry.init({
   dsn: 'https://4472efcf6b6042f2bd925a1a2d48f434@o637257.ingest.sentry.io/5756133',
@@ -20,9 +20,9 @@ const App: React.FC = () => {
   }, []);
   return (
     <NavigationContainer>
-      <StatusBar barStyle="dark-content" backgroundColor={theme.SecondaryColor} translucent />
+      <StatusBar barStyle="dark-content" backgroundColor={theme.color.secondary} translucent />
       <AppProvider>
-        <View style={{ flex: 1, backgroundColor: theme.SecondaryColor }}>
+        <View style={{ flex: 1, backgroundColor: theme.color.secondary }}>
           <Routes />
         </View>
       </AppProvider>

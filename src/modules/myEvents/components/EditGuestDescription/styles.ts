@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { theme } from '../../../../global';
+import theme from '../../../../global/styles/theme';
 
 export const Container = styled.View`
   align-items: center;
@@ -9,13 +9,13 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: ${theme.FontRobotoMedium};
   font-size: 24px;
-  color: ${theme.TextColor1};
+  color: ${theme.color.text1};
+  font-family: ${theme.fonts.roboto_medium};
 `;
 
 export const FormQuestion = styled.Text`
-  font-family: ${theme.FontRobotoRegular};
   font-size: 20px;
-  color: ${theme.SecondaryColor};
+  color: ${theme.color.secondary};
+  font-family: ${theme.fonts.roboto};
 `;

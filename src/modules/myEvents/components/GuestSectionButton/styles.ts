@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components/native';
-import { theme } from '../../../../global';
+import theme from '../../../../global/styles/theme';
 
 interface IProps {
   isMine: boolean;
@@ -8,24 +8,24 @@ interface IProps {
 export const Container = styled.View<IProps>`
   flex-direction: row;
   align-items: center;
-  background-color: ${theme.TextColor3};
-  marginVertical: 8px;
+  background-color: ${theme.color.text3};
+  margin: 8px 0;
   min-height: 48px;
   border-radius: 8px;
   width: 100%;
 
   ${(props) => props.isMine
     && css`
-      background-color: ${theme.PrimaryColor};
+      background-color: ${theme.color.primary};
     `}
 `;
 
 export const GuestIndex = styled.Text`
-  font-family: ${theme.FontRobotoRegular};
+  font-family: ${theme.fonts.roboto};
   font-size: 20px;
   text-align: center;
   width: 24px;
-  marginHorizontal: 8px;
+  margin: 0 8px;
 `;
 
 export const GuestNameContainer = styled.View`
@@ -36,15 +36,15 @@ export const GuestNameContainer = styled.View`
 `;
 
 export const GuestName = styled.Text<IProps>`
-  font-family: ${theme.FontRobotoMedium};
+  font-family: ${theme.fonts.roboto_medium};
   font-size: 20px;
   text-align: left;
 
-  color: ${theme.TextColor1};
+  color: ${theme.color.text1};
 
   ${(props) => props.isMine
     && css`
-      color: ${theme.SecondaryColor};
+      color: ${theme.color.secondary};
     `}
 `;
 

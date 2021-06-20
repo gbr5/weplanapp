@@ -14,11 +14,9 @@ import IEventMemberDTO from '../dtos/IEventMemberDTO';
 import IEventOwnerDTO from '../dtos/IEventOwnerDTO';
 import IEventSupplierDTO from '../dtos/IEventSupplierDTO';
 import IEventDTO from '../dtos/IEventDTO';
-import IAddNewEventGuestDTO from '../dtos/IAddNewEventGuestDTO';
 
 interface MyEventContextType {
   selectedEvent: IEventDTO;
-  loading: boolean;
   eventInfo: IEventInfoDTO;
   owners: IEventOwnerDTO[];
   members: IEventMemberDTO[];
@@ -40,13 +38,13 @@ interface MyEventContextType {
   selectGuest: (guest: IEventGuestDTO) => void;
   calculateTotalEventCost: () => void;
   selectEventSection: (e: string) => void;
+  getEvent: (eventId: string) => Promise<void>;
 }
 
 const MyEventContext = createContext({} as MyEventContextType);
 
 const MyEventProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({} as IEventDTO);
   const [eventInfo, setEventInfo] = useState({} as IEventInfoDTO);
   const [owners, setOwners] = useState<IEventOwnerDTO[]>([]);
@@ -84,6 +82,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   function selectEventSection(e: string) {
     setCurrentSection(e);
   }
+
   async function getEventGuests(eventId: string) {
     try {
       const response = await api.get<IEventGuestDTO[]>(`/events/${eventId}/guests`);
@@ -182,6 +181,15 @@ const MyEventProvider: React.FC = ({ children }) => {
     setSelectedEvent(data);
   }
 
+  async function getEvent(eventId: string) {
+    try {
+      const response = await api.get(`/events/${eventId}`);
+      selectEvent(response.data);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   function selectGuest(guest: IEventGuestDTO) {
     setSelectedGuest(guest);
   }
@@ -189,7 +197,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   return (
     <MyEventContext.Provider
       value={{
-        loading,
+        getEvent,
         getEventGuests,
         selectedEvent,
         selectedGuest,

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { theme } from '../../../../global';
+import theme from '../../../../global/styles/theme';
 
 export const Container = styled.View`
   flex: 1;
@@ -22,13 +22,13 @@ export const Logo = styled.Image`
 export const Body = styled.View`
   flex: 1;
   padding: 16px;
-  background-color: ${theme.TextColor3};
+  background-color: ${theme.color.text3};
 `;
 
 export const SignOutButton = styled.TouchableOpacity`
   width: 100%;
   padding: 16px;
-  background-color: rgba(250,30,0,0.4);
+  background-color: ${theme.color.atention};
   border-radius: 8px;
   margin: 8px 0;
   align-items: center;
@@ -38,7 +38,7 @@ export const SignOutButton = styled.TouchableOpacity`
 
 export const MenuOption = styled.TouchableOpacity`
   width: 100%;
-  background-color: ${theme.TextColor4};
+  background-color: ${theme.color.text5};
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -48,7 +48,8 @@ export const MenuOption = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  color: rgba(0, 0, 0, 1);
+  color: ${theme.color.text1};
   margin: 0 16px 0 0;
+  font-family: ${theme.fonts.roboto};
   font-size: 24px;
 `;

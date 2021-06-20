@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { theme } from '../../../../global';
+import theme from '../../../../global/styles/theme';
 
 export const Container = styled.View`
   flex: 1;
@@ -8,7 +8,7 @@ export const Container = styled.View`
 
 export const Title = styled.Text`
   text-align: center;
-  font-family: ${theme.FontRobotoMedium};
-  color: ${theme.SecondaryColor};
+  color: ${theme.color.secondary};
+  font-family: ${theme.fonts.roboto_medium};
   font-size: 24px;
 `;

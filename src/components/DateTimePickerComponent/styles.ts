@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { theme } from '../../../global';
+import theme from '../../global/styles/theme';
 
 export const Container = styled.View`
   /* position: absolute; */
@@ -11,8 +11,8 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: 'RobotoSlab-Medium';
+  font-family: ${theme.fonts.roboto_medium};
   font-size: 20px;
-  color: ${theme.TextColor1};
+  color: ${theme.color.text1};
   margin: 0 24px 24px;
 `;

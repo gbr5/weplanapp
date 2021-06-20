@@ -4,13 +4,16 @@ import { AuthProvider } from './auth';
 import { EventProvider } from './event';
 import { MyEventProvider } from './myEvent';
 import { EventGuestsProvider } from './eventGuests';
+import { EventInfoProvider } from './eventInfo';
 
 const AppProvider: React.FC = ({ children }) => (
   <AuthProvider>
     <EventProvider>
       <MyEventProvider>
         <EventGuestsProvider>
-          {children}
+          <EventInfoProvider>
+            {children}
+          </EventInfoProvider>
         </EventGuestsProvider>
       </MyEventProvider>
     </EventProvider>

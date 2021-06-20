@@ -1,26 +1,27 @@
 import styled from 'styled-components/native';
-import { theme } from '../../../../global';
+import theme from '../../../../global/styles/theme';
 
 export const Container = styled.TouchableOpacity`
   height: 80px;
   justify-content: center;
-  background-color: ${theme.SecondaryColor};
+  background-color: ${theme.color.secondary};
   border-radius: 8px;
-  paddingHorizontal: 16px;
-  marginVertical: 8px;
+  padding: 0 16px;
+  margin: 8px 0;
 `;
 
 export const ContactType = styled.Text`
-  font-family: ${theme.FontRobotoMedium};
   font-size: 18px;
-  color: ${theme.PrimaryColor};
+  color: ${theme.color.primary};
+  font-family: ${theme.fonts.roboto_medium};
+
   letter-spacing: 2px;
 `;
 
 export const ContactInfo = styled.Text`
-  font-family: ${theme.FontRobotoMedium};
+  font-family: ${theme.fonts.roboto_medium};
   font-size: 24px;
-  color: ${theme.TextColor4};
+  color: ${theme.color.text5};
   letter-spacing: 1px;
   text-align: right;
 `;

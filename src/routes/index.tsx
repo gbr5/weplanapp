@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import AuthRoutes from './auth.routes';
 import AppRoutes from './app.routes';
-import { theme } from '../global';
+import theme from '../global/styles/theme';
 
 import { useAuth } from '../hooks/auth';
 
@@ -17,7 +17,7 @@ const Routes: React.FC = () => {
         alignItems: 'center',
       }}
       >
-        <ActivityIndicator size="large" color={theme.TextColor4} />
+        <ActivityIndicator size="large" color={theme.color.text5} />
       </View>
     );
   }
