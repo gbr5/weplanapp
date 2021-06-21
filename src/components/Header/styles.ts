@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
-import theme from '../../global/styles/theme';
 
 export const Container = styled.View`
   position: relative;
@@ -15,8 +14,8 @@ export const Container = styled.View`
 export const HeaderTitle = styled.Text`
   font-size: 20px;
   line-height: 28px;
-  color: ${theme.color.text6};
-  font-family: ${theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text6};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
 export const ProfileButton = styled.TouchableOpacity`
 

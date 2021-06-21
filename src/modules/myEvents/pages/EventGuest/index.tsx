@@ -14,7 +14,7 @@ import {
   Body,
   InfoContainer,
   InfoLabel,
-  GuestName,
+  InfoText,
   ConfirmationButton,
   ConfirmationButtonText,
 } from './styles';
@@ -82,24 +82,24 @@ const EventGuest: React.FC = () => {
       <Body>
         <InfoContainer>
           <InfoLabel>Anfitrião:</InfoLabel>
-          <GuestName>
+          <InfoText>
             {selectedGuest && selectedGuest.id && selectedGuest.host.name}
-          </GuestName>
+          </InfoText>
         </InfoContainer>
         <InfoContainer onPress={() => handleEditGuestNameWindow(true)}>
           <InfoLabel>Nome:</InfoLabel>
-          <GuestName>
+          <InfoText>
             {selectedGuest && selectedGuest.id && selectedGuest.first_name}
             {' '}
             {selectedGuest && selectedGuest.id && selectedGuest.last_name}
-          </GuestName>
+          </InfoText>
           <Icon size={30} name="edit-2" />
         </InfoContainer>
         <InfoContainer onPress={() => handleEditGuestDescriptionWindow(true)}>
           <InfoLabel>Descrição:</InfoLabel>
-          <GuestName>
+          <InfoText>
             {selectedGuest && selectedGuest.id && selectedGuest.description}
-          </GuestName>
+          </InfoText>
           <Icon size={30} name="edit-2" />
         </InfoContainer>
         <ConfirmationButton

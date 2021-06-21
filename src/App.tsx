@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-
+import { ThemeProvider } from 'styled-components';
 import React, { useEffect } from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import { View, StatusBar } from 'react-native';
@@ -20,12 +20,14 @@ const App: React.FC = () => {
   }, []);
   return (
     <NavigationContainer>
-      <StatusBar barStyle="dark-content" backgroundColor={theme.color.secondary} translucent />
-      <AppProvider>
-        <View style={{ flex: 1, backgroundColor: theme.color.secondary }}>
-          <Routes />
-        </View>
-      </AppProvider>
+      <ThemeProvider theme={theme}>
+        <StatusBar barStyle="dark-content" backgroundColor={theme.color.secondary} translucent />
+        <AppProvider>
+          <View style={{ flex: 1, backgroundColor: theme.color.secondary }}>
+            <Routes />
+          </View>
+        </AppProvider>
+      </ThemeProvider>
     </NavigationContainer>
   );
 };

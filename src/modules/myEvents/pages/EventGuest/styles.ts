@@ -1,44 +1,43 @@
 import styled, { css } from 'styled-components/native';
-import theme from '../../../../global/styles/theme';
 
 export const Container = styled.View`
   flex: 1;
 `;
 
 export const Title = styled.Text`
-  font-family: ${theme.fonts.roboto_medium};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: 32px;
   text-align: center;
-  color: ${theme.color.primary};
+  color: ${({ theme }) => theme.color.primary};
   margin-top: 16px;
 `;
 
 export const Body = styled.ScrollView`
   padding: 16px;
-  background: ${theme.color.background};
+  background: ${({ theme }) => theme.color.background};
   flex: 1;
 `;
 
-export const GuestName = styled.Text`
-  font-family: ${theme.fonts.roboto_medium};
+export const InfoText = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: 24px;
+  margin-top: 16px;
 `;
 
 export const InfoLabel = styled.Text`
-  font-family: ${theme.fonts.roboto};
-  font-size: 18px;
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  font-size: 20px;
   position: absolute;
-  color: ${theme.color.text5};
+  color: ${({ theme }) => theme.color.text5};
   top: 0px;
   left: 4px;
 `;
 
 export const InfoContainer = styled.TouchableOpacity`
-  background-color: ${theme.color.text3};
+  background-color: ${({ theme }) => theme.color.text3};
   width: 100%;
   flex-direction: row;
-  padding: 0 16px;
-  padding: 8px 0;
+  padding: 8px 16px;
   min-height: 80px;
   margin: 8px 0;
   align-items: center;
@@ -51,7 +50,7 @@ interface IButtonProps {
 }
 
 export const ConfirmationButton = styled.TouchableOpacity<IButtonProps>`
-  background-color: ${theme.color.primary};
+  background-color: ${({ theme }) => theme.color.primary};
   width: 100%;
   height: 48px;
   margin: 8px 0;
@@ -61,17 +60,17 @@ export const ConfirmationButton = styled.TouchableOpacity<IButtonProps>`
 
   ${(props) => !props.isConfirmed
     && css`
-      background-color: ${theme.color.secondary};
+      background-color: ${({ theme }) => theme.color.secondary};
     `}
 `;
 
 export const ConfirmationButtonText = styled.Text<IButtonProps>`
   font-size: 24px;
-  font-family: ${theme.fonts.roboto_medium};
-  color: ${theme.color.text1};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text1};
 
   ${(props) => !props.isConfirmed
     && css`
-      color: ${theme.color.text6};
+      color: ${({ theme }) => theme.color.text1};
     `}
 `;

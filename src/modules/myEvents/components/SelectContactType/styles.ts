@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import theme from '../../../../global/styles/theme';
 
 export const Container = styled.View`
   flex: 1;
@@ -8,7 +7,7 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-family: ${theme.fonts.roboto_medium};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: 24px;
   margin: 16px 0;
 `;
@@ -21,7 +20,7 @@ export const ContactTypeButton = styled.TouchableOpacity<IProps>`
   width: 100%;
   height: 64px;
   border-radius: 8px;
-  background-color: ${theme.color.secondary};
+  background-color: ${({ theme }) => theme.color.secondary};
   margin: 16px 0;
   align-items: center;
   justify-content: space-between;
@@ -30,19 +29,19 @@ export const ContactTypeButton = styled.TouchableOpacity<IProps>`
 
   ${(props) => props.isActive
     && css`
-      background-color: ${theme.color.primary};
+      background-color: ${({ theme }) => theme.color.primary};
     `}
 `;
 
 export const ContactTypeText = styled.Text<IProps>`
-  font-family: ${theme.fonts.roboto};
-  color: ${theme.color.primary};
+  font-family: ${({ theme }) => theme.fonts.roboto};
+  color: ${({ theme }) => theme.color.primary};
   font-size: 20px;
 
   ${(props) => props.isActive
     && css`
-      color: ${theme.color.text1};
-      font-family: ${theme.fonts.roboto_medium};
+      color: ${({ theme }) => theme.color.text1};
+      font-family: ${({ theme }) => theme.fonts.roboto_medium};
     `}
 `;
 
@@ -50,7 +49,7 @@ export const IconContainer = styled.View`
   width: 48px;
   height: 48px;
   border-radius: 24px;
-  border: 1px solid ${theme.color.text1};
+  border: 1px solid ${({ theme }) => theme.color.text1};
   align-items: center;
   justify-content: center;
 `;

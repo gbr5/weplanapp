@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import theme from '../../../../global/styles/theme';
 
 export const Container = styled.View`
   margin: 16px 0;
@@ -11,13 +10,13 @@ export const ContactContainer = styled.ScrollView`
   width: 100%;
 `;
 export const Title = styled.Text`
-  color: ${theme.color.text1};
-  font-family: ${theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text1};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   text-align: center;
   font-size: 24px;
 `;
 export const TitleBorderBottom = styled.View`
-  background-color: ${theme.color.primary};
+  background-color: ${({ theme }) => theme.color.primary};
   height: 2px;
   width: 80%;
 `;
@@ -27,8 +26,8 @@ export const AddContactButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  background-color: ${theme.color.primary};
-  border: 0.5px solid ${theme.color.secondary};
+  background-color: ${({ theme }) => theme.color.primary};
+  border: 0.5px solid ${({ theme }) => theme.color.secondary};
   position: absolute;
   top: 4px;
   right: 4px;

@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import theme from '../../global/styles/theme';
 
 export const Container = styled.View`
   position: absolute;
@@ -11,14 +10,14 @@ export const Container = styled.View`
   padding-top: 40px;
   align-items: center;
   justify-content: center;
-  background-color: ${theme.color.text5};
+  background-color: ${({ theme }) => theme.color.text5};
   border-radius: 16px;
 `;
 
 export const Question = styled.Text`
   font-size: 22px;
-  color: ${theme.color.text1};
-  font-family: ${theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text1};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
 
 export const ButtonContainer = styled.View`
