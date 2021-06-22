@@ -1,4 +1,7 @@
 import styled, { css } from 'styled-components/native';
+import { FlatList } from 'react-native';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
+import IEventGuestDTO from '../../../../dtos/IEventGuestDTO';
 
 export const Container = styled.View`
   height: 80%;
@@ -66,7 +69,14 @@ export const AddGuestIcon = styled.View`
   margin-left: 8px;
 `;
 
-export const GuestsContainer = styled.ScrollView`
+export const GuestsContainer = styled(
+  FlatList as new () => FlatList<IEventGuestDTO>,
+).attrs({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: {
+    paddingBottom: getBottomSpace(),
+  },
+})`
   flex: 1;
   max-height: 600px;
   margin: 8px 0;

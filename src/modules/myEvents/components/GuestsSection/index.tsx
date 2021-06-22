@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { SafeAreaView, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import IEventGuestDTO from '../../../../dtos/IEventGuestDTO';
 import { useMyEvent } from '../../../../hooks/myEvent';
 import GuestSectionButton from '../GuestSectionButton';
 import {
@@ -22,23 +20,13 @@ interface IProps {
 const GuestsSection: React.FC<IProps> = ({ handleNewGuestForm }) => {
   const { guests, myGuests } = useMyEvent();
   const [allGuestsSection, setAllGuestsSection] = useState(true);
-  const [myGuestsSection, setMyGuestsSection] = useState(false);
-
-  const renderItem = (guest: IEventGuestDTO) => (
-    <GuestSectionButton
-      guest={guest}
-      key={guest.id}
-    />
-  );
 
   const openMyGuests = useCallback(() => {
     setAllGuestsSection(false);
-    setMyGuestsSection(true);
   }, []);
 
   const openAllGuests = useCallback(() => {
     setAllGuestsSection(true);
-    setMyGuestsSection(false);
   }, []);
 
   return (
@@ -56,43 +44,45 @@ const GuestsSection: React.FC<IProps> = ({ handleNewGuestForm }) => {
             <GuestMainMenuButtonText active={allGuestsSection}>Todos</GuestMainMenuButtonText>
           </GuestMainMenuButton>
           <GuestMainMenuButton
-            active={myGuestsSection}
+            active={!allGuestsSection}
             onPress={openMyGuests}
           >
-            <GuestMainMenuButtonText active={myGuestsSection}>Meus</GuestMainMenuButtonText>
+            <GuestMainMenuButtonText active={!allGuestsSection}>Meus</GuestMainMenuButtonText>
           </GuestMainMenuButton>
         </GuestMainMenu>
-        {/* <SafeAreaView> */}
-        {/* {allGuestsSection && (
-            <FlatList
-              data={guests}
-              renderItem={renderItem}
-              keyExtractor={(guest) => guest.id}
-            />
-          )} */}
-        <GuestsContainer>
-          {allGuestsSection && guests.map((guest) => {
-            const index = guests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
-            return (
-              <GuestSectionButton
-                guest={guest}
-                index={index}
-                key={guest.id}
-              />
-            );
-          })}
-          {myGuestsSection && myGuests.map((guest) => {
-            const index = myGuests.findIndex((thisGuest) => thisGuest.id === guest.id) + 1;
-            return (
-              <GuestSectionButton
-                guest={guest}
-                index={index}
-                key={guest.id}
-              />
-            );
-          })}
-        </GuestsContainer>
-        {/* </SafeAreaView> */}
+        {allGuestsSection ? (
+          <GuestsContainer
+            data={guests}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              const index = guests.findIndex((thisGuest) => thisGuest.id === item.id) + 1;
+
+              return (
+                <GuestSectionButton
+                  index={index}
+                  guest={item}
+                  key={item.id}
+                />
+              );
+            }}
+          />
+        ) : (
+          <GuestsContainer
+            data={myGuests}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              const index = myGuests.findIndex((thisGuest) => thisGuest.id === item.id) + 1;
+
+              return (
+                <GuestSectionButton
+                  index={index}
+                  guest={item}
+                  key={item.id}
+                />
+              );
+            }}
+          />
+        )}
       </Container>
     </>
   );
