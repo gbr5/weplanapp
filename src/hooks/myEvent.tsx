@@ -98,16 +98,13 @@ const MyEventProvider: React.FC = ({ children }) => {
 
   async function getEventTasks(eventId: string) {
     try {
-      console.log({ eventId });
       const response = await api.get<IEventTaskDTO[]>(`/event-tasks/${eventId}`);
-      console.log(response.data);
       if (response.data && response.data.length > 0) {
         setEventTasks(response.data);
         if (selectedTask && selectedTask.id) {
           const findSelectedTask = response.data.find(
             task => task.id === selectedTask.id,
           );
-          console.log({ findSelectedTask });
           findSelectedTask && setSelectedTask(findSelectedTask);
         }
       }

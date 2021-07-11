@@ -124,9 +124,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       const noteresponse = await api.post(`/event-task-notes`, data);
-      console.log({ noteresponse });
       const response = await getEventTasks(selectedEvent.id);
-      console.log('getEventTasks', response);
     } catch (err) {
       throw new Error(err);
     } finally {
