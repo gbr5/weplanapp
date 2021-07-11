@@ -1,4 +1,6 @@
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
@@ -24,7 +26,7 @@ export const Body = styled.View`
   background-color: ${({ theme }) => theme.color.text3};
 `;
 
-export const SignOutButton = styled.TouchableOpacity`
+export const SignOutButton = styled(RectButton)`
   width: 100%;
   padding: 16px;
   background-color: ${({ theme }) => theme.color.atention};
@@ -35,7 +37,7 @@ export const SignOutButton = styled.TouchableOpacity`
   flex-direction: row;
 `;
 
-export const MenuOption = styled.TouchableOpacity`
+export const MenuOption = styled(RectButton)`
   width: 100%;
   background-color: ${({ theme }) => theme.color.text5};
   flex-direction: row;
@@ -50,5 +52,5 @@ export const ButtonText = styled.Text`
   color: ${({ theme }) => theme.color.text1};
   margin: 0 16px 0 0;
   font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
 `;

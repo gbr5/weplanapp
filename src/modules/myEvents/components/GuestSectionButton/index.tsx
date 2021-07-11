@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
@@ -14,7 +14,8 @@ import {
   GuestNameContainer,
   GuestName,
 } from './styles';
-import { useEventGuests } from '../../../../hooks/eventGuests';
+import theme from '../../../../global/styles/theme';
+import api from '../../../../services/api';
 
 interface IProps {
   index?: number;
@@ -27,8 +28,9 @@ const GuestSectionButton: React.FC<IProps> = ({
 }) => {
   const { user } = useAuth();
   const navigation = useNavigation();
-  const { selectGuest, selectedGuest } = useMyEvent();
-  const { editGuestConfirmation, loading } = useEventGuests();
+  const { selectGuest, selectedGuest, getEventGuests } = useMyEvent();
+
+  const [loading, setLoading] = useState(false);
 
   const navigateToGuest = useCallback(() => {
     selectGuest(guest);
@@ -36,8 +38,22 @@ const GuestSectionButton: React.FC<IProps> = ({
   }, [navigation, selectGuest, guest]);
 
   const handleEditGuestConfirmation = useCallback(async () => {
-    await editGuestConfirmation(guest);
-  }, [guest, editGuestConfirmation]);
+    if (user.id !== guest.host_id) return;
+    try {
+      setLoading(true);
+      await api.put(`events/${guest.event_id}/guests/${guest.id}`, {
+        first_name: guest.first_name,
+        last_name: guest.last_name,
+        description: guest.description,
+        confirmed: !guest.confirmed,
+      });
+      await getEventGuests(guest.event_id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [guest, user, getEventGuests]);
 
   return (
     <Container isMine={guest.host_id === user.id}>
@@ -50,21 +66,21 @@ const GuestSectionButton: React.FC<IProps> = ({
             {guest.last_name}
           </GuestName>
           {guest.weplanGuest && guest.weplanGuest.id && (
-            <Icon name="user" size={30} />
+            <Icon color={theme.color.atention} name="user" size={30} />
           )}
           {guest.host_id === user.id && (
-            <Icon name="edit-2" size={30} />
+            <Icon color={theme.color.secondary} name="edit-2" size={30} />
           )}
         </GuestNameContainer>
       </GoToGuestButton>
-      {loading && selectedGuest.id === guest.id ? (
-        <Icon name="loader" size={30} />
+      {loading ? (
+        <Icon color={theme.color.secondary} name="loader" size={30} />
       ) : (
         <GuestConfirmationButton onPress={handleEditGuestConfirmation}>
           {guest.host_id === user.id && guest.confirmed ? (
-            <Icon name="check-square" size={30} />
+            <Icon color={theme.color.success} name="check-square" size={30} />
           ) : (
-            <Icon name="square" size={30} />
+            <Icon color={theme.color.atention} name="square" size={30} />
           )}
         </GuestConfirmationButton>
       )}

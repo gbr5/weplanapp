@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   position: relative;
@@ -12,24 +14,22 @@ export const Container = styled.View`
   padding: ${Platform.OS === 'ios' ? 0 : 20}px 0 ${Platform.OS === 'ios' ? 20 : 0}px;
 `;
 export const HeaderTitle = styled.Text`
-  font-size: 20px;
-  line-height: 28px;
+  font-size: ${RFValue(20)}px;
+  line-height: ${RFValue(28)}px;
   color: ${({ theme }) => theme.color.text6};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
-export const ProfileButton = styled.TouchableOpacity`
+export const ProfileButton = styled(BorderlessButton)`
 
 `;
 export const UserAvatar = styled.Image`
-  width: 40px;
-  height: 40px;
-  border-radius: 28px;
+  width: ${RFValue(40)}px;
+  height: ${RFValue(40)}px;
+  border-radius: 8px;
   margin-right: 16px;
 `;
 
 export const Logo = styled.Image`
-  border-radius: 10px;
-  /* box-shadow: 0 0 4px 4px rgba(0,0,0,0.3); */
-  height: 40px;
+  height: ${RFValue(40)}px;
   margin: 18px 64px;
 `;

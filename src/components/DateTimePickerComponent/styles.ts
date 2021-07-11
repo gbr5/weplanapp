@@ -1,3 +1,4 @@
+import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
@@ -11,7 +12,7 @@ export const Container = styled.View`
 
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: 20px;
+  font-size: ${RFValue(20)}px;
   color: ${({ theme }) => theme.color.text1};
   margin: 0 24px 24px;
 `;

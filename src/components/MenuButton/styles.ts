@@ -1,6 +1,7 @@
+import { BorderlessButton } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
-export const Container = styled.TouchableOpacity`
+export const Container = styled(BorderlessButton)`
   background-color: rgba(0,0,0,0.28);
   border-radius: 8px;
   height: 38px;

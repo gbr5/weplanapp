@@ -44,6 +44,10 @@ const MainMenu: React.FC = () => {
 
   return (
     <Container horizontal>
+      <MenuButton onPress={() => selectEventSection('Tasks')} isActive={currentSection === 'Tasks'}>
+        <MenuButtonText isActive={currentSection === 'Tasks'}>Check List</MenuButtonText>
+        <MenuButtonNumber isActive={currentSection === 'Tasks'}>{tasksInfo}</MenuButtonNumber>
+      </MenuButton>
       <MenuButton onPress={() => selectEventSection('Guests')} isActive={currentSection === 'Guests'}>
         <MenuButtonText isActive={currentSection === 'Guests'}>Convidados</MenuButtonText>
         <MenuButtonNumber isActive={currentSection === 'Guests'}>{guestsInfo}</MenuButtonNumber>
@@ -59,10 +63,6 @@ const MainMenu: React.FC = () => {
       <MenuButton onPress={() => selectEventSection('Financial')} isActive={currentSection === 'Financial'}>
         <MenuButtonText isActive={currentSection === 'Financial'}>Financeiro</MenuButtonText>
         <MenuButtonNumber isActive={currentSection === 'Financial'}>{financialInfo}</MenuButtonNumber>
-      </MenuButton>
-      <MenuButton onPress={() => selectEventSection('Tasks')} isActive={currentSection === 'Tasks'}>
-        <MenuButtonText isActive={currentSection === 'Tasks'}>Check List</MenuButtonText>
-        <MenuButtonNumber isActive={currentSection === 'Tasks'}>{tasksInfo}</MenuButtonNumber>
       </MenuButton>
     </Container>
   );

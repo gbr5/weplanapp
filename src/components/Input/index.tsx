@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/prop-types */
 import React, {
-  useEffect, useRef, useImperativeHandle, forwardRef, useState, useCallback,
+  useEffect,
+  useRef,
+  useImperativeHandle,
+  forwardRef,
+  useState,
+  useCallback,
 } from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { TextInputProps } from 'react-native';
@@ -11,7 +16,7 @@ import { Container, TextInput, Icon } from './styles';
 
 interface IInputProps extends TextInputProps {
   name: string;
-  icon: string;
+  icon?: string;
 }
 
 interface InputValueReference {
@@ -70,7 +75,7 @@ const Input: React.ForwardRefRenderFunction<InputRefProps, IInputProps> = (
   }, [registerField, fieldName]);
   return (
     <Container isFocused={isFocused} isErrored={!!error}>
-      <Icon isFocused={isFocused} isFilled={isFilled} name={icon} size={20} />
+      {icon && <Icon isFocused={isFocused} isFilled={isFilled} name={icon} size={20} />}
       <TextInput
         isErrored={!!error}
         isFocused={isFocused}

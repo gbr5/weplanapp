@@ -1,13 +1,14 @@
+import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
   position: absolute;
   z-index: 50;
-  top: 30%;
+  top: ${RFPercentage(30)}px;
   left: 2%;
-  height: 40%;
+  height: ${RFPercentage(40)}px;
   width: 96%;
-  padding-top: 40px;
+  padding-top: ${RFValue(64)}px;
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.color.text5};
@@ -15,7 +16,7 @@ export const Container = styled.View`
 `;
 
 export const Question = styled.Text`
-  font-size: 22px;
+  font-size: ${RFValue(22)}px;
   color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;

@@ -6,20 +6,15 @@ import React, {
   useEffect,
 } from 'react';
 import { Alert } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import api from '../services/api';
 
-interface IUser {
-  id: string;
-  name: string;
-  email: string;
-  avatar_url?: string;
-  isCompany: boolean;
-}
+import AsyncStorage from '@react-native-community/async-storage';
+
+import api from '../services/api';
+import IUserDTO from '../dtos/IUserDTO';
 
 interface IAuthState {
   token: string;
-  user: IUser;
+  user: IUserDTO;
 }
 
 interface ISignInCredentials {
@@ -50,15 +45,16 @@ interface ICreatePersonInfoDTO {
 }
 
 interface IAuthContextData {
-  user: IUser;
+  user: IUserDTO;
   loading: boolean;
   signIn(credentials: ISignInCredentials): Promise<void>;
   signInWithGoogle(credentials: IGoogleSignInCredentials): Promise<void>;
   signOut(): void;
   createdefaultContactInfo(id: string): void;
-  updateUser(user: IUser): void;
+  updateUser(user: IUserDTO): void;
   createPersonInfo(personInfo: ICreatePersonInfoDTO): void;
   resetPassword(email: string): Promise<void>;
+  getUser(id: string): Promise<IUserDTO | undefined>;
 }
 
 const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
@@ -69,20 +65,20 @@ const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<IAuthState>({} as IAuthState);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadStorageData() {
-      const [token, user] = await AsyncStorage.multiGet([
-        '@WePlan-Party:token',
-        '@WePlan-Party:user',
-      ]);
+  async function loadStorageData() {
+    const [token, user] = await AsyncStorage.multiGet([
+      '@WePlan-Party:token',
+      '@WePlan-Party:user',
+    ]);
 
-      if (token[1] && user[1]) {
-        api.defaults.headers.authorization = `Bearer ${token}`;
+    if (token[1] && user[1]) {
+      api.defaults.headers.authorization = `Bearer ${token}`;
 
-        setData({ token: token[1], user: JSON.parse(user[1]) });
-      }
-      setLoading(false);
+      setData({ token: token[1], user: JSON.parse(user[1]) });
     }
+    setLoading(false);
+  }
+  useEffect(() => {
     loadStorageData();
   }, []);
 
@@ -90,6 +86,9 @@ const AuthProvider: React.FC = ({ children }) => {
     await AsyncStorage.multiRemove([
       '@WePlan-Party:token',
       '@WePlan-Party:user',
+      '@WePlan-Party:events-as-owner',
+      '@WePlan-Party:events-as-member',
+      '@WePlan-Party:events-as-guest',
     ]);
 
     setData({} as IAuthState);
@@ -212,7 +211,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const updateUser = useCallback(
-    async (updatedUser: IUser) => {
+    async (updatedUser: IUserDTO) => {
       await AsyncStorage.setItem(
         '@WePlan-Party:user',
         JSON.stringify(updatedUser),
@@ -239,6 +238,12 @@ const AuthProvider: React.FC = ({ children }) => {
     [],
   );
 
+  async function getUser(id: string) {
+    const response = await api.get(`/users/${id}`);
+
+    if (response.data) return response.data;
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -251,6 +256,7 @@ const AuthProvider: React.FC = ({ children }) => {
         createdefaultContactInfo,
         updateUser,
         createPersonInfo,
+        getUser,
       }}
     >
       {children}

@@ -1,24 +1,44 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import React from 'react';
+import Feather from 'react-native-vector-icons/Feather';
 import { useEvent } from '../../../../hooks/event';
 import { EventButton } from '../EventButton';
+import ISectionProps from '../../../../dtos/ISectionProps';
 
 import {
   Container,
+  SectionButton,
   Label,
   LabelUnderline,
   EventContainer,
 } from './styles';
 
-const MyEventsAsHost: React.FC = () => {
-  const navigation = useNavigation();
+interface IProps {
+  handleSection: (section: ISectionProps) => void;
+  selectedSection: string;
+}
+
+const MyEventsAsHost: React.FC<IProps> = ({
+  handleSection,
+  selectedSection,
+}: IProps) => {
   const { eventsAsOwner } = useEvent();
 
   return (
     <Container>
-      <Label>Eventos como Anfitrião</Label>
+      {selectedSection === 'host' ? (
+        <SectionButton onPress={() => handleSection({ section: '' })}>
+          <Label>Eventos como Anfitrião</Label>
+          <Feather name="chevron-up" size={24} />
+        </SectionButton>
+      ) : (
+        <SectionButton onPress={() => handleSection({ section: 'host' })}>
+          <Label>Eventos como Anfitrião</Label>
+          <Feather name="chevron-down" size={24} />
+        </SectionButton>
+      )}
       <LabelUnderline />
-      {eventsAsOwner
+      {selectedSection === 'host'
+        && eventsAsOwner
         && eventsAsOwner.length > 0
         && (
           <EventContainer

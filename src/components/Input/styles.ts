@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 interface ContainerProps {
   isFocused: boolean;
@@ -33,7 +34,7 @@ export const TextInput = styled.TextInput<ContainerProps>`
   flex: 1;
   color: ${({ theme }) => theme.color.text1};
   font-family: 'RobotoSlab-Regular';
-  font-size: 16px;
+  font-size: ${RFValue(16)}px;
 
   ${(props) => props.isFocused
     && css`

@@ -1,78 +1,109 @@
 import { useNavigation } from '@react-navigation/native';
+import { FormHandles } from '@unform/core';
+import { Form } from '@unform/mobile';
 import React, { useCallback, useState } from 'react';
-import { Alert } from 'react-native';
+import { useRef } from 'react';
 import Button from '../../../../components/Button';
+import Input from '../../../../components/Input';
 import WindowContainer from '../../../../components/WindowContainer';
+import IEventDTO from '../../../../dtos/IEventDTO';
 import { useEvent } from '../../../../hooks/event';
-import DefineEventName from '../DefineEventName';
+import { useMyEvent } from '../../../../hooks/myEvent';
+import { SelectEventType } from '../SelectEventType';
 
 import {
-  Container, Title, EventName,
+  Container,
+  Title,
 } from './styles';
 
 interface IProps {
   handleCloseWindow: () => void;
 }
 
+interface IFormProps {
+  name: string;
+}
+
 const CreateEvent: React.FC<IProps> = ({
   handleCloseWindow,
 }) => {
+  const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
   const { createEvent } = useEvent();
-  const [eventNameField, setEventNameField] = useState(true);
+  const { selectEvent } = useMyEvent();
+  const [selectEventTypeWindow, setSelectEventTypeWindow] = useState(true);
+  const [event_type, setEventType] = useState('');
   const [loading, setLoading] = useState(false);
-  const [eventName, setEventName] = useState('');
 
-  const handleCreateEvent = useCallback(async () => {
-    const now = new Date();
-    await createEvent({
-      date: new Date(now.setMonth(now.getMonth() + 1)),
-      event_type: 'Social',
-      isDateDefined: false,
-      name: eventName,
-    });
-    handleCloseWindow();
-    navigation.navigate('MyEvent');
-  }, [createEvent, navigation, eventName, handleCloseWindow]);
+  function handleEventType(type: string) {
+    setEventType(type);
+    setSelectEventTypeWindow(false);
+  }
 
-  const handleEventNameField = useCallback((props: boolean) => {
-    setEventNameField(props);
-  }, []);
-  const handleEventName = useCallback((props: string) => {
+  function openEventTypeWindow() {
+    setSelectEventTypeWindow(true);
+  }
+
+  const handleCreateEvent = useCallback(async ({ name }: IFormProps) => {
     try {
       setLoading(true);
-      setEventName(props);
-      Alert.alert(props);
-      handleEventNameField(false);
+      selectEvent({} as IEventDTO);
+      const now = new Date();
+      const event = await createEvent({
+        date: new Date(now.setMonth(now.getMonth() + 1)),
+        event_type,
+        isDateDefined: false,
+        name,
+      });
+      selectEvent(event);
     } catch (err) {
       throw new Error(err);
     } finally {
       setLoading(false);
+      handleCloseWindow();
+      navigation.navigate('MyEvent');
     }
-  }, [handleEventNameField]);
+  }, [createEvent, navigation, handleCloseWindow, event_type, selectEvent]);
 
   return (
     <WindowContainer
       closeWindow={handleCloseWindow}
-      height="70%"
-      left="2%"
-      top="5%"
-      width="96%"
+      height="80%"
+      width="100%"
+      left="0%"
+      top="10%"
       zIndex={15}
     >
       <Container>
         <Title>Novo Evento</Title>
 
-        {eventNameField ? (
-          <DefineEventName
-            loading={loading}
-            closeWindow={() => handleEventNameField(false)}
-            defineName={(name: string) => handleEventName(name)}
+        {selectEventTypeWindow ? (
+          <SelectEventType
+            eventType={event_type}
+            selectEventType={(e: string) => handleEventType(e)}
           />
         ) : (
           <>
-            <EventName>{eventName}</EventName>
-            <Button onPress={handleCreateEvent}>Criar Evento</Button>
+            <Button
+              onPress={openEventTypeWindow}
+            >
+              {event_type}
+            </Button>
+            <Form ref={formRef} onSubmit={handleCreateEvent}>
+              <Input
+                name="name"
+                autoCapitalize="words"
+                placeholder="Defina o nome do evento"
+                returnKeyType="send"
+                onSubmitEditing={() => formRef.current?.submitForm()}
+              />
+              <Button
+                loading={loading}
+                onPress={() => formRef.current?.submitForm()}
+              >
+                Criar evento
+              </Button>
+            </Form>
           </>
         )}
       </Container>

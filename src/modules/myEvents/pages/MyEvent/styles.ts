@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex: 1;
@@ -19,11 +20,18 @@ export const DashboardButton = styled.TouchableOpacity`
 export const EventName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.primary};
-  font-size: 32px;
+  font-size: ${RFValue(20)}px;
 `;
 
 export const Body = styled.View`
   height: 100%;
   width: 100%;
   background-color: ${({ theme }) => theme.color.text5};
+`;
+
+export const BodyContainer = styled.View`
+  height: 80%;
+  padding-top: 8px;
+  padding-bottom: 160px;
+  padding: 0 16px;
 `;

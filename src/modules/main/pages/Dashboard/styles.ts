@@ -1,7 +1,8 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
+import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Platform } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex: 1;
@@ -15,7 +16,7 @@ export const Container = styled.View`
 export const Title = styled.Text`
   width: 100%;
   text-align: center;
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
   color: ${({ theme }) => theme.color.text3};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   margin: 12px auto 24px;
@@ -39,18 +40,18 @@ export const Body = styled.View`
   align-items: flex-start;
 `;
 export const HeaderTitle = styled.Text`
-  font-size: 20px;
+  font-size: ${RFValue(20)}px;
   line-height: 28px;
   color: ${({ theme }) => theme.color.text6};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
 export const UserName = styled.Text`
-  font-size: 20px;
+  font-size: ${RFValue(20)}px;
   line-height: 28px;
   color: ${({ theme }) => theme.color.primary};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
-export const ProfileButton = styled.TouchableOpacity`
+export const ProfileButton = styled(BorderlessButton)`
 
 `;
 export const UserAvatar = styled.Image`
@@ -68,7 +69,7 @@ export const OpenDatePickerButton = styled(RectButton)`
   border-radius: 10px;
 `;
 export const OpenDatePickerButtonText = styled.Text`
-  font-size: 16px;
+  font-size: ${RFValue(16)}px;
   color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;

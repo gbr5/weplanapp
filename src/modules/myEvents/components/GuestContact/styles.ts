@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.TouchableOpacity`
   height: 80px;
@@ -10,7 +11,7 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const ContactType = styled.Text`
-  font-size: 18px;
+  font-size: ${RFValue(18)}px;
   color: ${({ theme }) => theme.color.primary};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 
@@ -19,7 +20,7 @@ export const ContactType = styled.Text`
 
 export const ContactInfo = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
   color: ${({ theme }) => theme.color.text5};
   letter-spacing: 1px;
   text-align: right;

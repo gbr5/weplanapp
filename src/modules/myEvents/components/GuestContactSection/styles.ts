@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   margin: 16px 0;
@@ -13,7 +14,7 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   text-align: center;
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
 `;
 export const TitleBorderBottom = styled.View`
   background-color: ${({ theme }) => theme.color.primary};

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 interface IProps {
   isMine: boolean;
@@ -7,7 +8,7 @@ interface IProps {
 export const Container = styled.View<IProps>`
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) => theme.color.text3};
+  background-color: ${({ theme }) => theme.color.text6};
   margin: 8px 0;
   min-height: 48px;
   border-radius: 8px;
@@ -21,7 +22,10 @@ export const Container = styled.View<IProps>`
 
 export const GuestIndex = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: 20px;
+  font-size: ${RFValue(20)}px;
+
+  color: ${({ theme }) => theme.color.secondary};
+
   text-align: center;
   width: 24px;
   margin: 0 8px;
@@ -36,15 +40,10 @@ export const GuestNameContainer = styled.View`
 
 export const GuestName = styled.Text<IProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: 20px;
+  font-size: ${RFValue(20)}px;
   text-align: left;
 
   color: ${({ theme }) => theme.color.text1};
-
-  ${(props) => props.isMine
-    && css`
-      color: ${({ theme }) => theme.color.secondary};
-    `}
 `;
 
 export const GoToGuestButton = styled.TouchableOpacity`

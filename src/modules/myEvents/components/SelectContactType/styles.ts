@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex: 1;
@@ -8,7 +9,7 @@ export const Container = styled.View`
 
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
   margin: 16px 0;
 `;
 
@@ -36,7 +37,7 @@ export const ContactTypeButton = styled.TouchableOpacity<IProps>`
 export const ContactTypeText = styled.Text<IProps>`
   font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.primary};
-  font-size: 20px;
+  font-size: ${RFValue(20)}px;
 
   ${(props) => props.isActive
     && css`

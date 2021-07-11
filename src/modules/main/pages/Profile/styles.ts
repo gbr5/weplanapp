@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex: 1;
@@ -11,7 +12,7 @@ export const Container = styled.View`
 export const Title = styled.Text`
   width: 100%;
   text-align: center;
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
   color: ${({ theme }) => theme.color.text6};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   margin: 64px auto 24px;

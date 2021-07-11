@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex-direction: column;
@@ -12,15 +13,7 @@ export const Container = styled.View`
 
 export const Title = styled.Text`
   padding: 5px;
-  font-size: 24px;
-  color: ${({ theme }) => theme.color.text1};
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  margin-right: 12px;
-`;
-
-export const EventName = styled.Text`
-  padding: 5px;
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
   color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   margin-right: 12px;

@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {
-  createContext, useCallback, useState, useContext,
+  createContext,
+  useCallback,
+  useState,
+  useContext,
+  useEffect,
 } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import IEventDTO from '../dtos/IEventDTO';
 import IEventGuestDTO from '../dtos/IEventGuestDTO';
 import IEventMemberDTO from '../dtos/IEventMemberDTO';
@@ -12,6 +18,7 @@ import api from '../services/api';
 import ICeateEventDTO from '../dtos/ICreateEventDTO';
 
 interface IEventContextData {
+  loading: boolean;
   nextEvent: IShowEventDTO;
   eventsAsOwner: IEventOwnerDTO[];
   eventsAsMember: IEventMemberDTO[];
@@ -27,17 +34,41 @@ const EventContext = createContext({} as IEventContextData);
 
 // eslint-disable-next-line react/prop-types
 const EventProvider: React.FC = ({ children }) => {
+  const [loading, setLoading] = useState(false);
   const [nextEvent, setNextEvent] = useState({} as IShowEventDTO);
   const [eventsAsOwner, setEventsAsOwner] = useState<IEventOwnerDTO[]>([]);
   const [eventsAsMember, setEventsAsMember] = useState<IEventMemberDTO[]>([]);
   const [eventsAsGuest, setEventsAsGuest] = useState<IEventGuestDTO[]>([]);
+  async function loadStorageData() {
+    // const [events_as_owner, events_as_member, events_as_guest] = await AsyncStorage.multiGet([
+    // '@WePlan-Party:events-as-owner',
+    // '@WePlan-Party:events-as-member',
+    // '@WePlan-Party:events-as-guest',
+    // ]);
+    const events_as_owner = await AsyncStorage.getItem('@WePlan-Party:events-as-owner');
+    const events_as_member = await AsyncStorage.getItem('@WePlan-Party:events-as-member');
+    const events_as_guest = await AsyncStorage.getItem('@WePlan-Party:events-as-guest');
 
+    if (events_as_owner && events_as_member && events_as_guest) {
+      setEventsAsOwner(JSON.parse(events_as_owner));
+      setEventsAsMember(JSON.parse(events_as_member));
+      setEventsAsGuest(JSON.parse(events_as_guest));
+    }
+    setLoading(false);
+  }
+  useEffect(() => {
+    loadStorageData();
+  }, []);
   const getEventsAsOwner = useCallback(async () => {
     try {
       const response = await api.get<IEventOwnerDTO[]>(
         '/list/events/user-as-owner/',
       );
-      setEventsAsOwner(response.data);
+      await AsyncStorage.setItem(
+        '@WePlan-Party:events-as-owner',
+        JSON.stringify(response.data),
+      );
+      return setEventsAsOwner(response.data);
     } catch (err) {
       throw new Error(err);
     }
@@ -46,6 +77,10 @@ const EventProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get<IEventMemberDTO[]>(
         '/list/events/user-as-member/',
+      );
+      await AsyncStorage.setItem(
+        '@WePlan-Party:events-as-member',
+        JSON.stringify(response.data),
       );
       setEventsAsMember(response.data);
     } catch (err) {
@@ -56,6 +91,10 @@ const EventProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get<IEventGuestDTO[]>(
         '/event/weplan-guests/list/user',
+      );
+      await AsyncStorage.setItem(
+        '@WePlan-Party:events-as-guest',
+        JSON.stringify(response.data),
       );
       setEventsAsGuest(response.data);
     } catch (err) {
@@ -91,6 +130,7 @@ const EventProvider: React.FC = ({ children }) => {
   return (
     <EventContext.Provider
       value={{
+        loading,
         nextEvent,
         createEvent,
         eventsAsOwner,

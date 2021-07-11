@@ -1,13 +1,12 @@
 import styled, { css } from 'styled-components/native';
 import { FlatList } from 'react-native';
+import { RFValue } from 'react-native-responsive-fontsize';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import IEventGuestDTO from '../../../../dtos/IEventGuestDTO';
 
 export const Container = styled.View`
-  height: 80%;
-  padding-top: 8px;
-  padding-bottom: 160px;
-  padding: 0 16px;
+  flex: 1;
+  padding-bottom: 40px;
 `;
 
 export const GuestMainMenu = styled.View`
@@ -36,7 +35,7 @@ export const GuestMainMenuButton = styled.TouchableOpacity<IButtonProps>`
 
 export const GuestMainMenuButtonText = styled.Text<IButtonProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
   color: ${({ theme }) => theme.color.primary};
 
 
@@ -60,7 +59,7 @@ export const AddGuestButton = styled.TouchableOpacity`
 
 export const AddGuestButtonText = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: 20px;
+  font-size: ${RFValue(20)}px;
   text-align: center;
   margin-right: 8px;
 `;
@@ -74,7 +73,7 @@ export const GuestsContainer = styled(
 ).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
-    paddingBottom: getBottomSpace(),
+    paddingBottom: getBottomSpace() + 64,
   },
 })`
   flex: 1;

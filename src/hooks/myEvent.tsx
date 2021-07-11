@@ -14,6 +14,7 @@ import IEventMemberDTO from '../dtos/IEventMemberDTO';
 import IEventOwnerDTO from '../dtos/IEventOwnerDTO';
 import IEventSupplierDTO from '../dtos/IEventSupplierDTO';
 import IEventDTO from '../dtos/IEventDTO';
+import IEventTaskDTO from '../dtos/IEventTaskDTO';
 
 interface MyEventContextType {
   selectedEvent: IEventDTO;
@@ -22,6 +23,8 @@ interface MyEventContextType {
   members: IEventMemberDTO[];
   hiredSuppliers: IEventSupplierDTO[];
   notHiredSuppliers: IEventSupplierDTO[];
+  eventTasks: IEventTaskDTO[];
+  selectedTask: IEventTaskDTO;
   guests: IEventGuestDTO[];
   myGuests: IEventGuestDTO[];
   selectedGuest: IEventGuestDTO;
@@ -35,6 +38,8 @@ interface MyEventContextType {
   currentSection: string;
   selectEvent: (event: IEventDTO) => void;
   getEventGuests: (eventId: string) => Promise<void>;
+  selectEventTask: (task: IEventTaskDTO) => void;
+  getEventTasks: (eventId: string) => Promise<IEventTaskDTO[]>;
   selectGuest: (guest: IEventGuestDTO) => void;
   calculateTotalEventCost: () => void;
   selectEventSection: (e: string) => void;
@@ -51,6 +56,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [members, setMembers] = useState<IEventMemberDTO[]>([]);
   const [hiredSuppliers, setHiredSuppliers] = useState<IEventSupplierDTO[]>([]);
   const [notHiredSuppliers, setNotHiredSuppliers] = useState<IEventSupplierDTO[]>([]);
+  const [eventTasks, setEventTasks] = useState<IEventTaskDTO[]>([]);
   const [guests, setGuests] = useState<IEventGuestDTO[]>([]);
   const [myGuests, setMyGuests] = useState<IEventGuestDTO[]>([]);
   const [selectedGuest, setSelectedGuest] = useState({} as IEventGuestDTO);
@@ -61,7 +67,8 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [availableNumberOfGuests, setAvailableNumberOfGuests] = useState(0);
   const [totalEventCost, setTotalEventCost] = useState(0);
   const [isOwner, setIsOwner] = useState(false);
-  const [currentSection, setCurrentSection] = useState('Dashboard');
+  const [currentSection, setCurrentSection] = useState('Tasks');
+  const [selectedTask, setSelectedTask] = useState({} as IEventTaskDTO);
 
   function unsetEventVariables() {
     setEventInfo({} as IEventInfoDTO);
@@ -78,9 +85,36 @@ const MyEventProvider: React.FC = ({ children }) => {
     setIsOwner(false);
     setTotalEventCost(0);
     setAvailableNumberOfGuests(0);
+    setEventTasks([]);
+    setSelectedTask({} as IEventTaskDTO);
   }
   function selectEventSection(e: string) {
     setCurrentSection(e);
+  }
+
+  function selectEventTask(task: IEventTaskDTO) {
+    setSelectedTask(task);
+  }
+
+  async function getEventTasks(eventId: string) {
+    try {
+      console.log({ eventId });
+      const response = await api.get<IEventTaskDTO[]>(`/event-tasks/${eventId}`);
+      console.log(response.data);
+      if (response.data && response.data.length > 0) {
+        setEventTasks(response.data);
+        if (selectedTask && selectedTask.id) {
+          const findSelectedTask = response.data.find(
+            task => task.id === selectedTask.id,
+          );
+          console.log({ findSelectedTask });
+          findSelectedTask && setSelectedTask(findSelectedTask);
+        }
+      }
+      return response.data;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   async function getEventGuests(eventId: string) {
@@ -172,6 +206,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     if (data.id !== selectedEvent.id) {
       unsetEventVariables();
       getEventInfo(data.id);
+      getEventTasks(data.id);
       getEventGuests(data.id);
       getEventOwners(data.id);
       getEventMembers(data.id);
@@ -198,6 +233,8 @@ const MyEventProvider: React.FC = ({ children }) => {
     <MyEventContext.Provider
       value={{
         getEvent,
+        getEventTasks,
+        eventTasks,
         getEventGuests,
         selectedEvent,
         selectedGuest,
@@ -220,6 +257,8 @@ const MyEventProvider: React.FC = ({ children }) => {
         selectGuest,
         calculateTotalEventCost,
         selectEventSection,
+        selectEventTask,
+        selectedTask,
       }}
     >
       {children}

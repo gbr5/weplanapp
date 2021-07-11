@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex: 1;
@@ -6,7 +7,7 @@ export const Container = styled.View`
 
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: 32px;
+  font-size: ${RFValue(32)}px;
   text-align: center;
   color: ${({ theme }) => theme.color.primary};
   margin-top: 16px;
@@ -20,13 +21,13 @@ export const Body = styled.ScrollView`
 
 export const InfoText = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
   margin-top: 16px;
 `;
 
 export const InfoLabel = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: 20px;
+  font-size: ${RFValue(20)}px;
   position: absolute;
   color: ${({ theme }) => theme.color.text5};
   top: 0px;
@@ -65,7 +66,7 @@ export const ConfirmationButton = styled.TouchableOpacity<IButtonProps>`
 `;
 
 export const ConfirmationButtonText = styled.Text<IButtonProps>`
-  font-size: 24px;
+  font-size: ${RFValue(24)}px;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text1};
 
