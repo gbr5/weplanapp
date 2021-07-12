@@ -26,6 +26,7 @@ interface EventTasksContextType {
   selectTaskDateWindow: boolean;
   selectTaskTimeWindow: boolean;
   eventTaskNotesWindow: boolean;
+  deleteTaskConfirmationWindow: boolean;
   createTaskWindow: boolean;
   taskDate: Date;
   createTask: (data: ICreateEventTaskDTO) => Promise<void>;
@@ -42,6 +43,7 @@ interface EventTasksContextType {
   handleSelectTaskTimeWindow: () => void;
   handleEventTaskNotesWindow: () => void;
   handleCreateTaskWindow: () => void;
+  handleDeleteTaskConfirmationWindow: () => void;
   selectStatus: (status: 'not started' | 'running' | 'finnished') => void;
   selectTaskDate: (data: Date) => void;
 }
@@ -58,6 +60,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
   const [selectTaskDateWindow, setSelectTaskDateWindow] = useState(false);
   const [selectTaskTimeWindow, setSelectTaskTimeWindow] = useState(false);
   const [eventTaskNotesWindow, setEventTaskNotesWindow] = useState(false);
+  const [deleteTaskConfirmationWindow, setDeleteTaskConfirmationWindow] = useState(false);
   const [status, setStatus] = useState<'not started' | 'running' | 'finnished'>('not started');
   const [createTaskWindow, setCreateTaskWindow] = useState(false);
   const [taskDate, setTaskDate] = useState(addDays(new Date(), 3));
@@ -97,6 +100,10 @@ const EventTasksProvider: React.FC = ({ children }) => {
 
   function handleCreateTaskWindow() {
     setCreateTaskWindow(!createTaskWindow);
+  }
+
+  function handleDeleteTaskConfirmationWindow() {
+    setDeleteTaskConfirmationWindow(!deleteTaskConfirmationWindow)
   }
 
   async function createTask({
@@ -199,6 +206,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
         selectTaskDateWindow,
         selectTaskTimeWindow,
         eventTaskNotesWindow,
+        deleteTaskConfirmationWindow,
         taskDate,
         createTaskWindow,
         createTask,
@@ -215,6 +223,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
         handleSelectTaskTimeWindow,
         handleEventTaskNotesWindow,
         handleCreateTaskWindow,
+        handleDeleteTaskConfirmationWindow,
         selectStatus,
         selectTaskDate,
       }}

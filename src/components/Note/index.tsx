@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
-import { useMemo } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import INoteDTO from '../../dtos/INoteDTO';
 import IUserDTO from '../../dtos/IUserDTO';
 import { useAuth } from '../../hooks/auth';
-import { useEventTasks } from '../../hooks/eventTasks';
 import { useNote } from '../../hooks/notes';
 import formatDateToString from '../../utils/formatDateToString';
-import formatStringToDate from '../../utils/formatStringToDate';
 
 import {
   Container,
@@ -27,8 +23,14 @@ export function Note({
   selectedNote,
 }: IProps) {
   const { getUser, user } = useAuth();
+  const { handleEditNoteWindow, selectNote } = useNote();
 
   const [author, setAuthor] = useState({} as IUserDTO);
+
+  function handleEditNote() {
+    selectNote(selectedNote);
+    handleEditNoteWindow();
+  }
 
   async function getAuthor() {
     user.id === selectedNote.author_id && setAuthor(user);
@@ -43,7 +45,9 @@ export function Note({
   return (
     <Container>
       <TextNote>{selectedNote.note}</TextNote>
-      <EditNoteButton>
+      <EditNoteButton
+        onPress={handleEditNote}
+      >
         <EditNoteIcon name="edit-2" />
       </EditNoteButton>
       <NoteFooter>

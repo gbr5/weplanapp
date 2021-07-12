@@ -25,6 +25,10 @@ import { DatePickerWindow } from '../../../../components/DatePickerWindow';
 import { TimePickerWindow } from '../../../../components/TimePickerWindow';
 import { EventTaskNotesWindow } from '../../components/EventTaskComponents/EventTaskNotesWindow';
 import NewTaskForm from '../../components/EventTaskComponents/NewTaskForm';
+import ShortConfirmationWindow from '../../../../components/ShortConfirmationWindow';
+import { useNote } from '../../../../hooks/notes';
+import { EditNoteWindow } from '../../../../components/EditNoteWindow';
+import INoteDTO from '../../../../dtos/INoteDTO';
 
 const MyEvent: React.FC = () => {
   const {
@@ -44,6 +48,7 @@ const MyEvent: React.FC = () => {
     selectTaskDateWindow,
     selectTaskTimeWindow,
     eventTaskNotesWindow,
+    deleteTaskConfirmationWindow,
     createTaskWindow,
     taskDate,
     selectTaskDate,
@@ -54,8 +59,12 @@ const MyEvent: React.FC = () => {
     handleSelectTaskTimeWindow,
     handleEventTaskNotesWindow,
     handleCreateTaskWindow,
+    handleDeleteTaskConfirmationWindow,
     updateTask,
+    deleteTask,
   } = useEventTasks();
+  const { editNoteWindow, selectNote, handleEditNoteWindow } = useNote();
+
   const [newGuestForm, setNewGuestForm] = useState(false);
 
   function handleCloseEditTaskTitleWindow() {
@@ -76,6 +85,11 @@ const MyEvent: React.FC = () => {
   function handleCloseEventTaskNotesWindow() {
     selectEventTask({} as IEventTaskDTO);
     handleEventTaskNotesWindow();
+  }
+
+  function handleCloseEditTaskNoteWindow() {
+    handleEditNoteWindow();
+    selectNote({} as INoteDTO);
   }
 
   async function handleUpdateTaskTitle(title: string) {
@@ -104,6 +118,11 @@ const MyEvent: React.FC = () => {
   const handleNewGuestForm = useCallback((e: boolean) => {
     setNewGuestForm(e);
   }, []);
+
+  async function handleDeleteTask() {
+    await deleteTask(selectedTask);
+    handleDeleteTaskConfirmationWindow();
+  }
 
   useEffect(() => {
     currentSection === 'Tasks' && Alert.alert(currentSection);
@@ -194,6 +213,21 @@ const MyEvent: React.FC = () => {
         <NewTaskForm
           closeWindow={handleCreateTaskWindow}
         />
+      )}
+
+      {deleteTaskConfirmationWindow && (
+        <ShortConfirmationWindow
+          closeWindow={handleDeleteTaskConfirmationWindow}
+          question="Deseja mesmo deletar a tarefa?"
+          firstButtonLabel="Não deletar"
+          firstFunction={handleDeleteTaskConfirmationWindow}
+          secondButtonLabel="Deletar"
+          secondFunction={handleDeleteTask}
+        />
+      )}
+
+      {editNoteWindow && (
+        <EditNoteWindow closeWindow={handleCloseEditTaskNoteWindow} />
       )}
 
       <Container>

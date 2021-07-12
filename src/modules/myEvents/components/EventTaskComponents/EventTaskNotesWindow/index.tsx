@@ -22,15 +22,20 @@ interface IProps {
 export function EventTaskNotesWindow({
   closeWindow,
 }: IProps) {
-  const { selectedTask } = useMyEvent();
+  const { selectedTask, getEventTasks, selectedEvent } = useMyEvent();
   const { createTaskNote } = useEventTasks();
   const { updateNotes } = useNote();
 
   async function handleCreateTaskNote(note: string) {
+    console.log({
+      note,
+      task_id: selectedTask.id,
+    });
     await createTaskNote({
       note,
       task_id: selectedTask.id,
     });
+    await getEventTasks(selectedEvent.id);
   }
 
   useEffect(() => {

@@ -27,7 +27,7 @@ const ShortConfirmationWindow: React.FC<IProps> = ({
   secondFunction,
 }) => (
   <>
-    <Backdrop closeFunction={closeWindow} />
+    <Backdrop zIndex={49} closeFunction={closeWindow} />
     <Container>
       <CloseButton closeFunction={closeWindow} />
       <Question>{question}</Question>

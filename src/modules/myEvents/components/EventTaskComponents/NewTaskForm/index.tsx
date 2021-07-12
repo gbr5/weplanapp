@@ -66,9 +66,9 @@ const NewTaskForm: React.FC<IProps> = ({
   return (
     <WindowContainer
       closeWindow={closeWindow}
-      height="80%"
-      left="2%"
       top="10%"
+      left="2%"
+      height="65%"
       width="96%"
       zIndex={11}
     >

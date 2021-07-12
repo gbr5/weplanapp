@@ -34,6 +34,7 @@ export function EventTask({
     handleEditTaskDateWindow,
     handleEditTaskTimeWindow,
     handleEventTaskNotesWindow,
+    handleDeleteTaskConfirmationWindow,
   } = useEventTasks();
   const iconSize = 24;
 
@@ -114,7 +115,9 @@ export function EventTask({
               priority={eventTask.priority}
             />
           </Button>
-          <Button>
+          <Button
+            onPress={handleDeleteTaskConfirmationWindow}
+          >
             <DeleteButtonIcon name="trash-2" size={iconSize} />
           </Button>
         </ButtonContainer>

@@ -11,6 +11,7 @@ interface IProps {
   left: string;
   height: string;
   width: string;
+  backdropZIndex?: number;
 }
 
 const WindowContainer: React.FC<IProps> = ({
@@ -23,7 +24,10 @@ const WindowContainer: React.FC<IProps> = ({
   width,
 }) => (
   <>
-    <Backdrop closeFunction={closeWindow} />
+    <Backdrop
+      zIndex={zIndex ? zIndex : 2}
+      closeFunction={closeWindow}
+    />
     <Container style={{
       zIndex,
       height,
