@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import { TextInput } from 'react-native';
 import { addDays } from 'date-fns';
 
 import { useEventTasks } from '../../../../../hooks/eventTasks';
@@ -15,8 +14,14 @@ import {
   Container,
   Title,
   FormQuestion,
+  DateText,
+  DateButton,
+  TimeText,
 } from './styles';
-import IPriorityButton from '../../../../../dtos/IPriorityButtonDTO';
+
+import { SelectTaskPriorityComponent } from '../SelectTaskPriorityComponent';
+import formatOnlyDate from '../../../../../utils/formatOnlyDate';
+import formatOnlyTime from '../../../../../utils/formatOnlyTime';
 
 interface IFormData {
   title: string;
@@ -30,28 +35,33 @@ const NewTaskForm: React.FC<IProps> = ({
   closeWindow,
 }) => {
   const { selectedEvent } = useMyEvent();
-  const { createTask, loading } = useEventTasks();
+  const {
+    createTask,
+    loading,
+    taskDate,
+    handleSelectTaskDateWindow,
+    handleSelectTaskTimeWindow,
+  } = useEventTasks();
   const formRef = useRef<FormHandles>(null);
-  const inputRef = useRef<TextInput>(null);
 
-  const [due_date, setDueDate] = useState(addDays(new Date(), 3));
   const [selectedPriority, setPriority] = useState<'low' | 'neutral' | 'high'>('low');
-  const [selectedStatus, setStatus] = useState<'not started' | 'running' | 'finnished'>('not started');
 
   const handleSubmit = useCallback(async ({
     title,
   }: IFormData) => {
-    if (!selectedPriority) return
-    if (!selectedStatus) return
     await createTask({
       event_id: selectedEvent.id,
       title,
-      due_date,
+      due_date: taskDate,
       priority: selectedPriority,
-      status: selectedStatus,
+      status: 'not started',
     });
     closeWindow();
   }, [closeWindow, createTask]);
+
+  function selectTaskPriority(data: 'low' | 'neutral' | 'high') {
+    setPriority(data);
+  }
 
   return (
     <WindowContainer
@@ -72,23 +82,21 @@ const NewTaskForm: React.FC<IProps> = ({
             autoCapitalize="words"
             placeholder="Defina o título da tarefa"
             returnKeyType="next"
-            onSubmitEditing={() => {
-              inputRef.current?.focus();
-            }}
           />
-          <FormQuestion></FormQuestion>
-          <Input
-            name="last_name"
-            ref={inputRef}
-            autoCorrect={false}
-            autoCapitalize="words"
-            icon="user"
-            placeholder="Sobrenome"
-            returnKeyType="send"
-            onSubmitEditing={() => {
-              formRef.current?.submitForm();
-            }}
+          <SelectTaskPriorityComponent
+            handleTaskPriority={(data: 'low' | 'neutral' | 'high') => selectTaskPriority(data)}
+            selectedPriority={selectedPriority}
           />
+          <DateButton
+            onPress={handleSelectTaskDateWindow}
+          >
+            <DateText>{formatOnlyDate(String(taskDate))}</DateText>
+          </DateButton>
+          <DateButton
+            onPress={handleSelectTaskTimeWindow}
+          >
+            <TimeText>{formatOnlyTime(String(taskDate))}</TimeText>
+          </DateButton>
         </Form>
       </Container>
       <Button

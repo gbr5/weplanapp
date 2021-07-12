@@ -24,6 +24,7 @@ import { EditTaskStatusWindow } from '../../components/EventTaskComponents/EditT
 import { DatePickerWindow } from '../../../../components/DatePickerWindow';
 import { TimePickerWindow } from '../../../../components/TimePickerWindow';
 import { EventTaskNotesWindow } from '../../components/EventTaskComponents/EventTaskNotesWindow';
+import NewTaskForm from '../../components/EventTaskComponents/NewTaskForm';
 
 const MyEvent: React.FC = () => {
   const {
@@ -40,11 +41,19 @@ const MyEvent: React.FC = () => {
     editTaskStatusWindow,
     editTaskDateWindow,
     editTaskTimeWindow,
+    selectTaskDateWindow,
+    selectTaskTimeWindow,
     eventTaskNotesWindow,
+    createTaskWindow,
+    taskDate,
+    selectTaskDate,
     handleEditTaskTitleWindow,
     handleEditTaskDateWindow,
     handleEditTaskTimeWindow,
+    handleSelectTaskDateWindow,
+    handleSelectTaskTimeWindow,
     handleEventTaskNotesWindow,
+    handleCreateTaskWindow,
     updateTask,
   } = useEventTasks();
   const [newGuestForm, setNewGuestForm] = useState(false);
@@ -149,6 +158,24 @@ const MyEvent: React.FC = () => {
           />
       )}
 
+      {selectTaskDateWindow && (
+        <DatePickerWindow
+          loading={loading}
+          closeWindow={handleSelectTaskDateWindow}
+          selectDate={(data: Date) => selectTaskDate(data)}
+          selectedDate={taskDate}
+        />
+      )}
+
+      {selectTaskTimeWindow && (
+        <TimePickerWindow
+          loading={loading}
+          closeWindow={handleSelectTaskTimeWindow}
+          selectDate={(data: Date) => selectTaskDate(data)}
+          selectedDate={taskDate}
+        />
+      )}
+
       {editTaskStatusWindow
         && selectedTask
         && selectedTask.id && (
@@ -161,6 +188,12 @@ const MyEvent: React.FC = () => {
           <EventTaskNotesWindow
             closeWindow={handleCloseEventTaskNotesWindow}
           />
+      )}
+
+      {createTaskWindow && (
+        <NewTaskForm
+          closeWindow={handleCreateTaskWindow}
+        />
       )}
 
       <Container>

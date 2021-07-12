@@ -5,18 +5,26 @@ import { EventTask } from '../EventTask';
 
 import {
   Container,
+  TitleContainer,
   Title,
   TasksContainer,
+  AddButton,
+  AddIcon,
 } from './styles';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 
 export function TasksSection(): JSX.Element {
   const { eventTasks } = useMyEvent();
-  const { status, selectStatus } = useEventTasks();
+  const { status, handleCreateTaskWindow } = useEventTasks();
 
   return (
     <Container>
-      <Title>Suas Tarefas</Title>
+      <TitleContainer>
+        <Title>Suas Tarefas</Title>
+        <AddButton onPress={handleCreateTaskWindow}>
+          <AddIcon name="plus" />
+        </AddButton>
+      </TitleContainer>
       <TasksMenu />
       {status === 'not started' && (
         <TasksContainer

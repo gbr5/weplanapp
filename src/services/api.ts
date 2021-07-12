@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api.we-plan.io',
+  baseURL: 'http://192.168.8.194:3333',
 });
 
 export default api;

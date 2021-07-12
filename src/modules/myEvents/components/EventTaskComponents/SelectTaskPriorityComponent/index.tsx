@@ -10,7 +10,7 @@ import {
 } from './styles';
 
 interface IProps {
-  handleTaskPriority: (priority: string) => void;
+  handleTaskPriority: (priority: 'low' | 'neutral' | 'high') => void;
   selectedPriority: 'low' | 'neutral' | 'high';
 }
 

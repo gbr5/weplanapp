@@ -4,6 +4,8 @@ import React, {
   useState,
 } from 'react';
 
+import { addDays } from 'date-fns';
+
 import api from '../services/api';
 
 import IEventTaskDTO from '../dtos/IEventTaskDTO';
@@ -21,7 +23,11 @@ interface EventTasksContextType {
   editTaskStatusWindow: boolean;
   editTaskDateWindow: boolean;
   editTaskTimeWindow: boolean;
+  selectTaskDateWindow: boolean;
+  selectTaskTimeWindow: boolean;
   eventTaskNotesWindow: boolean;
+  createTaskWindow: boolean;
+  taskDate: Date;
   createTask: (data: ICreateEventTaskDTO) => Promise<void>;
   updateTask: (data: IEventTaskDTO) => Promise<void>;
   deleteTask: (data: IEventTaskDTO) => Promise<void>;
@@ -32,8 +38,12 @@ interface EventTasksContextType {
   handleEditTaskStatusWindow: () => void;
   handleEditTaskDateWindow: () => void;
   handleEditTaskTimeWindow: () => void;
+  handleSelectTaskDateWindow: () => void;
+  handleSelectTaskTimeWindow: () => void;
   handleEventTaskNotesWindow: () => void;
+  handleCreateTaskWindow: () => void;
   selectStatus: (status: 'not started' | 'running' | 'finnished') => void;
+  selectTaskDate: (data: Date) => void;
 }
 
 const EventTasksContext = createContext({} as EventTasksContextType);
@@ -45,8 +55,12 @@ const EventTasksProvider: React.FC = ({ children }) => {
   const [editTaskStatusWindow, setEditTaskStatusWindow] = useState(false);
   const [editTaskDateWindow, setEditTaskDateWindow] = useState(false);
   const [editTaskTimeWindow, setEditTaskTimeWindow] = useState(false);
+  const [selectTaskDateWindow, setSelectTaskDateWindow] = useState(false);
+  const [selectTaskTimeWindow, setSelectTaskTimeWindow] = useState(false);
   const [eventTaskNotesWindow, setEventTaskNotesWindow] = useState(false);
   const [status, setStatus] = useState<'not started' | 'running' | 'finnished'>('not started');
+  const [createTaskWindow, setCreateTaskWindow] = useState(false);
+  const [taskDate, setTaskDate] = useState(addDays(new Date(), 3));
   const [loading, setLoading] = useState(false);
 
   function handleEditTaskTitleWindow() {
@@ -69,8 +83,20 @@ const EventTasksProvider: React.FC = ({ children }) => {
     setEditTaskTimeWindow(!editTaskTimeWindow);
   }
 
+  function handleSelectTaskDateWindow() {
+    setSelectTaskDateWindow(!selectTaskDateWindow);
+  }
+
+  function handleSelectTaskTimeWindow() {
+    setSelectTaskTimeWindow(!selectTaskTimeWindow);
+  }
+
   function handleEventTaskNotesWindow() {
     setEventTaskNotesWindow(!eventTaskNotesWindow);
+  }
+
+  function handleCreateTaskWindow() {
+    setCreateTaskWindow(!createTaskWindow);
   }
 
   async function createTask({
@@ -81,15 +107,22 @@ const EventTasksProvider: React.FC = ({ children }) => {
     title,
   }: ICreateEventTaskDTO) {
     try {
-      setLoading(true);
-      await api.post(`event-tasks/${event_id}`, {
+      console.log({
         due_date,
         event_id,
         priority,
         status,
         title,
       });
-      getEventTasks(event_id);
+      setLoading(true);
+      await api.post(`/event-tasks`, {
+        due_date,
+        event_id,
+        priority,
+        status,
+        title,
+      });
+      await getEventTasks(event_id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -149,6 +182,10 @@ const EventTasksProvider: React.FC = ({ children }) => {
     setStatus(data);
   }
 
+  function selectTaskDate(data: Date) {
+    setTaskDate(data);
+  }
+
   return (
     <EventTasksContext.Provider
       value={{
@@ -159,7 +196,11 @@ const EventTasksProvider: React.FC = ({ children }) => {
         editTaskStatusWindow,
         editTaskDateWindow,
         editTaskTimeWindow,
+        selectTaskDateWindow,
+        selectTaskTimeWindow,
         eventTaskNotesWindow,
+        taskDate,
+        createTaskWindow,
         createTask,
         updateTask,
         deleteTask,
@@ -170,8 +211,12 @@ const EventTasksProvider: React.FC = ({ children }) => {
         handleEditTaskStatusWindow,
         handleEditTaskDateWindow,
         handleEditTaskTimeWindow,
+        handleSelectTaskDateWindow,
+        handleSelectTaskTimeWindow,
         handleEventTaskNotesWindow,
+        handleCreateTaskWindow,
         selectStatus,
+        selectTaskDate,
       }}
     >
       {children}

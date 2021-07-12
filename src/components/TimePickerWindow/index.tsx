@@ -9,7 +9,7 @@ import { Container } from './styles';
 
 interface IProps {
   closeWindow: () => void;
-  selectDate: (date: Date) => Promise<void>;
+  selectDate: (date: Date) => void;
   selectedDate: Date;
   loading: boolean;
 }
@@ -32,7 +32,7 @@ export function TimePickerWindow({
       zIndex={25}
       top="10%"
       left="0%"
-      height="80%"
+      height="50%"
       width="100%"
     >
       <Container>

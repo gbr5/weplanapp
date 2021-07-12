@@ -46,7 +46,7 @@ const MainMenu: React.FC = () => {
       const finnishedTasks = eventTasks.filter(task => task.status === 'finnished').length;
       return `${finnishedTasks} / ${eventTasks.length}`;
     }
-  }, []);
+  }, [eventTasks]);
 
   return (
     <Container horizontal>

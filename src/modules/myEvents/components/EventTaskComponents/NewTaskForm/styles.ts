@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   align-items: center;
@@ -15,6 +16,24 @@ export const Title = styled.Text`
 `;
 
 export const FormQuestion = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  font-size: ${RFValue(20)}px;
+  color: ${({ theme }) => theme.color.secondary};
+`;
+
+export const DateButton = styled(RectButton)`
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.primary};
+  padding: 4px;
+`;
+
+export const DateText = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  font-size: ${RFValue(20)}px;
+  color: ${({ theme }) => theme.color.secondary};
+`;
+
+export const TimeText = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
   color: ${({ theme }) => theme.color.secondary};
