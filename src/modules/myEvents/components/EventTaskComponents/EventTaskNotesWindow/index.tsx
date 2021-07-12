@@ -51,16 +51,17 @@ export function EventTaskNotesWindow({
         <Underline />
         <TaskTitle>Tarefa: {selectedTask.title}</TaskTitle>
 
+        <NoteForm
+          handleNote={(data: string) => handleCreateTaskNote(data)}
+          placeholder=""
+        />
+
         <NotesContainer
           data={selectedTask.notes.map(taskNotes => taskNotes.note)}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Note key={item.id} selectedNote={item} />
           )}
-        />
-        <NoteForm
-          handleNote={(data: string) => handleCreateTaskNote(data)}
-          placeholder=""
         />
       </Container>
     </WindowContainer>

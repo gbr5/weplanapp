@@ -39,5 +39,4 @@ export const NotesContainer = styled(FlatList as new () => FlatList<INoteDTO>)
 })`
   margin-top: 16px;
   border-radius: 8px;
-  width: 100%;
 `;

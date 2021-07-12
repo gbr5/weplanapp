@@ -20,6 +20,7 @@ const MainMenu: React.FC = () => {
     totalEventCost,
     currentSection,
     selectEventSection,
+    eventTasks,
   } = useMyEvent();
 
   const guestsInfo = useMemo(() => `${confirmedGuests} / ${guests.length}`, [confirmedGuests, guests]);
@@ -40,12 +41,17 @@ const MainMenu: React.FC = () => {
     return '0 %';
   }, [totalEventCost, eventInfo]);
 
-  const tasksInfo = useMemo(() => '0 / 0', []);
+  const tasksInfo = useMemo(() => {
+    if (eventTasks && eventTasks.length > 0) {
+      const finnishedTasks = eventTasks.filter(task => task.status === 'finnished').length;
+      return `${finnishedTasks} / ${eventTasks.length}`;
+    }
+  }, []);
 
   return (
     <Container horizontal>
       <MenuButton onPress={() => selectEventSection('Tasks')} isActive={currentSection === 'Tasks'}>
-        <MenuButtonText isActive={currentSection === 'Tasks'}>Check List</MenuButtonText>
+        <MenuButtonText isActive={currentSection === 'Tasks'}>Tarefas</MenuButtonText>
         <MenuButtonNumber isActive={currentSection === 'Tasks'}>{tasksInfo}</MenuButtonNumber>
       </MenuButton>
       <MenuButton onPress={() => selectEventSection('Guests')} isActive={currentSection === 'Guests'}>

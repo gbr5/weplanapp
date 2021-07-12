@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components/native';
 
 export const Container = styled.View`
   width: 100%;
+  justify-content: flex-start;
 `;
 
 export const TextAreaContainer = styled.View`

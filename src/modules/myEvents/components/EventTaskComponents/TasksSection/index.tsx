@@ -8,31 +8,52 @@ import {
   Title,
   TasksContainer,
 } from './styles';
+import { useEventTasks } from '../../../../../hooks/eventTasks';
 
 export function TasksSection(): JSX.Element {
   const { eventTasks } = useMyEvent();
-
-  const [section, setSection] = useState('not started');
-
-  function handleSection(newSection: string) {
-    setSection(newSection);
-  }
+  const { status, selectStatus } = useEventTasks();
 
   return (
     <Container>
       <Title>Suas Tarefas</Title>
-      <TasksMenu selectedSection={section} selectSection={(e: string) => handleSection(e)} />
-      <TasksContainer
-        data={eventTasks}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <EventTask
-            key={item.id}
-            eventTask={item}
-          />
-        )}
-
-      />
+      <TasksMenu />
+      {status === 'not started' && (
+        <TasksContainer
+          data={eventTasks.filter(task => task.status === 'not started')}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <EventTask
+              key={item.id}
+              eventTask={item}
+            />
+          )}
+        />
+      )}
+      {status === 'running' && (
+        <TasksContainer
+          data={eventTasks.filter(task => task.status === 'running')}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <EventTask
+              key={item.id}
+              eventTask={item}
+            />
+          )}
+        />
+      )}
+      {status === 'finnished' && (
+        <TasksContainer
+          data={eventTasks.filter(task => task.status === 'finnished')}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <EventTask
+              key={item.id}
+              eventTask={item}
+            />
+          )}
+        />
+      )}
     </Container>
   );
 }

@@ -17,7 +17,6 @@ import {
   FormQuestion,
 } from './styles';
 import IPriorityButton from '../../../../../dtos/IPriorityButtonDTO';
-import IStatusButton from '../../../../../dtos/IStatusButtonDTO';
 
 interface IFormData {
   title: string;
@@ -36,8 +35,8 @@ const NewTaskForm: React.FC<IProps> = ({
   const inputRef = useRef<TextInput>(null);
 
   const [due_date, setDueDate] = useState(addDays(new Date(), 3));
-  const [selectedPriority, setPriority] = useState<IPriorityButton>();
-  const [selectedStatus, setStatus] = useState<IStatusButton>();
+  const [selectedPriority, setPriority] = useState<'low' | 'neutral' | 'high'>('low');
+  const [selectedStatus, setStatus] = useState<'not started' | 'running' | 'finnished'>('not started');
 
   const handleSubmit = useCallback(async ({
     title,
@@ -48,8 +47,8 @@ const NewTaskForm: React.FC<IProps> = ({
       event_id: selectedEvent.id,
       title,
       due_date,
-      priority: selectedPriority.priority,
-      status: selectedStatus.status,
+      priority: selectedPriority,
+      status: selectedStatus,
     });
     closeWindow();
   }, [closeWindow, createTask]);

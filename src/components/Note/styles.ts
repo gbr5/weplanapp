@@ -4,6 +4,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
+  width: 100%;
   background-color: ${({ theme }) => theme.color.text4};
   border-radius: 5px;
   padding-top: 5px;

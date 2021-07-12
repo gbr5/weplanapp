@@ -15,6 +15,7 @@ import IEventTaskNoteDTO from '../dtos/IEventTaskNoteDTO';
 
 interface EventTasksContextType {
   loading: boolean;
+  status: 'not started' | 'running' | 'finnished';
   editTaskTitleWindow: boolean;
   editTaskPriorityWindow: boolean;
   editTaskStatusWindow: boolean;
@@ -32,20 +33,20 @@ interface EventTasksContextType {
   handleEditTaskDateWindow: () => void;
   handleEditTaskTimeWindow: () => void;
   handleEventTaskNotesWindow: () => void;
+  selectStatus: (status: 'not started' | 'running' | 'finnished') => void;
 }
 
 const EventTasksContext = createContext({} as EventTasksContextType);
 
 const EventTasksProvider: React.FC = ({ children }) => {
-  const { user } = useAuth();
   const { getEventTasks, selectedEvent } = useMyEvent();
-
   const [editTaskTitleWindow, setEditTaskTitleWindow] = useState(false);
   const [editTaskPriorityWindow, setEditTaskPriorityWindow] = useState(false);
   const [editTaskStatusWindow, setEditTaskStatusWindow] = useState(false);
   const [editTaskDateWindow, setEditTaskDateWindow] = useState(false);
   const [editTaskTimeWindow, setEditTaskTimeWindow] = useState(false);
   const [eventTaskNotesWindow, setEventTaskNotesWindow] = useState(false);
+  const [status, setStatus] = useState<'not started' | 'running' | 'finnished'>('not started');
   const [loading, setLoading] = useState(false);
 
   function handleEditTaskTitleWindow() {
@@ -144,10 +145,15 @@ const EventTasksProvider: React.FC = ({ children }) => {
     }
   }
 
+  function selectStatus(data: 'not started' | 'running' | 'finnished') {
+    setStatus(data);
+  }
+
   return (
     <EventTasksContext.Provider
       value={{
         loading,
+        status,
         editTaskTitleWindow,
         editTaskPriorityWindow,
         editTaskStatusWindow,
@@ -165,6 +171,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
         handleEditTaskDateWindow,
         handleEditTaskTimeWindow,
         handleEventTaskNotesWindow,
+        selectStatus,
       }}
     >
       {children}
