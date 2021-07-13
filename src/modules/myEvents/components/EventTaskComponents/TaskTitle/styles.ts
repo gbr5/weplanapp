@@ -9,7 +9,6 @@ export const Container = styled.View`
 `;
 
 export const TitleButton = styled(BorderlessButton)`
-  width: 100%;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -21,6 +20,7 @@ export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(18)}px;
   /* letter-spacing: 1px; */
+  width: 90%;
 `;
 
 export const UnderlineTitle = styled.View`

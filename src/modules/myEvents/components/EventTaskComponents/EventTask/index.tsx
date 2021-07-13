@@ -14,6 +14,11 @@ import {
   Time,
   ButtonContainer,
   Button,
+  StatusButton,
+  PriorityButton,
+  DeleteButton,
+  NumberOfNotesContainer,
+  NumberOfNotes,
   DeleteButtonIcon,
   PriorityButtonIcon,
   StatusButtonIcon,
@@ -79,47 +84,50 @@ export function EventTask({
           <Button
             onPress={handleOpenEventTaskNotesWindow}
           >
+            {eventTask.notes.length > 0 && (
+              <NumberOfNotesContainer>
+                <NumberOfNotes>{eventTask.notes.length}</NumberOfNotes>
+              </NumberOfNotesContainer>
+            )}
             <NotesButtonIcon name="file-text" size={iconSize} />
           </Button>
-          <Button
+          <StatusButton
             onPress={handleOpenTaskStatusWindow}
+            status={eventTask.status}
           >
             {eventTask.status === 'not started' && (
               <StatusButtonIcon
                 size={iconSize}
                 name="cloud"
-                status={eventTask.status}
               />
             )}
             {eventTask.status === 'running' && (
               <StatusButtonIcon
                 size={iconSize}
                 name="zap"
-                status={eventTask.status}
               />
             )}
             {eventTask.status === 'finnished' && (
               <StatusButtonIcon
                 size={iconSize}
                 name="award"
-                status={eventTask.status}
               />
             )}
-          </Button>
-          <Button
+          </StatusButton>
+          <PriorityButton
             onPress={handleOpenTaskPriorityWindow}
+            priority={eventTask.priority}
           >
             <PriorityButtonIcon
               size={iconSize}
               name="flag"
-              priority={eventTask.priority}
             />
-          </Button>
-          <Button
+          </PriorityButton>
+          <DeleteButton
             onPress={handleDeleteTaskConfirmationWindow}
           >
             <DeleteButtonIcon name="trash-2" size={iconSize} />
-          </Button>
+          </DeleteButton>
         </ButtonContainer>
       </Body>
     </Container>

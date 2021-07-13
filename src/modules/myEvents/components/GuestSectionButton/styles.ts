@@ -10,8 +10,8 @@ export const Container = styled.View<IProps>`
   align-items: center;
   background-color: ${({ theme }) => theme.color.text6};
   margin: 8px 0;
-  min-height: 48px;
   border-radius: 8px;
+  padding: 16px 0;
   width: 100%;
 
   ${(props) => props.isMine
@@ -27,7 +27,7 @@ export const GuestIndex = styled.Text`
   color: ${({ theme }) => theme.color.secondary};
 
   text-align: center;
-  width: 24px;
+  width: 40px;
   margin: 0 8px;
 `;
 
@@ -35,7 +35,7 @@ export const GuestNameContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 85%;
+  width: 80%;
 `;
 
 export const GuestName = styled.Text<IProps>`
