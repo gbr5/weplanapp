@@ -27,10 +27,6 @@ export function EventTaskNotesWindow({
   const { updateNotes } = useNote();
 
   async function handleCreateTaskNote(note: string) {
-    console.log({
-      note,
-      task_id: selectedTask.id,
-    });
     await createTaskNote({
       note,
       task_id: selectedTask.id,

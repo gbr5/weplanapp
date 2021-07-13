@@ -114,13 +114,6 @@ const EventTasksProvider: React.FC = ({ children }) => {
     title,
   }: ICreateEventTaskDTO) {
     try {
-      console.log({
-        due_date,
-        event_id,
-        priority,
-        status,
-        title,
-      });
       setLoading(true);
       await api.post(`/event-tasks`, {
         due_date,
