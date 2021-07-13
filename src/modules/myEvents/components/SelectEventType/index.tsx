@@ -20,31 +20,31 @@ export function SelectEventType({
     <Container>
       <Title>Selecione o tipo de evento</Title>
       <EventTypeButton
-        onPress={() => selectEventType('Casamento')}
-        isActive={eventType === 'Casamento'}
+        onPress={() => selectEventType('Wedding')}
+        isActive={eventType === 'Wedding'}
       >
         <EventTypeButtonText
-          isActive={eventType === 'Casamento'}
+          isActive={eventType === 'Wedding'}
         >
           Casamento
         </EventTypeButtonText>
       </EventTypeButton>
       <EventTypeButton
-        onPress={() => selectEventType('Formatura')}
-        isActive={eventType === 'Formatura'}
+        onPress={() => selectEventType('Prom')}
+        isActive={eventType === 'Prom'}
       >
         <EventTypeButtonText
-          isActive={eventType === 'Formatura'}
+          isActive={eventType === 'Prom'}
         >
           Formatura
         </EventTypeButtonText>
       </EventTypeButton>
       <EventTypeButton
-        onPress={() => selectEventType('Outros')}
-        isActive={eventType === 'Outros'}
+        onPress={() => selectEventType('Others')}
+        isActive={eventType === 'Others'}
       >
         <EventTypeButtonText
-          isActive={eventType === 'Outros'}
+          isActive={eventType === 'Others'}
         >
           Outros
         </EventTypeButtonText>

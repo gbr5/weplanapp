@@ -56,6 +56,7 @@ const NewTaskForm: React.FC<IProps> = ({
       priority: selectedPriority,
       status: 'not started',
     });
+    formRef.current?.clearField;
     closeWindow();
   }, [closeWindow, createTask]);
 

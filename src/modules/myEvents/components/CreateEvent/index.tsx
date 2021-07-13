@@ -1,8 +1,14 @@
+import React, {
+  useCallback,
+  useState,
+  useRef,
+  useMemo,
+} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
-import React, { useCallback, useState } from 'react';
-import { useRef } from 'react';
+import { addMonths } from 'date-fns';
+
 import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
 import WindowContainer from '../../../../components/WindowContainer';
@@ -50,7 +56,7 @@ const CreateEvent: React.FC<IProps> = ({
       selectEvent({} as IEventDTO);
       const now = new Date();
       const event = await createEvent({
-        date: new Date(now.setMonth(now.getMonth() + 1)),
+        date: new Date(addMonths(now, 1)),
         event_type,
         isDateDefined: false,
         name,
@@ -64,6 +70,12 @@ const CreateEvent: React.FC<IProps> = ({
       navigation.navigate('MyEvent');
     }
   }, [createEvent, navigation, handleCloseWindow, event_type, selectEvent]);
+
+  const eventType = useMemo(() => {
+    if (event_type === 'Wedding') return 'Casamento';
+    if (event_type === 'Prom') return 'Formatura';
+    return 'Outros';
+  }, [event_type]);
 
   return (
     <WindowContainer
@@ -87,7 +99,7 @@ const CreateEvent: React.FC<IProps> = ({
             <Button
               onPress={openEventTypeWindow}
             >
-              {event_type}
+              {eventType}
             </Button>
             <Form ref={formRef} onSubmit={handleCreateEvent}>
               <Input

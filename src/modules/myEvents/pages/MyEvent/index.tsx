@@ -124,10 +124,6 @@ const MyEvent: React.FC = () => {
     handleDeleteTaskConfirmationWindow();
   }
 
-  useEffect(() => {
-    currentSection === 'Tasks' && Alert.alert(currentSection);
-  }, [currentSection]);
-
   return (
     <>
       {newGuestForm && (
