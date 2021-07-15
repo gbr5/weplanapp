@@ -1,24 +1,17 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import { Alert } from 'react-native';
+import React, { useCallback, useState } from 'react';
 
 import { useMyEvent } from '../../../../hooks/myEvent';
 
-import MainMenu from '../../components/MainMenu';
-import NewGuestForm from '../../components/NewGuestForm';
-import PageHeader from '../../../../components/PageHeader';
-import GuestsSection from '../../components/GuestsSection';
-import { TasksSection } from '../../components/EventTaskComponents/TasksSection';
+import IEventTaskDTO from '../../../../dtos/IEventTaskDTO';
+import INoteDTO from '../../../../dtos/INoteDTO';
 
-import {
-  Container,
-  EventName,
-  Body,
-  DashboardButton,
-  BodyContainer,
-} from './styles';
+import MainMenu from '../../components/MainMenu';
+import NewGuestForm from '../../components/EventGuestComponents/NewGuestForm';
+import PageHeader from '../../../../components/PageHeader';
+import GuestsSection from '../../components/EventGuestComponents/GuestsSection';
+import { TasksSection } from '../../components/EventTaskComponents/TasksSection';
 import { useEventTasks } from '../../../../hooks/eventTasks';
 import { TextInputForm } from '../../../../components/TextInputForm';
-import IEventTaskDTO from '../../../../dtos/IEventTaskDTO';
 import { EditTaskPriorityWindow } from '../../components/EventTaskComponents/EditTaskPriorityWindow';
 import { EditTaskStatusWindow } from '../../components/EventTaskComponents/EditTaskStatusWindow';
 import { DatePickerWindow } from '../../../../components/DatePickerWindow';
@@ -28,7 +21,20 @@ import NewTaskForm from '../../components/EventTaskComponents/NewTaskForm';
 import ShortConfirmationWindow from '../../../../components/ShortConfirmationWindow';
 import { useNote } from '../../../../hooks/notes';
 import { EditNoteWindow } from '../../../../components/EditNoteWindow';
-import INoteDTO from '../../../../dtos/INoteDTO';
+import { SuppliersSection } from '../../components/SuppliersComponents/SuppliersSection';
+
+import {
+  Container,
+  EventName,
+  Body,
+  DashboardButton,
+  BodyContainer,
+} from './styles';
+import { useEventSuppliers } from '../../../../hooks/eventSuppliers';
+import { SelectSupplierCategory } from '../../components/SuppliersComponents/SelectSupplierCategory';
+import { SelectSupplierSubCategory } from '../../components/SuppliersComponents/SelectSupplierSubCategory';
+import NewSupplierForm from '../../components/SuppliersComponents/NewSupplierForm';
+import { BudgetWindow } from '../../components/BudgetWindow';
 
 const MyEvent: React.FC = () => {
   const {
@@ -37,6 +43,8 @@ const MyEvent: React.FC = () => {
     selectEventSection,
     selectedTask,
     selectEventTask,
+    budgetWindow,
+    handleBudgetWindow,
   } = useMyEvent();
   const {
     loading,
@@ -63,6 +71,12 @@ const MyEvent: React.FC = () => {
     updateTask,
     deleteTask,
   } = useEventTasks();
+  const {
+    supplierCategoryWindow,
+    supplierSubCategoryWindow,
+    addSupplierWindow,
+    handleAddSupplierWindow,
+  } = useEventSuppliers();
   const { editNoteWindow, selectNote, handleEditNoteWindow } = useNote();
 
   const [newGuestForm, setNewGuestForm] = useState(false);
@@ -126,6 +140,9 @@ const MyEvent: React.FC = () => {
 
   return (
     <>
+      {budgetWindow && (
+        <BudgetWindow />
+      )}
       {newGuestForm && (
         <NewGuestForm closeWindow={() => handleNewGuestForm(false)} />
       )}
@@ -226,6 +243,18 @@ const MyEvent: React.FC = () => {
         <EditNoteWindow closeWindow={handleCloseEditTaskNoteWindow} />
       )}
 
+      {addSupplierWindow && (
+        <NewSupplierForm closeWindow={handleAddSupplierWindow} />
+      )}
+
+      {supplierCategoryWindow && (
+        <SelectSupplierCategory />
+      )}
+
+      {supplierSubCategoryWindow && (
+        <SelectSupplierSubCategory />
+      )}
+
       <Container>
         <PageHeader>
           <DashboardButton onPress={() => selectEventSection('Tasks')}>
@@ -242,6 +271,9 @@ const MyEvent: React.FC = () => {
             )}
             {currentSection === 'Tasks' && (
               <TasksSection />
+            )}
+            {currentSection === 'Suppliers' && (
+              <SuppliersSection />
             )}
           </BodyContainer>
         </Body>

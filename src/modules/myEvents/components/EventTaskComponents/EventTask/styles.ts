@@ -84,14 +84,17 @@ export const StatusButton = styled(BorderlessButton)<IStatusButton>`
   padding: 4px;
   border-radius: 5px;
   margin: 4px;
+
   ${({ status }) => status === 'running'
     && css`
       background-color: ${({ theme }) => theme.color.atention};
     `};
+
   ${({ status }) => status === 'not started'
     && css`
       background-color: ${({ theme }) => theme.color.info};
       `};
+
   ${({ status }) => status === 'finnished'
     && css`
       background-color: ${({ theme }) => theme.color.success};
@@ -114,15 +117,15 @@ export const NumberOfNotesContainer = styled.View`
   background-color: ${({ theme }) => theme.color.atention};
   top: -26px;
   left: -26px;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 38px;
+  min-height: 38px;
   justify-content: center;
   align-items: center;
 `;
 
 export const NumberOfNotes = styled.Text`
   color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(16)}px;
+  font-size: ${RFValue(14)}px;
 `;
 
 export const DeleteButtonIcon = styled(Feather)`

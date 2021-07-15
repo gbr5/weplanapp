@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import { useMyEvent } from '../../../../hooks/myEvent';
+import { useMyEvent } from '../../../../../hooks/myEvent';
 import GuestSectionButton from '../GuestSectionButton';
 import {
   Container,

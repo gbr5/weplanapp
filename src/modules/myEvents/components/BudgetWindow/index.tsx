@@ -1,9 +1,8 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef } from 'react';
 import { Platform } from 'react-native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import WindowContainer from '../../../../components/WindowContainer';
-import { useEventInfo } from '../../../../hooks/eventInfo';
 import { useMyEvent } from '../../../../hooks/myEvent';
 import { Container, Title } from './styles';
 import Input from '../../../../components/Input';
@@ -14,30 +13,35 @@ interface IFormData {
   budget: number;
 }
 
-interface IProps {
-  closeWindow: () => void;
-}
-
-const BudgetWindow: React.FC<IProps> = ({ closeWindow }) => {
+export function BudgetWindow() {
   const formRef = useRef<FormHandles>(null);
-  const { eventInfo } = useMyEvent();
-  const { editEventInfo, loading } = useEventInfo();
+  const {
+    eventBudget,
+    loading,
+    createEventBudget,
+    updateEventBudget,
+    handleBudgetWindow,
+  } = useMyEvent();
 
-  const handleSubmit = useCallback(async ({ budget }: IFormData) => {
-    await editEventInfo({
-      ...eventInfo,
-      budget,
-    });
-    closeWindow();
-  }, [closeWindow, editEventInfo, eventInfo]);
+  async function handleSubmit({ budget }: IFormData) {
+    if (eventBudget && !eventBudget.id) {
+      await createEventBudget(budget);
+    } else {
+      await updateEventBudget({
+        ...eventBudget,
+        budget,
+      });
+    }
+    handleBudgetWindow();
+  }
 
   return (
     <WindowContainer
-      closeWindow={closeWindow}
+      closeWindow={handleBudgetWindow}
       zIndex={15}
-      top="5%"
+      top="10%"
       left="2%"
-      height="40%"
+      height="30%"
       width="96%"
     >
       <Container
@@ -50,9 +54,9 @@ const BudgetWindow: React.FC<IProps> = ({ closeWindow }) => {
             name="budget"
             icon="dollar-sign"
             placeholder={
-              eventInfo
-                && eventInfo.budget
-                ? formatBrlCurrency(eventInfo.budget)
+              eventBudget
+                && eventBudget.budget
+                ? formatBrlCurrency(eventBudget.budget)
                 : formatBrlCurrency(0)}
             returnKeyType="send"
             keyboardType="number-pad"
@@ -69,5 +73,3 @@ const BudgetWindow: React.FC<IProps> = ({ closeWindow }) => {
     </WindowContainer>
   );
 };
-
-export default BudgetWindow;

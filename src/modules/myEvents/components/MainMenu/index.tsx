@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from 'react';
-import { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useMyEvent } from '../../../../hooks/myEvent';
 import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
 
@@ -8,6 +7,7 @@ import {
   MenuButton,
   MenuButtonText,
   MenuButtonNumber,
+  BudgetInfo,
 } from './styles';
 
 const MainMenu: React.FC = () => {
@@ -21,15 +21,17 @@ const MainMenu: React.FC = () => {
     currentSection,
     selectEventSection,
     eventTasks,
+    handleBudgetWindow,
+    eventBudget,
   } = useMyEvent();
 
   const guestsInfo = useMemo(() => `${confirmedGuests} / ${guests.length}`, [confirmedGuests, guests]);
   const budgetInfo = useMemo(() => {
-    if (eventInfo && eventInfo.budget) {
-      return formatBrlCurrency(eventInfo.budget);
+    if (eventBudget && eventBudget.budget) {
+      return formatBrlCurrency(eventBudget.budget);
     }
     return 'R$ 0,00';
-  }, [eventInfo]);
+  }, [eventBudget]);
 
   const suppliersInfo = useMemo(() => `${hiredSuppliers.length} / ${notHiredSuppliers.length + hiredSuppliers.length}`,
     [hiredSuppliers, notHiredSuppliers]);
@@ -50,25 +52,78 @@ const MainMenu: React.FC = () => {
 
   return (
     <Container horizontal>
-      <MenuButton onPress={() => selectEventSection('Tasks')} isActive={currentSection === 'Tasks'}>
-        <MenuButtonText isActive={currentSection === 'Tasks'}>Tarefas</MenuButtonText>
-        <MenuButtonNumber isActive={currentSection === 'Tasks'}>{tasksInfo}</MenuButtonNumber>
+      <MenuButton
+        onPress={() => selectEventSection('Tasks')}
+        isActive={currentSection === 'Tasks'}
+      >
+        <MenuButtonText
+          isActive={currentSection === 'Tasks'}
+        >
+          Tarefas
+        </MenuButtonText>
+        <MenuButtonNumber
+          isActive={currentSection === 'Tasks'}
+        >
+          {tasksInfo}
+        </MenuButtonNumber>
       </MenuButton>
-      <MenuButton onPress={() => selectEventSection('Guests')} isActive={currentSection === 'Guests'}>
-        <MenuButtonText isActive={currentSection === 'Guests'}>Convidados</MenuButtonText>
-        <MenuButtonNumber isActive={currentSection === 'Guests'}>{guestsInfo}</MenuButtonNumber>
+      <MenuButton
+        onPress={() => selectEventSection('Guests')}
+        isActive={currentSection === 'Guests'}
+      >
+        <MenuButtonText
+          isActive={currentSection === 'Guests'}
+        >
+          Convidados
+        </MenuButtonText>
+        <MenuButtonNumber
+          isActive={currentSection === 'Guests'}
+        >
+          {guestsInfo}
+        </MenuButtonNumber>
       </MenuButton>
-      <MenuButton onPress={() => selectEventSection('Budget')} isActive={currentSection === 'Budget'}>
-        <MenuButtonText isActive={currentSection === 'Budget'}>Orçamento</MenuButtonText>
-        <MenuButtonNumber isActive={currentSection === 'Budget'}>{budgetInfo}</MenuButtonNumber>
+      <MenuButton
+        onPress={handleBudgetWindow}
+        isActive={false}
+      >
+        <MenuButtonText
+          isActive={false}
+        >
+          Orçamento
+        </MenuButtonText>
+        <BudgetInfo>
+          {budgetInfo}
+        </BudgetInfo>
       </MenuButton>
-      <MenuButton onPress={() => selectEventSection('Suppliers')} isActive={currentSection === 'Suppliers'}>
-        <MenuButtonText isActive={currentSection === 'Suppliers'}>Fornecedores</MenuButtonText>
-        <MenuButtonNumber isActive={currentSection === 'Suppliers'}>{suppliersInfo}</MenuButtonNumber>
+      <MenuButton
+        onPress={() => selectEventSection('Suppliers')}
+        isActive={currentSection === 'Suppliers'}
+      >
+        <MenuButtonText
+          isActive={currentSection === 'Suppliers'}
+        >
+          Fornecedores
+        </MenuButtonText>
+        <MenuButtonNumber
+          isActive={currentSection === 'Suppliers'}
+        >
+          {suppliersInfo}
+        </MenuButtonNumber>
       </MenuButton>
-      <MenuButton onPress={() => selectEventSection('Financial')} isActive={currentSection === 'Financial'}>
-        <MenuButtonText isActive={currentSection === 'Financial'}>Financeiro</MenuButtonText>
-        <MenuButtonNumber isActive={currentSection === 'Financial'}>{financialInfo}</MenuButtonNumber>
+      <MenuButton
+        onPress={() => selectEventSection('Financial')}
+        isActive={currentSection === 'Financial'}
+      >
+        <MenuButtonText
+          isActive={currentSection === 'Financial'}
+        >
+          Financeiro
+        </MenuButtonText>
+        <MenuButtonNumber
+          isActive={currentSection === 'Financial'}
+        >
+          {financialInfo}
+        </MenuButtonNumber>
       </MenuButton>
     </Container>
   );

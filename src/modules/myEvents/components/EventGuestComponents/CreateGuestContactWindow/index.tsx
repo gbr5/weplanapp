@@ -1,13 +1,13 @@
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import React, { useCallback, useState, useRef } from 'react';
-import Button from '../../../../components/Button';
-import Input from '../../../../components/Input';
+import Button from '../../../../../components/Button';
+import Input from '../../../../../components/Input';
 
-import WindowContainer from '../../../../components/WindowContainer';
-import { useEventGuests } from '../../../../hooks/eventGuests';
-import { useMyEvent } from '../../../../hooks/myEvent';
-import SelectContactType from '../SelectContactType';
+import WindowContainer from '../../../../../components/WindowContainer';
+import { useEventGuests } from '../../../../../hooks/eventGuests';
+import { useMyEvent } from '../../../../../hooks/myEvent';
+import SelectContactType from '../../SelectContactType';
 
 import { Container, Title } from './styles';
 

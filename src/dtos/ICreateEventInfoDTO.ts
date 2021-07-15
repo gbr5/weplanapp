@@ -1,8 +1,8 @@
 export default interface ICreateEventInfoDTO {
   number_of_guests: number;
-  duration: string;
+  duration: number;
   budget: number;
-  description: boolean;
+  description: string;
   country: string;
   local_state: string;
   city: string;

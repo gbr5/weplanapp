@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { useCallback } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
-import PageHeader from '../../../../components/PageHeader';
 import { useMyEvent } from '../../../../hooks/myEvent';
+import { useEventGuests } from '../../../../hooks/eventGuests';
 
-import EditGuestName from '../../components/EditGuestName';
-import EditGuestDescription from '../../components/EditGuestDescription';
+import PageHeader from '../../../../components/PageHeader';
+import EditGuestName from '../../components/EventGuestComponents/EditGuestName';
+import EditGuestDescription from '../../components/EventGuestComponents/EditGuestDescription';
+import EditGuestContact from '../../components/EventGuestComponents/EditGuestContact';
+import IGuestContactDTO from '../../../../dtos/IGuestContactDTO';
+import GuestContactSection from '../../components/EventGuestComponents/GuestContactSection';
+import CreateGuestContactWindow from '../../components/EventGuestComponents/CreateGuestContactWindow';
 
 import {
   Container,
@@ -18,11 +23,6 @@ import {
   ConfirmationButton,
   ConfirmationButtonText,
 } from './styles';
-import { useEventGuests } from '../../../../hooks/eventGuests';
-import EditGuestContact from '../../components/EditGuestContact';
-import IGuestContactDTO from '../../../../dtos/IGuestContactDTO';
-import GuestContactSection from '../../components/GuestContactSection';
-import CreateGuestContactWindow from '../../components/CreateGuestContactWindow';
 
 const EventGuest: React.FC = () => {
   const { selectedGuest } = useMyEvent();
@@ -32,6 +32,7 @@ const EventGuest: React.FC = () => {
     selectGuestContact,
     selectedGuestContact,
   } = useEventGuests();
+
   const [editGuestNameWindow, setEditGuestNameWindow] = useState(false);
   const [editGuestDescriptionWindow, setEditGuestDescriptionWindow] = useState(false);
   const [guestContactWindow, setGuestContactWindow] = useState(false);
@@ -40,11 +41,9 @@ const EventGuest: React.FC = () => {
   const handleEditGuestConfirmation = useCallback(() => {
     editGuestConfirmation(selectedGuest);
   }, [editGuestConfirmation, selectedGuest]);
-
   const handleEditGuestNameWindow = useCallback((e: boolean) => {
     setEditGuestNameWindow(e);
   }, []);
-
   const handleEditGuestDescriptionWindow = useCallback((e: boolean) => {
     setEditGuestDescriptionWindow(e);
   }, []);
@@ -55,7 +54,6 @@ const EventGuest: React.FC = () => {
     setGuestContactWindow(false);
     selectGuestContact({} as IGuestContactDTO);
   }, [selectGuestContact]);
-
   const handleCreateContactWindow = useCallback((e: boolean) => {
     setCreateContactWindow(e);
   }, []);

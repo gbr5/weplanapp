@@ -19,14 +19,14 @@ interface EventInfoContextType {
 const EventInfoContext = createContext({} as EventInfoContextType);
 
 const EventInfoProvider: React.FC = ({ children }) => {
-  const { selectedEvent, getEvent } = useMyEvent();
+  const { selectedEvent, getEventInfo } = useMyEvent();
   const [loading, setLoading] = useState(false);
 
   async function editEventInfo(data: IEventInfoDTO) {
     try {
       setLoading(true);
       await api.put(`/events/${data.event_id}/event-info`, data);
-      await getEvent(data.event_id);
+      await getEventInfo(data.event_id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -37,8 +37,8 @@ const EventInfoProvider: React.FC = ({ children }) => {
   async function createEventInfo(data: ICreateEventInfoDTO) {
     try {
       setLoading(true);
-      await api.post(`/events/${selectedEvent.id}/event-info`, data);
-      await getEvent(selectedEvent.id);
+      await api.post(`/event-info/${selectedEvent.id}`, data);
+      await getEventInfo(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCallback } from 'react';
-import IGuestContactDTO from '../../../../dtos/IGuestContactDTO';
+import IGuestContactDTO from '../../../../../dtos/IGuestContactDTO';
 
 import { ContactInfo, Container, ContactType } from './styles';
 

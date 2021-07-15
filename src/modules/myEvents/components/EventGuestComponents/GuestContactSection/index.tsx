@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
-import IGuestContactDTO from '../../../../dtos/IGuestContactDTO';
-import { useEventGuests } from '../../../../hooks/eventGuests';
-import { useMyEvent } from '../../../../hooks/myEvent';
+import IGuestContactDTO from '../../../../../dtos/IGuestContactDTO';
+import { useEventGuests } from '../../../../../hooks/eventGuests';
+import { useMyEvent } from '../../../../../hooks/myEvent';
 import GuestContact from '../GuestContact';
 
 import {

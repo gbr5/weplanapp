@@ -1,13 +1,13 @@
 import React, { useCallback, useRef } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
-import Input from '../../../../components/Input';
-import { useMyEvent } from '../../../../hooks/myEvent';
-import WindowContainer from '../../../../components/WindowContainer';
+import Input from '../../../../../components/Input';
+import { useMyEvent } from '../../../../../hooks/myEvent';
+import WindowContainer from '../../../../../components/WindowContainer';
 
 import { Container, FormQuestion, Title } from './styles';
-import Button from '../../../../components/Button';
-import { useEventGuests } from '../../../../hooks/eventGuests';
+import Button from '../../../../../components/Button';
+import { useEventGuests } from '../../../../../hooks/eventGuests';
 
 interface IFormData {
   description: string;

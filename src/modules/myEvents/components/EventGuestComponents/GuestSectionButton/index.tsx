@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { useCallback } from 'react';
-import IEventGuestDTO from '../../../../dtos/IEventGuestDTO';
-import { useAuth } from '../../../../hooks/auth';
-import { useMyEvent } from '../../../../hooks/myEvent';
+import IEventGuestDTO from '../../../../../dtos/IEventGuestDTO';
+import { useAuth } from '../../../../../hooks/auth';
+import { useMyEvent } from '../../../../../hooks/myEvent';
 
 import {
   Container,
@@ -14,8 +14,8 @@ import {
   GuestNameContainer,
   GuestName,
 } from './styles';
-import theme from '../../../../global/styles/theme';
-import api from '../../../../services/api';
+import theme from '../../../../../global/styles/theme';
+import api from '../../../../../services/api';
 
 interface IProps {
   index?: number;

@@ -1,14 +1,18 @@
 import React, { useCallback, useRef } from 'react';
-import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 import { TextInput } from 'react-native';
-import Input from '../../../../components/Input';
-import { useMyEvent } from '../../../../hooks/myEvent';
-import WindowContainer from '../../../../components/WindowContainer';
 
-import { Container, FormQuestion, Title } from './styles';
-import Button from '../../../../components/Button';
-import { useEventGuests } from '../../../../hooks/eventGuests';
+import Input from '../../../../../components/Input';
+
+import {
+  Container,
+  Title,
+  FormQuestion,
+} from './styles';
+import Button from '../../../../../components/Button';
+import WindowContainer from '../../../../../components/WindowContainer';
+import { useEventGuests } from '../../../../../hooks/eventGuests';
 
 interface IFormData {
   first_name: string;
@@ -19,20 +23,17 @@ interface IProps {
   closeWindow: () => void;
 }
 
-const EditGuestName: React.FC<IProps> = ({ closeWindow }) => {
+const NewGuestForm: React.FC<IProps> = ({
+  closeWindow,
+}) => {
+  const { addNewGuest, loading } = useEventGuests();
   const formRef = useRef<FormHandles>(null);
   const inputRef = useRef<TextInput>(null);
-  const { selectedGuest } = useMyEvent();
-  const { editGuest } = useEventGuests();
 
-  const handleSubmit = useCallback(async ({ last_name, first_name }: IFormData) => {
-    await editGuest({
-      ...selectedGuest,
-      first_name,
-      last_name,
-    });
+  const handleSubmit = useCallback(async (data: IFormData) => {
+    await addNewGuest(data);
     closeWindow();
-  }, [editGuest, closeWindow, selectedGuest]);
+  }, [closeWindow, addNewGuest]);
 
   return (
     <WindowContainer
@@ -44,16 +45,15 @@ const EditGuestName: React.FC<IProps> = ({ closeWindow }) => {
       zIndex={11}
     >
       <Container>
+        <Title>Novo(a) Convidado(a)</Title>
         <Form ref={formRef} onSubmit={handleSubmit}>
-          <Title>Editar Convidado(a)</Title>
           <FormQuestion>Nome</FormQuestion>
           <Input
             name="first_name"
             autoCorrect={false}
             autoCapitalize="words"
             icon="user"
-            placeholder={selectedGuest.first_name}
-            defaultValue={selectedGuest.first_name}
+            placeholder="Nome"
             returnKeyType="next"
             onSubmitEditing={() => {
               inputRef.current?.focus();
@@ -66,8 +66,7 @@ const EditGuestName: React.FC<IProps> = ({ closeWindow }) => {
             autoCorrect={false}
             autoCapitalize="words"
             icon="user"
-            placeholder={selectedGuest.last_name}
-            defaultValue={selectedGuest.last_name}
+            placeholder="Sobrenome"
             returnKeyType="send"
             onSubmitEditing={() => {
               formRef.current?.submitForm();
@@ -76,6 +75,7 @@ const EditGuestName: React.FC<IProps> = ({ closeWindow }) => {
         </Form>
       </Container>
       <Button
+        loading={loading}
         onPress={() => formRef.current?.submitForm()}
       >
         Salvar
@@ -84,4 +84,4 @@ const EditGuestName: React.FC<IProps> = ({ closeWindow }) => {
   );
 };
 
-export default EditGuestName;
+export default NewGuestForm;

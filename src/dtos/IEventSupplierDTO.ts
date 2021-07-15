@@ -5,14 +5,15 @@ interface IEventWeplanSupplier {
   id: string;
   weplanEventSupplier: IUserDTO;
 }
-export default interface ISelectedSupplierDTO {
+export default interface IEventSupplierDTO {
   id: string;
   name: string;
+  event_id: string;
   supplier_sub_category: string;
-  weplanUser: boolean;
-  eventWeplanSupplier: IEventWeplanSupplier;
   isHired: boolean;
+  weplanUser: boolean;
+  created_at: Date;
+  updated_at: Date;
+  eventWeplanSupplier: IEventWeplanSupplier;
   transactionAgreements: ITransactionAgreementDTO[];
-  status?: string;
-  index?: number;
 }

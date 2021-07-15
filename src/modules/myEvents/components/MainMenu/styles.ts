@@ -17,7 +17,7 @@ export const MenuButton = styled.TouchableOpacity<IProps>`
   margin: 0 8px;
   height: ${menuButtonSize}px;
   width: ${menuButtonSize}px;
-  border-radius: ${menuButtonSize / 2}px;
+  border-radius: ${menuButtonSize / 5}px;
   background-color: ${({ theme }) => theme.color.text2};
   align-items: center;
   justify-content: center;
@@ -49,4 +49,11 @@ export const MenuButtonNumber = styled.Text<IProps>`
     && css`
       color: ${({ theme }) => theme.color.text1};
     `}
+`;
+
+export const BudgetInfo = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text6};
+  margin-top: 4px;
+  font-size: ${RFValue(17)}px;
 `;
