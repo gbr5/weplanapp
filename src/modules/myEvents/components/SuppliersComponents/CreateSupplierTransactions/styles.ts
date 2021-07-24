@@ -5,7 +5,8 @@ import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.ScrollView`
   flex: 1;
-  margin-top: 56px;
+  margin-top: 48px;
+  margin-bottom: 32px;
   width: 100%;
 `;
 

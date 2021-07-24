@@ -4,4 +4,5 @@ export default interface ICreateTransactionDTO {
     isPaid: boolean;
     payer_id: string;
     payee_id: string;
+    index?: string;
   }

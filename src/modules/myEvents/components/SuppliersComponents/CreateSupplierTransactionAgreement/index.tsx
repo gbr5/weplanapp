@@ -104,7 +104,7 @@ export function CreateSupplierTransactionAgreement() {
       zIndex={15}
       top="10%"
       left="2%"
-      height="65%"
+      height="75%"
       width="96%"
     >
       <Container>

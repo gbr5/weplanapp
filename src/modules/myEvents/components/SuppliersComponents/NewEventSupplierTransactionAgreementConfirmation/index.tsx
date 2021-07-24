@@ -13,6 +13,7 @@ import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 
 import {
   Container,
+  TransactionContainer,
   Title,
   Value,
   EditButton,
@@ -25,7 +26,7 @@ import {
 } from './styles';
 
 export function NewEventSupplierTransactionAgreementConfirmation() {
-  const { selectedSupplier, selectSupplier } = useMyEvent();
+  const { selectedSupplier, selectSupplier, calculateTotalEventCost } = useMyEvent();
   const {
     handleCreateSupplierTransactionsWindow,
   } = useEventSuppliers();
@@ -52,12 +53,6 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
   }
   async function handleSubmit() {
     try {
-      console.log({
-        amount: newAgreementAmount,
-        number_of_installments: newAgreementInstallments,
-        supplier_id: selectedSupplier.id,
-        transactions: newTransactions,
-      });
       await createSupplierTransactionAgreementWithTransactions({
         amount: newAgreementAmount,
         number_of_installments: newAgreementInstallments,
@@ -68,6 +63,7 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
       throw new Error(err);
     } finally {
       closeWindow();
+      calculateTotalEventCost();
     }
   }
 
@@ -96,21 +92,24 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
         <Underline />
         <Value>Total: {formatBrlCurrency(newAgreementAmount)}</Value>
         <SubText>{newAgreementInstallments} parcelas de {formatBrlCurrency(newAgreementAmount/newAgreementInstallments)}</SubText>
-        {newTransactions.map(transaction => {
-          return (
-            <NewTransaction key={String(transaction.due_date)} transaction={transaction} />
-          );
-        })}
+        <TransactionContainer>
+          {newTransactions.map(transaction => {
+            const findIndex = newTransactions.findIndex(thisTransaction => thisTransaction.due_date === transaction.due_date);
+            return (
+              <NewTransaction key={findIndex} transaction={transaction} />
+            );
+          })}
+        </TransactionContainer>
       </Container>
       <ButtonContainer>
         <EndButton
           onPress={handleSubmit}
-        >
+          >
           <Value>Confirmar</Value>
         </EndButton>
         <EndButton
           onPress={closeWindow}
-        >
+          >
           <Value>Cancelar</Value>
         </EndButton>
       </ButtonContainer>

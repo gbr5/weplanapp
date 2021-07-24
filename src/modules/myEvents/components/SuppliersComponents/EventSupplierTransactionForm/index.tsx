@@ -54,6 +54,7 @@ export function EventSupplierTransactionForm() {
         isPaid,
         payee_id: selectedSupplier.id,
         payer_id: selectedEvent.id,
+        index: String(newTransactions.length) + 1,
       },
     ]);
   }, []);

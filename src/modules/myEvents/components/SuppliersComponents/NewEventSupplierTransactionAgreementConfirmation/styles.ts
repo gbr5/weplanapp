@@ -3,10 +3,15 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
 import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
   width: 100%;
-  margin: 40px 0 16px;
-  padding-bottom: 40px;
+  margin: 48px 0 0;
+`;
+
+export const TransactionContainer = styled.ScrollView`
+  width: 100%;
+  height: 40%;
+  margin: 16px 0;
 `;
 
 export const Title = styled.Text`
@@ -49,7 +54,7 @@ export const ButtonContainer = styled.View`
   flex-direction: row;
   justify-content: space-around;
   width: 100%;
-  margin: 16px 0;
+  margin: 0 0 32px;
 `;
 
 export const EndButton = styled(RectButton)`
