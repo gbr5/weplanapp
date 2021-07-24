@@ -8,6 +8,7 @@ import { EventTasksProvider } from './eventTasks';
 import { EventInfoProvider } from './eventInfo';
 import { NoteProvider } from './notes';
 import { EventSuppliersProvider } from './eventSuppliers';
+import { TransactionProvider } from './transactions';
 
 const AppProvider: React.FC = ({ children }) => (
   <AuthProvider>
@@ -18,7 +19,9 @@ const AppProvider: React.FC = ({ children }) => (
             <EventTasksProvider>
               <EventSuppliersProvider>
                 <EventInfoProvider>
-                  {children}
+                  <TransactionProvider>
+                    {children}
+                  </TransactionProvider>
                 </EventInfoProvider>
               </EventSuppliersProvider>
             </EventTasksProvider>

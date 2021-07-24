@@ -1,0 +1,102 @@
+import React, { useState, useCallback, useRef } from 'react';
+import { FormHandles } from '@unform/core';
+import { Alert } from 'react-native';
+
+import { Form } from '@unform/mobile';
+
+import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useTransaction } from '../../../../../hooks/transactions';
+
+import Input from '../../../../../components/Input';
+
+import {
+  Container,
+  Title,
+  IsPaidSection,
+  IsPaidButton,
+  IsPaidIcon,
+  DateButton,
+  DateText,
+} from './styles';
+import Button from '../../../../../components/Button';
+import formatOnlyDate from '../../../../../utils/formatOnlyDate';
+
+interface IFormData {
+  amount: string;
+}
+
+export function EventSupplierTransactionForm() {
+  const formRef = useRef<FormHandles>(null);
+
+  const { selectedEvent, selectedSupplier } = useMyEvent();
+  const {
+    handleSelectedDateWindow,
+    selectedDate,
+    newTransactions,
+    selectNewTransactions
+  } = useTransaction();
+
+  const [isPaid, setIsPaid] = useState(false);
+
+  function handleIsPaid() {
+    setIsPaid(!isPaid);
+  }
+
+  const handleSubmit = useCallback(({ amount }: IFormData) => {
+    if (!Number(amount)) {
+      return Alert.alert('Valor da Parcela', 'Apenas números são aceitos!');
+    }
+    selectNewTransactions([
+      ...newTransactions,
+      {
+        amount: Number(amount),
+        due_date: new Date(selectedDate.setHours(10)),
+        isPaid,
+        payee_id: selectedSupplier.id,
+        payer_id: selectedEvent.id,
+      },
+    ]);
+  }, []);
+
+  return (
+    <Container>
+      <Form ref={formRef} onSubmit={handleSubmit} >
+        <Title>Valor da Parcela</Title>
+        <Input
+          name="amount"
+          keyboardType="number-pad"
+          autoCorrect={false}
+          autoCapitalize="none"
+          icon="dollar-sign"
+          returnKeyType="next"
+        />
+        <IsPaidSection>
+          <IsPaidButton
+            isPaid={isPaid}
+            onPress={handleIsPaid}
+          >
+            <Title>
+              {isPaid ? 'Pago' : 'Não Pago'}
+            </Title>
+            {isPaid ? (
+              <IsPaidIcon name="check-square" />
+            ) : (
+              <IsPaidIcon name="square" />
+            )}
+          </IsPaidButton>
+        </IsPaidSection>
+        <Title>Data do pagamento</Title>
+        <DateButton
+          onPress={handleSelectedDateWindow}
+        >
+          <DateText>{formatOnlyDate(String(selectedDate))}</DateText>
+        </DateButton>
+      </Form>
+      <Button
+        onPress={() => formRef.current?.submitForm()}
+      >
+        Salvar
+      </Button>
+    </Container>
+  );
+}

@@ -10,6 +10,7 @@ import {
   Icon,
 } from './styles';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
+import { useState } from 'react';
 
 interface IProps {
   supplier: IEventSupplierDTO;
@@ -22,13 +23,22 @@ export function SupplierButton({
 }: IProps) {
   const {
     updateEventSuppliers,
-    loading,
   } = useEventSuppliers();
+
+  const [loading, setLoading] = useState(false);
+
   async function updateSupplierIsHired() {
-    await updateEventSuppliers({
-      ...supplier,
-      isHired: !supplier.isHired,
-    });
+    try {
+      setLoading(true);
+      await updateEventSuppliers({
+        ...supplier,
+        isHired: !supplier.isHired,
+      });
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

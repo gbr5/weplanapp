@@ -1,17 +1,23 @@
 import React, { useCallback, useRef, useState } from 'react';
 import {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  KeyboardAvoidingView, TextInput, ScrollView, Platform, View, Alert,
+  KeyboardAvoidingView,
+  TextInput,
+  ScrollView,
+  Platform,
+  View,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
 
 import { Form } from '@unform/mobile';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormHandles } from '@unform/core';
+
+import getValidationErrors from '../../../../utils/getValidationErros';
+import { useAuth } from '../../../../hooks/auth';
+
 import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
-
 import logoImg from '../../../../assets/logo.png';
 
 import {
@@ -23,9 +29,10 @@ import {
   ForgotPasswordText,
   CreateAccountButton,
   CreateAccountText,
+  EyeIcon,
+  PasswordField,
+  PasswordSecureButton,
 } from './styles';
-import getValidationErrors from '../../../../utils/getValidationErros';
-import { useAuth } from '../../../../hooks/auth';
 
 interface ISignInFormProps {
   email: string;
@@ -38,7 +45,12 @@ const SignIn: React.FC = () => {
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
+  const [securePassword, setSecurePassword] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  function handleSecurePassword() {
+    setSecurePassword(!securePassword);
+  }
 
   const navigateToSignUp = useCallback(() => {
     navigation.navigate('SignUp');
@@ -64,22 +76,6 @@ const SignIn: React.FC = () => {
         abortEarly: false,
       });
 
-      // const user = await api.get<IUserDTO>(`/user-profile/${data.email}`);
-
-      // if (!user.data.isActive) {
-      //   await api.post('user/activation', {
-      //     email: data.email,
-      //   });
-      //   setActivationMessage(true);
-      //   return addToast({
-      //     type: 'info',
-      //     title: 'Ativação de perfil',
-      //     description:
-      //       'Enviamos ao seu e-mail o link para a ativação da sua conta.
-      //  Este é um procedimento de segurança!',
-      //   });
-      // }
-
       return await signIn({
         email: data.email,
         password: data.password,
@@ -91,12 +87,6 @@ const SignIn: React.FC = () => {
       formRef.current?.setErrors(error);
       }
       return Alert.alert('Erro na autenticação', 'Tente novamente!');
-
-      //   return addToast({
-      //     type: 'error',
-      //     title: 'Erro no cadastro',
-      //     description: 'Ocorreu um erro ao fazer o cadastro, tente novamente.',
-      //   });
     } finally {
       setLoading(false);
     }
@@ -130,17 +120,27 @@ const SignIn: React.FC = () => {
                 passwordInputRef.current?.focus();
               }}
             />
-            <Input
-              ref={passwordInputRef}
-              name="password"
-              autoCapitalize="none"
-              icon="lock"
-              placeholder="Senha"
-              secureTextEntry
-              returnKeyType="send"
-              onSubmitEditing={() => formRef.current?.submitForm()}
-            />
-
+            <PasswordField>
+              <Input
+                ref={passwordInputRef}
+                name="password"
+                autoCapitalize="none"
+                icon="lock"
+                placeholder="Senha"
+                secureTextEntry={securePassword}
+                returnKeyType="send"
+                onSubmitEditing={() => formRef.current?.submitForm()}
+              />
+              <PasswordSecureButton
+                onPress={handleSecurePassword}
+              >
+                {securePassword ? (
+                  <EyeIcon name="eye-off" />
+                ) : (
+                  <EyeIcon name="eye" />
+                )}
+              </PasswordSecureButton>
+            </PasswordField>
           </Form>
           <Button
             loading={loading}
@@ -148,7 +148,6 @@ const SignIn: React.FC = () => {
           >
             Entrar
           </Button>
-
           <ForgotPasswordButton onPress={navigateToForgotPassword}>
             <ForgotPasswordText>
               Esqueci minha senha

@@ -22,6 +22,9 @@ import {
   Icon,
   BackToSignInButton,
   BackToSignInText,
+  EyeIcon,
+  PasswordField,
+  PasswordSecureButton,
 } from './styles';
 import getValidationErrors from '../../../../utils/getValidationErros';
 
@@ -40,6 +43,16 @@ const SignUp: React.FC = () => {
   const navigation = useNavigation();
 
   const [loading, setLoading] = useState(false);
+  const [securePassword, setSecurePassword] = useState(false);
+  const [securePasswordConfirmation, setSecurePasswordConfirmation] = useState(false);
+
+  function handleSecurePassword() {
+    setSecurePassword(!securePassword);
+  }
+
+  function handleSecurePasswordConfirmation() {
+    setSecurePasswordConfirmation(!securePasswordConfirmation);
+  }
 
   const navigateToSignIn = useCallback(() => {
     navigation.navigate('SignIn');
@@ -132,29 +145,52 @@ const SignUp: React.FC = () => {
                 passwordInputRef.current?.focus();
               }}
             />
-            <Input
-              ref={passwordInputRef}
-              autoCapitalize="none"
-              name="password"
-              icon="lock"
-              placeholder="Senha"
-              secureTextEntry
-              returnKeyType="next"
-              onSubmitEditing={() => passwordConfirmationInputRef.current?.focus()}
-              textContentType="newPassword"
-            />
-            <Input
-              ref={passwordConfirmationInputRef}
-              autoCapitalize="none"
-              name="passwordConfirmation"
-              icon="lock"
-              placeholder="Senha"
-              secureTextEntry
-              returnKeyType="send"
-              onSubmitEditing={() => formRef.current?.submitForm()}
-              textContentType="newPassword"
-            />
+            <PasswordField>
+              <Input
+                ref={passwordInputRef}
+                autoCapitalize="none"
+                name="password"
+                icon="lock"
+                placeholder="Senha"
+                secureTextEntry={securePassword}
+                returnKeyType="next"
+                onSubmitEditing={() => passwordConfirmationInputRef.current?.focus()}
+                textContentType="newPassword"
+              />
 
+              <PasswordSecureButton
+                onPress={handleSecurePassword}
+              >
+                {securePassword ? (
+                  <EyeIcon name="eye-off" />
+                ) : (
+                  <EyeIcon name="eye" />
+                )}
+              </PasswordSecureButton>
+            </PasswordField>
+
+            <PasswordField>
+              <Input
+                ref={passwordConfirmationInputRef}
+                autoCapitalize="none"
+                name="passwordConfirmation"
+                icon="lock"
+                placeholder="Senha"
+                secureTextEntry={securePasswordConfirmation}
+                returnKeyType="send"
+                onSubmitEditing={() => formRef.current?.submitForm()}
+                textContentType="newPassword"
+              />
+              <PasswordSecureButton
+                onPress={handleSecurePasswordConfirmation}
+              >
+                {securePasswordConfirmation ? (
+                  <EyeIcon name="eye-off" />
+                ) : (
+                  <EyeIcon name="eye" />
+                )}
+              </PasswordSecureButton>
+            </PasswordField>
           </Form>
           <Button
             loading={loading}

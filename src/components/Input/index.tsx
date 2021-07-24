@@ -23,7 +23,7 @@ interface InputValueReference {
   value: string;
 }
 
-interface InputRefProps {
+export interface InputRefProps {
   focus(): void;
 }
 

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useEffect } from 'react';
 import { useMyEvent } from '../../../../hooks/myEvent';
 import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
 
@@ -10,11 +11,10 @@ import {
   BudgetInfo,
 } from './styles';
 
-const MainMenu: React.FC = () => {
+export function MainMenu() {
   const {
     guests,
     confirmedGuests,
-    eventInfo,
     hiredSuppliers,
     notHiredSuppliers,
     totalEventCost,
@@ -23,6 +23,7 @@ const MainMenu: React.FC = () => {
     eventTasks,
     handleBudgetWindow,
     eventBudget,
+    calculateTotalEventCost,
   } = useMyEvent();
 
   const guestsInfo = useMemo(() => `${confirmedGuests} / ${guests.length}`, [confirmedGuests, guests]);
@@ -37,11 +38,11 @@ const MainMenu: React.FC = () => {
     [hiredSuppliers, notHiredSuppliers]);
 
   const financialInfo = useMemo(() => {
-    if (eventInfo && eventInfo.budget) {
-      return `${Math.round((totalEventCost / eventInfo.budget)) * 100} %`;
+    if (eventBudget && eventBudget.budget) {
+      return `${Math.round((totalEventCost / Number(eventBudget.budget)) * 100)} %`;
     }
     return '0 %';
-  }, [totalEventCost, eventInfo]);
+  }, [totalEventCost, eventBudget]);
 
   const tasksInfo = useMemo(() => {
     if (eventTasks && eventTasks.length > 0) {
@@ -49,6 +50,10 @@ const MainMenu: React.FC = () => {
       return `${finnishedTasks} / ${eventTasks.length}`;
     }
   }, [eventTasks]);
+
+  useEffect(() => {
+    calculateTotalEventCost();
+  }, []);
 
   return (
     <Container horizontal>
@@ -128,5 +133,3 @@ const MainMenu: React.FC = () => {
     </Container>
   );
 };
-
-export default MainMenu;

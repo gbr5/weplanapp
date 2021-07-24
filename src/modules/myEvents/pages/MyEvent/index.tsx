@@ -1,16 +1,27 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import { useMyEvent } from '../../../../hooks/myEvent';
+import { useEventTasks } from '../../../../hooks/eventTasks';
+import { useEventSuppliers } from '../../../../hooks/eventSuppliers';
+import { useNote } from '../../../../hooks/notes';
+import { useTransaction } from '../../../../hooks/transactions';
 
 import IEventTaskDTO from '../../../../dtos/IEventTaskDTO';
 import INoteDTO from '../../../../dtos/INoteDTO';
 
-import MainMenu from '../../components/MainMenu';
+import { SelectSupplierCategory } from '../../components/SuppliersComponents/SelectSupplierCategory';
+import { SelectSupplierSubCategory } from '../../components/SuppliersComponents/SelectSupplierSubCategory';
+import NewSupplierForm from '../../components/SuppliersComponents/NewSupplierForm';
+import { BudgetWindow } from '../../components/BudgetWindow';
+import { CreateSupplierTransactionAgreement } from '../../components/SuppliersComponents/CreateSupplierTransactionAgreement';
+import { FinancialSection } from '../../components/FinancialComponents/FinancialSection';
+import { CreateSupplierTransactions } from '../../components/SuppliersComponents/CreateSupplierTransactions';
+import { NewEventSupplierTransactionAgreementConfirmation } from '../../components/SuppliersComponents/NewEventSupplierTransactionAgreementConfirmation';
+import { MainMenu } from '../../components/MainMenu';
 import NewGuestForm from '../../components/EventGuestComponents/NewGuestForm';
 import PageHeader from '../../../../components/PageHeader';
 import GuestsSection from '../../components/EventGuestComponents/GuestsSection';
 import { TasksSection } from '../../components/EventTaskComponents/TasksSection';
-import { useEventTasks } from '../../../../hooks/eventTasks';
 import { TextInputForm } from '../../../../components/TextInputForm';
 import { EditTaskPriorityWindow } from '../../components/EventTaskComponents/EditTaskPriorityWindow';
 import { EditTaskStatusWindow } from '../../components/EventTaskComponents/EditTaskStatusWindow';
@@ -19,7 +30,6 @@ import { TimePickerWindow } from '../../../../components/TimePickerWindow';
 import { EventTaskNotesWindow } from '../../components/EventTaskComponents/EventTaskNotesWindow';
 import NewTaskForm from '../../components/EventTaskComponents/NewTaskForm';
 import ShortConfirmationWindow from '../../../../components/ShortConfirmationWindow';
-import { useNote } from '../../../../hooks/notes';
 import { EditNoteWindow } from '../../../../components/EditNoteWindow';
 import { SuppliersSection } from '../../components/SuppliersComponents/SuppliersSection';
 
@@ -30,21 +40,16 @@ import {
   DashboardButton,
   BodyContainer,
 } from './styles';
-import { useEventSuppliers } from '../../../../hooks/eventSuppliers';
-import { SelectSupplierCategory } from '../../components/SuppliersComponents/SelectSupplierCategory';
-import { SelectSupplierSubCategory } from '../../components/SuppliersComponents/SelectSupplierSubCategory';
-import NewSupplierForm from '../../components/SuppliersComponents/NewSupplierForm';
-import { BudgetWindow } from '../../components/BudgetWindow';
 
 const MyEvent: React.FC = () => {
   const {
-    selectedEvent,
     currentSection,
+    selectedEvent,
+    selectedSupplier,
     selectEventSection,
     selectedTask,
     selectEventTask,
     budgetWindow,
-    handleBudgetWindow,
   } = useMyEvent();
   const {
     loading,
@@ -72,12 +77,21 @@ const MyEvent: React.FC = () => {
     deleteTask,
   } = useEventTasks();
   const {
+    addSupplierWindow,
     supplierCategoryWindow,
     supplierSubCategoryWindow,
-    addSupplierWindow,
+    createSupplierTransactionAgreementWindow,
     handleAddSupplierWindow,
+    createSupplierTransactionsWindow,
   } = useEventSuppliers();
   const { editNoteWindow, selectNote, handleEditNoteWindow } = useNote();
+  const {
+    handleSelectedDateWindow,
+    handleSelectedDate,
+    selectedDateWindow,
+    selectedDate,
+    newEventSupplierTransactionAgreement,
+  } = useTransaction();
 
   const [newGuestForm, setNewGuestForm] = useState(false);
 
@@ -255,6 +269,30 @@ const MyEvent: React.FC = () => {
         <SelectSupplierSubCategory />
       )}
 
+      {createSupplierTransactionAgreementWindow &&
+        selectedSupplier &&
+        selectedSupplier.id && (
+          <CreateSupplierTransactionAgreement />
+        )}
+
+      {createSupplierTransactionsWindow &&
+        selectedSupplier &&
+        selectedSupplier.id && (
+          <CreateSupplierTransactions />
+        )}
+
+      {selectedDateWindow && (
+        <DatePickerWindow
+          closeWindow={handleSelectedDateWindow}
+          loading={loading}
+          selectDate={handleSelectedDate}
+          selectedDate={selectedDate}
+        />
+      )}
+      {newEventSupplierTransactionAgreement && (
+        <NewEventSupplierTransactionAgreementConfirmation />
+      )}
+
       <Container>
         <PageHeader>
           <DashboardButton onPress={() => selectEventSection('Tasks')}>
@@ -274,6 +312,9 @@ const MyEvent: React.FC = () => {
             )}
             {currentSection === 'Suppliers' && (
               <SuppliersSection />
+            )}
+            {currentSection === 'Financial' && (
+              <FinancialSection />
             )}
           </BodyContainer>
         </Body>

@@ -2,6 +2,7 @@ import React, {
   useContext,
   createContext,
   useState,
+  useCallback,
 } from 'react';
 
 import api from '../services/api';
@@ -16,8 +17,10 @@ import IEventSupplierDTO from '../dtos/IEventSupplierDTO';
 import IEventDTO from '../dtos/IEventDTO';
 import IEventTaskDTO from '../dtos/IEventTaskDTO';
 import IEventBudgetDTO from '../dtos/IEventBudgetDTO';
+import ITransactionDTO from '../dtos/ITransactionDTO';
 
 interface MyEventContextType {
+  eventFinancialSubSection: string;
   budgetWindow: boolean;
   loading: boolean;
   eventBudget: IEventBudgetDTO;
@@ -28,6 +31,7 @@ interface MyEventContextType {
   eventSuppliers: IEventSupplierDTO[];
   hiredSuppliers: IEventSupplierDTO[];
   notHiredSuppliers: IEventSupplierDTO[];
+  selectedSupplier: IEventSupplierDTO;
   eventTasks: IEventTaskDTO[];
   selectedTask: IEventTaskDTO;
   guests: IEventGuestDTO[];
@@ -41,11 +45,13 @@ interface MyEventContextType {
   totalEventCost: number;
   isOwner: boolean;
   currentSection: string;
+  handleEventFinancialSubSection: (data: string) => void;
   handleBudgetWindow: () => void;
   selectEvent: (event: IEventDTO) => void;
   getEventGuests: (eventId: string) => Promise<void>;
   selectEventTask: (task: IEventTaskDTO) => void;
   getEventTasks: (eventId: string) => Promise<IEventTaskDTO[]>;
+  selectSupplier: (supplier: IEventSupplierDTO) => void;
   getEventSuppliers: (event_id: string) => Promise<void>;
   getEventInfo: (event_id: string) => Promise<void>;
   selectGuest: (guest: IEventGuestDTO) => void;
@@ -62,6 +68,7 @@ const MyEventContext = createContext({} as MyEventContextType);
 
 const MyEventProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
+  const [eventFinancialSubSection, setEventFinancialSubSection] = useState('Main');
   const [loading, setLoading] = useState(false);
   const [budgetWindow, setBudgetWindow] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({} as IEventDTO);
@@ -85,6 +92,27 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [currentSection, setCurrentSection] = useState('Tasks');
   const [selectedTask, setSelectedTask] = useState({} as IEventTaskDTO);
   const [eventBudget, setEventBudget] = useState({} as IEventBudgetDTO);
+  const [selectedSupplier, setSelectedSupplier] = useState({} as IEventSupplierDTO);
+
+  const calculateTotalEventCost = useCallback(() => {
+    const totalCost: number = hiredSuppliers
+      .map((supplier) => {
+        let cost = 0;
+        if (supplier.transactionAgreements) {
+          cost = supplier.transactionAgreements
+            .map((agreement) => Number(agreement.amount))
+            .reduce((a, b) => a + b, 0);
+        }
+        return cost;
+      })
+      .reduce((a, b) => a + b, 0);
+    setTotalEventCost(totalCost);
+  }, [hiredSuppliers]);
+
+
+  function handleEventFinancialSubSection(data: string) {
+    setEventFinancialSubSection(data);
+  }
 
   function unsetEventVariables() {
     setEventInfo({} as IEventInfoDTO);
@@ -104,6 +132,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     setAvailableNumberOfGuests(0);
     setEventTasks([]);
     setSelectedTask({} as IEventTaskDTO);
+    setSelectedSupplier({} as IEventSupplierDTO);
   }
 
   function handleBudgetWindow() {
@@ -128,8 +157,14 @@ const MyEventProvider: React.FC = ({ children }) => {
       setHiredSuppliers(
         response.data.filter((selected) => selected.isHired),
       );
+      if (selectedSupplier && selectedSupplier.id) {
+        const updatedSupplier = response.data.find(supplier => supplier.id === selectedSupplier.id);
+        updatedSupplier && setSelectedSupplier(updatedSupplier);
+      }
     } catch (err) {
       throw new Error(err);
+    } finally {
+      calculateTotalEventCost();
     }
   }
 
@@ -258,22 +293,6 @@ const MyEventProvider: React.FC = ({ children }) => {
     }
   }
 
-
-  function calculateTotalEventCost() {
-    const totalCost: number = hiredSuppliers
-      .map((supplier) => {
-        let cost = 0;
-        if (supplier.transactionAgreements) {
-          cost = supplier.transactionAgreements
-            .map((agreement) => Number(agreement.amount))
-            .reduce((a, b) => a + b, 0);
-        }
-        return cost;
-      })
-      .reduce((a, b) => a + b, 0);
-    setTotalEventCost(totalCost);
-  }
-
   function selectEvent(data: IEventDTO) {
     if (data.id !== selectedEvent.id) {
       unsetEventVariables();
@@ -304,10 +323,15 @@ const MyEventProvider: React.FC = ({ children }) => {
     setSelectedGuest(guest);
   }
 
+  function selectSupplier(supplier: IEventSupplierDTO) {
+    setSelectedSupplier(supplier);
+  }
+
   return (
     <MyEventContext.Provider
       value={{
         loading,
+        eventFinancialSubSection,
         budgetWindow,
         eventBudget,
         getEvent,
@@ -337,6 +361,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         totalEventCost,
         isOwner,
         currentSection,
+        handleEventFinancialSubSection,
         handleBudgetWindow,
         selectEvent,
         selectGuest,
@@ -345,6 +370,8 @@ const MyEventProvider: React.FC = ({ children }) => {
         selectEventTask,
         getEventInfo,
         selectedTask,
+        selectSupplier,
+        selectedSupplier,
       }}
     >
       {children}

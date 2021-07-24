@@ -57,4 +57,20 @@ export const CreateAccountText = styled.Text`
 export const Icon = styled(FeatherIcon)`
   color: ${({ theme }) => theme.color.primary};
   margin-right: 16px;
+  font-size: ${RFValue(20)}px;
+`;
+
+export const PasswordField = styled.View`
+`;
+
+export const PasswordSecureButton = styled(BorderlessButton)`
+  position: absolute;
+  top: 20px;
+  right: 8px;
+`;
+
+export const EyeIcon = styled(FeatherIcon)`
+  color: ${({ theme }) => theme.color.text1};
+  margin-right: 16px;
+  font-size: ${RFValue(30)}px;
 `;
