@@ -7,6 +7,12 @@ export const Container = styled.View`
   flex: 1;
 `;
 
+export const TitleButton = styled(BorderlessButton)`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(32)}px;
@@ -15,7 +21,7 @@ export const Title = styled.Text`
   margin: 0px 0 16px;
 `;
 
-export const FirstSection = styled.ScrollView`
+export const FirstSection = styled.View`
   width: 100%;
 `;
 
@@ -88,9 +94,10 @@ export const SectionButton = styled.ScrollView`
 `;
 
 export const MenuButton = styled(BorderlessButton)`
-  width: 148px;
+  width: 160px;
+  height: 104px;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.color.secondary_light};
+  background-color: ${({ theme }) => theme.color.secondary};
   margin: 0 8px;
   align-items: center;
   justify-content: center;
@@ -99,13 +106,14 @@ export const MenuButton = styled(BorderlessButton)`
 
 export const ButtonTitle = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(16)}px;
-  color: ${({ theme }) => theme.color.text1};
+  font-size: ${RFValue(18)}px;
+  color: ${({ theme }) => theme.color.text6};
   text-align: center;
   line-height: 26px;
+  margin-bottom: 8px;
 `;
 
 export const MenuIcon = styled(Feather)`
   font-size: ${RFValue(24)}px;
-  color: ${({ theme }) => theme.color.text1};
+  color: ${({ theme }) => theme.color.primary};
 `;

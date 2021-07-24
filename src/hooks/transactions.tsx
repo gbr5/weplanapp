@@ -70,7 +70,7 @@ interface TransactionContextType {
 const TransactionContext = createContext({} as TransactionContextType);
 
 const TransactionProvider: React.FC = ({ children }) => {
-  const { getEventSuppliers, selectedSupplier, selectedEvent } = useMyEvent();
+  const { getEventSuppliers, selectedSupplier, selectedEvent, eventSuppliers } = useMyEvent();
   const {
     selectSupplierTransactionAgreement,
     handleCreateSupplierTransactionAgreementWindow,
@@ -103,28 +103,30 @@ const TransactionProvider: React.FC = ({ children }) => {
       setEventDebitTransactions(debitTransactions.data);
       setEventTotalCredit(
         creditTransactions.data
-          .map(transaction => transaction.amount)
+          .map(transaction => Number(transaction.amount))
           .reduce((accumulator, currentValue) => {
+            console.log('accumulator + currentValue', { accumulator }, { currentValue }, accumulator + currentValue);
             return accumulator + currentValue;
           }, 0)
       );
       const entries = creditTransactions.data
         .filter(transaction => transaction.isPaid)
-        .map(transaction => transaction.amount)
+        .map(transaction => Number(transaction.amount))
         .reduce((accumulator, currentValue) => {
           return accumulator + currentValue;
         }, 0);
       setEventTotalExecutedCredit(entries);
       setEventTotalDebit(
         debitTransactions.data
-          .map(transaction => transaction.amount)
-          .reduce((accumulator, currentValue) => {
-            return accumulator + currentValue;
+        .map(transaction => Number(transaction.amount))
+        .reduce((accumulator, currentValue) => {
+          console.log('accumulator + currentValue', { accumulator }, { currentValue }, accumulator + currentValue);
+          return accumulator + currentValue;
           }, 0)
       );
       const spent = debitTransactions.data
         .filter(transaction => transaction.isPaid)
-        .map(transaction => transaction.amount)
+        .map(transaction => Number(transaction.amount))
         .reduce((accumulator, currentValue) => {
           return accumulator + currentValue;
         }, 0);
@@ -137,7 +139,7 @@ const TransactionProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     getAllEventTransactions();
-  }, [getAllEventTransactions, selectedEvent]);
+  }, [getAllEventTransactions, eventSuppliers, selectedEvent]);
 
   function handleNewEventSupplierTransactionAgreement() {
     setNewEventSupplierTransactionAgreement(!newEventSupplierTransactionAgreement);

@@ -43,7 +43,7 @@ export function EventTaskNotesWindow({
       closeWindow={closeWindow}
       top="5%"
       left="0%"
-      height="95%"
+      height="90%"
       width="100%"
       zIndex={15}
     >

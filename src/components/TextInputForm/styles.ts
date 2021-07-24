@@ -4,6 +4,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   justify-content: space-between;
+  width: 100%;
 `;
 
 export const ButtonContainer = styled.View`
@@ -14,8 +15,16 @@ export const ButtonContainer = styled.View`
   margin-top: 16px;
 `;
 
+export const CancelButton = styled(RectButton)`
+  padding: 16px 4px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  width: 45%;
+  background-color: ${({ theme }) => theme.color.atention_light};
+`;
 export const Button = styled(RectButton)`
-  padding: 8px 4px;
+  padding: 16px 4px;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
@@ -24,9 +33,9 @@ export const Button = styled(RectButton)`
 `;
 
 export const ButtonText = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.roboto};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(14)}px;
+  font-size: ${RFValue(20)}px;
 `;
 
 export const Title = styled.Text`

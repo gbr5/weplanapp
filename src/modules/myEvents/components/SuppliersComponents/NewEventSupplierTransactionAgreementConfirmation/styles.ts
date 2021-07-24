@@ -47,7 +47,7 @@ export const SubText = styled.Text`
 export const EditText = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
-  color: ${({ theme }) => theme.color.text1};
+  color: ${({ theme }) => theme.color.text6};
 `;
 
 export const ButtonContainer = styled.View`
@@ -61,7 +61,17 @@ export const EndButton = styled(RectButton)`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.primary};
   flex-direction: row;
-  padding: 16px;
+  padding: 8px;
+  width: 45%;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const CancelButton = styled(RectButton)`
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.atention_light};
+  flex-direction: row;
+  padding: 8px;
   width: 45%;
   align-items: center;
   justify-content: center;
@@ -69,7 +79,7 @@ export const EndButton = styled(RectButton)`
 
 export const EditButton = styled(RectButton)`
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.color.text4};
+  background-color: ${({ theme }) => theme.color.secondary};
   flex-direction: row;
   padding: 16px;
   width: 100%;

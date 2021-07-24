@@ -1,6 +1,5 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
@@ -11,6 +10,7 @@ import { EventTransactionAgreementSection } from '../EventTransactionAgreementSe
 
 import {
   Container,
+  TitleButton,
   Title,
   FirstSection,
   BudgetSection,
@@ -32,9 +32,10 @@ export function FinancialSection() {
     eventBudget,
     handleBudgetWindow,
     eventFinancialSubSection,
+    handleEventFinancialSubSection,
     totalEventCost,
   } = useMyEvent();
-  const { eventTotalExecutedCredit, getAllEventTransactions } = useTransaction();
+  const { eventTotalExecutedDebit, getAllEventTransactions } = useTransaction();
 
   useEffect(() => {
     getAllEventTransactions();
@@ -42,8 +43,12 @@ export function FinancialSection() {
 
   return (
     <Container>
-      <Title>Financeiro</Title>
-      {eventFinancialSubSection === 'EventTransactionAgreementsSection' && (
+      <TitleButton
+        onPress={() => handleEventFinancialSubSection('Main')}
+      >
+        <Title>Financeiro</Title>
+      </TitleButton>
+      {eventFinancialSubSection === 'TransactionAgreements' && (
         <EventTransactionAgreementSection />
       )}
       {eventFinancialSubSection === 'Main' && (
@@ -68,30 +73,55 @@ export function FinancialSection() {
           <Resume>
             <ResumeTitle>Valores Executados:</ResumeTitle>
             <ResumeUnderline />
-            <ResumeValue>{formatBrlCurrency(eventTotalExecutedCredit)}</ResumeValue>
+            <ResumeValue>{formatBrlCurrency(eventTotalExecutedDebit)}</ResumeValue>
           </Resume>
-          <SectionButton
-            horizontal
-          >
-            <MenuButton>
-              <ButtonTitle>Contratos</ButtonTitle>
-              <MenuIcon name="file-text" />
-            </MenuButton>
-            <MenuButton>
-              <ButtonTitle>Transações</ButtonTitle>
-              <MenuIcon name="dollar-sign" />
-            </MenuButton>
-            <MenuButton>
-              <ButtonTitle>Fornecedores</ButtonTitle>
-              <MenuIcon name="play" />
-            </MenuButton>
-            <MenuButton>
-              <ButtonTitle>Membros</ButtonTitle>
-              <MenuIcon name="users" />
-            </MenuButton>
-          </SectionButton>
+
         </FirstSection>
       )}
+      <SectionButton
+        horizontal
+      >
+        <MenuButton
+          onPress={() => handleEventFinancialSubSection('Main')}
+        >
+          <ButtonTitle>
+            Principal
+          </ButtonTitle>
+          <MenuIcon name="home" />
+        </MenuButton>
+        <MenuButton
+          onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
+        >
+          <ButtonTitle>
+            Contratos
+          </ButtonTitle>
+          <MenuIcon name="file-text" />
+        </MenuButton>
+        <MenuButton
+          onPress={() => handleEventFinancialSubSection('Transactions')}
+        >
+          <ButtonTitle>
+            Transações
+          </ButtonTitle>
+          <MenuIcon name="dollar-sign" />
+        </MenuButton>
+        <MenuButton
+          onPress={() => handleEventFinancialSubSection('Suppliers')}
+        >
+          <ButtonTitle>
+            Fornecedores
+          </ButtonTitle>
+          <MenuIcon name="play" />
+        </MenuButton>
+        <MenuButton
+          onPress={() => handleEventFinancialSubSection('Members')}
+        >
+          <ButtonTitle>
+            Membros
+          </ButtonTitle>
+          <MenuIcon name="users" />
+        </MenuButton>
+      </SectionButton>
     </Container>
   );
 }

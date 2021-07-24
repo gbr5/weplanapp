@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import { TextInput } from 'react-native';
+import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
@@ -20,6 +20,8 @@ import {
   SupplierCategoryButton,
   SupplierCategoryButtonText,
 } from './styles';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../CreateSupplierTransactionAgreement/styles';
+import ISupplierSubCategoryDTO from '../../../../../dtos/ISupplierSubCategoryDTO';
 
 interface IFormData {
   name: string;
@@ -37,6 +39,8 @@ const NewSupplierForm: React.FC<IProps> = ({
     loading,
     selectedSupplierSubCategory,
     handleSupplierCategoryWindow,
+    selectSupplierCategory,
+    selectSupplierSubCategory,
   } = useEventSuppliers();
   const formRef = useRef<FormHandles>(null);
 
@@ -50,40 +54,50 @@ const NewSupplierForm: React.FC<IProps> = ({
       supplier_sub_category: selectedSupplierSubCategory.sub_category,
       weplanUser,
     });
+    selectSupplierCategory('')
+    selectSupplierSubCategory({} as ISupplierSubCategoryDTO);
     closeWindow();
   }, [closeWindow, createEventSuppliers]);
 
-  function handleSupplierIsHired(data: boolean) {
-    setIsHired(data)
+  function handleSupplierIsHired() {
+    setIsHired(!isHired);
   }
 
-  function handleSupplierWeplanUser(data: boolean) {
-    setWeplanUser(data)
+  function handleSupplierWeplanUser() {
+    setWeplanUser(!weplanUser);
   }
 
   return (
     <WindowContainer
       closeWindow={closeWindow}
-      height="80%"
-      left="0%"
-      top="10%"
-      width="100%"
+      top="5%"
+      left="2%"
+      height="72%"
+      width="96%"
       zIndex={11}
     >
       <Container>
         <Title>Novo(a) Fornecedor(a)</Title>
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <FormQuestion>Nome</FormQuestion>
-          <Input
-            name="name"
-            autoCorrect={false}
-            autoCapitalize="words"
-            icon="user"
-            placeholder="Nome"
-            returnKeyType="next"
-          />
-        </Form>
+        <KeyboardAvoidingVueContainer
+          style={{ flex: 1, width: '100%' }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          enabled
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <FormQuestion>Nome</FormQuestion>
+            <Input
+              name="name"
+              autoCorrect={false}
+              autoCapitalize="words"
+              icon="user"
+              placeholder="Nome"
+              returnKeyType="next"
+            />
+          </Form>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingVueContainer>
         <BooleanField>
           <BooleanButtonTitle>Contratado?</BooleanButtonTitle>
           <BooleanButton
@@ -117,7 +131,7 @@ const NewSupplierForm: React.FC<IProps> = ({
               selectedSupplierSubCategory
                 && selectedSupplierSubCategory.id
                   ? selectedSupplierSubCategory.sub_category
-                  : 'Escolha a categoria'
+                  : 'Defina a categoria'
             }
           </SupplierCategoryButtonText>
         </SupplierCategoryButton>

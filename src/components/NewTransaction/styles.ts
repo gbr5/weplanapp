@@ -24,6 +24,7 @@ export const TextContainer = styled.View`
 `;
 
 export const Amount = styled.Text<IAmountProps>`
+  width: 50%;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(20)}px;

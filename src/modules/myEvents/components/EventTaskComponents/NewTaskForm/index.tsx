@@ -17,6 +17,7 @@ import {
   DateText,
   DateButton,
   TimeText,
+  Underline,
 } from './styles';
 
 import { SelectTaskPriorityComponent } from '../SelectTaskPriorityComponent';
@@ -69,13 +70,14 @@ const NewTaskForm: React.FC<IProps> = ({
       closeWindow={closeWindow}
       top="10%"
       left="2%"
-      height="65%"
+      height="75%"
       width="96%"
       zIndex={11}
     >
       <Container>
-        <Title>Nova Tarefa</Title>
         <Form ref={formRef} onSubmit={handleSubmit}>
+          <Title>Nova Tarefa</Title>
+          <Underline />
           <FormQuestion>Título</FormQuestion>
           <Input
             name="title"

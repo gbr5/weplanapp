@@ -7,6 +7,7 @@ export const Container = styled.View`
   align-items: center;
   flex: 1;
   margin: 40px 0;
+  width: 100%;
 `;
 
 export const Title = styled.Text`
@@ -39,16 +40,19 @@ export const Icon = styled(Feather)`
 `;
 
 export const SupplierCategoryButton = styled(RectButton)`
+  margin-top: 24px;
   padding: 16px;
+  width: 100%;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.color.text4};
+  background-color: ${({ theme }) => theme.color.secondary};
 `;
 
 export const SupplierCategoryButtonText = styled.Text`
-  width: 90%;
+  width: 100%;
+  text-align: center;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
-  color: ${({ theme }) => theme.color.text1};
+  color: ${({ theme }) => theme.color.text6};
 `;
 
 export const BooleanButtonTitle = styled.Text`

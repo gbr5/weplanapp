@@ -4,23 +4,29 @@ import React, {
   useRef,
   useMemo,
 } from 'react';
+
 import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import { addMonths } from 'date-fns';
 
+import { useEvent } from '../../../../hooks/event';
+import { useMyEvent } from '../../../../hooks/myEvent';
+
+import IEventDTO from '../../../../dtos/IEventDTO';
+
 import Button from '../../../../components/Button';
 import Input from '../../../../components/Input';
 import WindowContainer from '../../../../components/WindowContainer';
-import IEventDTO from '../../../../dtos/IEventDTO';
-import { useEvent } from '../../../../hooks/event';
-import { useMyEvent } from '../../../../hooks/myEvent';
 import { SelectEventType } from '../SelectEventType';
 
 import {
   Container,
   Title,
+  Underline,
+  QuestionText,
 } from './styles';
+import theme from '../../../../global/styles/theme';
 
 interface IProps {
   handleCloseWindow: () => void;
@@ -88,6 +94,7 @@ const CreateEvent: React.FC<IProps> = ({
     >
       <Container>
         <Title>Novo Evento</Title>
+        <Underline />
 
         {selectEventTypeWindow ? (
           <SelectEventType
@@ -102,20 +109,22 @@ const CreateEvent: React.FC<IProps> = ({
               {eventType}
             </Button>
             <Form ref={formRef} onSubmit={handleCreateEvent}>
+              <QuestionText>Defina o nome do evento</QuestionText>
               <Input
+                placeholderTextColor={theme.color.secondary}
                 name="name"
                 autoCapitalize="words"
-                placeholder="Defina o nome do evento"
+                placeholder="Nome do Evento"
                 returnKeyType="send"
                 onSubmitEditing={() => formRef.current?.submitForm()}
               />
-              <Button
-                loading={loading}
-                onPress={() => formRef.current?.submitForm()}
-              >
-                Criar evento
-              </Button>
             </Form>
+            <Button
+              loading={loading}
+              onPress={() => formRef.current?.submitForm()}
+            >
+              Criar evento
+            </Button>
           </>
         )}
       </Container>

@@ -2,12 +2,16 @@ import React, { useCallback, useRef } from 'react';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
-import { Alert } from 'react-native';
+import { Alert, Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
+import { addDays } from 'date-fns';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
+import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import getValidationErrors from '../../../../../utils/getValidationErros';
+
+import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 
 import WindowContainer from '../../../../../components/WindowContainer';
 import Button from '../../../../../components/Button';
@@ -16,13 +20,14 @@ import Input, { InputRefProps } from '../../../../../components/Input';
 import {
   Container,
   Title,
+  SupplierContainer,
   SupplierName,
+  KeyboardAvoidingVueContainer,
+  FormContainer,
   Question,
   Underline,
+  SupplierText,
 } from './styles';
-import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
-import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
-import { addDays } from 'date-fns';
 
 interface IFormData {
   amount: string;
@@ -102,7 +107,7 @@ export function CreateSupplierTransactionAgreement() {
     <WindowContainer
       closeWindow={closeWindow}
       zIndex={15}
-      top="10%"
+      top="5%"
       left="2%"
       height="75%"
       width="96%"
@@ -110,35 +115,51 @@ export function CreateSupplierTransactionAgreement() {
       <Container>
         <Title>Novo Contrato</Title>
         <Underline />
-        <SupplierName>Fornecedor: {selectedSupplier.name}</SupplierName>
+        <KeyboardAvoidingVueContainer
+          style={{ flex: 1, width: '100%' }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          enabled
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <FormContainer
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flex: 1 }}
+          >
+            <SupplierContainer>
+              <SupplierText>Fornecedor: </SupplierText>
+              <SupplierName>{selectedSupplier.name}</SupplierName>
+            </SupplierContainer>
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <Question>Valor do Contrato</Question>
-          <Input
-            name="amount"
-            keyboardType="number-pad"
-            autoCorrect={false}
-            autoCapitalize="none"
-            icon="dollar-sign"
-            returnKeyType="next"
-            onSubmitEditing={() => {
-              numberRef.current?.focus();
-            }}
-          />
+            <Form ref={formRef} onSubmit={handleSubmit}>
+              <Question>Valor do Contrato</Question>
+              <Input
+                name="amount"
+                keyboardType="numeric"
+                autoCorrect={false}
+                autoCapitalize="none"
+                icon="dollar-sign"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  numberRef.current?.focus();
+                }}
+              />
 
-          <Question>Número de Parcelas</Question>
-          <Input
-            defaultValue="1"
-            name="number_of_installments"
-            ref={numberRef}
-            autoCorrect={false}
-            autoCapitalize="none"
-            keyboardType="number-pad"
-            icon="hash"
-            returnKeyType="send"
-            onSubmitEditing={() => formRef.current?.submitForm()}
-          />
-        </Form>
+              <Question>Número de Parcelas</Question>
+              <Input
+                defaultValue="1"
+                name="number_of_installments"
+                ref={numberRef}
+                autoCorrect={false}
+                autoCapitalize="none"
+                keyboardType="numeric"
+                icon="hash"
+                returnKeyType="send"
+                onSubmitEditing={() => formRef.current?.submitForm()}
+              />
+            </Form>
+          </FormContainer>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingVueContainer>
       </Container>
       <Button
         loading={loading}

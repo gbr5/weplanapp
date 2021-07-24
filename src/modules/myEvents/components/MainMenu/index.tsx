@@ -23,6 +23,8 @@ export function MainMenu() {
     eventTasks,
     handleBudgetWindow,
     eventBudget,
+    selectedEvent,
+    eventSuppliers,
     calculateTotalEventCost,
   } = useMyEvent();
 
@@ -53,7 +55,7 @@ export function MainMenu() {
 
   useEffect(() => {
     calculateTotalEventCost();
-  }, []);
+  }, [selectedEvent, eventSuppliers]);
 
   return (
     <Container horizontal>

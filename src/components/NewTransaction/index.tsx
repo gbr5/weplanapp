@@ -20,10 +20,12 @@ import {
 
 interface IProps {
   transaction: ICreateTransactionDTO;
+  index: string;
 }
 
 export function NewTransaction({
   transaction,
+  index,
 }: IProps) {
   const isOverdue = useMemo(() => {
     if (transaction.isPaid) return false;
@@ -35,6 +37,7 @@ export function NewTransaction({
   return (
     <Container>
       <TextContainer>
+        <DateText>{index}</DateText>
         <Amount
           isOverdue={isOverdue}
           isPaid={transaction.isPaid}

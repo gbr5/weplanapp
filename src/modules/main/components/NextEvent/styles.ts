@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   width: 100%;
-  background: ${({ theme }) => theme.color.text2};
+  background: ${({ theme }) => theme.color.secondary};
   border-radius: 8px;
   padding: 8px;
 `;
@@ -12,13 +12,14 @@ export const Label = styled.Text`
   width: 100%;
   color: ${({ theme }) => theme.color.primary};
   letter-spacing: 1px;
-  font-size: ${RFValue(18)}px;
+  font-family: ${({ theme }) => theme.fonts.roboto};
+  font-size: ${RFValue(20)}px;
   padding-left: 8px;
 `;
 
 export const LabelUnderline = styled.View`
-  width: 50%;
-  height: 1px;
+  width: 80%;
+  height: 1.5px;
   margin-left: 0;
   background-color: ${({ theme }) => theme.color.text6};
 `;

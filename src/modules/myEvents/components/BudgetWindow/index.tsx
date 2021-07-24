@@ -41,7 +41,7 @@ export function BudgetWindow() {
       zIndex={15}
       top="10%"
       left="2%"
-      height="30%"
+      height="40%"
       width="96%"
     >
       <Container

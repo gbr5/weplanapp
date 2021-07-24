@@ -23,6 +23,12 @@ import {
   Question,
   Underline,
   QuestionUnderline,
+  BackButton,
+  BackText,
+  TitleContainer,
+  ResponseText,
+  ResponseButtonText,
+  QuestionButton,
 } from './styles';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
@@ -122,9 +128,9 @@ export function CreateSupplierTransactions() {
     <WindowContainer
       closeWindow={closeWindow}
       zIndex={15}
-      top="10%"
+      top="5%"
       left="2%"
-      height="85%"
+      height="90%"
       width="96%"
     >
       {selectInstallmentSequenceWindow && (
@@ -135,16 +141,22 @@ export function CreateSupplierTransactions() {
         />
       )}
       <Container>
-        <IconButton
+        <BackButton
           onPress={handleGoBack}
         >
-          <Question>Voltar</Question>
-        </IconButton>
+          <BackText>Voltar</BackText>
+        </BackButton>
         <Title>Contrato com {selectedSupplier.name}</Title>
         <Underline />
-        <Question>Valor do Contrato: {formatBrlCurrency(newAgreementAmount)}</Question>
+        <TitleContainer>
+          <Question>Valor do Contrato: </Question>
+          <ResponseText>{formatBrlCurrency(newAgreementAmount)}</ResponseText>
+        </TitleContainer>
         <QuestionUnderline />
-        <Question>Número de Parcelas: {newAgreementInstallments}</Question>
+        <TitleContainer>
+          <Question>Número de parcelas: </Question>
+          <ResponseText>{newAgreementInstallments}</ResponseText>
+        </TitleContainer>
         <QuestionUnderline />
         {newAgreementInstallments >= 1 && (
           <>
@@ -171,27 +183,33 @@ export function CreateSupplierTransactions() {
                   : 'Data do Pagamento'
                 }
               </Question>
+              <QuestionUnderline />
 
-              <IconButton
+              <QuestionButton
                 onPress={handleSelectedDateWindow}
               >
-                <Question>{formatOnlyDate(String(selectedDate))}</Question>
-              </IconButton>
+                <ResponseButtonText>{formatOnlyDate(String(selectedDate))}</ResponseButtonText>
+              </QuestionButton>
             </DateQuestionContainer>
             {newAgreementInstallments > 1 && (
-              <IconButton
-                onPress={handleSelectInstallmentSequenceWindow}
-              >
-                {installmentSequence === `Monthly` && (
-                  <Question>{`Mensal: Todo dia ${new Date(selectedDate).getDate()}`}</Question>
-                )}
-                {installmentSequence === `Weekly` && (
-                  <Question>{`Semanal: ${dayOfWeek}`}</Question>
-                )}
-                {installmentSequence === 'Customized' && (
-                  <Question>Personalizado</Question>
-                )}
-              </IconButton>
+              <>
+                <Question>Data das próximas parcelas</Question>
+                <QuestionUnderline />
+
+                <QuestionButton
+                  onPress={handleSelectInstallmentSequenceWindow}
+                >
+                  {installmentSequence === `Monthly` && (
+                    <ResponseButtonText>{`Mensal: Todo dia ${new Date(selectedDate).getDate()}`}</ResponseButtonText>
+                  )}
+                  {installmentSequence === `Weekly` && (
+                    <ResponseButtonText>{`Semanal: ${dayOfWeek}`}</ResponseButtonText>
+                  )}
+                  {installmentSequence === 'Customized' && (
+                    <ResponseButtonText>Personalizado</ResponseButtonText>
+                  )}
+                </QuestionButton>
+              </>
             )}
           </>
         )}

@@ -2,6 +2,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import React from 'react';
 import { useRef } from 'react';
+import theme from '../../global/styles/theme';
 import Input from '../Input';
 import WindowContainer from '../WindowContainer';
 
@@ -10,6 +11,7 @@ import {
   Title,
   ButtonContainer,
   Button,
+  CancelButton,
   ButtonText,
 } from './styles';
 
@@ -52,6 +54,7 @@ export function TextInputForm({
         <Title>{title}</Title>
         <Form ref={formRef} onSubmit={handleSubmit}>
           <Input
+            placeholderTextColor={theme.color.secondary}
             name="name"
             autoCapitalize="words"
             placeholder={placeholder}
@@ -60,11 +63,11 @@ export function TextInputForm({
           />
 
           <ButtonContainer>
-            <Button
+            <CancelButton
               onPress={closeWindow}
             >
               <ButtonText>Cancelar</ButtonText>
-            </Button>
+            </CancelButton>
             <Button
               onPress={() => formRef.current?.submitForm()}
             >

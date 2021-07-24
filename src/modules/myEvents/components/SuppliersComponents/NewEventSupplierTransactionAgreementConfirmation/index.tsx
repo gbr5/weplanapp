@@ -22,6 +22,7 @@ import {
   EditText,
   EditIcon,
   SubText,
+  CancelButton,
   ButtonContainer,
 } from './styles';
 
@@ -76,9 +77,9 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
     <WindowContainer
       closeWindow={closeWindow}
       zIndex={30}
-      top="10%"
+      top="5%"
       left="2%"
-      height="85%"
+      height="90%"
       width="96%"
     >
       <Container>
@@ -94,23 +95,26 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
         <SubText>{newAgreementInstallments} parcelas de {formatBrlCurrency(newAgreementAmount/newAgreementInstallments)}</SubText>
         <TransactionContainer>
           {newTransactions.map(transaction => {
-            const findIndex = newTransactions.findIndex(thisTransaction => thisTransaction.due_date === transaction.due_date);
+            const findIndex = String(newTransactions
+              .findIndex(thisTransaction => thisTransaction.due_date === transaction.due_date)
+              + 1
+            );
             return (
-              <NewTransaction key={findIndex} transaction={transaction} />
+              <NewTransaction key={findIndex} index={findIndex} transaction={transaction} />
             );
           })}
         </TransactionContainer>
       </Container>
       <ButtonContainer>
+        <CancelButton
+          onPress={closeWindow}
+          >
+          <Value>Cancelar</Value>
+        </CancelButton>
         <EndButton
           onPress={handleSubmit}
           >
           <Value>Confirmar</Value>
-        </EndButton>
-        <EndButton
-          onPress={closeWindow}
-          >
-          <Value>Cancelar</Value>
         </EndButton>
       </ButtonContainer>
     </WindowContainer>

@@ -7,7 +7,7 @@ import IEventOwnerDTO from '../../../../dtos/IEventOwnerDTO';
 
 export const Container = styled.View`
   width: 100%;
-  background: ${({ theme }) => theme.color.text3};
+  background: ${({ theme }) => theme.color.secondary};
   border-radius: 8px;
   padding: 8px;
   margin: 16px 0;
@@ -25,8 +25,8 @@ export const SectionButton = styled(BorderlessButton)`
 export const Label = styled.Text`
   /* width: 100%; */
   color: ${({ theme }) => theme.color.primary};
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(18)}px;
+  font-family: ${({ theme }) => theme.fonts.roboto};
+  font-size: ${RFValue(20)}px;
   letter-spacing: 1px;
 `;
 

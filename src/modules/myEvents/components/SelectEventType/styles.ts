@@ -8,6 +8,8 @@ interface IButtonProps {
 
 export const Container = styled.View`
   flex: 1;
+  width: 100%;
+  margin-top: 16px;
 `;
 
 export const EventTypeButton = styled(RectButton)<IButtonProps>`
@@ -32,7 +34,7 @@ export const EventTypeButtonText = styled.Text<IButtonProps>`
 
 export const Title = styled.Text`
   padding: 5px;
-  font-size: ${RFValue(18)}px;
-  color: ${({ theme }) => theme.color.text6};
+  font-size: ${RFValue(20)}px;
+  color: ${({ theme }) => theme.color.secondary};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
