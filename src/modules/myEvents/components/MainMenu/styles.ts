@@ -5,17 +5,18 @@ interface IProps {
   isActive: boolean;
 }
 
-const menuButtonSize = RFValue(130);
+const menuButtonSize = RFValue(146);
+const heightProportion = 0.65;
 
 export const Container = styled.ScrollView`
   margin: 8px 0;
-  height: ${menuButtonSize + 2}px;
+  height: ${(menuButtonSize * heightProportion) + 2}px;
   border: 1px solid ${({ theme }) => theme.color.text6};
 `;
 
 export const MenuButton = styled.TouchableOpacity<IProps>`
   margin: 0 8px;
-  height: ${menuButtonSize}px;
+  height: ${menuButtonSize * heightProportion}px;
   width: ${menuButtonSize}px;
   border-radius: ${menuButtonSize / 5}px;
   background-color: ${({ theme }) => theme.color.text2};

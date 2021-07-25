@@ -3,6 +3,10 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 
+interface IMenuButtonProps {
+  isActive: boolean;
+}
+
 export const Container = styled.View`
   flex: 1;
 `;
@@ -93,27 +97,40 @@ export const SectionButton = styled.ScrollView`
   margin-top: 16px;
 `;
 
-export const MenuButton = styled(BorderlessButton)`
+export const MenuButton = styled(BorderlessButton)<IMenuButtonProps>`
   width: 160px;
   height: 104px;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.color.secondary};
+  background-color:
+    ${({ theme, isActive }) => isActive
+      ? theme.color.primary
+      : theme.color.secondary
+    };
   margin: 0 8px;
   align-items: center;
   justify-content: center;
   padding: 16px;
 `;
 
-export const ButtonTitle = styled.Text`
+export const ButtonTitle = styled.Text<IMenuButtonProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(18)}px;
-  color: ${({ theme }) => theme.color.text6};
+  color:
+    ${({ theme, isActive }) => isActive
+        ? theme.color.secondary
+        : theme.color.text6
+      };
   text-align: center;
   line-height: 26px;
   margin-bottom: 8px;
 `;
 
-export const MenuIcon = styled(Feather)`
+export const MenuIcon = styled(Feather)<IMenuButtonProps>`
   font-size: ${RFValue(24)}px;
-  color: ${({ theme }) => theme.color.primary};
+  color:
+    ${({ theme, isActive }) => isActive
+        ? theme.color.text1
+        : theme.color.primary
+      };
+
 `;

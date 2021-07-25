@@ -28,6 +28,7 @@ import {
   Underline,
   SupplierText,
 } from './styles';
+import theme from '../../../../../global/styles/theme';
 
 interface IFormData {
   amount: string;
@@ -135,6 +136,7 @@ export function CreateSupplierTransactionAgreement() {
               <Input
                 name="amount"
                 keyboardType="numeric"
+                placeholderTextColor={theme.color.secondary}
                 autoCorrect={false}
                 autoCapitalize="none"
                 icon="dollar-sign"
@@ -149,6 +151,7 @@ export function CreateSupplierTransactionAgreement() {
                 defaultValue="1"
                 name="number_of_installments"
                 ref={numberRef}
+                placeholderTextColor={theme.color.secondary}
                 autoCorrect={false}
                 autoCapitalize="none"
                 keyboardType="numeric"

@@ -30,7 +30,7 @@ export const Body = styled.View`
 `;
 
 export const BodyContainer = styled.View`
-  height: 80%;
+  height: 83%;
   padding-top: 8px;
   padding-bottom: 160px;
   padding: 0 16px;

@@ -10,8 +10,8 @@ interface ISupplierProps {
 export const Container = styled.View`
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) => theme.color.text6};
-  margin: 8px 0;
+  background-color: ${({ theme }) => theme.color.secondary};
+  margin: 16px 0 0;
   border-radius: 8px;
   padding: 16px 0;
   width: 100%;
@@ -20,7 +20,7 @@ export const Container = styled.View`
 export const SupplierIndex = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   font-size: ${RFValue(20)}px;
-  color: ${({ theme }) => theme.color.secondary};
+  color: ${({ theme }) => theme.color.text5};
   text-align: center;
   width: 40px;
   margin: 0 8px;
@@ -29,15 +29,15 @@ export const SupplierIndex = styled.Text`
 export const GoToSupplierButton = styled(RectButton)`
   flex-direction: row;
   align-items: center;
-  width: 85%;
+  width: 100%;
 `;
 
 export const SupplierName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
   text-align: left;
-
-  color: ${({ theme }) => theme.color.text1};
+  width: 70%;
+  color: ${({ theme }) => theme.color.text6};
 `;
 
 export const SupplierConfirmationButton = styled(BorderlessButton)<ISupplierProps>`
@@ -51,4 +51,5 @@ export const SupplierConfirmationButton = styled(BorderlessButton)<ISupplierProp
 
 export const Icon = styled(Feather)`
   font-size: ${RFValue(30)}px;
+  color: ${({ theme }) => theme.color.text5};
 `;

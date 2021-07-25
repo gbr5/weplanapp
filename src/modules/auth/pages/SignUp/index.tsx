@@ -27,6 +27,7 @@ import {
   PasswordSecureButton,
 } from './styles';
 import getValidationErrors from '../../../../utils/getValidationErros';
+import theme from '../../../../global/styles/theme';
 
 interface ISignUPFormProps {
   name: string;
@@ -124,6 +125,7 @@ const SignUp: React.FC = () => {
             <Input
               name="name"
               autoCapitalize="words"
+              placeholderTextColor={theme.color.secondary}
               icon="user"
               placeholder="Nome"
               returnKeyType="next"
@@ -133,6 +135,7 @@ const SignUp: React.FC = () => {
               textContentType="givenName"
             />
             <Input
+              placeholderTextColor={theme.color.secondary}
               ref={emailInputRef}
               autoCorrect={false}
               keyboardType="email-address"
@@ -147,6 +150,7 @@ const SignUp: React.FC = () => {
             />
             <PasswordField>
               <Input
+                placeholderTextColor={theme.color.secondary}
                 ref={passwordInputRef}
                 autoCapitalize="none"
                 name="password"
@@ -171,6 +175,7 @@ const SignUp: React.FC = () => {
 
             <PasswordField>
               <Input
+                placeholderTextColor={theme.color.secondary}
                 ref={passwordConfirmationInputRef}
                 autoCapitalize="none"
                 name="passwordConfirmation"

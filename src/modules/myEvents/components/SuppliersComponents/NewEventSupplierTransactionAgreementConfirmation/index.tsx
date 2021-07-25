@@ -79,7 +79,7 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
       zIndex={30}
       top="5%"
       left="2%"
-      height="90%"
+      height="95%"
       width="96%"
     >
       <Container>
@@ -93,6 +93,9 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
         <Underline />
         <Value>Total: {formatBrlCurrency(newAgreementAmount)}</Value>
         <SubText>{newAgreementInstallments} parcelas de {formatBrlCurrency(newAgreementAmount/newAgreementInstallments)}</SubText>
+        <SubText>Nº  |      Parcela      |  Data  |  Pago</SubText>
+        <Underline />
+
         <TransactionContainer>
           {newTransactions.map(transaction => {
             const findIndex = String(newTransactions

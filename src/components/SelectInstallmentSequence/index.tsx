@@ -3,14 +3,14 @@ import { getDay } from 'date-fns';
 
 import { useTransaction } from '../../hooks/transactions';
 
-import WindowContainer from '../WindowContainer';
-
 import {
   Container,
   ButtonTitle,
   SequenceButton,
 } from './styles';
 import { useMemo } from 'react';
+import Backdrop from '../Backdrop';
+import { useCallback } from 'react';
 
 interface IProps {
   selectedSequence: string;
@@ -35,47 +35,51 @@ export function SelectInstallmentSequence({
     if (day === 5) return 'Toda Sexta';
     return 'Sábado';
   }, [selectedDate]);
+
+  const handleSelect = useCallback((data: string) => {
+    selectSequence
+    closeWindow();
+  }, []);
   return (
-    <WindowContainer
-      closeWindow={closeWindow}
-      zIndex={35}
-      top="30%"
-      left="2%"
-      height="45%"
-      width="96%"
-    >
-    <Container>
-      <SequenceButton
-        isActive={selectedSequence === 'Monthly'}
-        onPress={() => selectSequence('Monthly')}
-      >
-        <ButtonTitle
+    <>
+      <Backdrop
+        closeFunction={closeWindow}
+        zIndex={2}
+        left="0%"
+        width="110%"
+      />
+      <Container>
+        <SequenceButton
           isActive={selectedSequence === 'Monthly'}
+          onPress={() => selectSequence('Monthly')}
         >
-          {`Mensal: Todo dia ${new Date(selectedDate).getDate()}`}
-        </ButtonTitle>
-      </SequenceButton>
-      <SequenceButton
-        onPress={() => selectSequence('Weekly')}
-        isActive={selectedSequence === 'Weekly'}
-      >
-        <ButtonTitle
+          <ButtonTitle
+            isActive={selectedSequence === 'Monthly'}
+          >
+            {`Mensal: Todo dia ${new Date(selectedDate).getDate()}`}
+          </ButtonTitle>
+        </SequenceButton>
+        <SequenceButton
+          onPress={() => selectSequence('Weekly')}
           isActive={selectedSequence === 'Weekly'}
         >
-          {`Semanal: ${dayOfWeek}`}
-        </ButtonTitle>
-      </SequenceButton>
-      <SequenceButton
-        onPress={() => selectSequence('Customized')}
-        isActive={selectedSequence === 'Customized'}
-      >
-        <ButtonTitle
+          <ButtonTitle
+            isActive={selectedSequence === 'Weekly'}
+          >
+            {`Semanal: ${dayOfWeek}`}
+          </ButtonTitle>
+        </SequenceButton>
+        <SequenceButton
+          onPress={() => selectSequence('Customized')}
           isActive={selectedSequence === 'Customized'}
         >
-          Personalizado
-        </ButtonTitle>
-      </SequenceButton>
-    </Container>
-    </WindowContainer>
+          <ButtonTitle
+            isActive={selectedSequence === 'Customized'}
+          >
+            Personalizado
+          </ButtonTitle>
+        </SequenceButton>
+      </Container>
+    </>
   );
 }

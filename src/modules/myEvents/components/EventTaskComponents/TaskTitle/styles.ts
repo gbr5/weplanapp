@@ -5,7 +5,10 @@ import Feather from 'react-native-vector-icons/Feather';
 
 export const Container = styled.View`
   width: 100%;
-  position: relative;
+  flex-direction: row;
+`;
+
+export const TitleContainer = styled.View`
 `;
 
 export const TitleButton = styled(BorderlessButton)`
@@ -41,4 +44,21 @@ export const IconContainer = styled.View`
   border-radius: 5px;
   align-items: center;
   justify-content: center;
+`;
+
+
+export const ArrowIcon = styled(Feather)`
+  color: ${({ theme }) => theme.color.title};
+  font-size: ${RFValue(20)}px;
+`;
+
+export const ArrowButton = styled(BorderlessButton)`
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.color.text3};
+  padding: 8px;
+  border: 1px solid ${({ theme}) => theme.color.title};
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
 `;

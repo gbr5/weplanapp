@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
@@ -83,43 +82,73 @@ export function FinancialSection() {
       >
         <MenuButton
           onPress={() => handleEventFinancialSubSection('Main')}
+          isActive={eventFinancialSubSection === 'Main'}
         >
-          <ButtonTitle>
+          <ButtonTitle
+            isActive={eventFinancialSubSection === 'Main'}
+          >
             Principal
           </ButtonTitle>
-          <MenuIcon name="home" />
+          <MenuIcon
+            name="home"
+            isActive={eventFinancialSubSection === 'Main'}
+          />
         </MenuButton>
         <MenuButton
           onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
+          isActive={eventFinancialSubSection === 'TransactionAgreements'}
         >
-          <ButtonTitle>
+          <ButtonTitle
+            isActive={eventFinancialSubSection === 'TransactionAgreements'}
+          >
             Contratos
           </ButtonTitle>
-          <MenuIcon name="file-text" />
+          <MenuIcon
+            name="file-text"
+            isActive={eventFinancialSubSection === 'TransactionAgreements'}
+          />
         </MenuButton>
         <MenuButton
           onPress={() => handleEventFinancialSubSection('Transactions')}
+          isActive={eventFinancialSubSection === 'Transactions'}
         >
-          <ButtonTitle>
+          <ButtonTitle
+            isActive={eventFinancialSubSection === 'Transactions'}
+          >
             Transações
           </ButtonTitle>
-          <MenuIcon name="dollar-sign" />
+          <MenuIcon
+            name="dollar-sign"
+            isActive={eventFinancialSubSection === 'Transactions'}
+          />
         </MenuButton>
         <MenuButton
           onPress={() => handleEventFinancialSubSection('Suppliers')}
+          isActive={eventFinancialSubSection === 'Suppliers'}
         >
-          <ButtonTitle>
+          <ButtonTitle
+            isActive={eventFinancialSubSection === 'Suppliers'}
+          >
             Fornecedores
           </ButtonTitle>
-          <MenuIcon name="play" />
+          <MenuIcon
+            name="play"
+            isActive={eventFinancialSubSection === 'Suppliers'}
+          />
         </MenuButton>
         <MenuButton
           onPress={() => handleEventFinancialSubSection('Members')}
+          isActive={eventFinancialSubSection === 'Members'}
         >
-          <ButtonTitle>
+          <ButtonTitle
+            isActive={eventFinancialSubSection === 'Members'}
+          >
             Membros
           </ButtonTitle>
-          <MenuIcon name="users" />
+          <MenuIcon
+            name="users"
+            isActive={eventFinancialSubSection === 'Members'}
+          />
         </MenuButton>
       </SectionButton>
     </Container>

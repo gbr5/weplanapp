@@ -1,4 +1,4 @@
-import ITransactionAgreementDTO from './ITransactionAgreementDTO';
+import IEventSupplierTransactionAgreementDTO from './IEventSupplierTransactionAgreementDTO';
 import IUserDTO from './IUserDTO';
 
 interface IEventWeplanSupplier {
@@ -15,5 +15,5 @@ export default interface IEventSupplierDTO {
   created_at: Date;
   updated_at: Date;
   eventWeplanSupplier: IEventWeplanSupplier;
-  transactionAgreements: ITransactionAgreementDTO[];
+  transactionAgreements: IEventSupplierTransactionAgreementDTO[];
 }

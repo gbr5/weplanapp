@@ -24,6 +24,7 @@ import {
 } from './styles';
 import getValidationErrors from '../../../../utils/getValidationErros';
 import { useAuth } from '../../../../hooks/auth';
+import theme from '../../../../global/styles/theme';
 
 interface IForgotPasswordFormProps {
   email: string;
@@ -90,6 +91,7 @@ const ForgotPassword: React.FC = () => {
           </View>
           <Form ref={formRef} onSubmit={handleForgotPassword}>
             <Input
+              placeholderTextColor={theme.color.secondary}
               autoCorrect={false}
               autoCapitalize="none"
               keyboardType="email-address"

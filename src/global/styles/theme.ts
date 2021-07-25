@@ -1,21 +1,22 @@
 export default {
   color: {
     primary: '#ff9900',
+    primary_light: '#ffd08a',
 
     secondary: '#555555',
     secondary_light: 'rgba(85, 85, 85, 0.5)',
 
-    success: '#12A454',
-    success_light: 'rgba(18, 164, 84, 0.5)',
+    success: '#007500',
+    success_light: '#8fffc1',
 
-    atention: '#E83F5B',
-    atention_light: 'rgba(232, 63, 91, 0.5)',
+    atention: '#ff3030',
+    atention_light: '#ffa8a3',
 
-    info: '#3172b7',
-    info_light: 'rgba(49, 114, 183, 0.5)',
+    info: '#1f4fff',
+    info_light: '#80bdff',
 
     shape: '#FFFFFF',
-    title: '#363F5F',
+    title: '#fee258',
     background: '#c9c9c9',
 
     text1: '#080708',

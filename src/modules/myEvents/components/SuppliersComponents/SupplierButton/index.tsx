@@ -11,6 +11,9 @@ import {
 } from './styles';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useState } from 'react';
+import { HiredSupplierButtonInfo } from '../HiredSupplierButtonInfo';
+import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEffect } from 'react';
 
 interface IProps {
   supplier: IEventSupplierDTO;
@@ -21,46 +24,55 @@ export function SupplierButton({
   supplier,
   index,
 }: IProps) {
-  const {
-    updateEventSuppliers,
-  } = useEventSuppliers();
+  const { selectedSupplier, selectSupplier} = useMyEvent();
 
-  const [loading, setLoading] = useState(false);
+  const [supplierBody, setSupplierBody] = useState(false);
 
-  async function updateSupplierIsHired() {
-    try {
-      setLoading(true);
-      await updateEventSuppliers({
-        ...supplier,
-        isHired: !supplier.isHired,
-      });
-    } catch (err) {
-      throw new Error(err);
-    } finally {
-      setLoading(false);
-    }
+  function handleSupplierBody() {
+    supplierBody
+      ? selectSupplier({} as IEventSupplierDTO)
+      : selectSupplier(supplier);
+    setSupplierBody(!supplierBody);
   }
 
+  useEffect(() => {
+    selectedSupplier
+      && selectedSupplier.id
+      && selectedSupplier.id === supplier.id
+        ? (
+          setSupplierBody(true)
+        ) : (
+          setSupplierBody(false)
+        )
+  }, [selectedSupplier]);
+
   return (
-    <Container>
-      <GoToSupplierButton>
-        <SupplierIndex>{index}</SupplierIndex>
-        <SupplierName>{supplier.name}</SupplierName>
-      </GoToSupplierButton>
-      {loading ? (
-        <Icon name="loader" />
-      ) : (
-        <SupplierConfirmationButton
-          isHired={supplier.isHired}
-          onPress={updateSupplierIsHired}
-        >
-          {supplier.isHired ? (
-            <Icon name="check-square" />
+    <>
+      <Container>
+        <GoToSupplierButton onPress={handleSupplierBody}>
+          <SupplierIndex>{index}</SupplierIndex>
+          <SupplierName>{supplier.name}</SupplierName>
+          {supplierBody ? (
+            <Icon name="chevron-up" />
           ) : (
-            <Icon name="square" />
+            <Icon name="chevron-down" />
           )}
-        </SupplierConfirmationButton>
+        </GoToSupplierButton>
+      </Container>
+      {supplierBody
+        && supplier.isHired
+        && selectedSupplier
+        && selectedSupplier.id
+        && selectedSupplier.id === supplier.id && (
+          <HiredSupplierButtonInfo />
+        )}
+      {supplierBody
+        && !supplier.isHired
+        && selectedSupplier
+        && selectedSupplier.id
+        && selectedSupplier.id === supplier.id && (
+        <HiredSupplierButtonInfo />
       )}
-    </Container>
+    </>
   );
 }

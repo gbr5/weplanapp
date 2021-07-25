@@ -20,6 +20,7 @@ import {
 } from './styles';
 import Button from '../../../../../components/Button';
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
+import theme from '../../../../../global/styles/theme';
 
 interface IFormData {
   amount: string;
@@ -65,6 +66,7 @@ export function EventSupplierTransactionForm() {
         <Title>Valor da Parcela</Title>
         <Input
           name="amount"
+          placeholderTextColor={theme.color.secondary}
           keyboardType="number-pad"
           autoCorrect={false}
           autoCapitalize="none"

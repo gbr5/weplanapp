@@ -5,10 +5,15 @@ import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
+import theme from '../../../../../global/styles/theme';
+
+import ISupplierSubCategoryDTO from '../../../../../dtos/ISupplierSubCategoryDTO';
+
 import Input from '../../../../../components/Input';
 import Button from '../../../../../components/Button';
 import WindowContainer from '../../../../../components/WindowContainer';
 
+import { FormContainer, KeyboardAvoidingVueContainer } from '../CreateSupplierTransactionAgreement/styles';
 import {
   Container,
   Title,
@@ -20,8 +25,6 @@ import {
   SupplierCategoryButton,
   SupplierCategoryButtonText,
 } from './styles';
-import { FormContainer, KeyboardAvoidingVueContainer } from '../CreateSupplierTransactionAgreement/styles';
-import ISupplierSubCategoryDTO from '../../../../../dtos/ISupplierSubCategoryDTO';
 
 interface IFormData {
   name: string;
@@ -72,7 +75,7 @@ const NewSupplierForm: React.FC<IProps> = ({
       closeWindow={closeWindow}
       top="5%"
       left="2%"
-      height="72%"
+      height="82%"
       width="96%"
       zIndex={11}
     >
@@ -84,57 +87,64 @@ const NewSupplierForm: React.FC<IProps> = ({
           enabled
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <FormContainer
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{ flex: 1 }}
+            >
+              <Form ref={formRef} onSubmit={handleSubmit}>
+                <FormQuestion>Nome</FormQuestion>
+                <Input
+                  name="name"
+                  autoCorrect={false}
+                  autoCapitalize="words"
+                  placeholderTextColor={theme.color.secondary}
+                  icon="user"
+                  placeholder="Nome"
+                  returnKeyType="next"
+                />
+              </Form>
 
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <FormQuestion>Nome</FormQuestion>
-            <Input
-              name="name"
-              autoCorrect={false}
-              autoCapitalize="words"
-              icon="user"
-              placeholder="Nome"
-              returnKeyType="next"
-            />
-          </Form>
+              <BooleanField>
+                <BooleanButtonTitle>Contratado?</BooleanButtonTitle>
+                <BooleanButton
+                  onPress={handleSupplierIsHired}
+                >
+                  {isHired ? (
+                    <Icon name="check-square" />
+                  ) : (
+                    <Icon name="square" />
+                  )}
+                </BooleanButton>
+              </BooleanField>
+
+              <BooleanField>
+                <BooleanButtonTitle>Usuário WePlan?</BooleanButtonTitle>
+                <BooleanButton
+                  onPress={handleSupplierWeplanUser}
+                >
+                  {weplanUser ? (
+                    <Icon name="check-square" />
+                  ) : (
+                    <Icon name="square" />
+                  )}
+                </BooleanButton>
+              </BooleanField>
+
+              <SupplierCategoryButton
+                onPress={handleSupplierCategoryWindow}
+              >
+                <SupplierCategoryButtonText>
+                  {
+                    selectedSupplierSubCategory
+                      && selectedSupplierSubCategory.id
+                        ? selectedSupplierSubCategory.sub_category
+                        : 'Defina a categoria'
+                  }
+                </SupplierCategoryButtonText>
+              </SupplierCategoryButton>
+            </FormContainer>
           </TouchableWithoutFeedback>
         </KeyboardAvoidingVueContainer>
-        <BooleanField>
-          <BooleanButtonTitle>Contratado?</BooleanButtonTitle>
-          <BooleanButton
-            onPress={handleSupplierIsHired}
-          >
-            {isHired ? (
-              <Icon name="check-square" />
-            ) : (
-              <Icon name="square" />
-            )}
-          </BooleanButton>
-        </BooleanField>
-
-        <BooleanField>
-          <BooleanButtonTitle>Usuário WePlan?</BooleanButtonTitle>
-          <BooleanButton
-            onPress={handleSupplierWeplanUser}
-          >
-            {weplanUser ? (
-              <Icon name="check-square" />
-            ) : (
-              <Icon name="square" />
-            )}
-          </BooleanButton>
-        </BooleanField>
-        <SupplierCategoryButton
-          onPress={handleSupplierCategoryWindow}
-        >
-          <SupplierCategoryButtonText>
-            {
-              selectedSupplierSubCategory
-                && selectedSupplierSubCategory.id
-                  ? selectedSupplierSubCategory.sub_category
-                  : 'Defina a categoria'
-            }
-          </SupplierCategoryButtonText>
-        </SupplierCategoryButton>
       </Container>
       <Button
         loading={loading}

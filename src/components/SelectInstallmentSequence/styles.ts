@@ -8,8 +8,17 @@ interface IProps {
 
 export const Container = styled.View`
   flex: 1;
-  width: 100%;
+  border-radius: 5px;;
+  padding: 16px;
+  justify-content: space-evenly;
+  background-color: ${({ theme }) => theme.color.text5};
   margin: 56px 0 24px;
+  position: absolute;
+  z-index: 35;
+  top: 5%;
+  left: 1%;
+  height: 50%;
+  width: 108%;
 `;
 
 export const SequenceButton = styled(RectButton)<IProps>`

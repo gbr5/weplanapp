@@ -33,6 +33,7 @@ import {
   PasswordField,
   PasswordSecureButton,
 } from './styles';
+import theme from '../../../../global/styles/theme';
 
 interface ISignInFormProps {
   email: string;
@@ -110,6 +111,7 @@ const SignIn: React.FC = () => {
           <Form ref={formRef} onSubmit={handleSignIn}>
             <Input
               autoCorrect={false}
+              placeholderTextColor={theme.color.secondary}
               autoCapitalize="none"
               keyboardType="email-address"
               name="email"
@@ -125,6 +127,7 @@ const SignIn: React.FC = () => {
                 ref={passwordInputRef}
                 name="password"
                 autoCapitalize="none"
+                placeholderTextColor={theme.color.secondary}
                 icon="lock"
                 placeholder="Senha"
                 secureTextEntry={securePassword}

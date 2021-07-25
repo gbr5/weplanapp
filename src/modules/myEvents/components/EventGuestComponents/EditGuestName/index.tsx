@@ -9,6 +9,7 @@ import WindowContainer from '../../../../../components/WindowContainer';
 import { Container, FormQuestion, Title } from './styles';
 import Button from '../../../../../components/Button';
 import { useEventGuests } from '../../../../../hooks/eventGuests';
+import theme from '../../../../../global/styles/theme';
 
 interface IFormData {
   first_name: string;
@@ -51,6 +52,7 @@ const EditGuestName: React.FC<IProps> = ({ closeWindow }) => {
             name="first_name"
             autoCorrect={false}
             autoCapitalize="words"
+            placeholderTextColor={theme.color.secondary}
             icon="user"
             placeholder={selectedGuest.first_name}
             defaultValue={selectedGuest.first_name}
@@ -63,6 +65,7 @@ const EditGuestName: React.FC<IProps> = ({ closeWindow }) => {
           <Input
             name="last_name"
             ref={inputRef}
+            placeholderTextColor={theme.color.secondary}
             autoCorrect={false}
             autoCapitalize="words"
             icon="user"

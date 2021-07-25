@@ -44,12 +44,14 @@ import {
 const MyEvent: React.FC = () => {
   const {
     currentSection,
+    eventSuppliers,
     selectedEvent,
     selectedSupplier,
     selectEventSection,
     selectedTask,
     selectEventTask,
     budgetWindow,
+    calculateTotalEventCost,
   } = useMyEvent();
   const {
     loading,
@@ -151,6 +153,10 @@ const MyEvent: React.FC = () => {
     await deleteTask(selectedTask);
     handleDeleteTaskConfirmationWindow();
   }
+
+  useEffect(() => {
+    calculateTotalEventCost();
+  }, [calculateTotalEventCost, eventSuppliers]);
 
   return (
     <>

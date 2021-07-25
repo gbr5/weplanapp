@@ -6,6 +6,7 @@ import { useMyEvent } from '../../../../../hooks/myEvent';
 import {
   Container,
   Title,
+  Underline,
   IconContainer,
   Icon,
   IconButton,
@@ -26,14 +27,15 @@ export function EditTaskStatusWindow() {
   return (
     <WindowContainer
       closeWindow={handleEditTaskStatusWindow}
-      top="30%"
-      width="100%"
-      left="0%"
-      height="30%"
+      top="10%"
+      width="96%"
+      left="2%"
+      height="40%"
       zIndex={20}
     >
       <Container>
-        <Title>Defina o status da tarefa</Title>
+        <Title>Defina o Status da Tarefa</Title>
+        <Underline />
         <IconContainer>
           <IconButton
             isActive={selectedTask.status === 'not started'}

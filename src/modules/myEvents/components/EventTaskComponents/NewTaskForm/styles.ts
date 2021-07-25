@@ -6,7 +6,7 @@ export const Container = styled.View`
   flex: 1;
   align-items: center;
   height: 100%;
-  margin: 48px 0 32px;
+  margin: 48px 0 16px;
 `;
 
 export const Title = styled.Text`
@@ -28,14 +28,14 @@ export const FormQuestion = styled.Text`
   margin: 16px 0 8px;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
-  color: ${({ theme }) => theme.color.secondary};
+  color: ${({ theme }) => theme.color.text1};
 `;
 
 export const DateButton = styled(RectButton)`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.secondary};
-  padding: 4px;
-  margin: 8px 0;
+  padding: 12px;
+  margin: 16px 0 0;
   align-items: center;
   justify-content: center;
 `;

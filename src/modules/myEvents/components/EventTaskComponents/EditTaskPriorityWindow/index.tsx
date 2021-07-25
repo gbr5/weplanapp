@@ -7,6 +7,7 @@ import { useMyEvent } from '../../../../../hooks/myEvent';
 import {
   Container,
   Title,
+  Underline,
   IconContainer,
   Icon,
   IconButton,
@@ -27,14 +28,15 @@ export function EditTaskPriorityWindow() {
   return (
     <WindowContainer
       closeWindow={handleEditTaskPriorityWindow}
-      top="30%"
+      top="10%"
       width="100%"
       left="0%"
-      height="30%"
+      height="40%"
       zIndex={20}
     >
       <Container>
         <Title>Defina a prioridade da tarefa</Title>
+        <Underline />
         <IconContainer>
           <IconButton
             isActive={selectedTask.priority === 'low'}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import IEventTaskDTO from '../../../../../dtos/IEventTaskDTO';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useMyEvent } from '../../../../../hooks/myEvent';
@@ -14,6 +15,7 @@ import {
   Time,
   ButtonContainer,
   Button,
+  ArrowButton,
   StatusButton,
   PriorityButton,
   DeleteButton,
@@ -23,6 +25,8 @@ import {
   PriorityButtonIcon,
   StatusButtonIcon,
   NotesButtonIcon,
+  ArrowIcon,
+  ButtonMainContainer,
 } from './styles';
 
 interface IProps {
@@ -41,28 +45,29 @@ export function EventTask({
     handleEventTaskNotesWindow,
     handleDeleteTaskConfirmationWindow,
   } = useEventTasks();
-  const iconSize = 24;
+
+  const [taskBody, setTaskBody] = useState(false);
+
+  function handleTaskBody() {
+    setTaskBody(!taskBody);
+  }
 
   function handleOpenTaskPriorityWindow() {
     selectEventTask(eventTask);
     handleEditTaskPriorityWindow();
   }
-
   function handleOpenTaskStatusWindow() {
     selectEventTask(eventTask);
     handleEditTaskStatusWindow();
   }
-
   function handleOpenTaskDateWindow() {
     selectEventTask(eventTask);
     handleEditTaskDateWindow();
   }
-
   function handleOpenTaskTimeWindow() {
     selectEventTask(eventTask);
     handleEditTaskTimeWindow();
   }
-
   function handleOpenEventTaskNotesWindow() {
     selectEventTask(eventTask);
     handleEventTaskNotesWindow();
@@ -70,66 +75,71 @@ export function EventTask({
 
   return (
     <Container>
-      <TaskTitle eventTask={eventTask} />
-      <Body>
-        <DateContainer>
-          <Button onPress={handleOpenTaskDateWindow}>
-            <Date>{formatOnlyDate(String(eventTask.due_date))}</Date>
-          </Button>
-          <Button onPress={handleOpenTaskTimeWindow}>
-            <Time>{formatOnlyTime(String(eventTask.due_date))}</Time>
-          </Button>
-        </DateContainer>
-        <ButtonContainer>
-          <Button
-            onPress={handleOpenEventTaskNotesWindow}
-          >
-            {eventTask.notes.length > 0 && (
-              <NumberOfNotesContainer>
-                <NumberOfNotes>{eventTask.notes.length}</NumberOfNotes>
-              </NumberOfNotesContainer>
-            )}
-            <NotesButtonIcon name="file-text" size={iconSize} />
-          </Button>
-          <StatusButton
-            onPress={handleOpenTaskStatusWindow}
-            status={eventTask.status}
-          >
-            {eventTask.status === 'not started' && (
-              <StatusButtonIcon
-                size={iconSize}
-                name="cloud"
-              />
-            )}
-            {eventTask.status === 'running' && (
-              <StatusButtonIcon
-                size={iconSize}
-                name="zap"
-              />
-            )}
-            {eventTask.status === 'finnished' && (
-              <StatusButtonIcon
-                size={iconSize}
-                name="award"
-              />
-            )}
-          </StatusButton>
-          <PriorityButton
-            onPress={handleOpenTaskPriorityWindow}
-            priority={eventTask.priority}
-          >
-            <PriorityButtonIcon
-              size={iconSize}
-              name="flag"
-            />
-          </PriorityButton>
-          <DeleteButton
-            onPress={handleDeleteTaskConfirmationWindow}
-          >
-            <DeleteButtonIcon name="trash-2" size={iconSize} />
-          </DeleteButton>
-        </ButtonContainer>
-      </Body>
+      <TaskTitle
+        handleTaskBody={handleTaskBody}
+        taskBody={taskBody}
+        eventTask={eventTask}
+      />
+      {taskBody && (
+        <ArrowButton onPress={handleTaskBody}>
+          <ArrowIcon name="arrow-up" />
+          <ArrowIcon name="arrow-up" />
+          <ArrowIcon name="arrow-up" />
+        </ArrowButton>
+      )}
+      {taskBody && (
+        <Body>
+          <DateContainer>
+            <Button onPress={handleOpenTaskDateWindow}>
+              <Date>{formatOnlyDate(String(eventTask.due_date))}</Date>
+            </Button>
+            <Button onPress={handleOpenTaskTimeWindow}>
+              <Time>{formatOnlyTime(String(eventTask.due_date))}</Time>
+            </Button>
+          </DateContainer>
+          <ButtonMainContainer>
+            <ButtonContainer>
+              <Button
+                onPress={handleOpenEventTaskNotesWindow}
+              >
+                {eventTask.notes.length > 0 && (
+                  <NumberOfNotesContainer>
+                    <NumberOfNotes>{eventTask.notes.length}</NumberOfNotes>
+                  </NumberOfNotesContainer>
+                )}
+                <NotesButtonIcon name="file-text" />
+              </Button>
+              <StatusButton
+                onPress={handleOpenTaskStatusWindow}
+                status={eventTask.status}
+              >
+                {eventTask.status === 'not started' && (
+                  <StatusButtonIcon name="cloud" />
+                )}
+                {eventTask.status === 'running' && (
+                  <StatusButtonIcon name="zap" />
+                )}
+                {eventTask.status === 'finnished' && (
+                  <StatusButtonIcon name="award" />
+                )}
+              </StatusButton>
+            </ButtonContainer>
+            <ButtonContainer>
+              <PriorityButton
+                onPress={handleOpenTaskPriorityWindow}
+                priority={eventTask.priority}
+              >
+                <PriorityButtonIcon name="flag" />
+              </PriorityButton>
+              <DeleteButton
+                onPress={handleDeleteTaskConfirmationWindow}
+              >
+                <DeleteButtonIcon name="trash-2" />
+              </DeleteButton>
+            </ButtonContainer>
+          </ButtonMainContainer>
+        </Body>
+      )}
     </Container>
   );
 };

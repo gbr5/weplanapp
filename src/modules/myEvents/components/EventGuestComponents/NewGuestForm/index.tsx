@@ -1,19 +1,25 @@
 import React, { useCallback, useRef } from 'react';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import { Platform, TextInput } from 'react-native';
+import { Keyboard, Platform, TextInput, TouchableWithoutFeedback } from 'react-native';
+
+import { useEventGuests } from '../../../../../hooks/eventGuests';
+
+import theme from '../../../../../global/styles/theme';
 
 import Input from '../../../../../components/Input';
+import Button from '../../../../../components/Button';
+import WindowContainer from '../../../../../components/WindowContainer';
 
+import {
+  FormContainer,
+  KeyboardAvoidingVueContainer,
+} from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import {
   Container,
   Title,
   FormQuestion,
 } from './styles';
-import Button from '../../../../../components/Button';
-import WindowContainer from '../../../../../components/WindowContainer';
-import { useEventGuests } from '../../../../../hooks/eventGuests';
-import { KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 
 interface IFormData {
   first_name: string;
@@ -50,37 +56,45 @@ const NewGuestForm: React.FC<IProps> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
       >
-        <Container>
-
-          <Title>Novo(a) Convidado(a)</Title>
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <FormQuestion>Nome</FormQuestion>
-            <Input
-              name="first_name"
-              autoCorrect={false}
-              autoCapitalize="words"
-              icon="user"
-              placeholder="Nome"
-              returnKeyType="next"
-              onSubmitEditing={() => {
-                inputRef.current?.focus();
-              }}
-            />
-            <FormQuestion>Sobrenome</FormQuestion>
-            <Input
-              name="last_name"
-              ref={inputRef}
-              autoCorrect={false}
-              autoCapitalize="words"
-              icon="user"
-              placeholder="Sobrenome"
-              returnKeyType="send"
-              onSubmitEditing={() => {
-                formRef.current?.submitForm();
-              }}
-            />
-          </Form>
-        </Container>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <FormContainer
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flex: 1 }}
+          >
+            <Container>
+              <Title>Novo(a) Convidado(a)</Title>
+              <Form ref={formRef} onSubmit={handleSubmit}>
+                <FormQuestion>Nome</FormQuestion>
+                <Input
+                  name="first_name"
+                  autoCorrect={false}
+                  placeholderTextColor={theme.color.secondary}
+                  autoCapitalize="words"
+                  icon="user"
+                  placeholder="Nome"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    inputRef.current?.focus();
+                  }}
+                />
+                <FormQuestion>Sobrenome</FormQuestion>
+                <Input
+                  placeholderTextColor={theme.color.secondary}
+                  name="last_name"
+                  ref={inputRef}
+                  autoCorrect={false}
+                  autoCapitalize="words"
+                  icon="user"
+                  placeholder="Sobrenome"
+                  returnKeyType="send"
+                  onSubmitEditing={() => {
+                    formRef.current?.submitForm();
+                  }}
+                />
+              </Form>
+            </Container>
+          </FormContainer>
+        </TouchableWithoutFeedback>
         <Button
           loading={loading}
           onPress={() => formRef.current?.submitForm()}

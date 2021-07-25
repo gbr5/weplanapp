@@ -53,7 +53,7 @@ export const SuppliersMenu = styled.View`
 export const SuppliersMenuButton = styled(RectButton)<IProps>`
   border-radius: 5px;
   padding: 16px;
-  margin: 8px;
+  margin: 0 8px;
   background-color: ${({ theme }) => theme.color.primary};
   align-items: center;
   justify-content: center;
@@ -81,7 +81,7 @@ export const SuppliersContainer = styled(
     paddingBottom: getBottomSpace() + 80,
   },
 })`
-  margin-top: 16px;
+  margin-top: 4px;
   border-radius: 8px;
   width: 100%;
 `;

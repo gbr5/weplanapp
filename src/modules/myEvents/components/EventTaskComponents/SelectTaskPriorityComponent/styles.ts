@@ -14,6 +14,8 @@ export const Container = styled.View`
 `;
 
 export const Title = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(20)}px;
   margin-bottom: 24px;
 `;
@@ -21,16 +23,26 @@ export const Title = styled.Text`
 export const IconContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  padding: 16px;
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.secondary};
 `;
 
 export const IconButton = styled(BorderlessButton)<IButtonProps>`
-  background-color: ${({ theme }) => theme.color.text6};
-  padding: 4px;
+  background-color: ${({ theme }) => theme.color.text5};
+  padding: 6px;
   border-radius: 5px;
   align-items: center;
+  border: 1px solid ${({ theme }) => theme.color.text5};
   justify-content: center;
+  width: 60px;
+  height: 60px;
   ${({ isActive }) => isActive && css`
-    background-color: ${({ theme }) => theme.color.primary};
+    background-color: ${({ theme }) => theme.color.title};
+    border: 2px solid black;
+    padding: 4px;
+    width: 64px;
+    height: 64px;
   `};
 `;
 

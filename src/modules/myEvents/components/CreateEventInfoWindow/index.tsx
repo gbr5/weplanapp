@@ -8,6 +8,7 @@ import Input from '../../../../components/Input';
 
 import WindowContainer from '../../../../components/WindowContainer';
 import ICreateEventInfoDTO from '../../../../dtos/ICreateEventInfoDTO';
+import theme from '../../../../global/styles/theme';
 import { useEventInfo } from '../../../../hooks/eventInfo';
 import { useMyEvent } from '../../../../hooks/myEvent';
 import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
@@ -42,6 +43,7 @@ const CreateEventInfoWindow: React.FC<IProps> = ({ closeWindow }) => {
         <Title>Informações do Evento</Title>
         <Form ref={formRef} onSubmit={handleSubmit}>
           <Input
+            placeholderTextColor={theme.color.secondary}
             name="budget"
             icon="dollar-sign"
             returnKeyType="next"
@@ -49,6 +51,7 @@ const CreateEventInfoWindow: React.FC<IProps> = ({ closeWindow }) => {
             onSubmitEditing={() => formRef.current?.submitForm()}
           />
           <Input
+            placeholderTextColor={theme.color.secondary}
             name="budget"
             icon="dollar-sign"
             returnKeyType="next"

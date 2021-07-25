@@ -7,6 +7,7 @@ import WindowContainer from '../../../../../components/WindowContainer';
 import { Container, FormQuestion, Title } from './styles';
 import Button from '../../../../../components/Button';
 import { useEventGuests } from '../../../../../hooks/eventGuests';
+import theme from '../../../../../global/styles/theme';
 
 interface IFormData {
   contact_info: string;
@@ -51,6 +52,7 @@ const EditGuestContact: React.FC<IProps> = ({ closeWindow }) => {
           </FormQuestion>
           <Input
             name="contact_info"
+            placeholderTextColor={theme.color.secondary}
             autoCorrect={false}
             autoCapitalize="sentences"
             icon="list"

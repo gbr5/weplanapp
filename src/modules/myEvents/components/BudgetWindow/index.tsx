@@ -8,6 +8,7 @@ import { Container, Title } from './styles';
 import Input from '../../../../components/Input';
 import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
 import Button from '../../../../components/Button';
+import theme from '../../../../global/styles/theme';
 
 interface IFormData {
   budget: number;
@@ -51,6 +52,7 @@ export function BudgetWindow() {
         <Title>Orçamento do Evento</Title>
         <Form ref={formRef} onSubmit={handleSubmit}>
           <Input
+            placeholderTextColor={theme.color.secondary}
             name="budget"
             icon="dollar-sign"
             placeholder={

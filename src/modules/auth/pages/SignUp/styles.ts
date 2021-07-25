@@ -59,5 +59,5 @@ export const PasswordSecureButton = styled(BorderlessButton)`
 export const EyeIcon = styled(FeatherIcon)`
   color: ${({ theme }) => theme.color.text1};
   margin-right: 16px;
-  font-size: ${RFValue(30)}px;
+  font-size: ${RFValue(24)}px;
 `;
