@@ -303,7 +303,6 @@ const TransactionProvider: React.FC = ({ children }) => {
   async function deleteAllSupplierAgreements() {
     try {
       setLoading(true);
-      Alert.alert(`id: ${selectedSupplier.id}, name: ${selectedSupplier.name}`);
       await api.delete(`/delete-event-supplier-transaction-agreements/${selectedSupplier.id}`);
       await getEventSuppliers(selectedSupplier.id);
     } catch (err) {

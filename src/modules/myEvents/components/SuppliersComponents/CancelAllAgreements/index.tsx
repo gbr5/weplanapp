@@ -60,11 +60,8 @@ export function CancelAllAgreements() {
 
   async function handleDeleteAll() {
     if (!selectedSupplier.isDischarged) {
-      Alert.alert(`dicharged: ${selectedSupplier.isDischarged} - 1`);
-
       await deleteAllSupplierAgreements();
     }
-    Alert.alert(`dicharged: ${selectedSupplier.isDischarged} - 2`);
     setDeleteAllConfirmationWindow(false);
     handleCancelAllAgreementsWindow();
     handleDischargingWindow();
