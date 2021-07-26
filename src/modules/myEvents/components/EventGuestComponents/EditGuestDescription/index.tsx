@@ -1,14 +1,19 @@
 import React, { useCallback, useRef } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
-import Input from '../../../../../components/Input';
-import { useMyEvent } from '../../../../../hooks/myEvent';
-import WindowContainer from '../../../../../components/WindowContainer';
+import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 
-import { Container, FormQuestion, Title } from './styles';
-import Button from '../../../../../components/Button';
-import { useEventGuests } from '../../../../../hooks/eventGuests';
 import theme from '../../../../../global/styles/theme';
+
+import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventGuests } from '../../../../../hooks/eventGuests';
+
+import WindowContainer from '../../../../../components/WindowContainer';
+import Input from '../../../../../components/Input';
+import Button from '../../../../../components/Button';
+
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
+import { Container, FormQuestion, Title } from './styles';
 
 interface IFormData {
   description: string;
@@ -34,31 +39,44 @@ const EditGuestDescription: React.FC<IProps> = ({ closeWindow }) => {
   return (
     <WindowContainer
       closeWindow={closeWindow}
-      height="80%"
+      top="5%"
       left="2%"
-      top="10%"
+      height="50%"
       width="96%"
       zIndex={11}
     >
-      <Container>
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <Title>Editar Convidado(a)</Title>
-          <FormQuestion>Descrição</FormQuestion>
-          <Input
-            name="description"
-            placeholderTextColor={theme.color.secondary}
-            autoCorrect={false}
-            autoCapitalize="sentences"
-            icon="list"
-            placeholder={selectedGuest.description !== ' ' ? selectedGuest.description : 'Descrição'}
-            defaultValue={selectedGuest.description}
-            returnKeyType="send"
-            onSubmitEditing={() => {
-              formRef.current?.submitForm();
-            }}
-          />
-        </Form>
-      </Container>
+      <KeyboardAvoidingVueContainer
+        style={{ flex: 1, width: '100%' }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <FormContainer
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flex: 1 }}
+          >
+            <Container>
+              <Form ref={formRef} onSubmit={handleSubmit}>
+                <Title>Editar Convidado(a)</Title>
+                <FormQuestion>Descrição</FormQuestion>
+                <Input
+                  name="description"
+                  placeholderTextColor={theme.color.secondary}
+                  autoCorrect={false}
+                  autoCapitalize="sentences"
+                  icon="list"
+                  placeholder={selectedGuest.description !== ' ' ? selectedGuest.description : 'Descrição'}
+                  defaultValue={selectedGuest.description}
+                  returnKeyType="send"
+                  onSubmitEditing={() => {
+                    formRef.current?.submitForm();
+                  }}
+                />
+              </Form>
+            </Container>
+          </FormContainer>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingVueContainer>
       <Button
         loading={loading}
         onPress={() => formRef.current?.submitForm()}

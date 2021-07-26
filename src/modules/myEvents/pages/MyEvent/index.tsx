@@ -40,6 +40,9 @@ import {
   DashboardButton,
   BodyContainer,
 } from './styles';
+import { DischargeSupplierWindow } from '../../components/SuppliersComponents/DischargeSupplierWindow';
+import { EditTransactionValue } from '../../components/SuppliersComponents/EditTransactionValue';
+import { CancelAllAgreements } from '../../components/SuppliersComponents/CancelAllAgreements';
 
 const MyEvent: React.FC = () => {
   const {
@@ -80,6 +83,9 @@ const MyEvent: React.FC = () => {
   } = useEventTasks();
   const {
     addSupplierWindow,
+    cancelAllAgreementsWindow,
+    selectedSupplierTransactionAgreement,
+    dischargingWindow,
     supplierCategoryWindow,
     supplierSubCategoryWindow,
     createSupplierTransactionAgreementWindow,
@@ -93,6 +99,8 @@ const MyEvent: React.FC = () => {
     selectedDateWindow,
     selectedDate,
     newEventSupplierTransactionAgreement,
+    selectedTransaction,
+    editTransactionValueWindow,
   } = useTransaction();
 
   const [newGuestForm, setNewGuestForm] = useState(false);
@@ -162,6 +170,26 @@ const MyEvent: React.FC = () => {
     <>
       {budgetWindow && (
         <BudgetWindow />
+      )}
+
+      {selectedSupplierTransactionAgreement
+        && selectedSupplierTransactionAgreement.id
+        && selectedTransaction
+        && selectedTransaction.id
+        && editTransactionValueWindow && (
+          <EditTransactionValue />
+        )
+      }
+
+      {selectedSupplier
+        && selectedSupplier.id
+        && cancelAllAgreementsWindow && (
+          <CancelAllAgreements />
+        )
+      }
+
+      {dischargingWindow && (
+        <DischargeSupplierWindow />
       )}
       {newGuestForm && (
         <NewGuestForm closeWindow={() => handleNewGuestForm(false)} />

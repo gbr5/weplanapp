@@ -26,7 +26,7 @@ export function TaskTitle({
   handleTaskBody,
   taskBody,
 }: IProps): JSX.Element {
-  const { selectEventTask } = useMyEvent();
+  const { selectEventTask, selectedTask } = useMyEvent();
   const { handleEditTaskTitleWindow } = useEventTasks();
 
   function handleSelectTask() {
@@ -36,14 +36,17 @@ export function TaskTitle({
   return (
     <Container>
       <TitleContainer>
-        {taskBody ? (
+        {taskBody && selectedTask.id === eventTask.id ? (
           <TitleButton onPress={handleSelectTask}>
             <Title>
               {eventTask.title}
             </Title>
-            <IconContainer>
+            {/* <IconContainer>
               <EditTitleIcon name="edit-2" />
-            </IconContainer>
+            </IconContainer> */}
+            <ArrowButton onPress={handleTaskBody}>
+              <ArrowIcon name="chevron-up" />
+            </ArrowButton>
           </TitleButton>
         ) : (
           <TitleButton onPress={handleTaskBody}>
@@ -51,7 +54,7 @@ export function TaskTitle({
               {eventTask.title}
             </Title>
             <ArrowButton onPress={handleTaskBody}>
-              <ArrowIcon name="arrow-down" />
+              <ArrowIcon name="chevron-down" />
             </ArrowButton>
           </TitleButton>
         )}

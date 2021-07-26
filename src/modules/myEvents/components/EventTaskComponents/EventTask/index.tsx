@@ -36,7 +36,7 @@ interface IProps {
 export function EventTask({
   eventTask,
 }: IProps) {
-  const { selectEventTask } = useMyEvent();
+  const { selectEventTask, selectedTask } = useMyEvent();
   const {
     handleEditTaskPriorityWindow,
     handleEditTaskStatusWindow,
@@ -46,10 +46,12 @@ export function EventTask({
     handleDeleteTaskConfirmationWindow,
   } = useEventTasks();
 
-  const [taskBody, setTaskBody] = useState(false);
-
   function handleTaskBody() {
-    setTaskBody(!taskBody);
+    !selectedTask
+      || !selectedTask.id
+      || selectedTask.id !== eventTask.id
+        ? selectEventTask(eventTask)
+        : selectEventTask({} as IEventTaskDTO);
   }
 
   function handleOpenTaskPriorityWindow() {
@@ -77,17 +79,16 @@ export function EventTask({
     <Container>
       <TaskTitle
         handleTaskBody={handleTaskBody}
-        taskBody={taskBody}
+        taskBody={selectedTask.id === eventTask.id}
         eventTask={eventTask}
       />
-      {taskBody && (
+      {selectedTask.id === eventTask.id && (
         <ArrowButton onPress={handleTaskBody}>
-          <ArrowIcon name="arrow-up" />
-          <ArrowIcon name="arrow-up" />
+          <Date>Fechar</Date>
           <ArrowIcon name="arrow-up" />
         </ArrowButton>
       )}
-      {taskBody && (
+      {selectedTask.id === eventTask.id && (
         <Body>
           <DateContainer>
             <Button onPress={handleOpenTaskDateWindow}>

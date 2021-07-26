@@ -100,7 +100,7 @@ export function CreateSupplierTransactionAgreement() {
 
       formRef.current?.setErrors(error);
       }
-      return Alert.alert('Erro na autenticação', 'Tente novamente!');
+      return Alert.alert('Erro ao criar contrato', 'Tente novamente!');
     }
   }, []);
 

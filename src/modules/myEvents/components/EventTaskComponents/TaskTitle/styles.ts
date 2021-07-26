@@ -19,7 +19,7 @@ export const TitleButton = styled(BorderlessButton)`
 
 
 export const Title = styled.Text`
-  color: ${({ theme }) => theme.color.text1};
+  color: ${({ theme }) => theme.color.text6};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(18)}px;
   /* letter-spacing: 1px; */
@@ -56,9 +56,9 @@ export const ArrowButton = styled(BorderlessButton)`
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.color.text3};
-  padding: 8px;
+  padding: 4px;
   border: 1px solid ${({ theme}) => theme.color.title};
   border-radius: 5px;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
 `;

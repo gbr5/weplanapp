@@ -36,10 +36,11 @@ import {
   TransactionText,
 } from './styles';
 
-export function HiredSupplierButtonInfo() {
+export function SupplierButtonInfo() {
   const { selectedSupplier } = useMyEvent();
   const {
-    updateEventSuppliers,
+    handleCreateSupplierTransactionAgreementWindow,
+    handleDischargingWindow,
   } = useEventSuppliers();
   const { eventDebitTransactions } = useTransaction();
 
@@ -48,10 +49,8 @@ export function HiredSupplierButtonInfo() {
   async function updateSupplierIsHired() {
     try {
       setLoading(true);
-      await updateEventSuppliers({
-        ...selectedSupplier,
-        isHired: !selectedSupplier.isHired,
-      });
+      selectedSupplier.isHired && handleDischargingWindow();
+      !selectedSupplier.isHired && handleCreateSupplierTransactionAgreementWindow();
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -61,6 +60,7 @@ export function HiredSupplierButtonInfo() {
 
   const nextPayment = useMemo(() => {
     const today = new Date();
+
     return eventDebitTransactions
       .filter(transaction => transaction.payee_id === selectedSupplier.id)
       .sort((a, b) => {
@@ -68,7 +68,7 @@ export function HiredSupplierButtonInfo() {
           differenceInMilliseconds(
             new Date(a.due_date),
             today,
-          ) > differenceInMilliseconds(b.due_date, today)
+          ) > differenceInMilliseconds(new Date(b.due_date), today)
         ) {
           return 1
         };
@@ -76,7 +76,7 @@ export function HiredSupplierButtonInfo() {
           differenceInMilliseconds(
             new Date(a.due_date),
             today,
-          ) < differenceInMilliseconds(b.due_date, today)
+          ) < differenceInMilliseconds(new Date(b.due_date), today)
         ) {
           return -1
         };
@@ -170,25 +170,30 @@ export function HiredSupplierButtonInfo() {
       <SectionBorder />
 
       <RowContainer>
-        {selectedSupplier.isHired ? (
-          <RowTitle>Contratado</RowTitle>
-        ) : (
-          <RowTitle>Contratar ?</RowTitle>
-        )}
-        {loading ? (
-          <Icon name="loader" />
-        ) : (
-          <SupplierConfirmationButton
-            isHired={selectedSupplier.isHired}
-            onPress={updateSupplierIsHired}
-          >
-            {selectedSupplier.isHired ? (
-              <GreenIcon name="check-square" />
-            ) : (
-              <RedIcon name="square" />
-            )}
-          </SupplierConfirmationButton>
-        )}
+        <SupplierConfirmationButton
+          isHired={selectedSupplier.isHired}
+          onPress={updateSupplierIsHired}
+        >
+          {selectedSupplier.isHired ? (
+            <>
+              <RowTitle>Contratado</RowTitle>
+              {loading ? (
+                <Icon name="loader" />
+              ) : (
+                <Icon name="check-square" />
+              )}
+            </>
+          ) : (
+            <>
+              <RowTitle>Contratar ?</RowTitle>
+              {loading ? (
+                <Icon name="loader" />
+              ) : (
+                <Icon name="square" />
+              )}
+            </>
+          )}
+        </SupplierConfirmationButton>
 
       </RowContainer>
 
@@ -218,6 +223,5 @@ export function HiredSupplierButtonInfo() {
         </DateText>
       </FooterContainer>
     </Container>
-
   );
 }

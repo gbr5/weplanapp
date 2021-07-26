@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ShortConfirmationWindow from '../../../../../components/ShortConfirmationWindow';
 import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useMyEvent } from '../../../../../hooks/myEvent';
@@ -17,10 +18,7 @@ import {
 } from './styles';
 
 export function SuppliersSection() {
-  const {
-    hiredSuppliers,
-    notHiredSuppliers,
-  } = useMyEvent();
+  const { hiredSuppliers, notHiredSuppliers } = useMyEvent();
   const { handleAddSupplierWindow } = useEventSuppliers();
   const [hiredSuppliersSection, setHiredSuppliersSection] = useState(false);
 

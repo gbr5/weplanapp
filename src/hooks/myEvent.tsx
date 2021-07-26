@@ -18,6 +18,7 @@ import IEventDTO from '../dtos/IEventDTO';
 import IEventTaskDTO from '../dtos/IEventTaskDTO';
 import IEventBudgetDTO from '../dtos/IEventBudgetDTO';
 import ITransactionDTO from '../dtos/ITransactionDTO';
+import { useMemo } from 'react';
 
 interface MyEventContextType {
   eventFinancialSubSection: string;
@@ -30,6 +31,7 @@ interface MyEventContextType {
   members: IEventMemberDTO[];
   eventSuppliers: IEventSupplierDTO[];
   hiredSuppliers: IEventSupplierDTO[];
+  dischargedSuppliers: IEventSupplierDTO[];
   notHiredSuppliers: IEventSupplierDTO[];
   selectedSupplier: IEventSupplierDTO;
   eventTasks: IEventTaskDTO[];
@@ -77,6 +79,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [members, setMembers] = useState<IEventMemberDTO[]>([]);
   const [eventSuppliers, setEventSuppliers] = useState<IEventSupplierDTO[]>([]);
   const [hiredSuppliers, setHiredSuppliers] = useState<IEventSupplierDTO[]>([]);
+  const [dischargedSuppliers, setDischargedSuppliers] = useState<IEventSupplierDTO[]>([]);
   const [notHiredSuppliers, setNotHiredSuppliers] = useState<IEventSupplierDTO[]>([]);
   const [eventTasks, setEventTasks] = useState<IEventTaskDTO[]>([]);
   const [guests, setGuests] = useState<IEventGuestDTO[]>([]);
@@ -121,6 +124,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     setGuests([]);
     setEventSuppliers([]);
     setHiredSuppliers([]);
+    setDischargedSuppliers([]);
     setNotHiredSuppliers([]);
     setMyGuests([]);
     setNumberOfGuests(0);
@@ -152,10 +156,13 @@ const MyEventProvider: React.FC = ({ children }) => {
       const response = await api.get<IEventSupplierDTO[]>(`/event-suppliers/${event_id}`);
       setEventSuppliers(response.data);
       setNotHiredSuppliers(
-        response.data.filter((selected) => !selected.isHired),
+        response.data.filter((selected) => !selected.isHired && !selected.isDischarged),
       );
       setHiredSuppliers(
-        response.data.filter((selected) => selected.isHired),
+        response.data.filter((selected) => selected.isHired && !selected.isDischarged),
+      );
+      setDischargedSuppliers(
+        response.data.filter((selected) => selected.isDischarged),
       );
       if (selectedSupplier && selectedSupplier.id) {
         const updatedSupplier = response.data.find(supplier => supplier.id === selectedSupplier.id);
@@ -331,6 +338,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     <MyEventContext.Provider
       value={{
         loading,
+        dischargedSuppliers,
         eventFinancialSubSection,
         budgetWindow,
         eventBudget,

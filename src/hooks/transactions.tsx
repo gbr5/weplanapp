@@ -14,6 +14,8 @@ import ICreateEventSupplierTransactionAgreementDTO from '../dtos/ICreateEventSup
 import ICreateTransactionDTO from '../dtos/ICreateTransactionDTO';
 import { addDays } from 'date-fns';
 import { useEffect } from 'react';
+import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
+import { Alert } from 'react-native';
 
 interface  IPayerTransactionResponseDTO {
   transactions: ITransactionDTO[];
@@ -29,6 +31,11 @@ interface INewAgreementDTO {
   installments: number;
 }
 
+interface IUpdateAgreementDTO extends ICreateEventSupplierTransactionAgreementDTO {
+  id: string;
+  isCancelled: boolean;
+  transactions?: ITransactionDTO[];
+}
 
 interface ICreateEventSupplierTransactionAgreementWithTransactionsDTO extends ICreateEventSupplierTransactionAgreementDTO {
   transactions: ICreateTransactionDTO[];
@@ -37,8 +44,8 @@ interface TransactionContextType {
   loading: boolean;
   selectedDate: Date;
   selectedDateWindow: boolean;
+  editTransactionValueWindow: boolean;
   createTransactionWindow: boolean;
-  editTransactionWindow: boolean;
   selectedTransaction: ITransactionDTO;
   eventDebitTransactions: ITransactionDTO[];
   eventCreditTransactions: ITransactionDTO[];
@@ -51,14 +58,16 @@ interface TransactionContextType {
   newAgreementInstallments: number;
   newEventSupplierTransactionAgreement: boolean;
   newTransactions: ICreateTransactionDTO[];
+  updateEventSupplierTransactionAgreement: (data: IUpdateAgreementDTO) => Promise<void>;
+  deleteAllSupplierAgreements: () => Promise<void>;
   handleNewEventSupplierTransactionAgreement: () => void;
   handleSelectedDateWindow: () => void;
+  handleEditTransactionValueWindow: () => void;
   handleSelectedDate: (data: Date) => void;
   handleNewAgreement: (data: INewAgreementDTO) => void;
   createSupplierTransactionAgreement: (data: ICreateEventSupplierTransactionAgreementDTO) => Promise<void>;
   createSupplierTransactionAgreementWithTransactions: (data: ICreateEventSupplierTransactionAgreementWithTransactionsDTO) => Promise<void>;
   editTransaction: (data: ITransactionDTO) => Promise<void>;
-  handleEditTransactionWindow: () => void;
   handleCreateTransactionWindow: () => void;
   selectTransaction: (data: ITransactionDTO) => void;
   deleteTransaction: (id: string) => Promise<void>;
@@ -75,12 +84,13 @@ const TransactionProvider: React.FC = ({ children }) => {
     selectSupplierTransactionAgreement,
     handleCreateSupplierTransactionAgreementWindow,
     handleCreateSupplierTransactionsWindow,
+    updateEventSupplier,
   } = useEventSuppliers();
 
   const [loading, setLoading] = useState(false);
   const [createTransactionWindow, setCreateTransactionWindow] = useState(false);
+  const [editTransactionValueWindow, setEditTransactionValueWindow] = useState(false);
   const [newEventSupplierTransactionAgreement, setNewEventSupplierTransactionAgreement] = useState(false);
-  const [editTransactionWindow, setEditTransactionWindow] = useState(false);
   const [newAgreementAmount, setNewAgreementAmount] = useState(0);
   const [newAgreementInstallments, setNewAgreementInstallments] = useState(1);
   const [selectedTransaction, setSelectedTransaction] = useState({} as ITransactionDTO);
@@ -95,17 +105,31 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [eventTotalCredit, setEventTotalCredit] = useState(0);
   const [eventBalance, setEventBalance] = useState(0);
 
+  function sortTransactionsByDueDate(data: ITransactionDTO[]) {
+    const sortedData = data.sort((a, b) => {
+      if (new Date(a.due_date) > new Date(b.due_date)) return 1;
+      if (new Date(a.due_date) < new Date(b.due_date)) return -1;
+      return 0;
+    });
+    return sortedData;
+  }
+
+  function handleEditTransactionValueWindow() {
+    setEditTransactionValueWindow(!editTransactionValueWindow)
+  }
+
   const getAllEventTransactions = useCallback(async () => {
     try {
       const debitTransactions = await api.get<ITransactionDTO[]>(`/list-payer-transactions/${selectedEvent.id}`);
       const creditTransactions = await api.get<ITransactionDTO[]>(`/list-payee-transactions/${selectedEvent.id}`);
-      setEventCreditTransactions(creditTransactions.data);
-      setEventDebitTransactions(debitTransactions.data);
+      const sortedDebitTransactions = sortTransactionsByDueDate(debitTransactions.data);
+      const sortedCreditTransactions = sortTransactionsByDueDate(creditTransactions.data);
+      setEventCreditTransactions(sortedCreditTransactions);
+      setEventDebitTransactions(sortedDebitTransactions);
       setEventTotalCredit(
         creditTransactions.data
           .map(transaction => Number(transaction.amount))
           .reduce((accumulator, currentValue) => {
-            console.log('accumulator + currentValue', { accumulator }, { currentValue }, accumulator + currentValue);
             return accumulator + currentValue;
           }, 0)
       );
@@ -120,7 +144,6 @@ const TransactionProvider: React.FC = ({ children }) => {
         debitTransactions.data
         .map(transaction => Number(transaction.amount))
         .reduce((accumulator, currentValue) => {
-          console.log('accumulator + currentValue', { accumulator }, { currentValue }, accumulator + currentValue);
           return accumulator + currentValue;
           }, 0)
       );
@@ -166,10 +189,6 @@ const TransactionProvider: React.FC = ({ children }) => {
 
   function handleCreateTransactionWindow() {
     setCreateTransactionWindow(!createTransactionWindow);
-  }
-
-  function handleEditTransactionWindow() {
-    setEditTransactionWindow(!editTransactionWindow);
   }
 
   async function editTransaction({
@@ -219,6 +238,12 @@ const TransactionProvider: React.FC = ({ children }) => {
         supplier_id,
         transactions,
       });
+      if (!selectedSupplier.isHired) {
+        await updateEventSupplier({
+          ...selectedSupplier,
+          isHired: true
+        });
+      }
       await getEventSuppliers(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
@@ -234,7 +259,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   }: ICreateEventSupplierTransactionAgreementDTO) {
     try {
       setLoading(true);
-      const response = await api.post(`/event-supplier-transaction-agreement`, {
+      const response = await api.post(`/event-supplier-transaction-agreements`, {
         amount,
         number_of_installments,
         supplier_id,
@@ -250,22 +275,65 @@ const TransactionProvider: React.FC = ({ children }) => {
     }
   }
 
+  async function updateEventSupplierTransactionAgreement({
+    amount,
+    number_of_installments,
+    id,
+    isCancelled,
+    transactions,
+  }: IUpdateAgreementDTO) {
+    try {
+      setLoading(true);
+      const response = await api.put(`/event-supplier-transaction-agreements`, {
+        amount,
+        id,
+        number_of_installments,
+        isCancelled,
+        transactions,
+      });
+      selectSupplierTransactionAgreement(response.data);
+      await getEventSuppliers(selectedSupplier.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function deleteAllSupplierAgreements() {
+    try {
+      setLoading(true);
+      Alert.alert(`id: ${selectedSupplier.id}, name: ${selectedSupplier.name}`);
+      await api.delete(`/delete-event-supplier-transaction-agreements/${selectedSupplier.id}`);
+      await getEventSuppliers(selectedSupplier.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function getPayerTransactions(payer_id: string) {
     try {
       const response = await api.get<ITransactionDTO[]>(`/list-payer-transactions/${payer_id}`);
-      const paidTransactions = response.data.filter(transaction => transaction.isPaid);
+      const transactions = sortTransactionsByDueDate(response.data);
+      const paidTransactions = transactions.filter(transaction => transaction.isPaid);
+      const notPaidTransactions = transactions.filter(transaction => !transaction.isPaid);
+
       const totalTransactions = response.data
         .map(transaction => transaction.amount)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
       const totalPaid = paidTransactions
         .map(transaction => transaction.amount)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-      const totalNotPaid = paidTransactions
+
+      const totalNotPaid = notPaidTransactions
         .map(transaction => transaction.amount)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-      const notPaidTransactions = response.data.filter(transaction => !transaction.isPaid);
+
       return {
-        transactions: response.data,
+        transactions,
         paidTransactions,
         notPaidTransactions,
         totalTransactions,
@@ -281,12 +349,10 @@ const TransactionProvider: React.FC = ({ children }) => {
     <TransactionContext.Provider
       value={{
         loading,
-        editTransactionWindow,
         selectedTransaction,
         handleNewAgreement,
         newAgreementAmount,
         newAgreementInstallments,
-        handleEditTransactionWindow,
         editTransaction,
         createTransactionWindow,
         handleCreateTransactionWindow,
@@ -311,6 +377,10 @@ const TransactionProvider: React.FC = ({ children }) => {
         eventTotalExecutedCredit,
         eventTotalExecutedDebit,
         getAllEventTransactions,
+        handleEditTransactionValueWindow,
+        editTransactionValueWindow,
+        deleteAllSupplierAgreements,
+        updateEventSupplierTransactionAgreement,
       }}
     >
       {children}

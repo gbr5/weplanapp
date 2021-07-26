@@ -16,7 +16,7 @@ const iconSize = 22;
 export const Container = styled.View`
   width: 100%;
   padding: 16px;
-  background-color: ${({ theme }) => theme.color.text4};
+  background-color: ${({ theme }) => theme.color.secondary};
   border-radius: 5px;
   margin-top: 16px;
 `;
@@ -78,14 +78,14 @@ export const ArrowButton = styled(BorderlessButton)`
   flex-direction: row;
   position: absolute;
   bottom: 4px;
-  right: 15%;
+  left: 5%;
   z-index: 2;
   align-items: center;
-  justify-content: space-around;
-  background-color: ${({ theme }) => theme.color.secondary};
+  justify-content: center;
+  background-color: ${({ theme }) => theme.color.text3};
   padding: 4px 64px;
-  width: 80%;
-  border: 1px solid ${({ theme}) => theme.color.title};
+  width: 100%;
+  border: 1px solid ${({ theme}) => theme.color.text6};
   border-radius: 5px;
   margin: 4px auto 0;
 `;
@@ -158,6 +158,7 @@ export const NumberOfNotesContainer = styled.View`
   min-height: 38px;
   justify-content: center;
   align-items: center;
+  z-index: 3;
 `;
 
 export const NumberOfNotes = styled.Text`

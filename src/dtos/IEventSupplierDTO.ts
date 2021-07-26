@@ -11,6 +11,7 @@ export default interface IEventSupplierDTO {
   event_id: string;
   supplier_sub_category: string;
   isHired: boolean;
+  isDischarged: boolean;
   weplanUser: boolean;
   created_at: Date;
   updated_at: Date;

@@ -11,7 +11,7 @@ import {
 } from './styles';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useState } from 'react';
-import { HiredSupplierButtonInfo } from '../HiredSupplierButtonInfo';
+import { SupplierButtonInfo } from '../SupplierButtonInfo';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useEffect } from 'react';
 
@@ -60,19 +60,11 @@ export function SupplierButton({
         </GoToSupplierButton>
       </Container>
       {supplierBody
-        && supplier.isHired
         && selectedSupplier
         && selectedSupplier.id
         && selectedSupplier.id === supplier.id && (
-          <HiredSupplierButtonInfo />
+          <SupplierButtonInfo />
         )}
-      {supplierBody
-        && !supplier.isHired
-        && selectedSupplier
-        && selectedSupplier.id
-        && selectedSupplier.id === supplier.id && (
-        <HiredSupplierButtonInfo />
-      )}
     </>
   );
 }

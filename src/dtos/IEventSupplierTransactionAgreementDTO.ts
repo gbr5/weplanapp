@@ -1,3 +1,5 @@
+import IEventSupplierTransactionDTO from "./IEventSupplierTransactionDTO";
+
 export default interface IEventSupplierTransactionAgreementDTO {
   id: string;
   supplier_id: string;
@@ -5,4 +7,5 @@ export default interface IEventSupplierTransactionAgreementDTO {
   number_of_installments: number;
   created_at: Date;
   updated_at: Date;
+  transactions: IEventSupplierTransactionDTO[];
 }

@@ -38,11 +38,17 @@ export const SupplierName = styled.Text`
 `;
 
 export const SupplierConfirmationButton = styled(BorderlessButton)<ISupplierProps>`
-  width: 10%;
-  color: ${({ theme }) => theme.color.atention};
+  flex-direction: row;
+  border-radius: 8px;
+  width: 100%;
+  padding: 8px;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: ${({ theme }) => theme.color.atention_light};
+  border: 1px solid ${({ theme }) => theme.color.primary};
 
   ${({ isHired }) => isHired && css`
-    color: ${({ theme }) => theme.color.success};
+    background-color: ${({ theme }) => theme.color.success_light};
   `};
 `;
 
@@ -119,7 +125,7 @@ export const MenuButton = styled(BorderlessButton)`
   justify-content: center;
   width: 112px;
   height: 112px;
-  /* border: 1px solid ${({ theme }) => theme.color.secondary}; */
+  border: 1px solid ${({ theme }) => theme.color.title};
   margin-right: 16px;
 `;
 

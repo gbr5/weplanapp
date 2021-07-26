@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
+import { DischargeSupplierWindow } from '../../SuppliersComponents/DischargeSupplierWindow';
 
 import { EventTransactionAgreementSection } from '../EventTransactionAgreementSection';
 
@@ -41,116 +43,118 @@ export function FinancialSection() {
   }, [getAllEventTransactions]);
 
   return (
-    <Container>
-      <TitleButton
-        onPress={() => handleEventFinancialSubSection('Main')}
-      >
-        <Title>Financeiro</Title>
-      </TitleButton>
-      {eventFinancialSubSection === 'TransactionAgreements' && (
-        <EventTransactionAgreementSection />
-      )}
-      {eventFinancialSubSection === 'Main' && (
-        <FirstSection>
-          <BudgetSection
-            onPress={handleBudgetWindow}
-          >
-            <BudgetTitle>Orçamento</BudgetTitle>
-            <PercentageUnderline />
-            <BudgetValue>
-              {eventBudget && eventBudget.id
-                ? formatBrlCurrency(eventBudget.budget)
-                : formatBrlCurrency(0)
-              }
-            </BudgetValue>
-          </BudgetSection>
-          <Resume>
-            <ResumeTitle>Valores Contratados:</ResumeTitle>
-            <ResumeUnderline />
-            <ResumeValue>{formatBrlCurrency(totalEventCost)}</ResumeValue>
-          </Resume>
-          <Resume>
-            <ResumeTitle>Valores Executados:</ResumeTitle>
-            <ResumeUnderline />
-            <ResumeValue>{formatBrlCurrency(eventTotalExecutedDebit)}</ResumeValue>
-          </Resume>
-
-        </FirstSection>
-      )}
-      <SectionButton
-        horizontal
-      >
-        <MenuButton
+    <>
+      <Container>
+        <TitleButton
           onPress={() => handleEventFinancialSubSection('Main')}
-          isActive={eventFinancialSubSection === 'Main'}
         >
-          <ButtonTitle
+          <Title>Financeiro</Title>
+        </TitleButton>
+        {eventFinancialSubSection === 'TransactionAgreements' && (
+          <EventTransactionAgreementSection />
+        )}
+        {eventFinancialSubSection === 'Main' && (
+          <FirstSection>
+            <BudgetSection
+              onPress={handleBudgetWindow}
+            >
+              <BudgetTitle>Orçamento</BudgetTitle>
+              <PercentageUnderline />
+              <BudgetValue>
+                {eventBudget && eventBudget.id
+                  ? formatBrlCurrency(eventBudget.budget)
+                  : formatBrlCurrency(0)
+                }
+              </BudgetValue>
+            </BudgetSection>
+            <Resume>
+              <ResumeTitle>Valores Contratados:</ResumeTitle>
+              <ResumeUnderline />
+              <ResumeValue>{formatBrlCurrency(totalEventCost)}</ResumeValue>
+            </Resume>
+            <Resume>
+              <ResumeTitle>Valores Executados:</ResumeTitle>
+              <ResumeUnderline />
+              <ResumeValue>{formatBrlCurrency(eventTotalExecutedDebit)}</ResumeValue>
+            </Resume>
+
+          </FirstSection>
+        )}
+        <SectionButton
+          horizontal
+        >
+          <MenuButton
+            onPress={() => handleEventFinancialSubSection('Main')}
             isActive={eventFinancialSubSection === 'Main'}
           >
-            Principal
-          </ButtonTitle>
-          <MenuIcon
-            name="home"
-            isActive={eventFinancialSubSection === 'Main'}
-          />
-        </MenuButton>
-        <MenuButton
-          onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
-          isActive={eventFinancialSubSection === 'TransactionAgreements'}
-        >
-          <ButtonTitle
+            <ButtonTitle
+              isActive={eventFinancialSubSection === 'Main'}
+            >
+              Principal
+            </ButtonTitle>
+            <MenuIcon
+              name="home"
+              isActive={eventFinancialSubSection === 'Main'}
+            />
+          </MenuButton>
+          <MenuButton
+            onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
             isActive={eventFinancialSubSection === 'TransactionAgreements'}
           >
-            Contratos
-          </ButtonTitle>
-          <MenuIcon
-            name="file-text"
-            isActive={eventFinancialSubSection === 'TransactionAgreements'}
-          />
-        </MenuButton>
-        <MenuButton
-          onPress={() => handleEventFinancialSubSection('Transactions')}
-          isActive={eventFinancialSubSection === 'Transactions'}
-        >
-          <ButtonTitle
+            <ButtonTitle
+              isActive={eventFinancialSubSection === 'TransactionAgreements'}
+            >
+              Contratos
+            </ButtonTitle>
+            <MenuIcon
+              name="file-text"
+              isActive={eventFinancialSubSection === 'TransactionAgreements'}
+            />
+          </MenuButton>
+          <MenuButton
+            onPress={() => handleEventFinancialSubSection('Transactions')}
             isActive={eventFinancialSubSection === 'Transactions'}
           >
-            Transações
-          </ButtonTitle>
-          <MenuIcon
-            name="dollar-sign"
-            isActive={eventFinancialSubSection === 'Transactions'}
-          />
-        </MenuButton>
-        <MenuButton
-          onPress={() => handleEventFinancialSubSection('Suppliers')}
-          isActive={eventFinancialSubSection === 'Suppliers'}
-        >
-          <ButtonTitle
+            <ButtonTitle
+              isActive={eventFinancialSubSection === 'Transactions'}
+            >
+              Transações
+            </ButtonTitle>
+            <MenuIcon
+              name="dollar-sign"
+              isActive={eventFinancialSubSection === 'Transactions'}
+            />
+          </MenuButton>
+          <MenuButton
+            onPress={() => handleEventFinancialSubSection('Suppliers')}
             isActive={eventFinancialSubSection === 'Suppliers'}
           >
-            Fornecedores
-          </ButtonTitle>
-          <MenuIcon
-            name="play"
-            isActive={eventFinancialSubSection === 'Suppliers'}
-          />
-        </MenuButton>
-        <MenuButton
-          onPress={() => handleEventFinancialSubSection('Members')}
-          isActive={eventFinancialSubSection === 'Members'}
-        >
-          <ButtonTitle
+            <ButtonTitle
+              isActive={eventFinancialSubSection === 'Suppliers'}
+            >
+              Fornecedores
+            </ButtonTitle>
+            <MenuIcon
+              name="play"
+              isActive={eventFinancialSubSection === 'Suppliers'}
+            />
+          </MenuButton>
+          <MenuButton
+            onPress={() => handleEventFinancialSubSection('Members')}
             isActive={eventFinancialSubSection === 'Members'}
           >
-            Membros
-          </ButtonTitle>
-          <MenuIcon
-            name="users"
-            isActive={eventFinancialSubSection === 'Members'}
-          />
-        </MenuButton>
-      </SectionButton>
-    </Container>
+            <ButtonTitle
+              isActive={eventFinancialSubSection === 'Members'}
+            >
+              Membros
+            </ButtonTitle>
+            <MenuIcon
+              name="users"
+              isActive={eventFinancialSubSection === 'Members'}
+            />
+          </MenuButton>
+        </SectionButton>
+      </Container>
+    </>
   );
 }
