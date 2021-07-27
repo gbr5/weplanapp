@@ -17,8 +17,6 @@ import IEventSupplierDTO from '../dtos/IEventSupplierDTO';
 import IEventDTO from '../dtos/IEventDTO';
 import IEventTaskDTO from '../dtos/IEventTaskDTO';
 import IEventBudgetDTO from '../dtos/IEventBudgetDTO';
-import ITransactionDTO from '../dtos/ITransactionDTO';
-import { useMemo } from 'react';
 
 interface MyEventContextType {
   eventFinancialSubSection: string;
@@ -155,15 +153,12 @@ const MyEventProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get<IEventSupplierDTO[]>(`/event-suppliers/${event_id}`);
       setEventSuppliers(response.data);
-      setNotHiredSuppliers(
-        response.data.filter((selected) => !selected.isHired && !selected.isDischarged),
-      );
-      setHiredSuppliers(
-        response.data.filter((selected) => selected.isHired && !selected.isDischarged),
-      );
-      setDischargedSuppliers(
-        response.data.filter((selected) => selected.isDischarged),
-      );
+      const newNotHired = response.data.filter((selected) => !selected.isHired && !selected.isDischarged);
+      const newHired = response.data.filter((selected) => selected.isHired && !selected.isDischarged);
+      const newDischarged = response.data.filter((selected) => selected.isDischarged);
+      setNotHiredSuppliers(newNotHired);
+      setHiredSuppliers(newHired);
+      setDischargedSuppliers(newDischarged);
       if (selectedSupplier && selectedSupplier.id) {
         const updatedSupplier = response.data.find(supplier => supplier.id === selectedSupplier.id);
         updatedSupplier && setSelectedSupplier(updatedSupplier);

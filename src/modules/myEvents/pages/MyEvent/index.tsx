@@ -43,6 +43,8 @@ import {
 import { DischargeSupplierWindow } from '../../components/SuppliersComponents/DischargeSupplierWindow';
 import { EditTransactionValue } from '../../components/SuppliersComponents/EditTransactionValue';
 import { CancelAllAgreements } from '../../components/SuppliersComponents/CancelAllAgreements';
+import { CancelNotPaidTransactionsWindow } from '../../components/SuppliersComponents/CancelNotPaidTransactionsWindow';
+import { CancelFutureTransactionsWindow } from '../../components/SuppliersComponents/CancelFutureTransactionsWindow';
 
 const MyEvent: React.FC = () => {
   const {
@@ -84,6 +86,8 @@ const MyEvent: React.FC = () => {
   const {
     addSupplierWindow,
     cancelAllAgreementsWindow,
+    cancelNotPaidTransactionsWindow,
+    cancelFutureTransactionsWindow,
     selectedSupplierTransactionAgreement,
     dischargingWindow,
     supplierCategoryWindow,
@@ -185,6 +189,20 @@ const MyEvent: React.FC = () => {
         && selectedSupplier.id
         && cancelAllAgreementsWindow && (
           <CancelAllAgreements />
+        )
+      }
+
+      {selectedSupplier
+        && selectedSupplier.id
+        && cancelNotPaidTransactionsWindow && (
+          <CancelNotPaidTransactionsWindow />
+        )
+      }
+
+      {selectedSupplier
+        && selectedSupplier.id
+        && cancelFutureTransactionsWindow && (
+          <CancelFutureTransactionsWindow />
         )
       }
 

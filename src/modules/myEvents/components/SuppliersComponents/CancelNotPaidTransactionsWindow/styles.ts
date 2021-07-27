@@ -11,7 +11,7 @@ interface IProps {
 
 export const Container = styled.View`
   flex: 1;
-  margin: 40px 0 0;
+  margin: 40px 0 16px;
   width: 100%;
 `;
 
@@ -54,7 +54,7 @@ export const AgreementsContainer = styled.ScrollView`
   background: ${({ theme }) => theme.color.text5};
   border-radius: 8px;
   padding: 8px 0;
-  margin: 4px 0 8px;
+  margin: 16px 0;
   max-height: 120px;
   padding-right: 16px;
 `;

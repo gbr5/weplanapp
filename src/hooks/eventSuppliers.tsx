@@ -25,6 +25,8 @@ interface EventSuppliersContextType {
   createSupplierTransactionAgreementWindow: boolean;
   createSupplierTransactionsWindow: boolean;
   cancelAllAgreementsWindow: boolean;
+  cancelFutureTransactionsWindow: boolean;
+  cancelNotPaidTransactionsWindow: boolean;
   selectedSupplierCategory: string;
   selectedSupplierSubCategory: ISupplierSubCategoryDTO;
   supplierSubCategories: ISupplierSubCategoryDTO[];
@@ -44,6 +46,8 @@ interface EventSuppliersContextType {
   handleCreateSupplierTransactionAgreementWindow: () => void;
   handleCreateSupplierTransactionsWindow: () => void;
   handleCancelAllAgreementsWindow: () => void;
+  handleCancelFutureTransactionsWindow: () => void;
+  handleCancelNotPaidTransactionsWindow: () => void;
   updateEventSupplier: (data: IEventSupplierDTO) => Promise<void>;
   getEventSupplierTransactionAgreements: (supplier_id: string) => Promise<IEventSupplierTransactionAgreementDTO[]>;
   getEventSupplierTransactions: (agreement_id: string) => Promise<IEventSupplierTransactionDTO[]>;
@@ -62,6 +66,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   const [createSupplierTransactionAgreementWindow, setCreateSupplierTransactionAgreementWindow] = useState(false);
   const [createSupplierTransactionsWindow, setCreateSupplierTransactionsWindow] = useState(false);
   const [cancelAllAgreementsWindow, setCancelAllAgreementsWindow] = useState(false);
+  const [cancelFutureTransactionsWindow, setCancelFutureTransactionsWindow] = useState(false);
+  const [cancelNotPaidTransactionsWindow, setCancelNotPaidTransactionsWindow] = useState(false);
 
   const [selectedSupplierCategory, setSelectedSupplierCategory] = useState('');
   const [supplierSubCategories, setSupplierSubCategories] = useState<ISupplierSubCategoryDTO[]>([]);
@@ -91,6 +97,14 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
 
   function handleCreateSupplierTransactionsWindow() {
     setCreateSupplierTransactionsWindow(!createSupplierTransactionsWindow)
+  }
+
+  function handleCancelFutureTransactionsWindow() {
+    setCancelFutureTransactionsWindow(!cancelFutureTransactionsWindow)
+  }
+
+  function handleCancelNotPaidTransactionsWindow() {
+    setCancelNotPaidTransactionsWindow(!cancelNotPaidTransactionsWindow)
   }
 
   function handleCancelAllAgreementsWindow() {
@@ -228,6 +242,11 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       selectedSupplier.transactionAgreements.map(agreement =>
         agreement.transactions.map(transaction => transactions.push(transaction.transaction)),
       );
+      transactions.sort((a, b) => {
+        if (new Date(a.due_date) > new Date(b.due_date)) return 1
+        if (new Date(a.due_date) < new Date(b.due_date)) return -1
+        return 0
+      });
       return transactions;
     }
   }, [selectedSupplier]);
@@ -242,6 +261,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         createSupplierTransactionAgreementWindow,
         createSupplierTransactionsWindow,
         cancelAllAgreementsWindow,
+        cancelFutureTransactionsWindow,
+        cancelNotPaidTransactionsWindow,
         supplierSubCategories,
         selectedSupplierSubCategory,
         selectedSupplierCategory,
@@ -260,6 +281,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         handleCreateSupplierTransactionAgreementWindow,
         handleCreateSupplierTransactionsWindow,
         handleCancelAllAgreementsWindow,
+        handleCancelFutureTransactionsWindow,
+        handleCancelNotPaidTransactionsWindow,
         getEventSupplierTransactionAgreements,
         getEventSupplierTransactions,
         handleDischargingWindow,

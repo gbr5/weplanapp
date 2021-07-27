@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
-import { useEffect } from 'react';
-import { useMyEvent } from '../../../../hooks/myEvent';
+import React, { useMemo, useState, useEffect } from 'react';
+
 import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
+
+import { useMyEvent } from '../../../../hooks/myEvent';
 
 import {
   Container,
@@ -28,6 +29,12 @@ export function MainMenu() {
     calculateTotalEventCost,
   } = useMyEvent();
 
+  const [suppliersInfo, setSuppliersInfo] = useState('');
+
+  useEffect(() => {
+    setSuppliersInfo(`${hiredSuppliers.length} / ${notHiredSuppliers.length + hiredSuppliers.length}`)
+  }, [hiredSuppliers.length, notHiredSuppliers.length]);
+
   const guestsInfo = useMemo(() => `${confirmedGuests} / ${guests.length}`, [confirmedGuests, guests]);
   const budgetInfo = useMemo(() => {
     if (eventBudget && eventBudget.budget) {
@@ -36,8 +43,8 @@ export function MainMenu() {
     return 'R$ 0,00';
   }, [eventBudget]);
 
-  const suppliersInfo = useMemo(() => `${hiredSuppliers.length} / ${notHiredSuppliers.length + hiredSuppliers.length}`,
-    [hiredSuppliers, notHiredSuppliers]);
+  // const suppliersInfo = useMemo(() => `${hiredSuppliers.length} / ${notHiredSuppliers.length + hiredSuppliers.length}`,
+  //   [hiredSuppliers, notHiredSuppliers]);
 
   const financialInfo = useMemo(() => {
     if (eventBudget && eventBudget.budget) {

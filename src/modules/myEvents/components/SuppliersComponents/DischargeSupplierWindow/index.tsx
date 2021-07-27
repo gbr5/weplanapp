@@ -24,7 +24,6 @@ import {
   SupplierNameResponse,
   SupplierResponse,
   SupplierQuestion,
-  TransactionsContainer,
 } from './styles';
 
 export function DischargeSupplierWindow() {
@@ -32,6 +31,8 @@ export function DischargeSupplierWindow() {
   const {
     handleDischargingWindow,
     handleCancelAllAgreementsWindow,
+    handleCancelNotPaidTransactionsWindow,
+    handleCancelFutureTransactionsWindow,
   } = useEventSuppliers();
 
   const [dischargeOption, setDischargeOption] = useState('');
@@ -100,6 +101,9 @@ export function DischargeSupplierWindow() {
 
   function handleDischargeOption(data: string) {
     data === 'all' && handleCancelAllAgreementsWindow();
+    data === 'notPaid' && handleCancelNotPaidTransactionsWindow();
+    data === 'future' && handleCancelFutureTransactionsWindow();
+    data === 'edit' && handleCancelAllAgreementsWindow();
     setDischargeOption(data);
   }
 
@@ -128,10 +132,16 @@ export function DischargeSupplierWindow() {
             <OptionText isActive={dischargeOption === 'all'}>Cancelar Contratos e Transações</OptionText>
           </OptionButton>
           <OptionButton
-            onPress={() => handleDischargeOption('partial')}
-            isActive={dischargeOption === 'partial'}
+            onPress={() => handleDischargeOption('notPaid')}
+            isActive={dischargeOption === 'notPaid'}
           >
-            <OptionText isActive={dischargeOption === 'partial'} >Cancelar Transações Futuras</OptionText>
+            <OptionText isActive={dischargeOption === 'notPaid'} >Cancelar Transações Não Paga</OptionText>
+          </OptionButton>
+          <OptionButton
+            onPress={() => handleDischargeOption('future')}
+            isActive={dischargeOption === 'future'}
+          >
+            <OptionText isActive={dischargeOption === 'future'} >Cancelar Transações Futuras</OptionText>
           </OptionButton>
           <OptionButton
             onPress={() => handleDischargeOption('edit')}
@@ -171,10 +181,6 @@ export function DischargeSupplierWindow() {
         </SupplierTitle>
         <SupplierTitleUnderline />
 
-        <SupplierContainer>
-          <SupplierQuestion>Resultado</SupplierQuestion>
-          <SupplierResponse>{selectedSupplierTransactions.balance}</SupplierResponse>
-        </SupplierContainer>
         <SupplierContainer>
           <SupplierQuestion>Pago</SupplierQuestion>
           <SupplierResponse>{selectedSupplierTransactions.paidValue}</SupplierResponse>

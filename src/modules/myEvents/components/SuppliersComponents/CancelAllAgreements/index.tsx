@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useTransaction } from '../../../../../hooks/transactions';
 
+import ITransactionDTO from '../../../../../dtos/ITransactionDTO';
 import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
 
-import { TransactionButton } from '../../../../../components/TransactionComponents/TransactionButton';
 import WindowContainer from '../../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../../components/WindowHeader';
+import ShortConfirmationWindow from '../../../../../components/ShortConfirmationWindow';
+import Button from '../../../../../components/Button';
+import { SelectTransactionButton } from '../../../../../components/TransactionComponents/SelectTransactionButton';
 
 import {
   Container,
@@ -28,37 +32,103 @@ import {
   TransactionTitleContainer,
   TransactionTitleText,
 } from './styles';
-import { useMemo } from 'react';
-import { useState } from 'react';
-import { useTransaction } from '../../../../../hooks/transactions';
-import ShortConfirmationWindow from '../../../../../components/ShortConfirmationWindow';
-import Button from '../../../../../components/Button';
-import { Alert } from 'react-native';
+import IUpdateEventSupplierTransactionAgreementDTO from '../../../../../dtos/IUpdateEventSupplierTransactionAgreementDTO';
 
 export function CancelAllAgreements() {
   const { selectedSupplier } = useMyEvent();
   const {
     supplierTransactions,
+    updateEventSupplier,
     handleDischargingWindow,
     handleCancelAllAgreementsWindow,
     selectSupplierTransactionAgreement,
     selectedSupplierTransactionAgreement,
   } = useEventSuppliers();
-  const { deleteAllSupplierAgreements } = useTransaction();
+  const {
+    updateEventSupplierTransactionAgreement,
+    deleteAllSupplierAgreements,
+  } = useTransaction();
 
   const [deleteAllConfirmationWindow, setDeleteAllConfirmationWindow] = useState(false);
+  const [selectedTransactions, setSelectedTransactions] = useState<ITransactionDTO[]>(
+    supplierTransactions ? supplierTransactions : []
+  );
 
+  function selectTransactions(data: ITransactionDTO[]) {
+    setSelectedTransactions(data);
+  }
   function handleSelectAgreement(data: IEventSupplierTransactionAgreementDTO) {
     selectSupplierTransactionAgreement(data);
   }
 
+  function cancelAgreementSelectedTransactions({
+    id,
+    transactions,
+  }: IEventSupplierTransactionAgreementDTO) {
+    const updatedTransactions = transactions.map(transaction => {
+      if (selectedTransactions.find(item => item.id === transaction.transaction.id)) {
+        return {
+          ...transaction.transaction,
+          isCancelled: true,
+        }
+      }
+      return transaction.transaction;
+    });
+    const newAmount = updatedTransactions
+      .filter(transaction => !transaction.isCancelled)
+      .map(transaction => Number(transaction.amount))
+      .reduce((acc, cv) => acc + cv, 0);
+    const newNumberOfInstallments = updatedTransactions
+      .filter(transaction => !transaction.isCancelled).length;
+    return {
+      id,
+      amount: newAmount,
+      number_of_installments: newNumberOfInstallments,
+      isCancelled: newAmount === 0,
+      transactions: updatedTransactions,
+    }
+  }
+
+  async function handleDeleteSelectedTransactios() {
+    const agreements: IUpdateEventSupplierTransactionAgreementDTO[] = [];
+    selectedSupplier.transactionAgreements.map(agreement => {
+      const updatedAgreement = cancelAgreementSelectedTransactions(agreement);
+      agreements.push(updatedAgreement);
+      return updatedAgreement;
+    });
+    Promise.all([
+      agreements.map(agreement => {
+        return updateEventSupplierTransactionAgreement(agreement);
+      }),
+    ]);
+    await updateEventSupplier({
+      ...selectedSupplier,
+      isDischarged: true,
+      isHired: false,
+    });
+    setDeleteAllConfirmationWindow(false);
+    handleCancelAllAgreementsWindow();
+    handleDischargingWindow();
+  }
   const transactions = useMemo(() => {
     if (selectedSupplierTransactionAgreement.id
-      && selectedSupplierTransactionAgreement.transactions.length > 0)
-        return selectedSupplierTransactionAgreement.transactions.map(transaction => transaction.transaction);
+      && selectedSupplierTransactionAgreement.transactions.length > 0) {
+        const updatedTransactions = selectedSupplierTransactionAgreement.transactions
+          .filter(transaction => !transaction.transaction.isCancelled)
+          .map(transaction => transaction.transaction)
+          .sort((a, b) => {
+            if (new Date(a.due_date) > new Date(b.due_date)) return 1
+            if (new Date(a.due_date) < new Date(b.due_date)) return -1
+            return 0
+          });
+        setSelectedTransactions(updatedTransactions);
+        return updatedTransactions;
+      }
   }, [selectedSupplierTransactionAgreement]);
 
   async function handleDeleteAll() {
+    if (supplierTransactions && selectedTransactions.length < supplierTransactions.length)
+      return handleDeleteSelectedTransactios();
     if (!selectedSupplier.isDischarged) {
       await deleteAllSupplierAgreements();
     }
@@ -159,7 +229,13 @@ export function CancelAllAgreements() {
             renderItem={({ item }) => {
               const index = String(supplierTransactions.findIndex(transaction => transaction.id === item.id) + 1);
               return (
-                <TransactionButton index={index} transaction={item} key={index} />
+                <SelectTransactionButton
+                  selectTransactions={(data: ITransactionDTO[]) => selectTransactions(data)}
+                  selectedTransactions={selectedTransactions}
+                  index={index}
+                  transaction={item}
+                  key={index}
+                />
             )}}
           />
         )}
@@ -171,12 +247,18 @@ export function CancelAllAgreements() {
               renderItem={({ item }) => {
                 const index = String(transactions.findIndex(transaction => transaction.id === item.id) + 1);
                 return (
-                  <TransactionButton index={index} transaction={item} key={index} />
+                  <SelectTransactionButton
+                    selectTransactions={(data: ITransactionDTO[]) => selectTransactions(data)}
+                    selectedTransactions={selectedTransactions}
+                    index={index}
+                    transaction={item}
+                    key={index}
+                  />
               )}}
             />
           )}
       </Container>
-      <Button onPress={handleDeleteAllConfirmationWindow}>Deletar Contratos</Button>
+      <Button onPress={handleDeleteAllConfirmationWindow}>Cancelar Transações</Button>
     </WindowContainer>
   );
 }

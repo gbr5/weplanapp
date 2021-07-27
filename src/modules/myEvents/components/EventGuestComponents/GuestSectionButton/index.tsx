@@ -66,10 +66,10 @@ const GuestSectionButton: React.FC<IProps> = ({
             {guest.last_name}
           </GuestName>
           {guest.weplanGuest && guest.weplanGuest.id && (
-            <Icon color={theme.color.atention} name="user" size={30} />
+            <Icon color={theme.color.primary} name="user" size={30} />
           )}
           {guest.host_id === user.id && (
-            <Icon color={theme.color.secondary} name="edit-2" size={30} />
+            <Icon color={theme.color.title} name="edit-2" size={24} />
           )}
         </GuestNameContainer>
       </GoToGuestButton>
@@ -78,9 +78,9 @@ const GuestSectionButton: React.FC<IProps> = ({
       ) : (
         <GuestConfirmationButton onPress={handleEditGuestConfirmation}>
           {guest.host_id === user.id && guest.confirmed ? (
-            <Icon color={theme.color.success} name="check-square" size={30} />
+            <Icon color={theme.color.success_light} name="check-square" size={30} />
           ) : (
-            <Icon color={theme.color.atention} name="square" size={30} />
+            <Icon color={theme.color.atention_light} name="square" size={30} />
           )}
         </GuestConfirmationButton>
       )}

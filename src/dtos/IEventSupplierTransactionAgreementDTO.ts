@@ -5,6 +5,7 @@ export default interface IEventSupplierTransactionAgreementDTO {
   supplier_id: string;
   amount: number;
   number_of_installments: number;
+  isCancelled: boolean;
   created_at: Date;
   updated_at: Date;
   transactions: IEventSupplierTransactionDTO[];

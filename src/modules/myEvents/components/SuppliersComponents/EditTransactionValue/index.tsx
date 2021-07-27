@@ -25,14 +25,12 @@ interface IFormParams {
 export function EditTransactionValue() {
   const formRef = useRef<FormHandles>(null);
 
-  const {
-    selectedSupplierTransactionAgreement,
-    updateEventSupplierTransactionAgreement,
-  } = useEventSuppliers();
+  const { selectedSupplierTransactionAgreement } = useEventSuppliers();
   const {
     handleEditTransactionValueWindow,
     selectedTransaction,
     editTransaction,
+    updateEventSupplierTransactionAgreement,
   } = useTransaction();
 
   const [loading, setLoading] = useState(false);
@@ -72,13 +70,23 @@ export function EditTransactionValue() {
           O contrato foi atualizado de ${agreementAmount} para ${agreementNewAmount}
         `;
 
-      await editTransaction({
+      const transactions = [{
         ...selectedTransaction,
         amount,
-      });
+      }];
+
+      const {
+        id,
+        isCancelled,
+        number_of_installments,
+      } = selectedSupplierTransactionAgreement;
+
       await updateEventSupplierTransactionAgreement({
-        ...selectedSupplierTransactionAgreement,
-        amount,
+        amount: agreementNewValue,
+        id,
+        isCancelled,
+        number_of_installments,
+        transactions,
       });
 
       Alert.alert(`Transação atualizada com sucesso!`, message);

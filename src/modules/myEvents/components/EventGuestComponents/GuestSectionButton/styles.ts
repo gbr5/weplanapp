@@ -8,7 +8,7 @@ interface IProps {
 export const Container = styled.View<IProps>`
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) => theme.color.text6};
+  background-color: ${({ theme }) => theme.color.secondary_light};
   margin: 8px 0;
   border-radius: 8px;
   padding: 16px 0;
@@ -16,7 +16,7 @@ export const Container = styled.View<IProps>`
 
   ${(props) => props.isMine
     && css`
-      background-color: ${({ theme }) => theme.color.primary};
+      background-color: ${({ theme }) => theme.color.secondary};
     `}
 `;
 
@@ -24,7 +24,7 @@ export const GuestIndex = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   font-size: ${RFValue(20)}px;
 
-  color: ${({ theme }) => theme.color.secondary};
+  color: ${({ theme }) => theme.color.primary};
 
   text-align: center;
   width: 40px;
@@ -43,7 +43,7 @@ export const GuestName = styled.Text<IProps>`
   font-size: ${RFValue(20)}px;
   text-align: left;
 
-  color: ${({ theme }) => theme.color.text1};
+  color: ${({ theme }) => theme.color.text6};
 `;
 
 export const GoToGuestButton = styled.TouchableOpacity`

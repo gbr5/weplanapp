@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components/native';
 import { FlatList } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
-import IEventGuestDTO from '../../../../dtos/IEventGuestDTO';
+import IEventGuestDTO from '../../../../../dtos/IEventGuestDTO';
 
 export const Container = styled.View`
   flex: 1;
