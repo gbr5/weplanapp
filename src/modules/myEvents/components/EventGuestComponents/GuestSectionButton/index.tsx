@@ -28,7 +28,7 @@ const GuestSectionButton: React.FC<IProps> = ({
 }) => {
   const { user } = useAuth();
   const navigation = useNavigation();
-  const { selectGuest, selectedGuest, getEventGuests } = useMyEvent();
+  const { selectGuest, getEventGuests } = useMyEvent();
 
   const [loading, setLoading] = useState(false);
 
@@ -74,7 +74,7 @@ const GuestSectionButton: React.FC<IProps> = ({
         </GuestNameContainer>
       </GoToGuestButton>
       {loading ? (
-        <Icon color={theme.color.secondary} name="loader" size={30} />
+        <Icon color={theme.color.text5} name="loader" size={30} />
       ) : (
         <GuestConfirmationButton onPress={handleEditGuestConfirmation}>
           {guest.host_id === user.id && guest.confirmed ? (

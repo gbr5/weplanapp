@@ -9,6 +9,7 @@ import formatOnlyDateShort from '../../../utils/formatOnlyDateShort';
 import {
   Container,
   TextContainer,
+  Index,
   Status,
   Amount,
   DateText,
@@ -43,7 +44,7 @@ export function SelectTransactionButton({
     const today = new Date();
     const dueDate = new Date(transaction.due_date);
     if (today > dueDate) return 'Atrasada';
-    return 'Não Paga';
+    return 'A Vencer';
   }, [transaction]);
 
   const isActive = useMemo(() => {
@@ -70,12 +71,13 @@ export function SelectTransactionButton({
     <>
       <Container onPress={handleSelectTransaction}>
         <TextContainer>
-        <Status
-          isOverdue={isOverdue}
-          isPaid={transaction.isPaid}
-        >
-          {status}
-        </Status>
+          <Index>{index}</Index>
+          <Status
+            isOverdue={isOverdue}
+            isPaid={transaction.isPaid}
+          >
+            {status}
+          </Status>
           <Amount
             isOverdue={isOverdue}
             isPaid={transaction.isPaid}

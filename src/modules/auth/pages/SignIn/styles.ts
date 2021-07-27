@@ -65,7 +65,7 @@ export const PasswordField = styled.View`
 
 export const PasswordSecureButton = styled(BorderlessButton)`
   position: absolute;
-  top: 20px;
+  top: 31%;
   right: 8px;
 `;
 

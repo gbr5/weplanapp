@@ -5,16 +5,22 @@ export const Container = styled.View`
   width: 100%;
 `;
 
+export const OverTitle = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  font-size: ${RFValue(18)}px;
+  color: ${({ theme }) => theme.color.secondary};
+`;
+
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(32)}px;
+  font-size: ${RFValue(24)}px;
   color: ${({ theme }) => theme.color.text1};
   text-align: center;
 `;
 
 export const TitleUnderline = styled.View`
   width: 100%;
-  height: 2px;
-  margin: 4px 0 16px;
+  height: 1.5px;
+  margin: 8px 0 16px;
   background-color: ${({ theme }) => theme.color.primary};
 `;

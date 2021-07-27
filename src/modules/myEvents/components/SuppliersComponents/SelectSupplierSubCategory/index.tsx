@@ -53,6 +53,7 @@ export function SelectSupplierSubCategory() {
         {supplierSubCategories.map(subCategory => {
           return (
             <SubCategoryButton
+              key={subCategory.id}
               isActive={subCategory.sub_category === selectedSupplierSubCategory.sub_category}
               onPress={() => handleSelectSupplierSubCategory(subCategory)}
             >

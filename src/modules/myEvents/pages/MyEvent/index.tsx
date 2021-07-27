@@ -32,6 +32,9 @@ import NewTaskForm from '../../components/EventTaskComponents/NewTaskForm';
 import ShortConfirmationWindow from '../../../../components/ShortConfirmationWindow';
 import { EditNoteWindow } from '../../../../components/EditNoteWindow';
 import { SuppliersSection } from '../../components/SuppliersComponents/SuppliersSection';
+import { DischargeSupplierWindow } from '../../components/SuppliersComponents/DischargeSupplierWindow';
+import { EditTransactionValue } from '../../components/SuppliersComponents/EditTransactionValue';
+import { CancelAllAgreements } from '../../components/SuppliersComponents/CancelAllAgreements';
 
 import {
   Container,
@@ -40,11 +43,6 @@ import {
   DashboardButton,
   BodyContainer,
 } from './styles';
-import { DischargeSupplierWindow } from '../../components/SuppliersComponents/DischargeSupplierWindow';
-import { EditTransactionValue } from '../../components/SuppliersComponents/EditTransactionValue';
-import { CancelAllAgreements } from '../../components/SuppliersComponents/CancelAllAgreements';
-import { CancelNotPaidTransactionsWindow } from '../../components/SuppliersComponents/CancelNotPaidTransactionsWindow';
-import { CancelFutureTransactionsWindow } from '../../components/SuppliersComponents/CancelFutureTransactionsWindow';
 
 const MyEvent: React.FC = () => {
   const {
@@ -85,9 +83,7 @@ const MyEvent: React.FC = () => {
   } = useEventTasks();
   const {
     addSupplierWindow,
-    cancelAllAgreementsWindow,
-    cancelNotPaidTransactionsWindow,
-    cancelFutureTransactionsWindow,
+    cancelAgreementsWindow,
     selectedSupplierTransactionAgreement,
     dischargingWindow,
     supplierCategoryWindow,
@@ -95,6 +91,7 @@ const MyEvent: React.FC = () => {
     createSupplierTransactionAgreementWindow,
     handleAddSupplierWindow,
     createSupplierTransactionsWindow,
+    dischargeOption,
   } = useEventSuppliers();
   const { editNoteWindow, selectNote, handleEditNoteWindow } = useNote();
   const {
@@ -187,22 +184,8 @@ const MyEvent: React.FC = () => {
 
       {selectedSupplier
         && selectedSupplier.id
-        && cancelAllAgreementsWindow && (
+        && cancelAgreementsWindow && (
           <CancelAllAgreements />
-        )
-      }
-
-      {selectedSupplier
-        && selectedSupplier.id
-        && cancelNotPaidTransactionsWindow && (
-          <CancelNotPaidTransactionsWindow />
-        )
-      }
-
-      {selectedSupplier
-        && selectedSupplier.id
-        && cancelFutureTransactionsWindow && (
-          <CancelFutureTransactionsWindow />
         )
       }
 

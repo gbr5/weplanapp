@@ -19,8 +19,8 @@ export function SelectSupplierCategory() {
 
   function handleSelectSupplierCategory(category: string) {
     selectSupplierCategory(category);
-    handleSupplierCategoryWindow();
     handleSupplierSubCategoryWindow();
+    handleSupplierCategoryWindow();
   }
 
   return (

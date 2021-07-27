@@ -3,7 +3,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
-import ITransactionDTO from '../../../../../dtos/ITransactionDTO';
+import IEventSupplierTransactionDTO from '../../../../../dtos/IEventSupplierTransactionDTO';
 
 interface IProps {
   isActive: boolean;
@@ -47,7 +47,7 @@ export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
   letter-spacing: 1px;
-  text-align: justify
+  text-align: justify;
 `;
 
 export const AgreementsContainer = styled.ScrollView`
@@ -129,7 +129,7 @@ export const SectionUnderline = styled.View`
 `;
 
 export const TransactionsContainer = styled(
-  FlatList as new () => FlatList<ITransactionDTO>,
+  FlatList as new () => FlatList<IEventSupplierTransactionDTO>,
 ).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {

@@ -43,7 +43,7 @@ export const GuestName = styled.Text<IProps>`
   font-size: ${RFValue(20)}px;
   text-align: left;
 
-  color: ${({ theme }) => theme.color.text6};
+  color: ${({ theme, isMine }) => isMine ? theme.color.text6 : theme.color.text1};
 `;
 
 export const GoToGuestButton = styled.TouchableOpacity`

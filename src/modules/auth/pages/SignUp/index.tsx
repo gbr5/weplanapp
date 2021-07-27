@@ -44,8 +44,8 @@ const SignUp: React.FC = () => {
   const navigation = useNavigation();
 
   const [loading, setLoading] = useState(false);
-  const [securePassword, setSecurePassword] = useState(false);
-  const [securePasswordConfirmation, setSecurePasswordConfirmation] = useState(false);
+  const [securePassword, setSecurePassword] = useState(true);
+  const [securePasswordConfirmation, setSecurePasswordConfirmation] = useState(true);
 
   function handleSecurePassword() {
     setSecurePassword(!securePassword);

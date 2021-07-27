@@ -30,8 +30,8 @@ export const TextContainer = styled.View`
 export const Index = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(16)}px;
-  margin-right: 8px;
+  font-size: ${RFValue(15)}px;
+  margin-right: 2px;
 `;
 
 export const Amount = styled.Text<IAmountProps>`
@@ -50,10 +50,10 @@ export const Amount = styled.Text<IAmountProps>`
 
 export const Status = styled.Text<IAmountProps>`
   /* margin: 0 8px; */
-  width: 29%;
+  width: 27%;
   font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.info};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(15)}px;
   ${({ isOverdue, isPaid }) => !isPaid && isOverdue &&
     css`
       color: ${({ theme }) => theme.color.atention};
@@ -65,8 +65,8 @@ export const Status = styled.Text<IAmountProps>`
 `;
 
 export const DateText = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.roboto};
-  color: ${({ theme }) => theme.color.text1};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.secondary};
   font-size: ${RFValue(16)}px;
 `;
 

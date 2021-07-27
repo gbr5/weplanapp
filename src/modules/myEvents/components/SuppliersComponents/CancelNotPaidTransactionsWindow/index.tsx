@@ -121,7 +121,7 @@ export function CancelNotPaidTransactionsWindow() {
       <Container>
         <WindowHeader title="Cancelar Transações Não Paga" />
 
-        <Title>Transações</Title>
+        <Title>Selecione as transações que deseja cancelar</Title>
 
         {transactions
           && transactions.length > 0 && (

@@ -47,6 +47,7 @@ export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
   letter-spacing: 1px;
+  text-align: justify;
 `;
 
 export const AgreementsContainer = styled.ScrollView`

@@ -9,6 +9,7 @@ import { useTransaction } from '../../../../../hooks/transactions';
 
 import ITransactionDTO from '../../../../../dtos/ITransactionDTO';
 import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
+import IUpdateEventSupplierTransactionAgreementDTO from '../../../../../dtos/IUpdateEventSupplierTransactionAgreementDTO';
 
 import WindowContainer from '../../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../../components/WindowHeader';
@@ -32,15 +33,16 @@ import {
   TransactionTitleContainer,
   TransactionTitleText,
 } from './styles';
-import IUpdateEventSupplierTransactionAgreementDTO from '../../../../../dtos/IUpdateEventSupplierTransactionAgreementDTO';
 
 export function CancelAllAgreements() {
   const { selectedSupplier } = useMyEvent();
   const {
+    dischargeOption,
     supplierTransactions,
     updateEventSupplier,
     handleDischargingWindow,
     handleCancelAllAgreementsWindow,
+    handleDichargeOption,
     selectSupplierTransactionAgreement,
     selectedSupplierTransactionAgreement,
   } = useEventSuppliers();
@@ -51,9 +53,16 @@ export function CancelAllAgreements() {
 
   const [deleteAllConfirmationWindow, setDeleteAllConfirmationWindow] = useState(false);
   const [selectedTransactions, setSelectedTransactions] = useState<ITransactionDTO[]>(
-    supplierTransactions ? supplierTransactions : []
+    supplierTransactions && dischargeOption !== 'edit' ? supplierTransactions : []
   );
 
+  function closeWindow() {
+    selectSupplierTransactionAgreement({} as IEventSupplierTransactionAgreementDTO);
+    setDeleteAllConfirmationWindow(false);
+    setSelectedTransactions([]);
+    handleCancelAllAgreementsWindow();
+    handleDichargeOption('');
+  }
   function selectTransactions(data: ITransactionDTO[]) {
     setSelectedTransactions(data);
   }
@@ -106,34 +115,58 @@ export function CancelAllAgreements() {
       isDischarged: true,
       isHired: false,
     });
-    setDeleteAllConfirmationWindow(false);
-    handleCancelAllAgreementsWindow();
+    closeWindow();
     handleDischargingWindow();
   }
   const transactions = useMemo(() => {
-    if (selectedSupplierTransactionAgreement.id
-      && selectedSupplierTransactionAgreement.transactions.length > 0) {
-        const updatedTransactions = selectedSupplierTransactionAgreement.transactions
-          .filter(transaction => !transaction.transaction.isCancelled)
-          .map(transaction => transaction.transaction)
-          .sort((a, b) => {
-            if (new Date(a.due_date) > new Date(b.due_date)) return 1
-            if (new Date(a.due_date) < new Date(b.due_date)) return -1
-            return 0
-          });
+    const today = new Date();
+    if (dischargeOption === 'all' || dischargeOption === 'edit') {
+      if (selectedSupplierTransactionAgreement.id
+        && selectedSupplierTransactionAgreement.transactions.length > 0) {
+          const updatedTransactions = selectedSupplierTransactionAgreement.transactions
+            .filter(transaction => !transaction.transaction.isCancelled)
+            .map(transaction => transaction.transaction)
+            .sort((a, b) => {
+              if (new Date(a.due_date) > new Date(b.due_date)) return 1
+              if (new Date(a.due_date) < new Date(b.due_date)) return -1
+              return 0
+            });
+          dischargeOption === 'all' && setSelectedTransactions(updatedTransactions);
+          return updatedTransactions;
+        }
+      const updatedTransactions = supplierTransactions && supplierTransactions
+        .filter(transaction => !transaction.isCancelled)
+        .map(transaction => transaction)
+        .sort((a, b) => {
+          if (new Date(a.due_date) > new Date(b.due_date)) return 1
+          if (new Date(a.due_date) < new Date(b.due_date)) return -1
+          return 0
+        });
+      dischargeOption === 'all' && updatedTransactions && setSelectedTransactions(updatedTransactions);
+      return updatedTransactions;
+    }
+
+    if (supplierTransactions && supplierTransactions.length > 0) {
+      if (dischargeOption === 'notPaid') {
+        const updatedTransactions = supplierTransactions.filter(transaction => transaction.isCancelled === false && transaction.isPaid === false);
         setSelectedTransactions(updatedTransactions);
         return updatedTransactions;
       }
-  }, [selectedSupplierTransactionAgreement]);
-
+      const updatedTransactions = supplierTransactions.filter(transaction =>
+        new Date(transaction.due_date) > today,
+      );
+      setSelectedTransactions(updatedTransactions.filter(transaction => !transaction.isPaid));
+      return updatedTransactions;
+    }
+  }, [selectedSupplierTransactionAgreement, supplierTransactions, dischargeOption]);
   async function handleDeleteAll() {
     if (supplierTransactions && selectedTransactions.length < supplierTransactions.length)
       return handleDeleteSelectedTransactios();
     if (!selectedSupplier.isDischarged) {
       await deleteAllSupplierAgreements();
     }
-    setDeleteAllConfirmationWindow(false);
-    handleCancelAllAgreementsWindow();
+
+    closeWindow();
     handleDischargingWindow();
   }
 
@@ -143,7 +176,7 @@ export function CancelAllAgreements() {
 
   return (
     <WindowContainer
-      closeWindow={handleCancelAllAgreementsWindow}
+      closeWindow={closeWindow}
       zIndex={36}
       top="5%"
       left="0%"
@@ -153,7 +186,7 @@ export function CancelAllAgreements() {
       {deleteAllConfirmationWindow && (
         <ShortConfirmationWindow
           closeWindow={handleDeleteAllConfirmationWindow}
-          question="Deseja deletar tudo?"
+          question="Deseja cancelar as transações selecionadas?"
           firstButtonLabel="Deletar"
           firstFunction={handleDeleteAll}
           secondButtonLabel="Cancelar"
@@ -161,86 +194,249 @@ export function CancelAllAgreements() {
         />
       )}
       <Container>
-        <WindowHeader title="Cancelar Contratos" />
-        <Title>Contratos</Title>
-        <AgreementsContainer
-          horizontal
-        >
-          {selectedSupplier.transactionAgreements.length > 0 &&
-            selectedSupplier.transactionAgreements.map(agreement => {
-              const index = selectedSupplier.transactionAgreements.findIndex(tAgreement => tAgreement.id === agreement.id) + 1;
-              return (
-                <AgreementContainer
-                  isActive={selectedSupplierTransactionAgreement.id === agreement.id}
-                  onPress={() => handleSelectAgreement(agreement)}
-                  key={agreement.id}
-                >
-                  <AgreementIndex
-                    isActive={selectedSupplierTransactionAgreement.id === agreement.id}
-                  >
-                    {index} )
-                  </AgreementIndex>
-                  <AgreementButton
-                    onPress={() => handleSelectAgreement(agreement)}
-                  >
-                    <AgreementValue
-                      isActive={selectedSupplierTransactionAgreement.id === agreement.id}
-                    >
-                      {formatBrlCurrency(agreement.amount)}
-                    </AgreementValue>
-                    <NumberOfInstallments
-                    isActive={selectedSupplierTransactionAgreement.id === agreement.id}
-                    >
-                      x {agreement.number_of_installments}
-                    </NumberOfInstallments>
-                  </AgreementButton>
-                  <AgreementDate
-                    isActive={selectedSupplierTransactionAgreement.id === agreement.id}
-                  >
-                    Criado em {formatOnlyDateShort(String(agreement.created_at))}
-                  </AgreementDate>
-                </AgreementContainer>
-              );
-            })}
-        </AgreementsContainer>
-
-        <SectionUnderline />
-
-        <TransactionTitleContainer>
-          <Title>Transações</Title>
-
-          <TransactionTitleButton
-            isActive={!selectedSupplierTransactionAgreement.id}
-            onPress={() => handleSelectAgreement({} as IEventSupplierTransactionAgreementDTO)}
-          >
-            <TransactionTitleText
-              isActive={!selectedSupplierTransactionAgreement.id}
+        {dischargeOption === 'all' && (
+          <>
+            <WindowHeader overTitle="Distrato de Fornecedor" title="Cancelar Contratos e Transações" />
+            <Title>Contratos</Title>
+            <AgreementsContainer
+              horizontal
             >
-              Todas
-            </TransactionTitleText>
-          </TransactionTitleButton>
+              {selectedSupplier.transactionAgreements.length > 0 &&
+                selectedSupplier.transactionAgreements.map(agreement => {
+                  const index = selectedSupplier.transactionAgreements.findIndex(tAgreement => tAgreement.id === agreement.id) + 1;
+                  return (
+                    <AgreementContainer
+                      isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                      onPress={() => handleSelectAgreement(agreement)}
+                      key={agreement.id}
+                    >
+                      <AgreementIndex
+                        isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                      >
+                        {index} )
+                      </AgreementIndex>
+                      <AgreementButton
+                        onPress={() => handleSelectAgreement(agreement)}
+                      >
+                        <AgreementValue
+                          isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                        >
+                          {formatBrlCurrency(agreement.amount)}
+                        </AgreementValue>
+                        <NumberOfInstallments
+                        isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                        >
+                          x {agreement.number_of_installments}
+                        </NumberOfInstallments>
+                      </AgreementButton>
+                      <AgreementDate
+                        isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                      >
+                        Criado em {formatOnlyDateShort(String(agreement.created_at))}
+                      </AgreementDate>
+                    </AgreementContainer>
+                  );
+                })}
+            </AgreementsContainer>
 
-        </TransactionTitleContainer>
+            <SectionUnderline />
 
-        {supplierTransactions && !selectedSupplierTransactionAgreement.id && (
-          <TransactionsContainer
-            data={supplierTransactions}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => {
-              const index = String(supplierTransactions.findIndex(transaction => transaction.id === item.id) + 1);
-              return (
-                <SelectTransactionButton
-                  selectTransactions={(data: ITransactionDTO[]) => selectTransactions(data)}
-                  selectedTransactions={selectedTransactions}
-                  index={index}
-                  transaction={item}
-                  key={index}
-                />
-            )}}
-          />
+            <TransactionTitleContainer>
+              <Title>Transações</Title>
+
+              <TransactionTitleButton
+                isActive={!selectedSupplierTransactionAgreement.id}
+                onPress={() => handleSelectAgreement({} as IEventSupplierTransactionAgreementDTO)}
+              >
+                <TransactionTitleText
+                  isActive={!selectedSupplierTransactionAgreement.id}
+                >
+                  Todas
+                </TransactionTitleText>
+              </TransactionTitleButton>
+
+            </TransactionTitleContainer>
+          </>
         )}
+        {dischargeOption === 'edit' && (
+          <>
+            <WindowHeader overTitle="Distrato de Fornecedor" title="Editar Contratos e Transações" />
+            <Title>Contratos</Title>
+            <AgreementsContainer
+              horizontal
+            >
+              {selectedSupplier.transactionAgreements.length > 0 &&
+                selectedSupplier.transactionAgreements.map(agreement => {
+                  const index = selectedSupplier.transactionAgreements.findIndex(tAgreement => tAgreement.id === agreement.id) + 1;
+                  return (
+                    <AgreementContainer
+                      isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                      onPress={() => handleSelectAgreement(agreement)}
+                      key={agreement.id}
+                    >
+                      <AgreementIndex
+                        isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                      >
+                        {index} )
+                      </AgreementIndex>
+                      <AgreementButton
+                        onPress={() => handleSelectAgreement(agreement)}
+                      >
+                        <AgreementValue
+                          isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                        >
+                          {formatBrlCurrency(agreement.amount)}
+                        </AgreementValue>
+                        <NumberOfInstallments
+                        isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                        >
+                          x {agreement.number_of_installments}
+                        </NumberOfInstallments>
+                      </AgreementButton>
+                      <AgreementDate
+                        isActive={selectedSupplierTransactionAgreement.id === agreement.id}
+                      >
+                        Criado em {formatOnlyDateShort(String(agreement.created_at))}
+                      </AgreementDate>
+                    </AgreementContainer>
+                  );
+                })}
+            </AgreementsContainer>
+
+            <SectionUnderline />
+
+            <TransactionTitleContainer>
+              <Title>Transações</Title>
+
+              <TransactionTitleButton
+                isActive={!selectedSupplierTransactionAgreement.id}
+                onPress={() => handleSelectAgreement({} as IEventSupplierTransactionAgreementDTO)}
+              >
+                <TransactionTitleText
+                  isActive={!selectedSupplierTransactionAgreement.id}
+                >
+                  Todas
+                </TransactionTitleText>
+              </TransactionTitleButton>
+
+            </TransactionTitleContainer>
+          </>
+        )}
+        {dischargeOption === 'notPaid' && (
+          <>
+            <WindowHeader overTitle="Distrato de Fornecedor" title="Cancelar Transações Não Pagas" />
+            <Title>Selecione as transações que deseja cancelar</Title>
+          </>
+        )}
+        {dischargeOption === 'future' && (
+          <>
+            <WindowHeader overTitle="Distrato de Fornecedor" title="Cancelar Transações Futuras" />
+            <Title>Selecione as transações que deseja cancelar</Title>
+          </>
+        )}
+
+        {supplierTransactions
+          && supplierTransactions.length > 0
+          && dischargeOption === 'all'
+          && !selectedSupplierTransactionAgreement.id && (
+            <TransactionsContainer
+              data={supplierTransactions}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => {
+                const index = String(supplierTransactions.findIndex(transaction => transaction.id === item.id) + 1);
+                return (
+                  <SelectTransactionButton
+                    selectTransactions={(data: ITransactionDTO[]) => selectTransactions(data)}
+                    selectedTransactions={selectedTransactions}
+                    index={index}
+                    transaction={item}
+                    key={index}
+                  />
+              )}}
+            />
+          )}
+        {supplierTransactions
+          && supplierTransactions.length > 0
+          && dischargeOption === 'edit'
+          && !selectedSupplierTransactionAgreement.id && (
+            <TransactionsContainer
+              data={supplierTransactions}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => {
+                const index = String(supplierTransactions.findIndex(transaction => transaction.id === item.id) + 1);
+                return (
+                  <SelectTransactionButton
+                    selectTransactions={(data: ITransactionDTO[]) => selectTransactions(data)}
+                    selectedTransactions={selectedTransactions}
+                    index={index}
+                    transaction={item}
+                    key={index}
+                  />
+              )}}
+            />
+          )}
         {transactions
-          && transactions.length > 0 && (
+          && transactions.length > 0
+          && (dischargeOption === 'all'
+          && !!selectedSupplierTransactionAgreement.id) && (
+            <TransactionsContainer
+              data={transactions}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => {
+                const index = String(transactions.findIndex(transaction => transaction.id === item.id) + 1);
+                return (
+                  <SelectTransactionButton
+                    selectTransactions={(data: ITransactionDTO[]) => selectTransactions(data)}
+                    selectedTransactions={selectedTransactions}
+                    index={index}
+                    transaction={item}
+                    key={index}
+                  />
+              )}}
+            />
+          )}
+        {transactions
+          && transactions.length > 0
+          && (dischargeOption === 'edit'
+          && !!selectedSupplierTransactionAgreement.id) && (
+            <TransactionsContainer
+              data={transactions}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => {
+                const index = String(transactions.findIndex(transaction => transaction.id === item.id) + 1);
+                return (
+                  <SelectTransactionButton
+                    selectTransactions={(data: ITransactionDTO[]) => selectTransactions(data)}
+                    selectedTransactions={selectedTransactions}
+                    index={index}
+                    transaction={item}
+                    key={index}
+                  />
+              )}}
+            />
+          )}
+        {transactions
+          && transactions.length > 0
+          && dischargeOption === 'notPaid' && (
+            <TransactionsContainer
+              data={transactions}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => {
+                const index = String(transactions.findIndex(transaction => transaction.id === item.id) + 1);
+                return (
+                  <SelectTransactionButton
+                    selectTransactions={(data: ITransactionDTO[]) => selectTransactions(data)}
+                    selectedTransactions={selectedTransactions}
+                    index={index}
+                    transaction={item}
+                    key={index}
+                  />
+              )}}
+            />
+          )}
+        {transactions
+          && transactions.length > 0
+          && dischargeOption === 'future' && (
             <TransactionsContainer
               data={transactions}
               keyExtractor={(item) => item.id}

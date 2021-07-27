@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 
@@ -7,21 +7,17 @@ import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import ITransactionDTO from '../../../../../dtos/ITransactionDTO';
 
-import { TransactionButton } from '../../../../../components/TransactionComponents/TransactionButton';
 import WindowContainer from '../../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../../components/WindowHeader';
 
 import {
   Container,
+  OptionsContainer,
   OptionButton,
   OptionText,
-  OptionsContainer,
-  SupplierNameContainer,
   SupplierContainer,
-  SupplierNameTitle,
-  SupplierTitleUnderline,
   SupplierTitle,
-  SupplierNameResponse,
+  SupplierTitleUnderline,
   SupplierResponse,
   SupplierQuestion,
 } from './styles';
@@ -31,11 +27,9 @@ export function DischargeSupplierWindow() {
   const {
     handleDischargingWindow,
     handleCancelAllAgreementsWindow,
-    handleCancelNotPaidTransactionsWindow,
-    handleCancelFutureTransactionsWindow,
+    handleDichargeOption,
+    dischargeOption,
   } = useEventSuppliers();
-
-  const [dischargeOption, setDischargeOption] = useState('');
 
   const selectedSupplierTransactions = useMemo(() => {
 
@@ -100,11 +94,8 @@ export function DischargeSupplierWindow() {
   }, [selectedSupplier]);
 
   function handleDischargeOption(data: string) {
-    data === 'all' && handleCancelAllAgreementsWindow();
-    data === 'notPaid' && handleCancelNotPaidTransactionsWindow();
-    data === 'future' && handleCancelFutureTransactionsWindow();
-    data === 'edit' && handleCancelAllAgreementsWindow();
-    setDischargeOption(data);
+    handleCancelAllAgreementsWindow();
+    handleDichargeOption(data);
   }
 
   return (
@@ -117,12 +108,7 @@ export function DischargeSupplierWindow() {
       width="100%"
     >
       <Container>
-        <WindowHeader title="Distrato" />
-
-        <SupplierNameContainer>
-          <SupplierNameTitle>Fornecedor</SupplierNameTitle>
-          <SupplierNameResponse>{selectedSupplier.name}</SupplierNameResponse>
-        </SupplierNameContainer>
+        <WindowHeader title={selectedSupplier.name} overTitle="Distrato de Fornecedor" />
 
         <OptionsContainer>
           <OptionButton
@@ -150,23 +136,6 @@ export function DischargeSupplierWindow() {
             <OptionText isActive={dischargeOption === 'edit'} >Editar Contratos e Transações</OptionText>
           </OptionButton>
         </OptionsContainer>
-
-
-{/*
-        <SupplierTitle>Transações</SupplierTitle>
-        <SupplierTitleUnderline />
-
-        <TransactionsContainer
-          data={eventDebitTransactions}
-          keyExtractor={( item ) => item.id}
-          renderItem={({ item }) => {
-            const index = eventDebitTransactions
-              .findIndex(transaction => transaction.id === item.id);
-            return (
-              <TransactionButton index={`${index + 1}`} key={item.id} transaction={item} />
-            )
-          }}
-        /> */}
 
         <SupplierTitle>Contratos ({selectedSupplier.transactionAgreements.length})</SupplierTitle>
         <SupplierTitleUnderline />
