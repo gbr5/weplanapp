@@ -25,18 +25,20 @@ interface IFormParams {
 export function EditTransactionValue() {
   const formRef = useRef<FormHandles>(null);
 
-  const { selectedSupplierTransactionAgreement } = useEventSuppliers();
   const {
-    handleEditTransactionValueWindow,
+    selectedSupplierTransactionAgreement,
+    handleEditTransactionValueWindow
+  } = useEventSuppliers();
+  const {
     selectedTransaction,
-    editTransaction,
+    selectTransaction,
     updateEventSupplierTransactionAgreement,
   } = useTransaction();
 
   const [loading, setLoading] = useState(false);
 
   const currentValue = useMemo(() => {
-    return formatBrlCurrency(selectedTransaction.amount)
+    return formatBrlCurrency(selectedTransaction.amount);
   }, [selectedTransaction.amount]);
 
   async function handleSubmit(data: IFormParams) {
@@ -58,8 +60,8 @@ export function EditTransactionValue() {
       const agreementAmount = formatBrlCurrency(selectedSupplierTransactionAgreement.amount);
       const amount = Number(data.amount);
       const newValue = formatBrlCurrency(amount);
-      const differenceInValue = amount - selectedTransaction.amount;
-      const agreementNewValue = selectedSupplierTransactionAgreement.amount + differenceInValue;
+      const differenceInValue = amount - Number(selectedTransaction.amount);
+      const agreementNewValue = Number(selectedSupplierTransactionAgreement.amount) + differenceInValue;
       const agreementNewAmount = formatBrlCurrency(agreementNewValue);
       const message =
         `
@@ -70,21 +72,23 @@ export function EditTransactionValue() {
           O contrato foi atualizado de ${agreementAmount} para ${agreementNewAmount}
         `;
 
+      const number_of_installments = selectedSupplierTransactionAgreement.transactions
+        .filter(transaction => !transaction.transaction.isCancelled && transaction.transaction.amount !== 0)
+        .length;
+
       const transactions = [{
         ...selectedTransaction,
         amount,
       }];
 
+      selectTransaction(transactions[0]);
       const {
         id,
-        isCancelled,
-        number_of_installments,
       } = selectedSupplierTransactionAgreement;
-
       await updateEventSupplierTransactionAgreement({
         amount: agreementNewValue,
         id,
-        isCancelled,
+        isCancelled: agreementNewValue === 0,
         number_of_installments,
         transactions,
       });
@@ -106,7 +110,7 @@ export function EditTransactionValue() {
   return (
     <WindowContainer
       closeWindow={handleEditTransactionValueWindow}
-      zIndex={15}
+      zIndex={45}
       top="5%"
       left="2%"
       height="50%"

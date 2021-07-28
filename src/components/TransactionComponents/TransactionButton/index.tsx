@@ -20,11 +20,15 @@ import {
 interface IProps {
   transaction: ITransactionDTO;
   index: string;
+  editTransactionValue: (data: ITransactionDTO) => void;
+  cancelTransaction: (data: ITransactionDTO) => void;
 }
 
 export function TransactionButton({
   transaction,
   index,
+  cancelTransaction,
+  editTransactionValue,
 }: IProps) {
   const {
     selectedTransaction,
@@ -75,7 +79,10 @@ export function TransactionButton({
         && selectedTransaction.id === transaction.id && (
           <>
             <Underline />
-            <TransactionButtonInfo />
+            <TransactionButtonInfo
+              cancelTransaction={(data: ITransactionDTO) => cancelTransaction(data)}
+              editTransactionValue={(data: ITransactionDTO) => editTransactionValue(data)}
+            />
             <Underline />
           </>
         )}

@@ -12,6 +12,7 @@ interface IProps {
   selectDate: (date: Date) => void;
   selectedDate: Date;
   loading: boolean;
+  zIndex?: number;
 }
 
 export function DatePickerWindow({
@@ -19,17 +20,18 @@ export function DatePickerWindow({
   selectDate,
   selectedDate,
   loading,
+  zIndex,
 }: IProps) {
   const [date, setDate] = useState(selectedDate);
-  async function handleSelectDate() {
-    await selectDate(date);
+  function handleSelectDate() {
+    selectDate(date);
     closeWindow();
   }
 
   return (
     <WindowContainer
       closeWindow={closeWindow}
-      zIndex={25}
+      zIndex={zIndex ? zIndex : 25}
       top="10%"
       left="0%"
       height="50%"

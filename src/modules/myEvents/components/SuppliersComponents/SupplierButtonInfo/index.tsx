@@ -1,6 +1,5 @@
+import React, { useState, useMemo } from 'react';
 import { differenceInMilliseconds } from 'date-fns/esm';
-import React, { useState } from 'react';
-import { useMemo } from 'react';
 import theme from '../../../../../global/styles/theme';
 
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
@@ -19,8 +18,6 @@ import {
   RowContainer,
   RowTitle,
   SupplierName,
-  GreenIcon,
-  RedIcon,
   DateText,
   Icon,
   IconContainer,
@@ -41,6 +38,7 @@ export function SupplierButtonInfo() {
   const {
     handleCreateSupplierTransactionAgreementWindow,
     handleDischargingWindow,
+    handleSupplierTransactionsWindow,
   } = useEventSuppliers();
   const { eventDebitTransactions } = useTransaction();
 
@@ -105,7 +103,7 @@ export function SupplierButtonInfo() {
         </MenuButton>
 
         {selectedSupplier.isHired && (
-          <MenuButton>
+          <MenuButton onPress={handleSupplierTransactionsWindow}>
             <MenuText>Transações</MenuText>
             <IconContainer
               color={theme.color.title}
@@ -168,7 +166,20 @@ export function SupplierButtonInfo() {
       </MenuButtonSection>
 
       <SectionBorder />
+      {nextPayment && nextPayment.id && (
+        <>
+          <NextTransactionContainer>
+            <SectionTitle>Próximo pagamento</SectionTitle>
+            <SectionTitleLine />
+            <TransactionRow>
+              <TransactionText>{formatBrlCurrency(nextPayment.amount)}  -  {formatOnlyDateShort(String(nextPayment.due_date))}</TransactionText>
+              <Icon name="square" />
+            </TransactionRow>
 
+          </NextTransactionContainer>
+          <SectionBorder />
+        </>
+      )}
       <RowContainer>
         <SupplierConfirmationButton
           isHired={selectedSupplier.isHired}
@@ -198,21 +209,6 @@ export function SupplierButtonInfo() {
       </RowContainer>
 
       <SectionBorder />
-
-      {nextPayment && nextPayment.id && (
-        <>
-          <NextTransactionContainer>
-            <SectionTitle>Próximo pagamento</SectionTitle>
-            <SectionTitleLine />
-            <TransactionRow>
-              <TransactionText>{formatBrlCurrency(nextPayment.amount)}  -  {formatOnlyDateShort(String(nextPayment.due_date))}</TransactionText>
-              <Icon name="square" />
-            </TransactionRow>
-
-          </NextTransactionContainer>
-          <SectionBorder />
-        </>
-      )}
 
       <FooterContainer>
         <DateText>Criado dia: </DateText>

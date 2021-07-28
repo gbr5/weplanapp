@@ -36,9 +36,11 @@ export function DischargeSupplierWindow() {
     const transactions: ITransactionDTO[] = [];
     selectedSupplier.transactionAgreements.length > 0 &&
       selectedSupplier.transactionAgreements
+        .filter(agreement => !agreement.isCancelled)
         .map(agreement => {
           agreement.transactions.length > 0 &&
             agreement.transactions
+              .filter(transaction => !transaction.transaction.isCancelled)
               .map(agreementTransaction =>
                 agreementTransaction.transaction &&
                   transactions.push(agreementTransaction.transaction));

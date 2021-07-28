@@ -1,6 +1,8 @@
 import React from 'react';
 import { useMemo } from 'react';
+import ITransactionDTO from '../../../dtos/ITransactionDTO';
 import theme from '../../../global/styles/theme';
+import { useEventSuppliers } from '../../../hooks/eventSuppliers';
 import { useTransaction } from '../../../hooks/transactions';
 import { formatBrlCurrency } from '../../../utils/formatBrlCurrency';
 import formatOnlyDate from '../../../utils/formatOnlyDate';
@@ -17,8 +19,19 @@ import {
   DeleteIcon,
 } from './styles';
 
-export function TransactionButtonInfo() {
-  const { selectedTransaction } = useTransaction();
+interface IProps {
+  editTransactionValue: (data: ITransactionDTO) => void;
+  cancelTransaction: (data: ITransactionDTO) => void;
+}
+
+export function TransactionButtonInfo({
+  cancelTransaction,
+  editTransactionValue,
+}: IProps) {
+  const {
+    selectedTransaction,
+    handleEditTransactionDueDateWindow,
+  } = useTransaction();
 
   const color = useMemo(() => {
     const today = new Date();
@@ -29,15 +42,27 @@ export function TransactionButtonInfo() {
     return theme.color.info_light;
   }, [selectedTransaction.isPaid, selectedTransaction.due_date, theme]);
 
+  function handleEditTransactionValue() {
+    editTransactionValue(selectedTransaction);
+  }
+
+  function handleCancelTransaction() {
+    cancelTransaction(selectedTransaction);
+  }
+
   return (
     <Container>
       <FieldContainer>
-        <FieldButton>
+        <FieldButton
+          onPress={handleEditTransactionValue}
+        >
           <FieldButtonText>
             {formatBrlCurrency(Number(selectedTransaction.amount))}
           </FieldButtonText>
         </FieldButton>
-        <FieldButton>
+        <FieldButton
+          onPress={handleEditTransactionDueDateWindow}
+        >
           <FieldButtonText>
             {formatOnlyDate(String(selectedTransaction.due_date))}
           </FieldButtonText>
@@ -60,7 +85,9 @@ export function TransactionButtonInfo() {
             </>
           )}
         </PaidButton>
-        <DeleteButton>
+        <DeleteButton
+          onPress={handleCancelTransaction}
+        >
           <DeleteIcon name="trash-2" />
         </DeleteButton>
       </FieldContainer>

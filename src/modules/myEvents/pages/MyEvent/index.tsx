@@ -43,6 +43,7 @@ import {
   DashboardButton,
   BodyContainer,
 } from './styles';
+import { SupplierTransactionsWindow } from '../../components/SuppliersComponents/SupplierTransactionsWindow';
 
 const MyEvent: React.FC = () => {
   const {
@@ -84,14 +85,15 @@ const MyEvent: React.FC = () => {
   const {
     addSupplierWindow,
     cancelAgreementsWindow,
-    selectedSupplierTransactionAgreement,
+    selectedSupplierTransaction,
     dischargingWindow,
     supplierCategoryWindow,
     supplierSubCategoryWindow,
     createSupplierTransactionAgreementWindow,
     handleAddSupplierWindow,
     createSupplierTransactionsWindow,
-    dischargeOption,
+    supplierTransactionsWindow,
+    editTransactionValueWindow,
   } = useEventSuppliers();
   const { editNoteWindow, selectNote, handleEditNoteWindow } = useNote();
   const {
@@ -101,7 +103,6 @@ const MyEvent: React.FC = () => {
     selectedDate,
     newEventSupplierTransactionAgreement,
     selectedTransaction,
-    editTransactionValueWindow,
   } = useTransaction();
 
   const [newGuestForm, setNewGuestForm] = useState(false);
@@ -173,12 +174,19 @@ const MyEvent: React.FC = () => {
         <BudgetWindow />
       )}
 
-      {selectedSupplierTransactionAgreement
-        && selectedSupplierTransactionAgreement.id
+      {selectedSupplierTransaction
+        && selectedSupplierTransaction.id
         && selectedTransaction
         && selectedTransaction.id
         && editTransactionValueWindow && (
           <EditTransactionValue />
+        )
+      }
+
+      {selectedSupplier
+        && selectedSupplier.id
+        && supplierTransactionsWindow && (
+          <SupplierTransactionsWindow />
         )
       }
 

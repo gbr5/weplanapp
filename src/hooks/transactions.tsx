@@ -36,8 +36,8 @@ interface ICreateEventSupplierTransactionAgreementWithTransactionsDTO extends IC
 interface TransactionContextType {
   loading: boolean;
   selectedDateWindow: boolean;
-  editTransactionValueWindow: boolean;
   createTransactionWindow: boolean;
+  editTransactionDueDateWindow: boolean;
   newEventSupplierTransactionAgreement: boolean;
   selectedDate: Date;
   eventTotalExecutedDebit: number;
@@ -53,22 +53,22 @@ interface TransactionContextType {
   eventCreditTransactions: ITransactionDTO[];
   eventCancelledTransactions: ITransactionDTO[];
   newTransactions: ICreateTransactionDTO[];
-  handleSelectedDate: (data: Date) => void;
-  handleSelectedDateWindow: () => void;
-  updateEventSupplierTransactionAgreement: (data: IUpdateEventSupplierTransactionAgreementDTO) => Promise<void>;
-  deleteAllSupplierAgreements: () => Promise<void>;
-  handleNewEventSupplierTransactionAgreement: () => void;
-  handleEditTransactionValueWindow: () => void;
-  handleNewAgreement: (data: INewAgreementDTO) => void;
   createSupplierTransactionAgreement: (data: ICreateEventSupplierTransactionAgreementDTO) => Promise<void>;
   createSupplierTransactionAgreementWithTransactions: (data: ICreateEventSupplierTransactionAgreementWithTransactionsDTO) => Promise<void>;
   editTransaction: (data: ITransactionDTO) => Promise<void>;
-  handleCreateTransactionWindow: () => void;
-  selectTransaction: (data: ITransactionDTO) => void;
+  deleteAllSupplierAgreements: () => Promise<void>;
   deleteTransaction: (id: string) => Promise<void>;
-  getPayerTransactions: (payer_id: string) => Promise<IPayerTransactionResponseDTO>
-  selectNewTransactions: (data: ICreateTransactionDTO[]) => void;
   getAllEventTransactions: () => Promise<void>;
+  getPayerTransactions: (payer_id: string) => Promise<IPayerTransactionResponseDTO>
+  handleCreateTransactionWindow: () => void;
+  handleEditTransactionDueDateWindow: () => void;
+  handleNewEventSupplierTransactionAgreement: () => void;
+  handleNewAgreement: (data: INewAgreementDTO) => void;
+  handleSelectedDate: (data: Date) => void;
+  handleSelectedDateWindow: () => void;
+  selectNewTransactions: (data: ICreateTransactionDTO[]) => void;
+  selectTransaction: (data: ITransactionDTO) => void;
+  updateEventSupplierTransactionAgreement: (data: IUpdateEventSupplierTransactionAgreementDTO) => Promise<void>;
 }
 
 const TransactionContext = createContext({} as TransactionContextType);
@@ -85,7 +85,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [selectedDateWindow, setSelectedDateWindow] = useState(false);
   const [createTransactionWindow, setCreateTransactionWindow] = useState(false);
-  const [editTransactionValueWindow, setEditTransactionValueWindow] = useState(false);
+  const [editTransactionDueDateWindow, setEditTransactionDueDateWindow] = useState(false);
   const [newEventSupplierTransactionAgreement, setNewEventSupplierTransactionAgreement] = useState(false);
   const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 3));
   const [newAgreementAmount, setNewAgreementAmount] = useState(0);
@@ -111,9 +111,6 @@ const TransactionProvider: React.FC = ({ children }) => {
     return sortedData;
   }
 
-  function handleEditTransactionValueWindow() {
-    setEditTransactionValueWindow(!editTransactionValueWindow)
-  }
 
   const getAllEventTransactions = useCallback(async () => {
     try {
@@ -127,9 +124,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       );
       const sortedCreditTransactions = sortTransactionsByDueDate(creditTransactions.data
         .filter(transaction => !transaction.isCancelled)
-      );
-      const sortedCancelledTransactions = sortTransactionsByDueDate(transactions
-        .filter(transaction => transaction.isCancelled)
       );
       setEventTransactions(transactions);
       setEventCreditTransactions(sortedCreditTransactions);
@@ -198,6 +192,10 @@ const TransactionProvider: React.FC = ({ children }) => {
 
   function handleCreateTransactionWindow() {
     setCreateTransactionWindow(!createTransactionWindow);
+  }
+
+  function handleEditTransactionDueDateWindow() {
+    setEditTransactionDueDateWindow(!editTransactionDueDateWindow);
   }
 
   async function editTransaction({
@@ -353,8 +351,14 @@ const TransactionProvider: React.FC = ({ children }) => {
   return (
     <TransactionContext.Provider
       value={{
-        loading,
-        selectedDateWindow,
+        createTransactionWindow,
+        createSupplierTransactionAgreement,
+        createSupplierTransactionAgreementWithTransactions,
+        deleteTransaction,
+        deleteAllSupplierAgreements,
+        editTransaction,
+        editTransactionDueDateWindow,
+        eventCancelledTransactions,
         eventBalance,
         eventCreditTransactions,
         eventDebitTransactions,
@@ -362,31 +366,25 @@ const TransactionProvider: React.FC = ({ children }) => {
         eventTotalDebit,
         eventTotalExecutedCredit,
         eventTotalExecutedDebit,
+        eventTransactions,
+        getAllEventTransactions,
+        getPayerTransactions,
+        handleCreateTransactionWindow,
+        handleEditTransactionDueDateWindow,
         handleNewAgreement,
-        selectedTransaction,
-        selectedDate,
+        handleSelectedDate,
+        handleSelectedDateWindow,
+        handleNewEventSupplierTransactionAgreement,
+        loading,
+        newEventSupplierTransactionAgreement,
         newAgreementAmount,
         newTransactions,
         newAgreementInstallments,
-        eventTransactions,
-        eventCancelledTransactions,
-        editTransaction,
-        createTransactionWindow,
-        handleCreateTransactionWindow,
-        deleteTransaction,
-        selectTransaction,
-        createSupplierTransactionAgreement,
-        createSupplierTransactionAgreementWithTransactions,
-        handleNewEventSupplierTransactionAgreement,
-        newEventSupplierTransactionAgreement,
-        getPayerTransactions,
-        handleSelectedDate,
-        handleSelectedDateWindow,
+        selectedDateWindow,
+        selectedTransaction,
+        selectedDate,
         selectNewTransactions,
-        getAllEventTransactions,
-        handleEditTransactionValueWindow,
-        editTransactionValueWindow,
-        deleteAllSupplierAgreements,
+        selectTransaction,
         updateEventSupplierTransactionAgreement,
       }}
     >

@@ -16,6 +16,8 @@ interface IProps {
   firstFunction: () => void;
   secondButtonLabel: string;
   secondFunction: () => void;
+  left?: string;
+  backdropLeft?: string;
 }
 
 const ShortConfirmationWindow: React.FC<IProps> = ({
@@ -25,10 +27,12 @@ const ShortConfirmationWindow: React.FC<IProps> = ({
   firstFunction,
   secondButtonLabel,
   secondFunction,
+  left,
+  backdropLeft,
 }) => (
   <>
-    <Backdrop zIndex={49} closeFunction={closeWindow} />
-    <Container>
+    <Backdrop left={backdropLeft} zIndex={49} closeFunction={closeWindow} />
+    <Container style={{ left: left ? left : '0%' }}>
       <CloseButton closeFunction={closeWindow} />
       <Question>{question}</Question>
       <ButtonContainer>

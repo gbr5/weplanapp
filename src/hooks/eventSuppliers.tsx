@@ -18,29 +18,27 @@ import ISupplierSubCategoryDTO from '../dtos/ISupplierSubCategoryDTO';
 import ITransactionDTO from '../dtos/ITransactionDTO';
 
 interface EventSuppliersContextType {
-  loading: boolean;
   addSupplierWindow: boolean;
-  dischargingWindow: boolean;
-  supplierCategoryWindow: boolean;
-  supplierSubCategoryWindow: boolean;
-  supplierTransactionsWindow: boolean;
   createSupplierTransactionAgreementWindow: boolean;
   createSupplierTransactionsWindow: boolean;
   cancelAgreementsWindow: boolean;
   dischargeOption: string;
+  dischargingWindow: boolean;
+  editTransactionValueWindow: boolean;
+  loading: boolean;
   selectedSupplierCategory: string;
   selectedSupplierSubCategory: ISupplierSubCategoryDTO;
-  supplierSubCategories: ISupplierSubCategoryDTO[];
   selectedSupplierTransactionAgreement: IEventSupplierTransactionAgreementDTO;
   selectedSupplierTransaction: IEventSupplierTransactionDTO;
-  supplierTransactions: ITransactionDTO[] | undefined;
   supplierAgreementTransactions: IEventSupplierTransactionDTO[] | undefined;
+  supplierCategoryWindow: boolean;
+  supplierSubCategoryWindow: boolean;
+  supplierSubCategories: ISupplierSubCategoryDTO[];
+  supplierTransactionsWindow: boolean;
+  supplierTransactions: ITransactionDTO[] | undefined;
   createEventSuppliers: (data: ICreateEventSupplierDTO) => Promise<void>;
-  selectSupplierCategory: (category: string) => Promise<void>;
-  selectSupplierSubCategory: (subCategory: ISupplierSubCategoryDTO) => void;
-  selectSupplierTransactionAgreement: (agreement: IEventSupplierTransactionAgreementDTO) => void;
-  updateEventSupplierTransactionAgreement: (agreement: IEventSupplierTransactionAgreementDTO) => Promise<void>;
-  selectSupplierTransaction: (supplierTransaction: IEventSupplierTransactionDTO) => void;
+  getEventSupplierTransactionAgreements: (supplier_id: string) => Promise<IEventSupplierTransactionAgreementDTO[]>;
+  getEventSupplierTransactions: (agreement_id: string) => Promise<IEventSupplierTransactionDTO[]>;
   handleDichargeOption: (data: string) => void;
   handleAddSupplierWindow: () => void;
   handleDischargingWindow: () => void;
@@ -52,9 +50,13 @@ interface EventSuppliersContextType {
   handleCancelAllAgreementsWindow: () => void;
   handleCancelFutureTransactionsWindow: () => void;
   handleCancelNotPaidTransactionsWindow: () => void;
+  handleEditTransactionValueWindow: () => void;
+  selectSupplierCategory: (category: string) => Promise<void>;
+  selectSupplierSubCategory: (subCategory: ISupplierSubCategoryDTO) => void;
+  selectSupplierTransactionAgreement: (agreement: IEventSupplierTransactionAgreementDTO) => void;
+  selectSupplierTransaction: (supplierTransaction: IEventSupplierTransactionDTO) => void;
+  updateEventSupplierTransactionAgreement: (agreement: IEventSupplierTransactionAgreementDTO) => Promise<void>;
   updateEventSupplier: (data: IEventSupplierDTO) => Promise<void>;
-  getEventSupplierTransactionAgreements: (supplier_id: string) => Promise<IEventSupplierTransactionAgreementDTO[]>;
-  getEventSupplierTransactions: (agreement_id: string) => Promise<IEventSupplierTransactionDTO[]>;
 }
 
 const EventSuppliersContext = createContext({} as EventSuppliersContextType);
@@ -62,31 +64,35 @@ const EventSuppliersContext = createContext({} as EventSuppliersContextType);
 const EventSuppliersProvider: React.FC = ({ children }) => {
   const { selectedEvent, getEventSuppliers, selectSupplier, selectedSupplier } = useMyEvent();
 
-  const [loading, setLoading] = useState(false);
   const [addSupplierWindow, setAddSupplierWindow] = useState(false);
-  const [supplierTransactionsWindow, setSupplierTransactionsWindow] = useState(false);
-  const [dischargingWindow, setDischargingWindow] = useState(false);
-  const [supplierCategoryWindow, setSupplierCategoryWindow] = useState(false);
-  const [supplierSubCategoryWindow, setSupplierSubCategoryWindow] = useState(false);
   const [createSupplierTransactionAgreementWindow, setCreateSupplierTransactionAgreementWindow] = useState(false);
   const [createSupplierTransactionsWindow, setCreateSupplierTransactionsWindow] = useState(false);
   const [cancelAgreementsWindow, setCancelAllAgreementsWindow] = useState(false);
   const [cancelFutureTransactionsWindow, setCancelFutureTransactionsWindow] = useState(false);
   const [cancelNotPaidTransactionsWindow, setCancelNotPaidTransactionsWindow] = useState(false);
-
   const [dischargeOption, setDischargeOption] = useState('');
+  const [dischargingWindow, setDischargingWindow] = useState(false);
+  const [editTransactionValueWindow, setEditTransactionValueWindow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [supplierCategoryWindow, setSupplierCategoryWindow] = useState(false);
   const [selectedSupplierCategory, setSelectedSupplierCategory] = useState('');
-  const [supplierSubCategories, setSupplierSubCategories] = useState<ISupplierSubCategoryDTO[]>([]);
   const [selectedSupplierSubCategory, setSelectedSupplierSubCategory] = useState({} as ISupplierSubCategoryDTO);
   const [selectedSupplierTransactionAgreement, setSelectedSupplierTransactionAgreement] = useState({} as IEventSupplierTransactionAgreementDTO);
   const [selectedSupplierTransaction, setSelectedSupplierTransaction] = useState({} as IEventSupplierTransactionDTO);
   const [supplierAgreementTransactions, setSupplierAgreementTransactions] = useState<IEventSupplierTransactionDTO[]>([]);
+  const [supplierSubCategoryWindow, setSupplierSubCategoryWindow] = useState(false);
+  const [supplierSubCategories, setSupplierSubCategories] = useState<ISupplierSubCategoryDTO[]>([]);
+  const [supplierTransactionsWindow, setSupplierTransactionsWindow] = useState(false);
 
   function handleDichargeOption(data: string) {
     setDischargeOption(data);
   }
   function handleAddSupplierWindow() {
     setAddSupplierWindow(!addSupplierWindow)
+  }
+
+  function handleEditTransactionValueWindow() {
+    setEditTransactionValueWindow(!editTransactionValueWindow)
   }
 
   function handleDischargingWindow() {
@@ -254,7 +260,9 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
     if (selectedSupplier && selectedSupplier.id) {
       const transactions: ITransactionDTO[] = [];
       selectedSupplier.transactionAgreements.map(agreement =>
-        agreement.transactions.map(transaction => transactions.push(transaction.transaction)),
+        agreement.transactions
+          .filter(transaction => !transaction.transaction.isCancelled)
+          .map(transaction => transactions.push(transaction.transaction)),
       );
       transactions.sort((a, b) => {
         if (new Date(a.due_date) > new Date(b.due_date)) return 1
@@ -268,16 +276,22 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (selectedSupplier && selectedSupplier.id) {
       const transactions: IEventSupplierTransactionDTO[] = [];
-      selectedSupplier.transactionAgreements.map(agreement => {
-        agreement.transactions
-          .sort((a, b) => {
-            if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return 1
-            if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return -1
-            return 0
-          })
-          .map(transaction => transactions.push(transaction));
-        return agreement;
-      });
+      selectedSupplier.transactionAgreements
+        .filter(agreement => !agreement.isCancelled)
+        .map(agreement => {
+          agreement.transactions
+            .filter(transaction => !transaction.transaction.isCancelled)
+            .map(transaction => transactions.push(transaction));
+          return agreement;
+        });
+
+      setSupplierAgreementTransactions(transactions
+        .filter(transaction => !transaction.transaction.isCancelled)
+        .sort((a, b) => {
+          if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return 1
+          if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return -1
+          return 0
+        }));
     }
   }, [selectedSupplier]);
 
@@ -289,6 +303,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         supplierCategoryWindow,
         supplierSubCategoryWindow,
         supplierTransactionsWindow,
+        editTransactionValueWindow,
+        handleEditTransactionValueWindow,
         createSupplierTransactionAgreementWindow,
         createSupplierTransactionsWindow,
         cancelAgreementsWindow,

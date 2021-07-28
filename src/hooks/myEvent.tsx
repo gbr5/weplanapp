@@ -152,6 +152,10 @@ const MyEventProvider: React.FC = ({ children }) => {
   async function getEventSuppliers(event_id: string) {
     try {
       const response = await api.get<IEventSupplierDTO[]>(`/event-suppliers/${event_id}`);
+      if (selectedSupplier && selectedSupplier.id) {
+        const findSupplier = response.data.find(supplier => supplier.id === selectedSupplier.id);
+        findSupplier && setSelectedSupplier(findSupplier);
+      }
       setEventSuppliers(response.data);
       const newNotHired = response.data.filter((selected) => !selected.isHired && !selected.isDischarged);
       const newHired = response.data.filter((selected) => selected.isHired && !selected.isDischarged);
