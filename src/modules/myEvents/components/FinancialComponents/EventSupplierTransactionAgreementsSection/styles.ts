@@ -6,15 +6,14 @@ import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
   flex: 1;
-  min-height: 37%;
+  min-height: 40%;
 `;
 
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(24)}px;
+  font-size: ${RFValue(20)}px;
   color: ${({ theme }) => theme.color.text1};
   text-align: center;
-  padding-bottom: 8px;
 `;
 
 export const AgreementsContainer = styled(

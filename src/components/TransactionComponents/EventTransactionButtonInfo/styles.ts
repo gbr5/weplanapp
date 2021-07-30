@@ -30,12 +30,12 @@ export const FieldText = styled.Text`
 
 export const FieldButtonText = styled.Text`
   font-size: ${RFValue(18)}px;
-  color: ${({ theme }) => theme.color.text6};
+  color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
 
 export const FieldButton = styled(BorderlessButton)`
-  background-color: ${({ theme }) => theme.color.secondary};
+  background-color: ${({ theme }) => theme.color.text6};
   padding: 12px;
   border-radius: 8px;
   border: 1.2px solid black;
@@ -46,7 +46,7 @@ export const FieldButton = styled(BorderlessButton)`
 
 export const PaidButton = styled(BorderlessButton)<IsPaidParams>`
   background-color: ${({ color }) => color};
-  min-width: 50%;
+  min-width: 36%;
   padding: 8px;
   border-radius: 8px;
   border: 1.2px solid black;

@@ -172,6 +172,9 @@ export function EventTransactionButtonInfo() {
             )}
             </PaidButton>
           <ReceiptButton>
+            <ReceiptIcon name="file-text" />
+          </ReceiptButton>
+          <ReceiptButton>
             <ReceiptIcon name="file" />
           </ReceiptButton>
           <DeleteButton

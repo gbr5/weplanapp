@@ -25,6 +25,7 @@ import {
   TransactionsContainer,
 } from './styles';
 import { useMemo } from 'react';
+import Button from '../../../../../components/Button';
 
 export function EventSupplierAgreementTransactionsWindow() {
   const {
@@ -54,6 +55,10 @@ export function EventSupplierAgreementTransactionsWindow() {
   const [loading, setLoading] = useState(false);
   const [addTransactionReceiptWindow, setAddTransactionReceiptWindow] = useState(false);
   const [transactionToCancel, setTransactionToCancel] = useState({} as ITransactionDTO);
+
+  const supplier = useMemo(() => {
+    return eventSuppliers.find(item => item.id === selectedSupplierTransactionAgreement.supplier_id);
+  }, []);
 
   function closeWindow() {
     handleEventSupplierAgreementTransactionsWindow();
@@ -202,7 +207,7 @@ export function EventSupplierAgreementTransactionsWindow() {
       zIndex={36}
       top="5%"
       left="0%"
-      height="95%"
+      height="90%"
       width="100%"
     >
       {/* {addTransactionReceiptWindow && (
@@ -222,6 +227,7 @@ export function EventSupplierAgreementTransactionsWindow() {
             selectedDate={new Date(selectedTransaction.due_date)}
           />
         )}
+
       {transactionToCancel && transactionToCancel.id && (
         <>
           <Backdrop
@@ -243,7 +249,7 @@ export function EventSupplierAgreementTransactionsWindow() {
       )}
       <Container>
         <WindowHeader
-          overTitle={`Contrato: ${formatBrlCurrency(selectedSupplierTransactionAgreement.amount)}`}
+          overTitle={`Fornecedor: ${supplier && supplier.name}`}
           title="Transações"
         />
 
@@ -273,6 +279,7 @@ export function EventSupplierAgreementTransactionsWindow() {
               />
             )}
       </Container>
+      <Button>Deletar Contrato</Button>
     </WindowContainer>
   );
 }

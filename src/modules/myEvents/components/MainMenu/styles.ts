@@ -55,7 +55,6 @@ export const MenuButtonNumber = styled.Text<IProps>`
 export const BudgetInfo = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text6};
-  margin-top: 4px;
   font-size: ${RFValue(17)}px;
   margin-top: 16px;
 `;

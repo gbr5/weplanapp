@@ -1,5 +1,7 @@
 import React from 'react';
 
+import theme from '../../../../../global/styles/theme';
+
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
 import formatOnlyTime from '../../../../../utils/formatOnlyTime';
 
@@ -88,8 +90,9 @@ export function EventTask({
       />
       {selectedTask.id === eventTask.id && (
         <ArrowButton onPress={handleTaskBody}>
+          <ArrowIcon name="chevron-up" />
           <Date>Fechar</Date>
-          <ArrowIcon name="arrow-up" />
+          <ArrowIcon name="chevron-up" />
         </ArrowButton>
       )}
       {selectedTask.id === eventTask.id && (
@@ -128,13 +131,13 @@ export function EventTask({
               >
                 <Legend>Status</Legend>
                 {eventTask.status === 'not started' && (
-                  <StatusButtonIcon name="cloud" />
+                  <StatusButtonIcon color={theme.color.text6} name="cloud" />
                 )}
                 {eventTask.status === 'running' && (
-                  <StatusButtonIcon name="zap" />
+                  <StatusButtonIcon color={theme.color.text6} name="zap" />
                 )}
                 {eventTask.status === 'finnished' && (
-                  <StatusButtonIcon name="award" />
+                  <StatusButtonIcon color={theme.color.text6} name="award" />
                 )}
               </StatusButton>
             {/* </ButtonContainer> */}
@@ -153,7 +156,7 @@ export function EventTask({
                 priority={eventTask.priority}
               >
                 <Legend>Prioridade</Legend>
-                <PriorityButtonIcon name="flag" />
+                <PriorityButtonIcon color={eventTask.priority === 'neutral' ? theme.color.info : (eventTask.priority === 'low' ? theme.color.success : theme.color.atention)} name="flag" />
               </PriorityButton>
             {/* </ButtonContainer> */}
 
@@ -163,7 +166,7 @@ export function EventTask({
                   <NumberOfNotes>{eventTask.notes.length}</NumberOfNotes>
                 </NumberOfNotesContainer>
               )}
-              <Legend>Notas</Legend>
+              <Time>Notas</Time>
               <NotesButtonIcon name="file-text" />
             </NoteButton>
           </ButtonMainContainer>

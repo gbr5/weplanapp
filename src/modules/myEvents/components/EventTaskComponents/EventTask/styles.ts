@@ -41,8 +41,8 @@ export const Date = styled.Text`
 `;
 
 export const Legend = styled.Text`
-  color: ${({ theme }) => theme.color.text1};
-  font-family: ${({ theme }) => theme.fonts.roboto};
+  color: ${({ theme }) => theme.color.text6};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(18)}px;
   letter-spacing: ${letterSpacing};
 `;
@@ -86,6 +86,7 @@ export const NoteButton = styled(BorderlessButton)`
 export const ArrowIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.title};
   font-size: ${RFValue(24)}px;
+  margin: 0 10px 0 8px;
 `;
 
 export const ArrowButton = styled(BorderlessButton)`
@@ -114,15 +115,15 @@ export const PriorityButton = styled(BorderlessButton)<IPriorityButtonDTO>`
   margin: ${iconButtonMargin} 0;
   ${({ priority }) => priority === 'high'
     && css`
-      background-color: ${({ theme }) => theme.color.atention_light};
+      background-color: ${({ theme }) => theme.color.atention};
     `};
   ${({ priority }) => priority === 'neutral'
     && css`
-      background-color: ${({ theme }) => theme.color.info_light};
+      background-color: ${({ theme }) => theme.color.info};
       `};
   ${({ priority }) => priority === 'low'
     && css`
-      background-color: ${({ theme }) => theme.color.success_light};
+      background-color: ${({ theme }) => theme.color.success};
     `};
 `;
 
@@ -137,17 +138,17 @@ export const StatusButton = styled(BorderlessButton)<IStatusButton>`
   flex-direction: row;
   ${({ status }) => status === 'running'
     && css`
-      background-color: ${({ theme }) => theme.color.atention_light};
+      background-color: ${({ theme }) => theme.color.atention};
     `};
 
   ${({ status }) => status === 'not started'
     && css`
-      background-color: ${({ theme }) => theme.color.info_light};
+      background-color: ${({ theme }) => theme.color.info};
       `};
 
   ${({ status }) => status === 'finnished'
     && css`
-      background-color: ${({ theme }) => theme.color.success_light};
+      background-color: ${({ theme }) => theme.color.success};
     `};
 `;
 
@@ -183,25 +184,25 @@ export const NumberOfNotes = styled.Text`
 
 
 export const DeleteButtonIcon = styled(Feather)`
-  color: ${({ theme }) => theme.color.text1};
+  color: ${({ theme }) => theme.color.title};
   font-size: ${RFValue(iconSize)}px;
-  border: 1px solid black;
+  border: 1px solid ${({ theme }) => theme.color.primary};
   border-radius: 16px;
   padding: 2px;
 `;
 
 export const PriorityButtonIcon = styled(Feather)`
-  color: ${({ theme }) => theme.color.text1};
+  color: ${({ theme }) => theme.color.title};
   font-size: ${RFValue(iconSize)}px;
-  border: 1px solid black;
+  border: 1px solid ${({ theme }) => theme.color.primary};
   border-radius: 16px;
   padding: 2px;
 `;
 
 export const StatusButtonIcon = styled(Feather)`
-  color: ${({ theme }) => theme.color.text1};
+  color: ${({ theme }) => theme.color.title};
   font-size: ${RFValue(iconSize)}px;
-  border: 1px solid black;
+  border: 1px solid ${({ theme }) => theme.color.primary};
   border-radius: 16px;
   padding: 2px;
 `;
@@ -210,7 +211,7 @@ export const NotesButtonIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(iconSize)}px;
   margin-left: 8px;
-  border: 1px solid black;
+  border: 1px solid ${({ theme }) => theme.color.info};
   border-radius: 16px;
   padding: 2px;
 `;

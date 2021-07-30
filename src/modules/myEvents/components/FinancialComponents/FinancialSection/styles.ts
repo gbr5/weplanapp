@@ -19,15 +19,16 @@ export const TitleButton = styled(BorderlessButton)`
 
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(32)}px;
+  font-size: ${RFValue(24)}px;
   color: ${({ theme }) => theme.color.text1};
   text-align: center;
+  margin-top: 8px;
 `;
 
 export const FirstSection = styled.View`
   width: 100%;
   margin-top: 8px;
-  height: 54.5%;
+  height: 60.7%;
 `;
 
 export const BudgetSection = styled(BorderlessButton)`
@@ -101,7 +102,7 @@ export const SectionButton = styled.ScrollView`
 export const MenuButton = styled(BorderlessButton)<IMenuButtonProps>`
   flex-direction: row;
   width: 180px;
-  height: 64px;
+  height: 56px;
   border-radius: 5px;
   background-color:
     ${({ theme, isActive }) => isActive
