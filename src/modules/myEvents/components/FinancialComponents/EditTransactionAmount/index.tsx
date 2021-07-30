@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 import getValidationErrors from '../../../../../utils/getValidationErros';
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 
-import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useTransaction } from '../../../../../hooks/transactions';
 
 import WindowContainer from '../../../../../components/WindowContainer';
@@ -15,31 +14,33 @@ import { WindowHeader } from '../../../../../components/WindowHeader';
 import Input from '../../../../../components/Input';
 import Button from '../../../../../components/Button';
 
-import { FormContainer, KeyboardAvoidingVueContainer } from '../CreateSupplierTransactionAgreement/styles';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import { Container, ValueContainer, CurrentValue, Title } from './styles';
 
 interface IFormParams {
   amount: string;
 }
 
-export function EditTransactionValue() {
+interface IProps {
+  handleEditTransactionValue: (amount: number) => Promise<void>;
+  closeWindow: () => void;
+}
+
+export function EditTransactionAmount({
+  handleEditTransactionValue,
+  closeWindow,
+}: IProps) {
   const formRef = useRef<FormHandles>(null);
 
   const {
-    selectedSupplierTransactionAgreement,
-    handleEditTransactionValueWindow
-  } = useEventSuppliers();
-  const {
-    selectedTransaction,
-    selectTransaction,
-    updateEventSupplierTransactionAgreement,
+    selectedEventTransaction,
   } = useTransaction();
 
   const [loading, setLoading] = useState(false);
 
   const currentValue = useMemo(() => {
-    return formatBrlCurrency(selectedTransaction.amount);
-  }, [selectedTransaction.amount]);
+    return formatBrlCurrency(selectedEventTransaction.transaction.amount);
+  }, [selectedEventTransaction.transaction.amount]);
 
   async function handleSubmit(data: IFormParams) {
     try {
@@ -51,50 +52,9 @@ export function EditTransactionValue() {
       if (Number(data.amount) <= 0) {
         return Alert.alert('Valor da Transação', 'Apenas valores maiores do que zero são aceitos!');
       }
-      if (!selectedSupplierTransactionAgreement || !selectedSupplierTransactionAgreement.id) {
-        return Alert.alert('Escolha um contrato!');
-      }
-      if (!selectedTransaction || !selectedTransaction.id) {
-        return Alert.alert('Escolha uma transação!');
-      }
-      const agreementAmount = formatBrlCurrency(selectedSupplierTransactionAgreement.amount);
       const amount = Number(data.amount);
-      const newValue = formatBrlCurrency(amount);
-      const differenceInValue = amount - Number(selectedTransaction.amount);
-      const agreementNewValue = Number(selectedSupplierTransactionAgreement.amount) + differenceInValue;
-      const agreementNewAmount = formatBrlCurrency(agreementNewValue);
-      const message =
-        `
-Diferença de ${formatBrlCurrency(differenceInValue)}!
-
-A transação foi atualizada de ${currentValue} para ${newValue}
-
-O contrato foi atualizado de ${agreementAmount} para ${agreementNewAmount}
-        `;
-
-      const number_of_installments = selectedSupplierTransactionAgreement.transactions
-        .filter(transaction => !transaction.transaction.isCancelled && transaction.transaction.amount !== 0)
-        .length;
-
-      const transactions = [{
-        ...selectedTransaction,
-        amount,
-      }];
-
-      selectTransaction(transactions[0]);
-      const {
-        id,
-      } = selectedSupplierTransactionAgreement;
-      await updateEventSupplierTransactionAgreement({
-        amount: agreementNewValue,
-        id,
-        isCancelled: agreementNewValue === 0,
-        number_of_installments,
-        transactions,
-      });
-
-      Alert.alert(`Transação atualizada com sucesso!`, message);
-      handleEditTransactionValueWindow();
+      await handleEditTransactionValue(amount);
+      closeWindow();
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const error = getValidationErrors(err);
@@ -109,13 +69,14 @@ O contrato foi atualizado de ${agreementAmount} para ${agreementNewAmount}
 
   return (
     <WindowContainer
-      closeWindow={handleEditTransactionValueWindow}
+      closeWindow={closeWindow}
       zIndex={45}
-      top="5%"
-      left="2%"
-      height="50%"
-      width="96%"
+      top="-15%"
+      left="0%"
+      height="110%"
+      width="100%"
     >
+            <Container>
       <KeyboardAvoidingVueContainer
         style={{ flex: 1, width: '100%' }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -126,7 +87,6 @@ O contrato foi atualizado de ${agreementAmount} para ${agreementNewAmount}
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={{ flex: 1 }}
           >
-            <Container>
               <WindowHeader title="Editar Valor" />
               <Form ref={formRef} onSubmit={handleSubmit}>
                 <ValueContainer>
@@ -141,16 +101,16 @@ O contrato foi atualizado de ${agreementAmount} para ${agreementNewAmount}
                   onSubmitEditing={() => formRef.current?.submitForm()}
                 />
               </Form>
-            </Container>
-            <Button
-              loading={loading}
-              onPress={() => formRef.current?.submitForm()}
-            >
-              Salvar
-            </Button>
           </FormContainer>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingVueContainer>
+      </Container>
+      <Button
+        loading={loading}
+        onPress={() => formRef.current?.submitForm()}
+      >
+        Salvar
+      </Button>
     </WindowContainer>
   );
 }

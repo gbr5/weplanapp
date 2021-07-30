@@ -22,15 +22,20 @@ interface EventGuestsContextType {
   updateGuestContact: (data: IGuestContactDTO) => Promise<void>;
   deleteGuestContact: (data: IGuestContactDTO) => Promise<void>;
   selectGuestContact: (data: IGuestContactDTO) => void;
+  unsetEventGuestVariables: () => void;
 }
 
 const EventGuestsContext = createContext({} as EventGuestsContextType);
 
 const EventGuestsProvider: React.FC = ({ children }) => {
   const { selectedEvent, getEventGuests, selectGuest } = useMyEvent();
+
   const [loading, setLoading] = useState(false);
   const [selectedGuestContact, setSelectedGuestContact] = useState({} as IGuestContactDTO);
 
+  function unsetEventGuestVariables() {
+    setSelectedGuestContact({} as IGuestContactDTO);
+  }
   async function addNewGuest({ first_name, last_name }: IAddNewEventGuestDTO) {
     try {
       setLoading(true);
@@ -129,15 +134,16 @@ const EventGuestsProvider: React.FC = ({ children }) => {
   return (
     <EventGuestsContext.Provider
       value={{
+        addNewGuest,
+        createGuestContact,
+        deleteGuestContact,
         editGuest,
+        editGuestConfirmation,
+        loading,
         selectGuestContact,
         selectedGuestContact,
-        loading,
-        addNewGuest,
-        editGuestConfirmation,
-        createGuestContact,
         updateGuestContact,
-        deleteGuestContact,
+        unsetEventGuestVariables
       }}
     >
       {children}

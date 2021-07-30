@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import WindowContainer from '../../../../components/WindowContainer';
@@ -17,7 +17,7 @@ interface IFormData {
 export function BudgetWindow() {
   const formRef = useRef<FormHandles>(null);
   const {
-    eventBudget,
+    selectedEvent,
     loading,
     createEventBudget,
     updateEventBudget,
@@ -25,11 +25,11 @@ export function BudgetWindow() {
   } = useMyEvent();
 
   async function handleSubmit({ budget }: IFormData) {
-    if (eventBudget && !eventBudget.id) {
+    if (selectedEvent && selectedEvent.id && !selectedEvent.eventBudget) {
       await createEventBudget(budget);
     } else {
       await updateEventBudget({
-        ...eventBudget,
+        ...selectedEvent.eventBudget,
         budget,
       });
     }
@@ -56,9 +56,9 @@ export function BudgetWindow() {
             name="budget"
             icon="dollar-sign"
             placeholder={
-              eventBudget
-                && eventBudget.budget
-                ? formatBrlCurrency(eventBudget.budget)
+              selectedEvent.eventBudget
+                && selectedEvent.eventBudget.budget
+                ? formatBrlCurrency(selectedEvent.eventBudget.budget)
                 : formatBrlCurrency(0)}
             returnKeyType="send"
             keyboardType="number-pad"

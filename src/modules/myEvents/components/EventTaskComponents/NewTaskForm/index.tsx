@@ -76,7 +76,7 @@ const NewTaskForm: React.FC<IProps> = ({
       left="2%"
       height="90%"
       width="96%"
-      zIndex={11}
+      zIndex={15}
     >
       <KeyboardAvoidingVueContainer
         style={{ flex: 1, width: '100%' }}

@@ -7,6 +7,11 @@ export const Container = styled.View`
   align-items: center;
   height: 100%;
   margin: 48px 0 16px;
+  position: absolute;
+  top: 5%;
+  left: 0%;
+  height: 90%;
+  width: 100%;
 `;
 
 export const Title = styled.Text`

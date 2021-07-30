@@ -26,19 +26,21 @@ import {
 } from './styles';
 import { useMemo } from 'react';
 
-export function SupplierTransactionsWindow() {
+export function EventSupplierAgreementTransactionsWindow() {
   const {
     selectedSupplier,
     getEventSuppliers,
     selectSupplier,
     selectedEvent,
+    eventSuppliers,
   } = useMyEvent();
   const {
     supplierAgreementTransactions,
     selectSupplierTransaction,
     selectSupplierTransactionAgreement,
+    selectedSupplierTransactionAgreement,
     handleEditTransactionValueWindow,
-    handleSupplierTransactionsWindow,
+    handleEventSupplierAgreementTransactionsWindow,
   } = useEventSuppliers();
   const {
     selectTransaction,
@@ -54,7 +56,7 @@ export function SupplierTransactionsWindow() {
   const [transactionToCancel, setTransactionToCancel] = useState({} as ITransactionDTO);
 
   function closeWindow() {
-    handleSupplierTransactionsWindow();
+    handleEventSupplierAgreementTransactionsWindow();
     setAddTransactionReceiptWindow(false);
     selectSupplier({} as IEventSupplierDTO);
     setTransactionToCancel({} as ITransactionDTO);
@@ -91,6 +93,11 @@ export function SupplierTransactionsWindow() {
     }
   }
 
+  function refreshAgreement() {
+    const findAgreement = selectedSupplier.transactionAgreements.find(item => item.id === selectedSupplierTransactionAgreement.id);
+    findAgreement && selectSupplierTransactionAgreement(findAgreement);
+  }
+
   async function handleIsPaid() {
     try {
       setLoading(true);
@@ -99,9 +106,11 @@ export function SupplierTransactionsWindow() {
         isPaid: !selectedTransaction.isPaid,
       });
       await getEventSuppliers(selectedEvent.id);
+      handleEventSupplierAgreementTransactionsWindow();
     } catch (err) {
       throw new Error(err);
     } finally {
+      refreshAgreement();
       setLoading(false);
     }
   }
@@ -166,14 +175,26 @@ export function SupplierTransactionsWindow() {
   }
 
   const transactionsSum = useMemo(() => {
-    if (supplierAgreementTransactions)
+    if (selectedSupplierTransactionAgreement.transactions.length > 0)
       return formatBrlCurrency(
-        supplierAgreementTransactions
+        selectedSupplierTransactionAgreement.transactions
           .filter(agreementTransaction => !agreementTransaction.transaction.isCancelled)
           .map(agreementTransaction => Number(agreementTransaction.transaction.amount))
           .reduce((acc, cv) => acc + cv, 0)
         );
-  }, [supplierAgreementTransactions]);
+  }, [selectedSupplierTransactionAgreement, eventSuppliers]);
+
+  const transactions = useMemo(() => {
+    if (selectedSupplierTransactionAgreement.transactions.length > 0)
+      return selectedSupplierTransactionAgreement.transactions
+        .filter(agreementTransaction => !agreementTransaction.transaction.isCancelled)
+        .map(agreementTransaction => agreementTransaction.transaction)
+        .sort((a, b) => {
+          if (new Date(a.due_date) > new Date(b.due_date)) return 1;
+          if (new Date(a.due_date) < new Date(b.due_date)) return -1;
+          return 0;
+        });
+  }, [selectedSupplierTransactionAgreement, eventSuppliers]);
 
   return (
     <WindowContainer
@@ -222,21 +243,19 @@ export function SupplierTransactionsWindow() {
       )}
       <Container>
         <WindowHeader
-          overTitle={`Fornecedor: ${selectedSupplier.name}`}
+          overTitle={`Contrato: ${formatBrlCurrency(selectedSupplierTransactionAgreement.amount)}`}
           title="Transações"
         />
 
         <Title>Total:  {transactionsSum}</Title>
 
-        {supplierAgreementTransactions
-          && supplierAgreementTransactions.length > 0
-          && supplierAgreementTransactions
-            .filter(transaction => !transaction.transaction.isCancelled) && (
+        {transactions
+          && transactions.length > 0 && (
               <TransactionsContainer
-                data={supplierAgreementTransactions}
+                data={transactions}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => {
-                  const index = String(supplierAgreementTransactions
+                  const index = String(transactions
                     .findIndex(transaction => transaction.id === item.id) + 1);
                   return (
                     <TransactionButton
@@ -247,7 +266,7 @@ export function SupplierTransactionsWindow() {
                       editTransactionValue={
                         (data: ITransactionDTO) => editTransactionValue(data)}
                       index={index}
-                      transaction={item.transaction}
+                      transaction={item}
                       key={index}
                     />
                 )}}

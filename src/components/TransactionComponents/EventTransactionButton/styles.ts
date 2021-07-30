@@ -8,25 +8,29 @@ interface IAmountProps {
   isPaid: boolean;
 }
 
-interface IsCancelProps {
+interface IsContainerProps {
   isCancelled: boolean;
+  isSelected: boolean;
 }
 
-export const Container = styled(RectButton)<IsCancelProps>`
+export const Container = styled(RectButton)<IsContainerProps>`
   width: 100%;
-  padding: 16px 0px;
+  padding: 8px 4px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   ${({ isCancelled }) => isCancelled && css`
     background-color: ${({ theme }) => theme.color.atention_light};
   `}
+  ${({ isSelected }) => isSelected && css`
+    background-color: ${({ theme }) => theme.color.secondary_light};
+  `}
 `;
 
 export const CancelledTransaction = styled.View`
   position: absolute;
   z-index: 5;
-  top: 95%;
+  top: 80%;
   left: 2%;
   height: 2px;
   width: 96%;
@@ -45,7 +49,6 @@ export const Index = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(18)}px;
-  margin-right: 8px;
 `;
 
 export const Amount = styled.Text<IAmountProps>`
@@ -60,6 +63,8 @@ export const Amount = styled.Text<IAmountProps>`
     css`
       color: ${({ theme }) => theme.color.success};
     `};
+  text-align: right;
+  width: 58%;
 `;
 
 export const DateText = styled.Text`
@@ -85,5 +90,4 @@ export const Underline = styled.View`
   width: 100%;
   height: 1.1px;
   background-color: ${({ theme }) => theme.color.secondary};
-  margin: 8px 0;
 `;

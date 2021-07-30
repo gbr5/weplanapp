@@ -14,7 +14,7 @@ import {
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 
 export function TasksSection(): JSX.Element {
-  const { eventTasks } = useMyEvent();
+  const { selectedEvent } = useMyEvent();
   const { status, handleCreateTaskWindow } = useEventTasks();
 
   return (
@@ -26,42 +26,45 @@ export function TasksSection(): JSX.Element {
         </AddButton>
       </TitleContainer>
       <TasksMenu />
-      {status === 'not started' && (
-        <TasksContainer
-          data={eventTasks.filter(task => task.status === 'not started')}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <EventTask
-              key={item.id}
-              eventTask={item}
-            />
-          )}
-        />
-      )}
-      {status === 'running' && (
-        <TasksContainer
-          data={eventTasks.filter(task => task.status === 'running')}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <EventTask
-              key={item.id}
-              eventTask={item}
-            />
-          )}
-        />
-      )}
-      {status === 'finnished' && (
-        <TasksContainer
-          data={eventTasks.filter(task => task.status === 'finnished')}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <EventTask
-              key={item.id}
-              eventTask={item}
-            />
-          )}
-        />
-      )}
+      {selectedEvent.eventTasks
+        && status === 'not started' && (
+          <TasksContainer
+            data={selectedEvent.eventTasks.filter(task => task.status === 'not started')}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <EventTask
+                key={item.id}
+                eventTask={item}
+              />
+            )}
+          />
+        )}
+      {selectedEvent.eventTasks
+        && status === 'running' && (
+          <TasksContainer
+            data={selectedEvent.eventTasks.filter(task => task.status === 'running')}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <EventTask
+                key={item.id}
+                eventTask={item}
+              />
+            )}
+          />
+        )}
+      {selectedEvent.eventTasks
+        && status === 'finnished' && (
+          <TasksContainer
+            data={selectedEvent.eventTasks.filter(task => task.status === 'finnished')}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <EventTask
+                key={item.id}
+                eventTask={item}
+              />
+            )}
+          />
+        )}
     </Container>
   );
 }

@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
-import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
-import { DischargeSupplierWindow } from '../../SuppliersComponents/DischargeSupplierWindow';
 
-import { EventTransactionAgreementSection } from '../EventTransactionAgreementSection';
+import { EventSupplierTransactionAgreementsSection } from '../EventSupplierTransactionAgreementsSection';
+import { EventTransactionSection } from '../EventTransactionSection';
 
 import {
   Container,
@@ -51,7 +50,10 @@ export function FinancialSection() {
           <Title>Financeiro</Title>
         </TitleButton>
         {eventFinancialSubSection === 'TransactionAgreements' && (
-          <EventTransactionAgreementSection />
+          <EventSupplierTransactionAgreementsSection />
+        )}
+        {eventFinancialSubSection === 'Transactions' && (
+          <EventTransactionSection />
         )}
         {eventFinancialSubSection === 'Main' && (
           <FirstSection>
@@ -61,10 +63,7 @@ export function FinancialSection() {
               <BudgetTitle>Orçamento</BudgetTitle>
               <PercentageUnderline />
               <BudgetValue>
-                {eventBudget && eventBudget.id
-                  ? formatBrlCurrency(eventBudget.budget)
-                  : formatBrlCurrency(0)
-                }
+                {eventBudget}
               </BudgetValue>
             </BudgetSection>
             <Resume>
@@ -125,7 +124,7 @@ export function FinancialSection() {
               isActive={eventFinancialSubSection === 'Transactions'}
             />
           </MenuButton>
-          <MenuButton
+          {/* <MenuButton
             onPress={() => handleEventFinancialSubSection('Suppliers')}
             isActive={eventFinancialSubSection === 'Suppliers'}
           >
@@ -138,8 +137,8 @@ export function FinancialSection() {
               name="play"
               isActive={eventFinancialSubSection === 'Suppliers'}
             />
-          </MenuButton>
-          <MenuButton
+          </MenuButton> */}
+          {/* <MenuButton
             onPress={() => handleEventFinancialSubSection('Members')}
             isActive={eventFinancialSubSection === 'Members'}
           >
@@ -152,7 +151,7 @@ export function FinancialSection() {
               name="users"
               isActive={eventFinancialSubSection === 'Members'}
             />
-          </MenuButton>
+          </MenuButton> */}
         </SectionButton>
       </Container>
     </>

@@ -6,11 +6,11 @@ interface IProps {
 }
 
 const menuButtonSize = RFValue(146);
-const heightProportion = 0.65;
+const heightProportion = 0.55;
 
 export const Container = styled.ScrollView`
-  margin: 8px 0;
-  height: ${(menuButtonSize * heightProportion) + 2}px;
+  margin: 4px 0 0;
+  height: ${(menuButtonSize * heightProportion)}px;
   border: 1px solid ${({ theme }) => theme.color.text6};
 `;
 
@@ -57,4 +57,5 @@ export const BudgetInfo = styled.Text`
   color: ${({ theme }) => theme.color.text6};
   margin-top: 4px;
   font-size: ${RFValue(17)}px;
+  margin-top: 16px;
 `;

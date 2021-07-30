@@ -24,7 +24,6 @@ export function NoteForm({
   const [numberOfLines, setNumberOfLines] = useState(1);
 
   function submitNote() {
-    // if (textValue === '') return;
     handleNote(textValue);
     setTextValue('');
   }

@@ -23,7 +23,7 @@ interface NoteContextType {
 const NoteContext = createContext({} as NoteContextType);
 
 const NoteProvider: React.FC = ({ children }) => {
-  const { selectedEvent, selectedTask, getEventTasks } = useMyEvent();
+  const { selectedEvent, selectedTask, getEvent } = useMyEvent();
 
   const [editNoteWindow, setEditNoteWindow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ const NoteProvider: React.FC = ({ children }) => {
         id,
         note,
       });
-      await getEventTasks(selectedEvent.id);
+      await getEvent(selectedEvent.id);
       setSelectedNote({} as INoteDTO);
     } catch (err) {
       throw new Error(err);

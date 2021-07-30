@@ -15,6 +15,7 @@ import {
   InfoButton,
   InfoIcon,
   Underline,
+  CancelledTransaction,
 } from './styles';
 
 interface IProps {
@@ -22,6 +23,7 @@ interface IProps {
   index: string;
   editTransactionValue: (data: ITransactionDTO) => void;
   cancelTransaction: (data: ITransactionDTO) => void;
+  handleIsPaid: () => void;
 }
 
 export function TransactionButton({
@@ -29,6 +31,7 @@ export function TransactionButton({
   index,
   cancelTransaction,
   editTransactionValue,
+  handleIsPaid,
 }: IProps) {
   const {
     selectedTransaction,
@@ -36,6 +39,7 @@ export function TransactionButton({
   } = useTransaction();
 
   function handleSelectTransaction() {
+    transaction.isCancelled && selectTransaction({} as ITransactionDTO);
     !selectedTransaction
       || !selectedTransaction.id
       || selectedTransaction.id !== transaction.id
@@ -53,7 +57,11 @@ export function TransactionButton({
 
   return (
     <>
-      <Container onPress={handleSelectTransaction}>
+      <Container
+        isCancelled={transaction.isCancelled}
+        onPress={handleSelectTransaction}
+      >
+        {transaction.isCancelled && <CancelledTransaction />}
         <TextContainer>
           <Index>{index} )</Index>
           <Amount
@@ -64,24 +72,28 @@ export function TransactionButton({
           </Amount>
           <DateText>{formatOnlyDateShort(String(transaction.due_date))}</DateText>
         </TextContainer>
-        <InfoButton onPress={handleSelectTransaction}>
-          {selectedTransaction
-            && selectedTransaction.id
-            && selectedTransaction.id === transaction.id ? (
-              <InfoIcon name="chevron-up" />
-            ) : (
-              <InfoIcon name="chevron-down" />
-            )}
-        </InfoButton>
+        {!transaction.isCancelled && (
+          <InfoButton onPress={handleSelectTransaction}>
+            {selectedTransaction
+              && selectedTransaction.id
+              && selectedTransaction.id === transaction.id ? (
+                <InfoIcon name="chevron-up" />
+              ) : (
+                <InfoIcon name="chevron-down" />
+              )}
+          </InfoButton>
+        )}
       </Container>
       {selectedTransaction
         && selectedTransaction.id
-        && selectedTransaction.id === transaction.id && (
+        && selectedTransaction.id === transaction.id
+        && !transaction.isCancelled && (
           <>
             <Underline />
             <TransactionButtonInfo
               cancelTransaction={(data: ITransactionDTO) => cancelTransaction(data)}
               editTransactionValue={(data: ITransactionDTO) => editTransactionValue(data)}
+              handleIsPaid={handleIsPaid}
             />
             <Underline />
           </>

@@ -9,6 +9,7 @@ import { EventInfoProvider } from './eventInfo';
 import { NoteProvider } from './notes';
 import { EventSuppliersProvider } from './eventSuppliers';
 import { TransactionProvider } from './transactions';
+import { UnsetEventVariablesProvider } from './unsetEventVariables';
 
 const AppProvider: React.FC = ({ children }) => (
   <AuthProvider>
@@ -20,7 +21,9 @@ const AppProvider: React.FC = ({ children }) => (
               <EventSuppliersProvider>
                 <EventInfoProvider>
                   <TransactionProvider>
-                    {children}
+                    <UnsetEventVariablesProvider>
+                      {children}
+                    </UnsetEventVariablesProvider>
                   </TransactionProvider>
                 </EventInfoProvider>
               </EventSuppliersProvider>

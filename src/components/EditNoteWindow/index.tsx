@@ -17,7 +17,7 @@ interface IProps {
 export function EditNoteWindow({
   closeWindow,
 }: IProps) {
-  const { getEventTasks, selectedEvent } = useMyEvent();
+  const { getEvent, selectedEvent } = useMyEvent();
   const { editNote, selectedNote, handleEditNoteWindow } = useNote();
 
   async function handleEditNote(note: string) {
@@ -26,7 +26,7 @@ export function EditNoteWindow({
         ...selectedNote,
         note,
       });
-      await getEventTasks(selectedEvent.id);
+      await getEvent(selectedEvent.id);
       handleEditNoteWindow();
     }
   }

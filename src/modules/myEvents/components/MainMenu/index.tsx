@@ -11,6 +11,7 @@ import {
   MenuButtonNumber,
   BudgetInfo,
 } from './styles';
+import { useTransaction } from '../../../../hooks/transactions';
 
 export function MainMenu() {
   const {
@@ -18,16 +19,13 @@ export function MainMenu() {
     confirmedGuests,
     hiredSuppliers,
     notHiredSuppliers,
-    totalEventCost,
     currentSection,
     selectEventSection,
-    eventTasks,
+    selectedEvent,
     handleBudgetWindow,
     eventBudget,
-    selectedEvent,
-    eventSuppliers,
-    calculateTotalEventCost,
   } = useMyEvent();
+  const { eventTotalDebit } = useTransaction();
 
   const [suppliersInfo, setSuppliersInfo] = useState('');
 
@@ -36,33 +34,20 @@ export function MainMenu() {
   }, [hiredSuppliers.length, notHiredSuppliers.length]);
 
   const guestsInfo = useMemo(() => `${confirmedGuests} / ${guests.length}`, [confirmedGuests, guests]);
-  const budgetInfo = useMemo(() => {
-    if (eventBudget && eventBudget.budget) {
-      return formatBrlCurrency(eventBudget.budget);
-    }
-    return 'R$ 0,00';
-  }, [eventBudget]);
-
-  // const suppliersInfo = useMemo(() => `${hiredSuppliers.length} / ${notHiredSuppliers.length + hiredSuppliers.length}`,
-  //   [hiredSuppliers, notHiredSuppliers]);
 
   const financialInfo = useMemo(() => {
-    if (eventBudget && eventBudget.budget) {
-      return `${Math.round((totalEventCost / Number(eventBudget.budget)) * 100)} %`;
+    if (selectedEvent.eventBudget && selectedEvent.eventBudget.budget) {
+      return `${Math.round((eventTotalDebit / Number(selectedEvent.eventBudget.budget)) * 100)} %`;
     }
     return '0 %';
-  }, [totalEventCost, eventBudget]);
+  }, [eventTotalDebit, selectedEvent.eventBudget]);
 
   const tasksInfo = useMemo(() => {
-    if (eventTasks && eventTasks.length > 0) {
-      const finnishedTasks = eventTasks.filter(task => task.status === 'finnished').length;
-      return `${finnishedTasks} / ${eventTasks.length}`;
+    if (selectedEvent.eventTasks && selectedEvent.eventTasks.length > 0) {
+      const finnishedTasks = selectedEvent.eventTasks.filter(task => task.status === 'finnished').length;
+      return `${finnishedTasks} / ${selectedEvent.eventTasks.length}`;
     }
-  }, [eventTasks]);
-
-  useEffect(() => {
-    calculateTotalEventCost();
-  }, [selectedEvent, eventSuppliers]);
+  }, [selectedEvent.eventTasks]);
 
   return (
     <Container horizontal>
@@ -106,7 +91,7 @@ export function MainMenu() {
           Orçamento
         </MenuButtonText>
         <BudgetInfo>
-          {budgetInfo}
+          {eventBudget}
         </BudgetInfo>
       </MenuButton>
       <MenuButton

@@ -22,7 +22,7 @@ interface IProps {
 export function EventTaskNotesWindow({
   closeWindow,
 }: IProps) {
-  const { selectedTask, getEventTasks, selectedEvent } = useMyEvent();
+  const { selectedTask, getEvent, selectedEvent } = useMyEvent();
   const { createTaskNote } = useEventTasks();
   const { updateNotes } = useNote();
 
@@ -31,7 +31,7 @@ export function EventTaskNotesWindow({
       note,
       task_id: selectedTask.id,
     });
-    await getEventTasks(selectedEvent.id);
+    await getEvent(selectedEvent.id);
   }
 
   useEffect(() => {

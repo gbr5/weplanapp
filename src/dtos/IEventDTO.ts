@@ -1,6 +1,8 @@
+import IEventBudgetDTO from './IEventBudgetDTO';
 import IEventFileDTO from './IEventFileDTO';
 import IEventImageDTO from './IEventImageDTO';
 import IEventInfoDTO from './IEventInfoDTO';
+import IEventTaskDTO from './IEventTaskDTO';
 
 interface IEventDateDTO {
   id: string;
@@ -23,6 +25,8 @@ export default interface IEventDTO {
   eventInfo: IEventInfoDTO;
   avatar_url?: string;
   eventDates: IEventDateDTO[];
-  eventImages: IEventImageDTO[];
+  eventTasks: IEventTaskDTO[];
   eventFiles: IEventFileDTO[];
+  eventImages: IEventImageDTO[];
+  eventBudget: IEventBudgetDTO;
 }

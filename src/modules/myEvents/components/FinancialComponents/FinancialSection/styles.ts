@@ -22,11 +22,12 @@ export const Title = styled.Text`
   font-size: ${RFValue(32)}px;
   color: ${({ theme }) => theme.color.text1};
   text-align: center;
-  margin: 0px 0 16px;
 `;
 
 export const FirstSection = styled.View`
   width: 100%;
+  margin-top: 8px;
+  height: 54.5%;
 `;
 
 export const BudgetSection = styled(BorderlessButton)`
@@ -94,12 +95,13 @@ export const SectionButton = styled.ScrollView`
   width: 100%;
   padding: 8px;
   padding-right: 18px;
-  margin-top: 16px;
+  margin-top: 4px;
 `;
 
 export const MenuButton = styled(BorderlessButton)<IMenuButtonProps>`
-  width: 160px;
-  height: 104px;
+  flex-direction: row;
+  width: 180px;
+  height: 64px;
   border-radius: 5px;
   background-color:
     ${({ theme, isActive }) => isActive
@@ -109,7 +111,7 @@ export const MenuButton = styled(BorderlessButton)<IMenuButtonProps>`
   margin: 0 8px;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 8px;
 `;
 
 export const ButtonTitle = styled.Text<IMenuButtonProps>`
@@ -122,7 +124,6 @@ export const ButtonTitle = styled.Text<IMenuButtonProps>`
       };
   text-align: center;
   line-height: 26px;
-  margin-bottom: 8px;
 `;
 
 export const MenuIcon = styled(Feather)<IMenuButtonProps>`
@@ -132,5 +133,5 @@ export const MenuIcon = styled(Feather)<IMenuButtonProps>`
         ? theme.color.text1
         : theme.color.primary
       };
-
+  margin-left: 8px;
 `;

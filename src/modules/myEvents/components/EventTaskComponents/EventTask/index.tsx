@@ -1,10 +1,13 @@
 import React from 'react';
-import { useState } from 'react';
-import IEventTaskDTO from '../../../../../dtos/IEventTaskDTO';
-import { useEventTasks } from '../../../../../hooks/eventTasks';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
 import formatOnlyTime from '../../../../../utils/formatOnlyTime';
+
+import { useEventTasks } from '../../../../../hooks/eventTasks';
+import { useMyEvent } from '../../../../../hooks/myEvent';
+
+import IEventTaskDTO from '../../../../../dtos/IEventTaskDTO';
+
 import { TaskTitle } from '../TaskTitle';
 
 import {
@@ -13,8 +16,8 @@ import {
   DateContainer,
   Date,
   Time,
-  ButtonContainer,
   Button,
+  NoteButton,
   ArrowButton,
   StatusButton,
   PriorityButton,
@@ -25,6 +28,7 @@ import {
   PriorityButtonIcon,
   StatusButtonIcon,
   NotesButtonIcon,
+  Legend,
   ArrowIcon,
   ButtonMainContainer,
 } from './styles';
@@ -97,23 +101,32 @@ export function EventTask({
             <Button onPress={handleOpenTaskTimeWindow}>
               <Time>{formatOnlyTime(String(eventTask.due_date))}</Time>
             </Button>
+
+            {/* <DeleteButtonContainer> */}
+            <DeleteButton
+                onPress={handleDeleteTaskConfirmationWindow}
+              >
+                <Legend>Deletar</Legend>
+                <DeleteButtonIcon name="trash-2" />
+              </DeleteButton>
+            {/* </DeleteButtonContainer> */}
           </DateContainer>
           <ButtonMainContainer>
-            <ButtonContainer>
-              <Button
-                onPress={handleOpenEventTaskNotesWindow}
-              >
-                {eventTask.notes.length > 0 && (
-                  <NumberOfNotesContainer>
-                    <NumberOfNotes>{eventTask.notes.length}</NumberOfNotes>
-                  </NumberOfNotesContainer>
-                )}
-                <NotesButtonIcon name="file-text" />
-              </Button>
+            {/* <ButtonContainer> */}
+              {/* {eventTask.status === 'not started' && (
+                <Legend>Início</Legend>
+              )}
+              {eventTask.status === 'running' && (
+                <Legend>Execução</Legend>
+              )}
+              {eventTask.status === 'finnished' && (
+                <Legend>Fim</Legend>
+              )} */}
               <StatusButton
                 onPress={handleOpenTaskStatusWindow}
                 status={eventTask.status}
               >
+                <Legend>Status</Legend>
                 {eventTask.status === 'not started' && (
                   <StatusButtonIcon name="cloud" />
                 )}
@@ -124,20 +137,35 @@ export function EventTask({
                   <StatusButtonIcon name="award" />
                 )}
               </StatusButton>
-            </ButtonContainer>
-            <ButtonContainer>
+            {/* </ButtonContainer> */}
+            {/* <ButtonContainer> */}
+              {/* {eventTask.priority === 'low' && (
+                <Legend>Baixa</Legend>
+              )}
+              {eventTask.priority === 'neutral' && (
+                <Legend>Neutra</Legend>
+              )}
+              {eventTask.priority === 'high' && (
+                <Legend>Alta</Legend>
+              )} */}
               <PriorityButton
                 onPress={handleOpenTaskPriorityWindow}
                 priority={eventTask.priority}
               >
+                <Legend>Prioridade</Legend>
                 <PriorityButtonIcon name="flag" />
               </PriorityButton>
-              <DeleteButton
-                onPress={handleDeleteTaskConfirmationWindow}
-              >
-                <DeleteButtonIcon name="trash-2" />
-              </DeleteButton>
-            </ButtonContainer>
+            {/* </ButtonContainer> */}
+
+            <NoteButton onPress={handleOpenEventTaskNotesWindow}>
+              {eventTask.notes.length > 0 && (
+                <NumberOfNotesContainer>
+                  <NumberOfNotes>{eventTask.notes.length}</NumberOfNotes>
+                </NumberOfNotesContainer>
+              )}
+              <Legend>Notas</Legend>
+              <NotesButtonIcon name="file-text" />
+            </NoteButton>
           </ButtonMainContainer>
         </Body>
       )}

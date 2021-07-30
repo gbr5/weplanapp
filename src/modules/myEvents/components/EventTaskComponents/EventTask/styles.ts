@@ -23,7 +23,7 @@ export const Container = styled.View`
 
 export const Body = styled.View`
   width: 100%;
-  margin: 16px 0 32px;
+  margin: 16px -8px 32px 0;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -36,7 +36,14 @@ export const DateContainer = styled.View`
 export const Date = styled.Text`
   color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(18)}px;
+  letter-spacing: ${letterSpacing};
+`;
+
+export const Legend = styled.Text`
+  color: ${({ theme }) => theme.color.text1};
+  font-family: ${({ theme }) => theme.fonts.roboto};
+  font-size: ${RFValue(18)}px;
   letter-spacing: ${letterSpacing};
 `;
 
@@ -52,21 +59,28 @@ export const ButtonMainContainer = styled.View`
   justify-content: space-between;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.secondary};
-`;
-
-export const ButtonContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
+  width: 55%;
 `;
 
 export const Button = styled(BorderlessButton)`
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.color.text6};
-  padding: ${iconButtonPadding};
+  padding: 12.3px;
   border: 1px solid ${({ theme}) => theme.color.title};
   border-radius: 5px;
-  margin: ${iconButtonMargin};
+  margin: ${iconButtonMargin} 0;
+`;
+
+export const NoteButton = styled(BorderlessButton)`
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${({ theme }) => theme.color.info_light};
+  padding: 10px;
+  border: 1px solid ${({ theme}) => theme.color.title};
+  border-radius: 5px;
+  margin: ${iconButtonMargin} 0;
+  flex-direction: row;
 `;
 
 export const ArrowIcon = styled(Feather)`
@@ -91,12 +105,13 @@ export const ArrowButton = styled(BorderlessButton)`
 `;
 
 export const PriorityButton = styled(BorderlessButton)<IPriorityButtonDTO>`
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: ${iconButtonPadding};
   border: 1px solid ${({ theme}) => theme.color.title};
   border-radius: 5px;
-  margin: ${iconButtonMargin};
+  margin: ${iconButtonMargin} 0;
   ${({ priority }) => priority === 'high'
     && css`
       background-color: ${({ theme }) => theme.color.atention_light};
@@ -109,18 +124,17 @@ export const PriorityButton = styled(BorderlessButton)<IPriorityButtonDTO>`
     && css`
       background-color: ${({ theme }) => theme.color.success_light};
     `};
-
 `;
 
 export const StatusButton = styled(BorderlessButton)<IStatusButton>`
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: ${({ theme }) => theme.color.text6};
   border-radius: 5px;
-  margin: ${iconButtonMargin};
+  margin: ${iconButtonMargin} 0;
   padding: ${iconButtonPadding};
   border: 1px solid ${({ theme}) => theme.color.title};
-
+  flex-direction: row;
   ${({ status }) => status === 'running'
     && css`
       background-color: ${({ theme }) => theme.color.atention_light};
@@ -139,12 +153,13 @@ export const StatusButton = styled(BorderlessButton)<IStatusButton>`
 
 export const DeleteButton = styled(BorderlessButton)`
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background-color: ${({ theme }) => theme.color.atention};
   padding: ${iconButtonPadding};
   border: 1px solid ${({ theme}) => theme.color.title};
   border-radius: 5px;
-  margin: ${iconButtonMargin};
+  margin: ${iconButtonMargin} 0;
+  flex-direction: row;
 `;
 
 export const NumberOfNotesContainer = styled.View`
@@ -168,21 +183,34 @@ export const NumberOfNotes = styled.Text`
 
 
 export const DeleteButtonIcon = styled(Feather)`
-  color: ${({ theme }) => theme.color.text6};
+  color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(iconSize)}px;
+  border: 1px solid black;
+  border-radius: 16px;
+  padding: 2px;
 `;
 
 export const PriorityButtonIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(iconSize)}px;
+  border: 1px solid black;
+  border-radius: 16px;
+  padding: 2px;
 `;
 
 export const StatusButtonIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(iconSize)}px;
+  border: 1px solid black;
+  border-radius: 16px;
+  padding: 2px;
 `;
 
 export const NotesButtonIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(iconSize)}px;
+  margin-left: 8px;
+  border: 1px solid black;
+  border-radius: 16px;
+  padding: 2px;
 `;

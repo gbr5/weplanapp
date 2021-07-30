@@ -7,7 +7,7 @@ import { Container } from './styles';
 const PageHeader: React.FC = ({ children }) => (
   <Container>
     <BackButton />
-    {children}
+      {children}
     <ProfileButton />
   </Container>
 );

@@ -46,12 +46,13 @@ interface EventTasksContextType {
   handleDeleteTaskConfirmationWindow: () => void;
   selectStatus: (status: 'not started' | 'running' | 'finnished') => void;
   selectTaskDate: (data: Date) => void;
+  unsetEventTasksVariables: () => void;
 }
 
 const EventTasksContext = createContext({} as EventTasksContextType);
 
 const EventTasksProvider: React.FC = ({ children }) => {
-  const { getEventTasks, selectedEvent } = useMyEvent();
+  const { getEvent, selectedEvent } = useMyEvent();
   const [editTaskTitleWindow, setEditTaskTitleWindow] = useState(false);
   const [editTaskPriorityWindow, setEditTaskPriorityWindow] = useState(false);
   const [editTaskStatusWindow, setEditTaskStatusWindow] = useState(false);
@@ -65,6 +66,22 @@ const EventTasksProvider: React.FC = ({ children }) => {
   const [createTaskWindow, setCreateTaskWindow] = useState(false);
   const [taskDate, setTaskDate] = useState(addDays(new Date(), 3));
   const [loading, setLoading] = useState(false);
+
+  function unsetEventTasksVariables() {
+    setEditTaskTitleWindow(false);
+    setEditTaskPriorityWindow(false);
+    setEditTaskStatusWindow(false);
+    setEditTaskDateWindow(false);
+    setEditTaskTimeWindow(false);
+    setSelectTaskDateWindow(false);
+    setSelectTaskTimeWindow(false);
+    setEventTaskNotesWindow(false);
+    setDeleteTaskConfirmationWindow(false);
+    setStatus('not started');
+    setCreateTaskWindow(false);
+    setTaskDate(addDays(new Date(), 3));
+    setLoading(false);
+  }
 
   function handleEditTaskTitleWindow() {
     setEditTaskTitleWindow(!editTaskTitleWindow);
@@ -122,7 +139,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
         status,
         title,
       });
-      await getEventTasks(event_id);
+      await getEvent(event_id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -134,7 +151,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       await api.put(`/event-tasks/${data.id}`, data);
-      await getEventTasks(data.event_id);
+      await getEvent(data.event_id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -146,7 +163,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       await api.delete(`/event-tasks/${data.id}`);
-      await getEventTasks(data.event_id);
+      await getEvent(data.event_id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -157,8 +174,8 @@ const EventTasksProvider: React.FC = ({ children }) => {
   async function createTaskNote(data: ICreateEventTaskNoteDTO) {
     try {
       setLoading(true);
-      const noteresponse = await api.post(`/event-task-notes`, data);
-      const response = await getEventTasks(selectedEvent.id);
+      await api.post(`/event-task-notes`, data);
+      await getEvent(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -170,7 +187,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       await api.delete(`/event-task-notes/${data.id}`);
-      await getEventTasks(selectedEvent.id);
+      await getEvent(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -219,6 +236,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
         handleDeleteTaskConfirmationWindow,
         selectStatus,
         selectTaskDate,
+        unsetEventTasksVariables,
       }}
     >
       {children}

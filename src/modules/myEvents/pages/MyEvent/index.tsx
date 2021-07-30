@@ -44,6 +44,7 @@ import {
   BodyContainer,
 } from './styles';
 import { SupplierTransactionsWindow } from '../../components/SuppliersComponents/SupplierTransactionsWindow';
+import { EventSupplierAgreementTransactionsWindow } from '../../components/FinancialComponents/EventSupplierAgreementTransactionsWindow';
 
 const MyEvent: React.FC = () => {
   const {
@@ -94,14 +95,21 @@ const MyEvent: React.FC = () => {
     createSupplierTransactionsWindow,
     supplierTransactionsWindow,
     editTransactionValueWindow,
+    selectedSupplierTransactionAgreement,
+    eventSupplierAgreementTransactionsWindow,
   } = useEventSuppliers();
   const { editNoteWindow, selectNote, handleEditNoteWindow } = useNote();
   const {
+    cancelEventTransaction,
+    cancelEventTransactionConfirmationWindow,
+    handleCancelEventTransactionConfirmationWindow,
     handleSelectedDateWindow,
     handleSelectedDate,
-    selectedDateWindow,
-    selectedDate,
+    handleUpdateTransactionDueDate,
     newEventSupplierTransactionAgreement,
+    selectedDate,
+    selectedDateWindow,
+    selectedEventTransaction,
     selectedTransaction,
   } = useTransaction();
 
@@ -174,6 +182,21 @@ const MyEvent: React.FC = () => {
         <BudgetWindow />
       )}
 
+      {selectedEventTransaction
+        && selectedEventTransaction.transaction
+        && cancelEventTransactionConfirmationWindow && (
+          <ShortConfirmationWindow
+            closeWindow={handleCancelEventTransactionConfirmationWindow}
+            question="Deseja deletar a transação? O contrato também será alterado."
+            firstButtonLabel="Deletar"
+            firstFunction={cancelEventTransaction}
+            secondButtonLabel="Cancelar"
+            secondFunction={handleCancelEventTransactionConfirmationWindow}
+            left="0%"
+            backdropLeft="0%"
+          />
+        )}
+
       {selectedSupplierTransaction
         && selectedSupplierTransaction.id
         && selectedTransaction
@@ -182,6 +205,12 @@ const MyEvent: React.FC = () => {
           <EditTransactionValue />
         )
       }
+
+      {selectedSupplierTransactionAgreement
+        && selectedSupplierTransactionAgreement.id
+        && eventSupplierAgreementTransactionsWindow && (
+          <EventSupplierAgreementTransactionsWindow />
+        )}
 
       {selectedSupplier
         && selectedSupplier.id
@@ -332,6 +361,16 @@ const MyEvent: React.FC = () => {
           selectedDate={selectedDate}
         />
       )}
+      {selectedDateWindow
+        && selectedEventTransaction
+        && selectedEventTransaction.transaction && (
+          <DatePickerWindow
+            closeWindow={handleSelectedDateWindow}
+            loading={loading}
+            selectDate={handleUpdateTransactionDueDate}
+            selectedDate={selectedDate}
+          />
+        )}
       {newEventSupplierTransactionAgreement && (
         <NewEventSupplierTransactionAgreementConfirmation />
       )}

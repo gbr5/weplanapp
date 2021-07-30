@@ -2,7 +2,6 @@ import React from 'react';
 import { useMemo } from 'react';
 import ITransactionDTO from '../../../dtos/ITransactionDTO';
 import theme from '../../../global/styles/theme';
-import { useEventSuppliers } from '../../../hooks/eventSuppliers';
 import { useTransaction } from '../../../hooks/transactions';
 import { formatBrlCurrency } from '../../../utils/formatBrlCurrency';
 import formatOnlyDate from '../../../utils/formatOnlyDate';
@@ -15,6 +14,8 @@ import {
   FieldButtonText,
   PaidButton,
   PaidIcon,
+  ReceiptButton,
+  ReceiptIcon,
   DeleteButton,
   DeleteIcon,
 } from './styles';
@@ -22,11 +23,13 @@ import {
 interface IProps {
   editTransactionValue: (data: ITransactionDTO) => void;
   cancelTransaction: (data: ITransactionDTO) => void;
+  handleIsPaid: () => void;
 }
 
 export function TransactionButtonInfo({
   cancelTransaction,
   editTransactionValue,
+  handleIsPaid,
 }: IProps) {
   const {
     selectedTransaction,
@@ -71,7 +74,7 @@ export function TransactionButtonInfo({
       <FieldContainer>
         <PaidButton
           color={color}
-          onPress={() => {}}
+          onPress={handleIsPaid}
         >
           {selectedTransaction.isPaid ? (
             <>
@@ -85,13 +88,15 @@ export function TransactionButtonInfo({
             </>
           )}
         </PaidButton>
+        <ReceiptButton>
+          <ReceiptIcon name="file" />
+        </ReceiptButton>
         <DeleteButton
           onPress={handleCancelTransaction}
         >
           <DeleteIcon name="trash-2" />
         </DeleteButton>
       </FieldContainer>
-
     </Container>
   );
 }
