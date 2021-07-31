@@ -1,19 +1,19 @@
 export default {
   color: {
     primary: '#ff9900',
-    primary_light: '#ffefd6',
+    primary_light: '#ffd899',
 
     secondary: '#555555',
     secondary_light: 'rgba(85, 85, 85, 0.5)',
 
     success: '#007500',
-    success_light: '#d6ffd6',
+    success_light: '#99ff99',
 
     atention: '#ff3030',
-    atention_light: '#ffd6d6',
+    atention_light: '#ff9999',
 
     info: '#1f4fff',
-    info_light: '#d6dfff',
+    info_light: '#99afff',
 
     shape: '#FFFFFF',
     title: '#fee258',

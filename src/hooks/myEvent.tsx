@@ -115,15 +115,6 @@ const MyEventProvider: React.FC = ({ children }) => {
     setTotalEventCost(totalCost);
   }, [hiredSuppliers]);
 
-  async function refreshEvent(event_id: string) {
-    try {
-      const response = await api.get(`/events/${event_id}`);
-      setSelectedEvent(response.data);
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-
   function handleEventFinancialSubSection(data: string) {
     setEventFinancialSubSection(data);
   }
@@ -240,11 +231,25 @@ const MyEventProvider: React.FC = ({ children }) => {
     }
   }
 
+  function selectEvent(data: IEventDTO) {
+    if (data.id !== selectedEvent.id) {
+      unsetEventVariables();
+    }
+    Promise.all([
+      getEventInfo(data.id),
+      getEventGuests(data.id),
+      getEventOwners(data.id),
+      getEventMembers(data.id),
+      getEventSuppliers(data.id),
+    ]);
+    setCurrentSection('Tasks');
+    setSelectedEvent(data);
+  }
+
   async function getEvent(eventId: string) {
     try {
       const response = await api.get<IEventDTO>(`/events/${eventId}`);
-      console.log(response.data);
-      setSelectedEvent(response.data);
+      selectEvent(response.data);
       if (selectedTask && selectedTask.id) {
         const findTask = response.data.eventTasks.find(task => task.id === selectedTask.id);
         findTask && setSelectedTask(findTask);
@@ -285,21 +290,6 @@ const MyEventProvider: React.FC = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }
-
-  function selectEvent(data: IEventDTO) {
-    if (data.id !== selectedEvent.id) {
-      unsetEventVariables();
-      Promise.all([
-        getEventInfo(data.id),
-        getEventGuests(data.id),
-        getEventOwners(data.id),
-        getEventMembers(data.id),
-        getEventSuppliers(data.id),
-      ]);
-    }
-    setCurrentSection('Tasks');
-    setSelectedEvent(data);
   }
 
   function selectGuest(guest: IEventGuestDTO) {

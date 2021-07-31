@@ -51,6 +51,12 @@ export const Index = styled.Text`
   font-size: ${RFValue(18)}px;
 `;
 
+export const Sign = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text1};
+  font-size: ${RFValue(22)}px;
+`;
+
 export const Amount = styled.Text<IAmountProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text1};
@@ -64,7 +70,7 @@ export const Amount = styled.Text<IAmountProps>`
       color: ${({ theme }) => theme.color.success};
     `};
   text-align: right;
-  width: 58%;
+  width: 95%;
 `;
 
 export const DateText = styled.Text`
@@ -90,4 +96,39 @@ export const Underline = styled.View`
   width: 100%;
   height: 1.1px;
   background-color: ${({ theme }) => theme.color.secondary};
+`;
+
+export const DayContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  /* background-color: ${({ theme }) => theme.color.text6}; */
+  padding: 0 16px;
+`;
+
+export const MonthContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: ${({ theme }) => theme.color.primary_light};
+  z-index: 3;
+  padding: 4px 8px;
+  position: absolute;
+  top: 0;
+  left: 8px;
+  border-radius: 8px;
+  opacity: 0.8;
+`;
+
+export const Month = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text1};
+  font-size: ${RFValue(18)}px;
+  z-index: 2;
+  opacity: 1;
+`;
+export const Day = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto};
+  color: ${({ theme }) => theme.color.text1};
+  font-size: ${RFValue(18)}px;
 `;

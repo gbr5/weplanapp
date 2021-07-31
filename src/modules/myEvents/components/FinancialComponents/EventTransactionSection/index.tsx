@@ -4,7 +4,6 @@ import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
 
 import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';
-import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
 
 import { EventTransactionButton } from '../../../../../components/TransactionComponents/EventTransactionButton';
 import { AddButton } from '../../../../../components/AddButton';
@@ -22,7 +21,7 @@ import {
 } from './styles';
 
 export function EventTransactionSection() {
-  const { eventSuppliers, selectedEvent } = useMyEvent();
+  const { eventSuppliers } = useMyEvent();
   const { eventTransactions } = useTransaction();
 
   const [menuOption, setMenuOption] = useState('all');
@@ -43,29 +42,7 @@ export function EventTransactionSection() {
   const transactions = useMemo<IEventTransactionDTO[]>(() => {
     if (sortByInterval) {
       const updatedTransactions = eventTransactions
-        .filter(transaction => new Date(transaction.due_date) > fromDate && new Date(transaction.due_date) < toDate)
-        .map(transaction => {
-          const supplierAgreements: IEventSupplierTransactionAgreementDTO[] = [];
-          eventSuppliers.map(supplier => {
-            const agreement  = supplier.transactionAgreements.find(thisAgreement => {
-              const findTransaction = !!thisAgreement.transactions.find(item => item.transaction.id === transaction.id);
-              return findTransaction ? supplierAgreements.push(thisAgreement) : undefined;
-            });
-            return agreement;
-          });
-          const agreement_type = supplierAgreements.length > 0 ? 'supplier' : 'none';
-          return {
-            event_id: selectedEvent.id,
-            transaction,
-            agreement_type,
-            agreement_id: agreement_type === 'supplier' ? supplierAgreements[0].id : 'none',
-          };
-        })
-        .sort((a, b) => {
-          if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return 1;
-          if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return -1;
-          return 0;
-        });
+        .filter(({ transaction }) => new Date(transaction.due_date) > fromDate && new Date(transaction.due_date) < toDate);
       if (menuOption === 'paid') {
         if (!isCancelled) return updatedTransactions.filter(({ transaction }) =>
           !transaction.isCancelled && transaction.isPaid);
@@ -81,7 +58,7 @@ export function EventTransactionSection() {
       if (menuOption === 'delayed') {
         if (!isCancelled) return updatedTransactions.filter(({ transaction }) =>
           !transaction.isCancelled && !transaction.isPaid
-            && new Date() < new Date(transaction.due_date));
+            && new Date() > new Date(transaction.due_date));
         return updatedTransactions.filter(({ transaction }) =>
           !transaction.isPaid && new Date() < new Date(transaction.due_date));
       }
@@ -89,50 +66,28 @@ export function EventTransactionSection() {
         !transaction.isCancelled);
       return updatedTransactions;
     }
-    const updatedTransactions = eventTransactions.map(transaction => {
-      const supplierAgreements: IEventSupplierTransactionAgreementDTO[] = [];
-      eventSuppliers.map(supplier => {
-        const agreement  = supplier.transactionAgreements.find(thisAgreement => {
-          const findTransaction = !!thisAgreement.transactions.find(item => item.transaction.id === transaction.id);
-          return findTransaction ? supplierAgreements.push(thisAgreement) : undefined;
-        });
-        return agreement;
-      });
-      const agreement_type = supplierAgreements.length > 0 ? 'supplier' : 'none';
-      return {
-        event_id: selectedEvent.id,
-        transaction,
-        agreement_type,
-        agreement_id: agreement_type === 'supplier' ? supplierAgreements[0].id : 'none',
-      };
-    })
-    .sort((a, b) => {
-      if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return 1;
-      if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return -1;
-      return 0;
-    });
     if (menuOption === 'paid') {
-      if (!isCancelled) return updatedTransactions.filter(({ transaction }) =>
+      if (!isCancelled) return eventTransactions.filter(({ transaction }) =>
         !transaction.isCancelled && transaction.isPaid);
-      return updatedTransactions.filter(({ transaction }) =>
+      return eventTransactions.filter(({ transaction }) =>
         transaction.isPaid);
     }
     if (menuOption === 'notPaid') {
-      if (!isCancelled) return updatedTransactions.filter(({ transaction }) =>
+      if (!isCancelled) return eventTransactions.filter(({ transaction }) =>
         !transaction.isCancelled && !transaction.isPaid);
-      return updatedTransactions.filter(({ transaction }) =>
+      return eventTransactions.filter(({ transaction }) =>
         !transaction.isPaid);
     }
     if (menuOption === 'delayed') {
-      if (!isCancelled) return updatedTransactions.filter(({ transaction }) =>
+      if (!isCancelled) return eventTransactions.filter(({ transaction }) =>
         !transaction.isCancelled && !transaction.isPaid
-          && new Date() < new Date(transaction.due_date));
-      return updatedTransactions.filter(({ transaction }) =>
+          && new Date() > new Date(transaction.due_date));
+      return eventTransactions.filter(({ transaction }) =>
         !transaction.isPaid && new Date() < new Date(transaction.due_date));
     }
-    if (!isCancelled) return updatedTransactions.filter(({ transaction }) =>
+    if (!isCancelled) return eventTransactions.filter(({ transaction }) =>
       !transaction.isCancelled);
-    return updatedTransactions;
+    return eventTransactions;
   }, [eventSuppliers,
     eventTransactions,
     menuOption,
@@ -176,16 +131,6 @@ export function EventTransactionSection() {
       <FilterButton onPress={handleFilterWindow}>
         <FilterIcon name="filter" />
       </FilterButton>
-      {/* <IsCancelledButton
-        onPress={handleFilterWindow}
-        isActive={isCancelled}
-      >
-        {isCancelled ? (
-          <IsCancelledIcon isActive={isCancelled} name="eye" />
-        ) : (
-          <IsCancelledIcon isActive={isCancelled} name="eye-off" />
-        )}
-      </IsCancelledButton> */}
       <AddButton onPress={() => {}} right="2%" top="-6%" />
       <Title>Transações</Title>
       <Menu horizontal>
@@ -221,8 +166,21 @@ export function EventTransactionSection() {
             keyExtractor={(item) => item.transaction.id}
             renderItem={({ item }) => {
               const index = String(transactions.findIndex(transaction => transaction.transaction.id === item.transaction.id) + 1);
+              const month = new Date(item.transaction.due_date).getMonth();
+              const date = new Date(item.transaction.due_date).getDate();
+              const firstOfMonth = transactions
+                .filter(({ transaction }) =>
+                  new Date(transaction.due_date).getMonth() === month
+                )[0].transaction.id === item.transaction.id;
+              const firstOfDay = transactions
+                .filter(({ transaction }) =>
+                  new Date(transaction.due_date).getMonth() === month
+                  && new Date(transaction.due_date).getDate() === date
+                )[0].transaction.id === item.transaction.id;
               return (
                 <EventTransactionButton
+                  firstOfDay={firstOfDay}
+                  firstOfMonth={firstOfMonth}
                   key={item.transaction.id}
                   index={index}
                   eventTransaction={item}

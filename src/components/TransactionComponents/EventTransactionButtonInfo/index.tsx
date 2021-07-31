@@ -24,14 +24,12 @@ import {
   DeleteButton,
   DeleteIcon,
 } from './styles';
-import ShortConfirmationWindow from '../../ShortConfirmationWindow';
 
 export function EventTransactionButtonInfo() {
   const { getEventSuppliers } = useMyEvent();
   const { handleUpdateAgreementAndTransactions } = useEventSuppliers();
   const {
     editTransaction,
-    getPayerTransactions,
     handleCancelEventTransactionConfirmationWindow,
     handleSelectedEventTransaction,
     handleSelectedDateWindow,
@@ -50,7 +48,7 @@ export function EventTransactionButtonInfo() {
     if (new Date(selectedEventTransaction.transaction.due_date) < today)
       return theme.color.atention_light;
     return theme.color.info_light;
-  }, [selectedEventTransaction.transaction.isPaid, selectedEventTransaction.transaction.due_date, theme]);
+  }, [selectedEventTransaction, theme]);
 
   function handleEditValueWindow() {
     setEditValueWindow(!editValueWindow);
@@ -67,8 +65,6 @@ export function EventTransactionButtonInfo() {
         ...selectedEventTransaction,
         transaction: response,
       });
-      getPayerTransactions(selectedEventTransaction.event_id);
-      selectedEventTransaction.agreement_type === 'supplier' && getEventSuppliers(selectedEventTransaction.event_id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -84,13 +80,14 @@ export function EventTransactionButtonInfo() {
   async function updateTransactionValue(amount: number) {
     try {
       setLoading(true);
+      const oldEventTransaction = selectedEventTransaction;
       if (selectedEventTransaction.agreement_type === 'none') {
         const response = await editTransaction({
           ...selectedEventTransaction.transaction,
           amount,
         });
         handleSelectedEventTransaction({
-          ...selectedEventTransaction,
+          ...oldEventTransaction,
           transaction: response,
         });
       }
@@ -105,16 +102,8 @@ export function EventTransactionButtonInfo() {
           ]
         });
         await updateEventSupplierTransactionAgreement(updatedAgreement);
-        handleSelectedEventTransaction({
-          ...selectedEventTransaction,
-          transaction: {
-            ...selectedEventTransaction.transaction,
-            amount,
-          },
-        });
-        getEventSuppliers(selectedEventTransaction.event_id);
+        await getEventSuppliers(selectedEventTransaction.event_id);
       }
-      getPayerTransactions(selectedEventTransaction.event_id);
     } catch (err) {
       throw new Error(err);
     } finally {

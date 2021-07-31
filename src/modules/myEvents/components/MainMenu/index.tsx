@@ -1,8 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 
-import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
-
 import { useMyEvent } from '../../../../hooks/myEvent';
+import { useTransaction } from '../../../../hooks/transactions';
 
 import {
   Container,
@@ -11,7 +10,6 @@ import {
   MenuButtonNumber,
   BudgetInfo,
 } from './styles';
-import { useTransaction } from '../../../../hooks/transactions';
 
 export function MainMenu() {
   const {
@@ -24,6 +22,8 @@ export function MainMenu() {
     selectedEvent,
     handleBudgetWindow,
     eventBudget,
+    members,
+    owners,
   } = useMyEvent();
   const { eventTotalDebit } = useTransaction();
 
@@ -34,6 +34,8 @@ export function MainMenu() {
   }, [hiredSuppliers.length, notHiredSuppliers.length]);
 
   const guestsInfo = useMemo(() => `${confirmedGuests} / ${guests.length}`, [confirmedGuests, guests]);
+  const membersInfo = useMemo(() => `${members.length}`, [members]);
+  const ownersInfo = useMemo(() => `${owners.length}`, [owners]);
 
   const financialInfo = useMemo(() => {
     if (selectedEvent.eventBudget && selectedEvent.eventBudget.budget) {
@@ -122,6 +124,36 @@ export function MainMenu() {
           isActive={currentSection === 'Financial'}
         >
           {financialInfo}
+        </MenuButtonNumber>
+      </MenuButton>
+      <MenuButton
+        onPress={() => selectEventSection('Owners')}
+        isActive={currentSection === 'Owners'}
+      >
+        <MenuButtonText
+          isActive={currentSection === 'Owners'}
+        >
+          Anfitriões
+        </MenuButtonText>
+        <MenuButtonNumber
+          isActive={currentSection === 'Owners'}
+        >
+          {ownersInfo}
+        </MenuButtonNumber>
+      </MenuButton>
+      <MenuButton
+        onPress={() => selectEventSection('Members')}
+        isActive={currentSection === 'Members'}
+      >
+        <MenuButtonText
+          isActive={currentSection === 'Members'}
+        >
+          Membros
+        </MenuButtonText>
+        <MenuButtonNumber
+          isActive={currentSection === 'Members'}
+        >
+          {membersInfo}
         </MenuButtonNumber>
       </MenuButton>
     </Container>

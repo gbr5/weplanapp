@@ -22,8 +22,10 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.color.text6};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(18)}px;
-  /* letter-spacing: 1px; */
-  width: 90%;
+  letter-spacing: 1px;
+  width: 87%;
+  text-align: justify;
+  margin-right: 4px;
 `;
 
 export const UnderlineTitle = styled.View`

@@ -45,6 +45,8 @@ import {
 } from './styles';
 import { SupplierTransactionsWindow } from '../../components/SuppliersComponents/SupplierTransactionsWindow';
 import { EventSupplierAgreementTransactionsWindow } from '../../components/FinancialComponents/EventSupplierAgreementTransactionsWindow';
+import { MembersSection } from '../../components/MembersComponents/MembersSection';
+import { OwnersSection } from '../../components/OwnersComponents/OwnersSection';
 
 const MyEvent: React.FC = () => {
   const {
@@ -397,6 +399,12 @@ const MyEvent: React.FC = () => {
             )}
             {currentSection === 'Financial' && (
               <FinancialSection />
+            )}
+            {currentSection === 'Members' && (
+              <MembersSection />
+            )}
+            {currentSection === 'Owners' && (
+              <OwnersSection />
             )}
           </BodyContainer>
         </Body>

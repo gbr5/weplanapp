@@ -24,8 +24,7 @@ export const FilterButton = styled(BorderlessButton)`
   background-color: ${({ theme }) => theme.color.secondary};
   align-items: center;
   justify-content: center;
-  width: 45px;
-  height: 45px;
+  padding: 4px;
 `;
 export const FilterIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.primary};
@@ -64,6 +63,7 @@ export const TransactionContainer = styled(
     paddingBottom: getBottomSpace(),
   },
 })`
+  padding-top: 48px;
   border-radius: 16px;
   width: 100%;
   flex: 1;

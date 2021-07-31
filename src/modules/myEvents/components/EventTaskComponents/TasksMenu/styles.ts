@@ -16,15 +16,24 @@ export const Container = styled.View`
 
 export const MenuButton = styled(BorderlessButton)<IButtonProps>`
   height: ${({ isActive }) => (isActive ? `${RFValue(68)}px` : `${RFValue(60)}px`)};
+  ${({ isActive }) => !isActive && css`
+    border: 1.5px solid ${({ theme }) => theme.color.text4};
+  `};
   align-items: center;
-  ${({ stage }) => stage === 'not started' && css`
-    background-color: ${({ theme }) => theme.color.info};
+  ${({ stage, isActive }) => stage === 'not started' && css`
+    background-color: ${({ theme }) => isActive
+      ? theme.color.info
+      : theme.color.info_light};
   `}
-  ${({ stage }) => stage === 'running' && css`
-    background-color: ${({ theme }) => theme.color.atention};
+  ${({ stage, isActive }) => stage === 'running' && css`
+    background-color: ${({ theme }) => isActive
+      ? theme.color.atention
+      : theme.color.atention_light};
   `}
-  ${({ stage }) => stage === 'finnished' && css`
-    background-color: ${({ theme }) => theme.color.success};
+  ${({ stage, isActive }) => stage === 'finnished' && css`
+    background-color: ${({ theme }) => isActive
+      ? theme.color.success
+      : theme.color.success_light};
   `}
   justify-content: center;
   width: 30%;
@@ -34,9 +43,9 @@ export const MenuButton = styled(BorderlessButton)<IButtonProps>`
 export const MenuButtonText = styled.Text<IButtonProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(16)}px;
-  color: ${({ theme, isActive }) => (isActive ? theme.color.text1 : theme.color.text6)};
+  color: ${({ theme, isActive }) => (isActive ? theme.color.text6 : theme.color.secondary)};
 `;
 
 export const MenuButtonIcon = styled(Feather)<IButtonProps>`
-  color: ${({ theme, isActive }) => (isActive ? theme.color.primary : theme.color.text6)};
+  color: ${({ theme, isActive }) => (isActive ? theme.color.primary : theme.color.secondary)};
 `;

@@ -104,11 +104,10 @@ export const MenuButton = styled(BorderlessButton)<IMenuButtonProps>`
   width: 180px;
   height: 56px;
   border-radius: 5px;
-  background-color:
-    ${({ theme, isActive }) => isActive
-      ? theme.color.primary
-      : theme.color.secondary
-    };
+  background-color: ${({ theme, isActive }) => isActive
+    ? theme.color.primary
+    : theme.color.secondary
+  };
   margin: 0 8px;
   align-items: center;
   justify-content: center;
@@ -118,21 +117,19 @@ export const MenuButton = styled(BorderlessButton)<IMenuButtonProps>`
 export const ButtonTitle = styled.Text<IMenuButtonProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(18)}px;
-  color:
-    ${({ theme, isActive }) => isActive
-        ? theme.color.secondary
-        : theme.color.text6
-      };
+  color: ${({ theme, isActive }) => isActive
+    ? theme.color.secondary
+    : theme.color.text6
+  };
   text-align: center;
   line-height: 26px;
 `;
 
 export const MenuIcon = styled(Feather)<IMenuButtonProps>`
   font-size: ${RFValue(24)}px;
-  color:
-    ${({ theme, isActive }) => isActive
-        ? theme.color.text1
-        : theme.color.primary
-      };
+  color: ${({ theme, isActive }) => isActive
+    ? theme.color.text1
+    : theme.color.primary
+  };
   margin-left: 8px;
 `;

@@ -13,11 +13,9 @@ import IEventSupplierTransactionDTO from '../../../../../dtos/IEventSupplierTran
 import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 
 import ShortConfirmationWindow from '../../../../../components/ShortConfirmationWindow';
-import Backdrop from '../../../../../components/Backdrop';
-import { DatePickerWindow } from '../../../../../components/DatePickerWindow';
 import WindowContainer from '../../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../../components/WindowHeader';
-import { TransactionButton } from '../../../../../components/TransactionComponents/TransactionButton';
+import { EventTransactionButton } from '../../../../../components/TransactionComponents/EventTransactionButton';
 
 import {
   Container,
@@ -29,32 +27,22 @@ import Button from '../../../../../components/Button';
 
 export function EventSupplierAgreementTransactionsWindow() {
   const {
-    selectedSupplier,
-    getEventSuppliers,
     selectSupplier,
-    selectedEvent,
     eventSuppliers,
   } = useMyEvent();
   const {
-    supplierAgreementTransactions,
     selectSupplierTransaction,
     selectSupplierTransactionAgreement,
     selectedSupplierTransactionAgreement,
-    handleEditTransactionValueWindow,
     handleEventSupplierAgreementTransactionsWindow,
   } = useEventSuppliers();
   const {
     selectTransaction,
-    selectedTransaction,
     updateEventSupplierTransactionAgreement,
-    editTransactionDueDateWindow,
-    handleEditTransactionDueDateWindow,
-    editTransaction,
+    handleEventTransactions,
   } = useTransaction();
 
-  const [loading, setLoading] = useState(false);
-  const [addTransactionReceiptWindow, setAddTransactionReceiptWindow] = useState(false);
-  const [transactionToCancel, setTransactionToCancel] = useState({} as ITransactionDTO);
+  const [cancelAgreementConfirmationWindow, setCancelAgreementConfirmationWindow] = useState(false);
 
   const supplier = useMemo(() => {
     return eventSuppliers.find(item => item.id === selectedSupplierTransactionAgreement.supplier_id);
@@ -62,120 +50,36 @@ export function EventSupplierAgreementTransactionsWindow() {
 
   function closeWindow() {
     handleEventSupplierAgreementTransactionsWindow();
-    setAddTransactionReceiptWindow(false);
     selectSupplier({} as IEventSupplierDTO);
-    setTransactionToCancel({} as ITransactionDTO);
     selectSupplierTransaction({} as IEventSupplierTransactionDTO);
     selectSupplierTransactionAgreement({} as IEventSupplierTransactionAgreementDTO);
   }
 
-  function selectTransactionToCancel(data: ITransactionDTO) {
-    setTransactionToCancel(data);
+  function handleCancelAgreementConfirmationWindow() {
+    setCancelAgreementConfirmationWindow(!cancelAgreementConfirmationWindow);
   }
 
-  async function handleAddTransactionReceipt() {
-
-  }
-
-  function handleAddTransactionReceiptWindow() {
-    setAddTransactionReceiptWindow(!addTransactionReceiptWindow);
-  }
-
-  async function handleEditTransactionDueDate(data: Date) {
-    try {
-      setLoading(true);
-      await editTransaction({
-        ...selectedTransaction,
-        due_date: new Date(data),
-      });
-      await getEventSuppliers(selectedEvent.id);
-      handleEditTransactionDueDateWindow();
-    } catch (err) {
-      Alert.alert('Não foi possível atualizar a data!','Tente novamente.')
-      throw new Error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function refreshAgreement() {
-    const findAgreement = selectedSupplier.transactionAgreements.find(item => item.id === selectedSupplierTransactionAgreement.id);
-    findAgreement && selectSupplierTransactionAgreement(findAgreement);
-  }
-
-  async function handleIsPaid() {
-    try {
-      setLoading(true);
-      await editTransaction({
-        ...selectedTransaction,
-        isPaid: !selectedTransaction.isPaid,
-      });
-      await getEventSuppliers(selectedEvent.id);
-      handleEventSupplierAgreementTransactionsWindow();
-    } catch (err) {
-      throw new Error(err);
-    } finally {
-      refreshAgreement();
-      setLoading(false);
-    }
-  }
-
-  function editTransactionValue(data: ITransactionDTO) {
-    if (supplierAgreementTransactions) {
-      const agreementTransaction = supplierAgreementTransactions.find(transaction => transaction.transaction.id === data.id);
-      if (agreementTransaction) {
-        const selectedAgreement = selectedSupplier.transactionAgreements.find(agreement => agreement.id === agreementTransaction.agreement_id);
-        selectSupplierTransaction(agreementTransaction);
-        selectedAgreement && selectSupplierTransactionAgreement(selectedAgreement);
-        handleEditTransactionValueWindow();
-      }
-    }
-  }
-
-  async function cancelTransaction(data: ITransactionDTO) {
-    if (supplierAgreementTransactions) {
-      const agreementTransaction = supplierAgreementTransactions
-        .find(transaction => transaction.transaction.id === data.id);
-
-      if (agreementTransaction) {
-        const selectedAgreement = selectedSupplier.transactionAgreements
-          .find(agreement => agreement.id === agreementTransaction.agreement_id);
-
-        if (selectedAgreement) {
-          const agreementAmount = formatBrlCurrency(selectedAgreement.amount);
-
-          const agreementNewValue =
-            Number(selectedAgreement.amount) - Number(data.amount);
-
-          const agreementNewAmount = formatBrlCurrency(agreementNewValue);
-
-          const message =
-            `O contrato foi atualizado de ${agreementAmount} para ${agreementNewAmount}`;
-
-          const number_of_installments = selectedAgreement.transactions
-            .filter(transaction => !transaction.transaction.isCancelled && transaction.transaction.amount !== 0)
-            .length;
-
-          const transactions = [{
-            ...data,
+  async function cancelAgreementAndTransactions() {
+    if (selectedSupplierTransactionAgreement) {
+      const updatedTransactions = selectedSupplierTransactionAgreement.transactions
+        .map(({ transaction }) => {
+          return {
+            ...transaction,
             isCancelled: true,
-          }];
+          };
+        });
 
-          selectTransaction({} as ITransactionDTO);
-          const {
-            id,
-          } = selectedAgreement;
-          await updateEventSupplierTransactionAgreement({
-            amount: agreementNewValue,
-            id,
-            isCancelled: agreementNewValue === 0,
-            number_of_installments,
-            transactions,
-          });
-          closeWindow();
-          Alert.alert(`Transação cancelada com sucesso!`, message);
-        }
-      }
+      const updatedAgreement = {
+        id: selectedSupplierTransactionAgreement.id,
+        amount: 0,
+        number_of_installments: 0,
+        isCancelled: true,
+        transactions: updatedTransactions,
+      };
+      selectTransaction({} as ITransactionDTO);
+      await updateEventSupplierTransactionAgreement(updatedAgreement);
+      closeWindow();
+      Alert.alert(`Contrato e transações cancelados com sucesso!`);
     }
   }
 
@@ -191,61 +95,29 @@ export function EventSupplierAgreementTransactionsWindow() {
 
   const transactions = useMemo(() => {
     if (selectedSupplierTransactionAgreement.transactions.length > 0)
-      return selectedSupplierTransactionAgreement.transactions
+      return handleEventTransactions(selectedSupplierTransactionAgreement.transactions
         .filter(agreementTransaction => !agreementTransaction.transaction.isCancelled)
-        .map(agreementTransaction => agreementTransaction.transaction)
-        .sort((a, b) => {
-          if (new Date(a.due_date) > new Date(b.due_date)) return 1;
-          if (new Date(a.due_date) < new Date(b.due_date)) return -1;
-          return 0;
-        });
+        .map(({ transaction }) => transaction));
   }, [selectedSupplierTransactionAgreement, eventSuppliers]);
 
   return (
     <WindowContainer
       closeWindow={closeWindow}
-      zIndex={36}
+      zIndex={16}
       top="5%"
       left="0%"
       height="90%"
       width="100%"
     >
-      {/* {addTransactionReceiptWindow && (
-        // Fazer Componente para escolher de onde vai pegar o recibo
-        // Se Tirar Foto
-        // Se Selecionar Foto
-        // Se Escolher arquivo do celular
-        // Se Escolher arquivo de terceiros (Google Drive, etc)
-      )} */}
-      {editTransactionDueDateWindow
-        && selectedTransaction && selectedTransaction.id && (
-          <DatePickerWindow
-            zIndex={40}
-            closeWindow={handleEditTransactionDueDateWindow}
-            loading={loading}
-            selectDate={(data: Date) => handleEditTransactionDueDate(data)}
-            selectedDate={new Date(selectedTransaction.due_date)}
-          />
-        )}
-
-      {transactionToCancel && transactionToCancel.id && (
-        <>
-          <Backdrop
-            zIndex={37}
-            left="0%"
-            closeFunction={() => selectTransactionToCancel({} as ITransactionDTO)}
-          />
-          <ShortConfirmationWindow
-            closeWindow={() => selectTransactionToCancel({} as ITransactionDTO)}
-            question="Deseja deletar a transação? O contrato também será alterado."
-            firstButtonLabel="Deletar"
-            firstFunction={() => cancelTransaction(transactionToCancel)}
-            secondButtonLabel="Cancelar"
-            secondFunction={() => selectTransactionToCancel({} as ITransactionDTO)}
-            left="4%"
-            backdropLeft="10%"
-          />
-        </>
+      {cancelAgreementConfirmationWindow && (
+        <ShortConfirmationWindow
+          closeWindow={handleCancelAgreementConfirmationWindow}
+          question="Deseja deletar o contrato e suas transações?"
+          firstButtonLabel="Deletar"
+          firstFunction={cancelAgreementAndTransactions}
+          secondButtonLabel="Não Deletar"
+          secondFunction={handleCancelAgreementConfirmationWindow}
+        />
       )}
       <Container>
         <WindowHeader
@@ -253,33 +125,40 @@ export function EventSupplierAgreementTransactionsWindow() {
           title="Transações"
         />
 
-        <Title>Total:  {transactionsSum}</Title>
+        <Title>Custo Total do Contrato:  {transactionsSum}</Title>
 
         {transactions
           && transactions.length > 0 && (
-              <TransactionsContainer
-                data={transactions}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => {
-                  const index = String(transactions
-                    .findIndex(transaction => transaction.id === item.id) + 1);
-                  return (
-                    <TransactionButton
-                      handleIsPaid={handleIsPaid}
-                      cancelTransaction={
-                        (data: ITransactionDTO) =>
-                          selectTransactionToCancel(data)}
-                      editTransactionValue={
-                        (data: ITransactionDTO) => editTransactionValue(data)}
-                      index={index}
-                      transaction={item}
-                      key={index}
-                    />
-                )}}
-              />
-            )}
+            <TransactionsContainer
+              data={transactions}
+              keyExtractor={({ transaction }) => transaction.id}
+              renderItem={({ item }) => {
+                const index = String(transactions
+                  .findIndex(({ transaction }) => transaction.id === item.transaction.id) + 1);
+                const month = new Date(item.transaction.due_date).getMonth();
+                const date = new Date(item.transaction.due_date).getDate();
+                const firstOfMonth = transactions
+                  .filter(({ transaction }) =>
+                    new Date(transaction.due_date).getMonth() === month
+                  )[0].transaction.id === item.transaction.id;
+                const firstOfDay = transactions
+                  .filter(({ transaction }) =>
+                    new Date(transaction.due_date).getMonth() === month
+                    && new Date(transaction.due_date).getDate() === date
+                  )[0].transaction.id === item.transaction.id;
+                return (
+                  <EventTransactionButton
+                    firstOfDay={firstOfDay}
+                    firstOfMonth={firstOfMonth}
+                    index={index}
+                    eventTransaction={item}
+                    key={index}
+                  />
+              )}}
+            />
+          )}
       </Container>
-      <Button>Deletar Contrato</Button>
+      <Button onPress={handleCancelAgreementConfirmationWindow}>Deletar Contrato</Button>
     </WindowContainer>
   );
 }

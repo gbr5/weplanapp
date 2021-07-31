@@ -71,9 +71,9 @@ export function EditTransactionAmount({
     <WindowContainer
       closeWindow={closeWindow}
       zIndex={45}
-      top="-15%"
+      top="-25%"
       left="0%"
-      height="110%"
+      height="140%"
       width="100%"
     >
             <Container>

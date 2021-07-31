@@ -11,8 +11,6 @@ import {
   Title,
   TitleButton,
   UnderlineTitle,
-  EditTitleIcon,
-  IconContainer,
 } from './styles';
 
 interface IProps {

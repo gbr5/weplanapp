@@ -3,7 +3,7 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
-import IEventSupplierTransactionDTO from '../../../../../dtos/IEventSupplierTransactionDTO';
+import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';
 
 interface IProps {
   isActive: boolean;
@@ -129,14 +129,14 @@ export const SectionUnderline = styled.View`
 `;
 
 export const TransactionsContainer = styled(
-  FlatList as new () => FlatList<IEventSupplierTransactionDTO>,
+  FlatList as new () => FlatList<IEventTransactionDTO>,
 ).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {
     paddingBottom: getBottomSpace(),
   },
 })`
-  margin-top: 16px;
+  padding-top: 48px;
   border-radius: 8px;
   width: 100%;
   height: 240px;

@@ -15,7 +15,7 @@ const iconSize = 22;
 
 export const Container = styled.View`
   width: 100%;
-  padding: 16px;
+  padding: 16px 8px 8px;
   background-color: ${({ theme }) => theme.color.secondary};
   border-radius: 5px;
   margin-top: 16px;
@@ -30,6 +30,21 @@ export const Body = styled.View`
 `;
 
 export const DateContainer = styled.View`
+`;
+
+export const DateTimeContainer = styled.View`
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 16px;
+  flex-direction: row;
+`;
+
+export const DateTime = styled.Text`
+  color: ${({ theme }) => theme.color.text6};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  font-size: ${RFValue(18)}px;
+  letter-spacing: ${letterSpacing};
 `;
 
 

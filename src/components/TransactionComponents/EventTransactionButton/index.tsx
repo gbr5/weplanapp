@@ -1,25 +1,32 @@
 import React from 'react';
 import { useMemo } from 'react';
 import IEventTransactionDTO from '../../../dtos/IEventTransactionDTO';
-import ITransactionDTO from '../../../dtos/ITransactionDTO';
 import { useTransaction } from '../../../hooks/transactions';
 import { formatBrlCurrency } from '../../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../../utils/formatOnlyDateShort';
+import formatOnlyTime from '../../../utils/formatOnlyTime';
 import { EventTransactionButtonInfo } from '../EventTransactionButtonInfo';
 
 import {
   Container,
   TextContainer,
   Index,
+  Sign,
   Amount,
   DateText,
   InfoButton,
   InfoIcon,
   Underline,
   CancelledTransaction,
+  MonthContainer,
+  Month,
+  DayContainer,
+  Day,
 } from './styles';
 
 interface IProps {
+  firstOfDay?: boolean;
+  firstOfMonth?: boolean;
   eventTransaction: IEventTransactionDTO;
   index: string;
 }
@@ -27,6 +34,8 @@ interface IProps {
 export function EventTransactionButton({
   eventTransaction,
   index,
+  firstOfMonth,
+  firstOfDay,
 }: IProps) {
   const {
     selectedEventTransaction,
@@ -48,10 +57,30 @@ export function EventTransactionButton({
     const dueDate = new Date(eventTransaction.transaction.due_date);
     if (today > dueDate) return true;
     return false;
-  }, [eventTransaction.transaction]);
+  }, [eventTransaction]);
+
+  const month = useMemo(() => {
+    if (firstOfMonth) {
+      const month = new Date(eventTransaction.transaction.due_date).toLocaleString('pt-BR', { month: 'long'})
+      const thisMonth = month[0].toUpperCase() + month.slice(1);
+      return `${thisMonth}`;
+    }
+  }, [eventTransaction]);
+
+  const day = useMemo(() => formatOnlyDateShort(String(eventTransaction.transaction.due_date)), [eventTransaction]);
 
   return (
     <>
+      {firstOfMonth  && (
+        <MonthContainer>
+          <Month>{month}</Month>
+        </MonthContainer>
+      )}
+      {firstOfDay && (
+        <DayContainer>
+          <Day>{day}</Day>
+        </DayContainer>
+      )}
       <Container
         isSelected={
           selectedEventTransaction &&
@@ -62,16 +91,33 @@ export function EventTransactionButton({
         onPress={handleSelectTransaction}
       >
         {eventTransaction.transaction.isCancelled && <CancelledTransaction />}
-        <TextContainer>
-          <Index>{index} )</Index>
-          <Amount
-            isOverdue={isOverdue}
-            isPaid={eventTransaction.transaction.isPaid}
-          >
-            {formatBrlCurrency(eventTransaction.transaction.amount)}
-          </Amount>
-          <DateText>{formatOnlyDateShort(String(eventTransaction.transaction.due_date))}</DateText>
-        </TextContainer>
+        {eventTransaction.transaction.payer_id === eventTransaction.event_id ? (
+          <TextContainer>
+            {/* <Index>{index} )</Index> */}
+            {/* <DateText>{formatOnlyTime(String(eventTransaction.transaction.due_date))}</DateText> */}
+            <Amount
+              isOverdue={isOverdue}
+              isPaid={eventTransaction.transaction.isPaid}
+            >
+              {formatBrlCurrency(eventTransaction.transaction.amount)}
+            </Amount>
+          </TextContainer>
+        ) : (
+          <TextContainer>
+            {/* <Index>{index} )</Index> */}
+            {/* <DateText>{formatOnlyTime(String(eventTransaction.transaction.due_date))}</DateText> */}
+            <Amount
+              style={{
+                textAlign: 'left',
+              }}
+              isOverdue={isOverdue}
+              isPaid={eventTransaction.transaction.isPaid}
+            >
+              <Sign> - </Sign>
+              {formatBrlCurrency(eventTransaction.transaction.amount)}
+            </Amount>
+          </TextContainer>
+        )}
         {!eventTransaction.transaction.isCancelled && (
           <InfoButton onPress={handleSelectTransaction}>
             {selectedEventTransaction

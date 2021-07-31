@@ -10,10 +10,10 @@ export const Container = styled(BorderlessButton)`
   top: 16px;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.primary};
-  padding: 8px;
+  padding: 4px;
 `;
 
 export const Icon = styled(Feather)`
-  font-size: ${RFValue(24)}px;
+  font-size: ${RFValue(28)}px;
   color: ${({ theme }) => theme.color.text1};
 `;
