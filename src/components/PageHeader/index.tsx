@@ -4,9 +4,13 @@ import BackButton from '../BackButton';
 
 import { Container } from './styles';
 
-const PageHeader: React.FC = ({ children }) => (
+interface IProps {
+  unsetVariables?: () => void;
+}
+
+const PageHeader: React.FC<IProps> = ({ unsetVariables, children }) => (
   <Container>
-    <BackButton />
+    <BackButton unsetVariables={unsetVariables} />
       {children}
     <ProfileButton />
   </Container>

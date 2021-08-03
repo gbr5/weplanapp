@@ -80,17 +80,17 @@ export function FinancialSection() {
           </FirstSection>
         )}
         <SectionButton
-          horizontal
+          // horizontal
         >
           <MenuButton
             onPress={() => handleEventFinancialSubSection('Main')}
             isActive={eventFinancialSubSection === 'Main'}
           >
-            <ButtonTitle
+            {/* <ButtonTitle
               isActive={eventFinancialSubSection === 'Main'}
             >
               Principal
-            </ButtonTitle>
+            </ButtonTitle> */}
             <MenuIcon
               name="home"
               isActive={eventFinancialSubSection === 'Main'}
@@ -100,11 +100,11 @@ export function FinancialSection() {
             onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
             isActive={eventFinancialSubSection === 'TransactionAgreements'}
           >
-            <ButtonTitle
+            {/* <ButtonTitle
               isActive={eventFinancialSubSection === 'TransactionAgreements'}
             >
               Contratos
-            </ButtonTitle>
+            </ButtonTitle> */}
             <MenuIcon
               name="file-text"
               isActive={eventFinancialSubSection === 'TransactionAgreements'}
@@ -114,44 +114,16 @@ export function FinancialSection() {
             onPress={() => handleEventFinancialSubSection('Transactions')}
             isActive={eventFinancialSubSection === 'Transactions'}
           >
-            <ButtonTitle
+            {/* <ButtonTitle
               isActive={eventFinancialSubSection === 'Transactions'}
             >
               Transações
-            </ButtonTitle>
+            </ButtonTitle> */}
             <MenuIcon
               name="dollar-sign"
               isActive={eventFinancialSubSection === 'Transactions'}
             />
           </MenuButton>
-          {/* <MenuButton
-            onPress={() => handleEventFinancialSubSection('Suppliers')}
-            isActive={eventFinancialSubSection === 'Suppliers'}
-          >
-            <ButtonTitle
-              isActive={eventFinancialSubSection === 'Suppliers'}
-            >
-              Fornecedores
-            </ButtonTitle>
-            <MenuIcon
-              name="play"
-              isActive={eventFinancialSubSection === 'Suppliers'}
-            />
-          </MenuButton> */}
-          {/* <MenuButton
-            onPress={() => handleEventFinancialSubSection('Members')}
-            isActive={eventFinancialSubSection === 'Members'}
-          >
-            <ButtonTitle
-              isActive={eventFinancialSubSection === 'Members'}
-            >
-              Membros
-            </ButtonTitle>
-            <MenuIcon
-              name="users"
-              isActive={eventFinancialSubSection === 'Members'}
-            />
-          </MenuButton> */}
         </SectionButton>
       </Container>
     </>

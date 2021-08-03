@@ -19,7 +19,7 @@ export const Container = styled.View`
   margin: 0 auto 8px;
   border-radius: 8px;
   padding: 8px;
-  /* border: 1.5px solid black; */
+  border: 1.5px solid ${({ theme }) => theme.color.text3};
 `;
 
 export const GoToSupplierButton = styled(RectButton)`
@@ -44,12 +44,8 @@ export const SupplierConfirmationButton = styled(BorderlessButton)<ISupplierProp
   padding: 8px;
   align-items: center;
   justify-content: space-evenly;
-  background-color: ${({ theme }) => theme.color.atention_light};
-  border: 1px solid ${({ theme }) => theme.color.primary};
-
-  ${({ isHired }) => isHired && css`
-    background-color: ${({ theme }) => theme.color.success_light};
-  `};
+  background-color: ${({ theme }) => theme.color.text5};
+  border: 1px solid ${({ theme }) => theme.color.text4};
 `;
 
 export const Icon = styled(Feather)`
@@ -83,7 +79,7 @@ export const GreenIcon = styled(Feather)`
 
 export const DateText = styled.Text`
   font-size: ${RFValue(18)}px;
-  font-family: ${({ theme }) => theme.fonts.roboto};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.secondary};
   letter-spacing: 1.5px;
 `;
@@ -118,14 +114,14 @@ export const MenuButtonSection = styled.ScrollView`
 `;
 
 export const MenuButton = styled(BorderlessButton)`
-  background-color: ${({ theme }) => theme.color.text5};
+  background-color: ${({ theme }) => theme.color.text6};
   margin-bottom: 8px;
   border-radius: 24px;
   align-items: center;
   justify-content: center;
   width: 112px;
   height: 112px;
-  border: 1px solid ${({ theme }) => theme.color.title};
+  border: 1px solid ${({ theme }) => theme.color.text4};
   margin-right: 16px;
 `;
 

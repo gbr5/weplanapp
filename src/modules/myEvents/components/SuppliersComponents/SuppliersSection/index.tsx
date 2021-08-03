@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import ShortConfirmationWindow from '../../../../../components/ShortConfirmationWindow';
+import { MenuBooleanButton } from '../../../../../components/MenuBooleanButton';
+import { SectionHeader } from '../../../../../components/SectionHeader';
 import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useMyEvent } from '../../../../../hooks/myEvent';
@@ -7,20 +8,13 @@ import { SupplierButton } from '../SupplierButton';
 
 import {
   Container,
-  TitleContainer,
-  Title,
-  AddButton,
-  AddIcon,
-  SuppliersMenu,
-  SuppliersMenuButton,
-  SuppliersMenuText,
   SuppliersContainer,
 } from './styles';
 
 export function SuppliersSection() {
   const { hiredSuppliers, notHiredSuppliers } = useMyEvent();
   const { handleAddSupplierWindow } = useEventSuppliers();
-  const [hiredSuppliersSection, setHiredSuppliersSection] = useState(false);
+  const [hiredSuppliersSection, setHiredSuppliersSection] = useState(true);
 
   function handleHiredSuppliersSection(data: boolean) {
     setHiredSuppliersSection(data);
@@ -28,37 +22,18 @@ export function SuppliersSection() {
 
   return (
     <Container>
-      <TitleContainer>
-        <Title>Fornecedores</Title>
-        <AddButton
-          onPress={handleAddSupplierWindow}
-        >
-          <AddIcon name="plus" />
-        </AddButton>
-      </TitleContainer>
-      <SuppliersMenu>
-        <SuppliersMenuButton
-          onPress={() => handleHiredSuppliersSection(false)}
-          isActive={!hiredSuppliersSection}
-        >
-          <SuppliersMenuText
-            isActive={!hiredSuppliersSection}
-          >
-            Selecionados
-          </SuppliersMenuText>
-        </SuppliersMenuButton>
-        <SuppliersMenuButton
-          onPress={() => handleHiredSuppliersSection(true)}
-          isActive={hiredSuppliersSection}
-        >
-          <SuppliersMenuText
-            isActive={hiredSuppliersSection}
-          >
-            Contratados
-          </SuppliersMenuText>
-        </SuppliersMenuButton>
-      </SuppliersMenu>
-
+      <SectionHeader
+        handleAddButton={handleAddSupplierWindow}
+        handleInfoButton={handleAddSupplierWindow}
+        title="Fornecedores"
+      />
+      <MenuBooleanButton
+        firstActive={!hiredSuppliersSection}
+        firstFunction={() => handleHiredSuppliersSection(false)}
+        firstLabel="Selecionados"
+        secondFunction={() => handleHiredSuppliersSection(true)}
+        secondLabel="Contratados"
+      />
       {hiredSuppliersSection ? (
         <SuppliersContainer
           data={hiredSuppliers}

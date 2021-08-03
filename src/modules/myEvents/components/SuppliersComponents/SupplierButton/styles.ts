@@ -7,37 +7,36 @@ interface ISupplierProps {
   isHired: boolean;
 }
 
-export const Container = styled.View`
+interface IButtonProps {
+  isActive: boolean;
+}
+
+export const Container = styled(BorderlessButton)<IButtonProps>`
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) => theme.color.secondary};
-  margin: 16px 0 0;
+  background-color: ${({ theme, isActive }) => isActive ? theme.color.text4 : theme.color.text6};
+  border: 1px solid ${({ theme }) => theme.color.text3};
+  margin-top: 8px;
   border-radius: 8px;
-  padding: 16px 0;
+  padding: 8px 0;
   width: 100%;
 `;
 
 export const SupplierIndex = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.roboto};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
-  color: ${({ theme }) => theme.color.text5};
+  color: ${({ theme }) => theme.color.primary};
   text-align: center;
   width: 40px;
   margin: 0 8px;
 `;
 
-export const GoToSupplierButton = styled(RectButton)`
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-`;
-
 export const SupplierName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(18)}px;
   text-align: left;
   width: 70%;
-  color: ${({ theme }) => theme.color.text6};
+  color: ${({ theme }) => theme.color.text1};
 `;
 
 export const SupplierConfirmationButton = styled(BorderlessButton)<ISupplierProps>`
@@ -51,5 +50,5 @@ export const SupplierConfirmationButton = styled(BorderlessButton)<ISupplierProp
 
 export const Icon = styled(Feather)`
   font-size: ${RFValue(30)}px;
-  color: ${({ theme }) => theme.color.text5};
+  color: ${({ theme }) => theme.color.text1};
 `;

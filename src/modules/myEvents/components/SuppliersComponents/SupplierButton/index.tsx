@@ -3,13 +3,10 @@ import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 
 import {
   Container,
-  GoToSupplierButton,
-  SupplierConfirmationButton,
   SupplierIndex,
   SupplierName,
   Icon,
 } from './styles';
-import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useState } from 'react';
 import { SupplierButtonInfo } from '../SupplierButtonInfo';
 import { useMyEvent } from '../../../../../hooks/myEvent';
@@ -48,16 +45,14 @@ export function SupplierButton({
 
   return (
     <>
-      <Container>
-        <GoToSupplierButton onPress={handleSupplierBody}>
-          <SupplierIndex>{index}</SupplierIndex>
-          <SupplierName>{supplier.name}</SupplierName>
-          {supplierBody ? (
-            <Icon name="chevron-up" />
-          ) : (
-            <Icon name="chevron-down" />
-          )}
-        </GoToSupplierButton>
+      <Container isActive={selectedSupplier.id === supplier.id} onPress={handleSupplierBody}>
+        <SupplierIndex>{index}</SupplierIndex>
+        <SupplierName>{supplier.name}</SupplierName>
+        {supplierBody ? (
+          <Icon name="chevron-up" />
+        ) : (
+          <Icon name="chevron-down" />
+        )}
       </Container>
       {supplierBody
         && selectedSupplier

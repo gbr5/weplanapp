@@ -9,11 +9,14 @@ export const Container = styled(BorderlessButton)`
   left: 16px;
   top: 16px;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.color.secondary};
+  background-color: ${({ theme }) => theme.color.text6};
   padding: 4px;
+  border: 1px solid ${({ theme }) => theme.color.text4};
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Icon = styled(Feather)`
   font-size: ${RFValue(28)}px;
-  color: ${({ theme }) => theme.color.primary};
+  color: ${({ theme }) => theme.color.info};
 `;

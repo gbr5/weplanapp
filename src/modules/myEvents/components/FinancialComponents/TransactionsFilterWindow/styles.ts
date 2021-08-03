@@ -9,16 +9,37 @@ export const Container = styled.View`
   width: 100%;
 `;
 
-export const CancelOption = styled(BorderlessButton)`
+export const Option = styled(BorderlessButton)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin: 1% 0 3%;
 `;
 
-export const CancelIcon = styled(Feather)`
+export const Icon = styled(Feather)`
   font-size: ${RFValue(32)}px;
   color: ${({ theme }) => theme.color.text1};
+`;
+
+export const Text = styled.Text`
+  font-size: ${RFValue(20)}px;
+  color: ${({ theme }) => theme.color.text1};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+`;
+
+export const CancelOption = styled(BorderlessButton)`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1% 0 3%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid ${({ theme }) => theme.color.atention};
+`;
+
+export const CancelIcon = styled(Feather)`
+  font-size: ${RFValue(32)}px;
+  color: ${({ theme }) => theme.color.atention};
 `;
 
 export const CancelText = styled.Text`
@@ -48,7 +69,7 @@ export const DateButton = styled(BorderlessButton)`
   padding: 8px;
   min-width: 45%;
   background-color: ${({ theme }) => theme.color.text6};
-  border: 1.2px solid black;
+  border: 1px solid black;
   align-items: center;
   justify-content: center;
 `;

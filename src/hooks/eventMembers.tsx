@@ -1,0 +1,74 @@
+import React, { createContext, useContext, useState } from 'react';
+import ICreateEventMemberDTO from '../dtos/ICreateEventMember';
+import IEventMemberDTO from '../dtos/IEventMemberDTO';
+import api from '../services/api';
+import { useMyEvent } from './myEvent';
+
+interface EventMembersContextType {
+  memberDescriptionWindow: boolean;
+  editEventMember: (data: IEventMemberDTO) => void;
+  createEventMember: (data: ICreateEventMemberDTO) => void;
+  deleteEventMember: (id: string) => void;
+  handleMemberDescriptionWindow: () => void;
+}
+
+const EventMembersContext = createContext({} as EventMembersContextType);
+
+const EventMembersProvider: React.FC = ({ children }) => {
+  const { getEventMembers, selectedEvent } = useMyEvent();
+  const [memberDescriptionWindow, setMemberDescriptionWindow] = useState(false);
+
+  function handleMemberDescriptionWindow() {
+    setMemberDescriptionWindow(!memberDescriptionWindow);
+  }
+
+  async function createEventMember(data: ICreateEventMemberDTO) {
+    try {
+      await api.post(`/event-members/${selectedEvent.id}`, data);
+      await getEventMembers(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+  async function editEventMember(data: IEventMemberDTO) {
+    try {
+      await api.put(`/event-members/${data.id}`, {
+        number_of_guests: data.number_of_guests,
+      });
+      await getEventMembers(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+  async function deleteEventMember(id: string) {
+    try {
+      await api.delete(`/event-members/${id}`);
+      await getEventMembers(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  return (
+    <EventMembersContext.Provider
+      value={{
+        editEventMember,
+        createEventMember,
+        deleteEventMember,
+        handleMemberDescriptionWindow,
+        memberDescriptionWindow,
+      }}
+    >
+      {children}
+    </EventMembersContext.Provider>
+  );
+}
+
+function useEventMembers(): EventMembersContextType {
+  const context = useContext(EventMembersContext);
+
+  if (!context) throw new Error('useEventMembers must be used within an AuthProvider!')
+  return context;
+}
+
+export { EventMembersProvider, useEventMembers };

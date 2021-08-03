@@ -9,7 +9,8 @@ interface IButtonProps {
 }
 
 export const Container = styled.View`
-  flex: 1;
+  width: 100%;
+  margin: 16px 0;
   justify-content: center;
 `;
 
@@ -22,24 +23,25 @@ export const Title = styled.Text`
 
 export const IconContainer = styled.View`
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   padding: 16px;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.color.secondary};
+  border: 1px solid ${({ theme }) => theme.color.text3};
 `;
 
 export const IconButton = styled(BorderlessButton)<IButtonProps>`
-  background-color: ${({ theme }) => theme.color.text5};
+  border: 1px solid ${({ theme }) => theme.color.text3};
+  background-color: ${({ theme }) => theme.color.text6};
   padding: 6px;
   border-radius: 5px;
   align-items: center;
-  border: 1px solid ${({ theme }) => theme.color.text5};
   justify-content: center;
   width: 60px;
   height: 60px;
   ${({ isActive }) => isActive && css`
     background-color: ${({ theme }) => theme.color.title};
-    border: 2px solid black;
+    border: 1px solid black;
     padding: 4px;
     width: 64px;
     height: 64px;

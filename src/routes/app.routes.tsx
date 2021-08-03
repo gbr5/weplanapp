@@ -6,6 +6,7 @@ import Dashboard from '../modules/main/pages/Dashboard';
 import Menu from '../modules/main/pages/Menu';
 import MyEvent from '../modules/myEvents/pages/MyEvent';
 import EventGuest from '../modules/myEvents/pages/EventGuest';
+import { FriendsSection } from '../modules/main/pages/FriendsSection';
 
 const App = createStackNavigator();
 
@@ -23,6 +24,7 @@ const AppRoutes: React.FC = () => (
   >
     <App.Screen name="Dashboard" component={Dashboard} />
     <App.Screen name="Profile" component={Profile} />
+    <App.Screen name="FriendsSection" component={FriendsSection} />
     <App.Screen name="Menu" component={Menu} />
 
     <App.Screen name="MyEvent" component={MyEvent} />

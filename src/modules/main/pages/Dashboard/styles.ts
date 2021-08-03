@@ -11,6 +11,7 @@ export const Container = styled.View`
     ${Platform.OS === 'ios' ? getStatusBarHeight() + 24 : 0}px
     0
     ${Platform.OS === 'ios' ? 40 : 0}px;
+  background-color: ${({ theme }) => theme.color.secondary};
 `;
 
 export const Title = styled.Text`
@@ -35,7 +36,7 @@ export const Body = styled.View`
   padding: 0 16px;
   width: 100%;
   height: 100%;
-  background: ${({ theme }) => theme.color.background};
+  background: ${({ theme }) => theme.color.text5};
   justify-content: flex-start;
   align-items: flex-start;
 `;

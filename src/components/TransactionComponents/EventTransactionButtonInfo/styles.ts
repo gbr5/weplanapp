@@ -10,8 +10,8 @@ interface IsPaidParams {
 export const Container = styled.View`
   width: 100%;
   padding: 8px;
-  background-color: ${({ theme }) => theme.color.text4};
-  border-radius: 8px;
+  background-color: ${({ theme }) => theme.color.text6};
+  border: 1px solid ${({ theme }) => theme.color.text3};
 `;
 
 export const FieldContainer = styled.View`
@@ -38,7 +38,7 @@ export const FieldButton = styled(BorderlessButton)`
   background-color: ${({ theme }) => theme.color.text6};
   padding: 12px;
   border-radius: 8px;
-  border: 1.2px solid black;
+  border: 1px solid black;
   align-items: center;
   justify-content: center;
   min-width: 48%;
@@ -49,7 +49,7 @@ export const PaidButton = styled(BorderlessButton)<IsPaidParams>`
   min-width: 36%;
   padding: 8px;
   border-radius: 8px;
-  border: 1.2px solid black;
+  border: 1px solid black;
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -66,7 +66,7 @@ export const DeleteButton = styled(BorderlessButton)`
   background-color: ${({ theme }) => theme.color.atention_light};
   padding: 8px;
   border-radius: 8px;
-  border: 1.2px solid black;
+  border: 1px solid black;
   align-items: center;
   justify-content: center;
   min-height: 60px;
@@ -82,7 +82,7 @@ export const ReceiptButton = styled(BorderlessButton)`
   background-color: ${({ theme }) => theme.color.info_light};
   padding: 8px;
   border-radius: 8px;
-  border: 1.2px solid black;
+  border: 1px solid black;
   align-items: center;
   justify-content: center;
   min-height: 60px;

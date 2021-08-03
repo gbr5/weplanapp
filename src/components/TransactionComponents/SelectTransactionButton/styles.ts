@@ -75,7 +75,7 @@ export const InfoButton = styled(BorderlessButton)`
   align-items: center;
   justify-content: center;
   border-radius: 16px;
-  border: 1.2px solid black;
+  border: 1px solid black;
 `;
 
 export const InfoIcon = styled(Feather)<IsActiveProps>`

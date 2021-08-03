@@ -5,8 +5,8 @@ import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSup
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
-  flex: 1;
-  min-height: 40%;
+  min-height: 65%;
+  width: 100%;
 `;
 
 export const Title = styled.Text`
@@ -27,4 +27,5 @@ export const AgreementsContainer = styled(
   border-radius: 16px;
   width: 100%;
   flex: 1;
+  max-height: 90%;
 `;

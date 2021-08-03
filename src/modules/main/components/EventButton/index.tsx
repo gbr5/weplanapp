@@ -3,11 +3,13 @@ import React, { useCallback } from 'react';
 
 import IEventDTO from '../../../../dtos/IEventDTO';
 import { useMyEvent } from '../../../../hooks/myEvent';
-import formatDateToString from '../../../../utils/formatDateToString';
+import formatOnlyDateShort from '../../../../utils/formatOnlyDateShort';
+import formatOnlyTime from '../../../../utils/formatOnlyTime';
 import {
   Container,
   Name,
-  Date,
+  DateText,
+  EventDate,
 } from './styles';
 
 interface IProps {
@@ -31,10 +33,11 @@ export function EventButton({
 
   return (
     <Container onPress={() => selectMyEvent()}>
+      <EventDate>{formatOnlyTime(String(event.date))} - {formatOnlyDateShort(String(event.date))}</EventDate>
       <Name>
         {event.name}
       </Name>
-      <Date>{formatDateToString(String(event.date))}</Date>
+      <DateText>Criado em: {formatOnlyTime(String(event.created_at))} -  {formatOnlyDateShort(String(event.created_at))}</DateText>
     </Container>
   );
 }

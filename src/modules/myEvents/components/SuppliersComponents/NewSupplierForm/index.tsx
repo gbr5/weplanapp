@@ -16,7 +16,6 @@ import WindowContainer from '../../../../../components/WindowContainer';
 import { FormContainer, KeyboardAvoidingVueContainer } from '../CreateSupplierTransactionAgreement/styles';
 import {
   Container,
-  Title,
   FormQuestion,
   BooleanField,
   BooleanButton,
@@ -25,6 +24,8 @@ import {
   SupplierCategoryButton,
   SupplierCategoryButtonText,
 } from './styles';
+import { WindowHeader } from '../../../../../components/WindowHeader';
+import { FormButton } from '../../../../../components/FormButton';
 
 interface IFormData {
   name: string;
@@ -75,22 +76,22 @@ const NewSupplierForm: React.FC<IProps> = ({
       closeWindow={closeWindow}
       top="5%"
       left="2%"
-      height="82%"
+      height="87%"
       width="96%"
       zIndex={11}
     >
-      <Container>
-        <Title>Novo(a) Fornecedor(a)</Title>
-        <KeyboardAvoidingVueContainer
-          style={{ flex: 1, width: '100%' }}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          enabled
-        >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <FormContainer
-              keyboardShouldPersistTaps="handled"
-              contentContainerStyle={{ flex: 1 }}
-            >
+      <KeyboardAvoidingVueContainer
+        style={{ flex: 1, width: '100%' }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled
+      >
+        <WindowHeader title="Novo(a) Fornecedor(a)" />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <FormContainer
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flex: 1 }}
+          >
+            <Container>
               <Form ref={formRef} onSubmit={handleSubmit}>
                 <FormQuestion>Nome</FormQuestion>
                 <Input
@@ -103,7 +104,6 @@ const NewSupplierForm: React.FC<IProps> = ({
                   returnKeyType="next"
                 />
               </Form>
-
               <BooleanField>
                 <BooleanButtonTitle>Contratado?</BooleanButtonTitle>
                 <BooleanButton
@@ -134,24 +134,23 @@ const NewSupplierForm: React.FC<IProps> = ({
                 onPress={handleSupplierCategoryWindow}
               >
                 <SupplierCategoryButtonText>
-                  {
-                    selectedSupplierSubCategory
-                      && selectedSupplierSubCategory.id
-                        ? selectedSupplierSubCategory.sub_category
-                        : 'Defina a categoria'
+                  {selectedSupplierSubCategory
+                    && selectedSupplierSubCategory.id
+                      ? selectedSupplierSubCategory.sub_category
+                      : 'Defina a categoria'
                   }
                 </SupplierCategoryButtonText>
               </SupplierCategoryButton>
-            </FormContainer>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingVueContainer>
-      </Container>
-      <Button
-        loading={loading}
-        onPress={() => formRef.current?.submitForm()}
-      >
-        Salvar
-      </Button>
+            </Container>
+
+          </FormContainer>
+        </TouchableWithoutFeedback>
+        <FormButton
+          loading={loading}
+          handleSubmit={() => formRef.current?.submitForm()}
+          text="Salvar"
+        />
+      </KeyboardAvoidingVueContainer>
     </WindowContainer>
   );
 };

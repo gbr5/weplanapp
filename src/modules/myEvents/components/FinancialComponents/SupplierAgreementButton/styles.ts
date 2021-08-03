@@ -77,7 +77,7 @@ export const PlusIcon = styled(Feather)`
 
 export const PlusContainer = styled.View`
   background-color: ${({ theme }) => theme.color.primary};
-  border: 1.2px solid ${({ theme }) => theme.color.text5};
+  border: 1px solid ${({ theme }) => theme.color.text5};
   padding: 4px;
   border-radius: 20px;
   align-items: center;
@@ -86,7 +86,7 @@ export const PlusContainer = styled.View`
 
 export const StatusContainer = styled.View<IsOverdueProps>`
   background-color: ${({ theme, isOverdue }) => isOverdue ? theme.color.atention_light : theme.color.success_light};
-  border: 1.2px solid ${({ theme }) => theme.color.text5};
+  border: 1px solid ${({ theme }) => theme.color.text5};
   padding: 4px;
   border-radius: 20px;
   align-items: center;

@@ -21,7 +21,6 @@ export function SelectTaskPriorityComponent({
   async function selectTaskPriority({ priority }: IPriorityButton) {
     handleTaskPriority(priority);
   }
-
   return (
     <Container>
       <Title>Defina a prioridade da tarefa</Title>

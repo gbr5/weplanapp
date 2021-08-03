@@ -5,12 +5,6 @@ import { RectButton } from 'react-native-gesture-handler';
 export const Container = styled.View`
   flex: 1;
   align-items: center;
-  height: 100%;
-  margin: 48px 0 16px;
-  position: absolute;
-  top: 5%;
-  left: 0%;
-  height: 90%;
   width: 100%;
 `;
 
@@ -30,19 +24,26 @@ export const Underline = styled.View`
 `;
 
 export const FormQuestion = styled.Text`
-  margin: 16px 0 8px;
+  margin: 8px 0;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
   color: ${({ theme }) => theme.color.text1};
+`;
+
+export const DateContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export const DateButton = styled(RectButton)`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.secondary};
   padding: 12px;
-  margin: 16px 0 0;
   align-items: center;
   justify-content: center;
+  width: 47%;
 `;
 
 export const DateText = styled.Text`

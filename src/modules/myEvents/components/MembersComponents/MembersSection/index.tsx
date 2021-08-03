@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { AddButton } from '../../../../../components/AddButton';
 import { InfoButton } from '../../../../../components/InfoButton';
+import { SectionHeader } from '../../../../../components/SectionHeader';
 import { WindowHeader } from '../../../../../components/WindowHeader';
+import { useEventMembers } from '../../../../../hooks/eventMembers';
 import { MembersFinancialSection } from '../MembersFinancialSection';
 import { MembersFooterMenu } from '../MembersFooterMenu';
 import { MembersListSection } from '../MembersListSection';
@@ -13,6 +15,10 @@ import {
 } from './styles';
 
 export function MembersSection() {
+  const noUserMemberUUID = '89890569-ed93-4bf3-b123-91813838aade';
+
+  const { handleMemberDescriptionWindow } = useEventMembers();
+
   const [section, setSection] = useState('Main');
 
   function handleSection(data: string) {
@@ -23,16 +29,10 @@ export function MembersSection() {
   }
   return (
     <Container>
-      <InfoButton
-        onPress={handleAddMemberForm}
-        top="0%"
-        left="2%"
-      />
-      <WindowHeader title="Membros" />
-      <AddButton
-        onPress={handleAddMemberForm}
-        top="0%"
-        right="2%"
+      <SectionHeader
+        handleAddButton={handleAddMemberForm}
+        handleInfoButton={handleMemberDescriptionWindow}
+        title="Membros"
       />
       <Body>
         {section === 'Main' && <MembersMainSection />}

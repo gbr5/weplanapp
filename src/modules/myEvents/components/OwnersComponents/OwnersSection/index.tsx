@@ -2,7 +2,10 @@ import React from 'react';
 import { useState } from 'react';
 import { AddButton } from '../../../../../components/AddButton';
 import { InfoButton } from '../../../../../components/InfoButton';
+import { SectionHeader } from '../../../../../components/SectionHeader';
 import { WindowHeader } from '../../../../../components/WindowHeader';
+import { useEventOwners } from '../../../../../hooks/eventOwners';
+import { useMyEvent } from '../../../../../hooks/myEvent';
 import { OwnersFinancialSection } from '../OwnersFinancialSection';
 import { OwnersFooterMenu } from '../OwnersFooterMenu';
 import { OwnersListSection } from '../OwnersListSection';
@@ -14,7 +17,10 @@ import {
 } from './styles';
 
 export function OwnersSection() {
-  const [section, setSection] = useState('Main');
+  const { selectedEvent } = useMyEvent();
+  const { handleOwnerDescriptionWindow } = useEventOwners();
+
+  const [section, setSection] = useState(selectedEvent.event_type === 'Prom' ? 'Main' : 'Owners');
 
   function handleSection(data: string) {
     setSection(data);
@@ -24,26 +30,22 @@ export function OwnersSection() {
   }
   return (
     <Container>
-      <InfoButton
-        onPress={handleAddOwnerForm}
-        top="0%"
-        left="2%"
-      />
-      <WindowHeader title="Anfitriões" />
-      <AddButton
-        onPress={handleAddOwnerForm}
-        top="0%"
-        right="2%"
+      <SectionHeader
+        title="Anfitriões"
+        handleAddButton={handleAddOwnerForm}
+        handleInfoButton={handleOwnerDescriptionWindow}
       />
       <Body>
-        {section === 'Main' && <OwnersMainSection />}
-        {section === 'Owners' && <OwnersListSection />}
-        {section === 'Financial' && <OwnersFinancialSection />}
+        {section === 'Main' && selectedEvent.event_type === 'Prom' && <OwnersMainSection />}
+        {section === 'Owners'&& <OwnersListSection />}
+        {section === 'Financial' && selectedEvent.event_type === 'Prom'  && <OwnersFinancialSection />}
       </Body>
-      <OwnersFooterMenu
-        handleSection={(data: string) => handleSection(data)}
-        section={section}
-      />
+      {selectedEvent.event_type === 'Prom' && (
+        <OwnersFooterMenu
+          handleSection={(data: string) => handleSection(data)}
+          section={section}
+        />
+      )}
     </Container>
   );
 }

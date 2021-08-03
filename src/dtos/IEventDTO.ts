@@ -29,4 +29,6 @@ export default interface IEventDTO {
   eventFiles: IEventFileDTO[];
   eventImages: IEventImageDTO[];
   eventBudget: IEventBudgetDTO;
+  created_at: Date;
+  updated_at: Date;
 }

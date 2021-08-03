@@ -39,21 +39,18 @@ export function TaskTitle({
             <Title>
               {eventTask.title}
             </Title>
-            {/* <IconContainer>
-              <EditTitleIcon name="edit-2" />
-            </IconContainer> */}
-            <ArrowButton onPress={handleTaskBody}>
+            {/* <ArrowButton onPress={handleTaskBody}>
               <ArrowIcon name="chevron-up" />
-            </ArrowButton>
+            </ArrowButton> */}
           </TitleButton>
         ) : (
           <TitleButton onPress={handleTaskBody}>
             <Title>
               {eventTask.title}
             </Title>
-            <ArrowButton onPress={handleTaskBody}>
+            {/* <ArrowButton onPress={handleTaskBody}>
               <ArrowIcon name="chevron-down" />
-            </ArrowButton>
+            </ArrowButton> */}
           </TitleButton>
         )}
         <UnderlineTitle />

@@ -15,9 +15,15 @@ import {
 import ShortConfirmationWindow from '../../../../components/ShortConfirmationWindow';
 import CreateEvent from '../../../myEvents/components/CreateEvent';
 import BackButton from '../../../../components/BackButton';
+import { useNavigation } from '@react-navigation/native';
+import { useUnsetEventVariables } from '../../../../hooks/unsetEventVariables';
 
 const Menu: React.FC = () => {
+  const navigation = useNavigation();
+
   const { signOut } = useAuth();
+  const { unsetVariables } = useUnsetEventVariables();
+
   const [confirmationWindow, setConfirmationWindow] = useState(false);
   const [createEventWindow, setCreateEventWindow] = useState(false);
 
@@ -28,6 +34,10 @@ const Menu: React.FC = () => {
   const handleCreateEventWindow = useCallback((e: boolean) => {
     setCreateEventWindow(e);
   }, []);
+
+  function navigateToFriendsSection() {
+    navigation.navigate('FriendsSection')
+  }
 
   return (
     <Container>
@@ -45,7 +55,7 @@ const Menu: React.FC = () => {
         <CreateEvent handleCloseWindow={() => handleCreateEventWindow(false)} />
       )}
       <Header>
-        <BackButton />
+        <BackButton unsetVariables={unsetVariables} />
         <Logo source={logoImg} />
       </Header>
       <Body>
@@ -57,7 +67,7 @@ const Menu: React.FC = () => {
           <ButtonText>Configurações</ButtonText>
           <Icon size={30} name="settings" />
         </MenuOption>
-        <MenuOption>
+        <MenuOption onPress={navigateToFriendsSection}>
           <ButtonText>Contatos</ButtonText>
           <Icon size={30} name="users" />
         </MenuOption>

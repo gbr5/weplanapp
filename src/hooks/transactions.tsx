@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import { addDays } from 'date-fns';
+import { addDays, subDays } from 'date-fns';
 
 import api from '../services/api';
 
@@ -49,6 +49,7 @@ interface TransactionContextType {
   eventDebitTransactions: ITransactionDTO[];
   eventCreditTransactions: ITransactionDTO[];
   eventCancelledTransactions: ITransactionDTO[];
+  filterTransactionWindow: boolean;
   loading: boolean;
   newAgreementAmount: number;
   newAgreementInstallments: number;
@@ -58,6 +59,12 @@ interface TransactionContextType {
   selectedDateWindow: boolean;
   selectedTransaction: ITransactionDTO;
   selectedEventTransaction: IEventTransactionDTO;
+  cancelledTransactionFilter: boolean;
+  sortTransactionsByInterval: boolean;
+  fromDateTransactionFilter: Date;
+  toDateTransactionFilter: Date;
+  filterTransactionOption: string;
+  handleFilterTransactionOption: (data: string) => void;
   cancelEventTransaction: () => Promise<void>;
   createSupplierTransactionAgreement: (data: ICreateEventSupplierTransactionAgreementDTO) => Promise<void>;
   createSupplierTransactionAgreementWithTransactions: (data: ICreateEventSupplierTransactionAgreementWithTransactionsDTO) => Promise<void>;
@@ -69,7 +76,12 @@ interface TransactionContextType {
   handleCreateTransactionWindow: () => void;
   handleCancelEventTransactionConfirmationWindow: () => void;
   handleEditTransactionDueDateWindow: () => void;
+  handleCancelledTransactionFilter: () => void;
+  handleSortTransactionsByIntervalFilter: () => void;
+  handleFromDateTransactionFilter: (data: Date) => void;
+  handleToDateTransactionFilter: (data: Date) => void;
   handleEventTransactions: (data: ITransactionDTO[]) => IEventTransactionDTO[];
+  handleFilterTransactionWindow: () => void;
   handleNewEventSupplierTransactionAgreement: () => void;
   handleNewAgreement: (data: INewAgreementDTO) => void;
   handleSelectedDate: (data: Date) => void;
@@ -106,6 +118,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [eventDebitTransactions, setEventDebitTransactions] = useState<ITransactionDTO[]>([]);
   const [eventCreditTransactions, setEventCreditTransactions] = useState<ITransactionDTO[]>([]);
   const [eventCancelledTransactions, setEventCancelledTransactions] = useState<ITransactionDTO[]>([]);
+  const [filterTransactionWindow, setFilterTransactionWindow] = useState(false);
   const [newEventSupplierTransactionAgreement, setNewEventSupplierTransactionAgreement] = useState(false);
   const [newAgreementAmount, setNewAgreementAmount] = useState(0);
   const [newAgreementInstallments, setNewAgreementInstallments] = useState(1);
@@ -114,6 +127,15 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [selectedDateWindow, setSelectedDateWindow] = useState(false);
   const [selectedEventTransaction, setSelectedEventTransaction] = useState({} as IEventTransactionDTO);
   const [selectedTransaction, setSelectedTransaction] = useState({} as ITransactionDTO);
+  const [fromDateTransactionFilter, setFromDateTransactionFilter] = useState(subDays(new Date(), 15));
+  const [toDateTransactionFilter, setToDateTransactionFilter] = useState(new Date());
+  const [sortTransactionsByInterval, setSortTransactionsByInterval] = useState(false);
+  const [cancelledTransactionFilter, setCancelledTransactionFilter] = useState(false);
+  const [filterTransactionOption, setFilterTransactionOption] = useState('');
+
+  function handleFilterTransactionOption(data: string) {
+    setFilterTransactionOption(data);
+  }
 
   function sortTransactionsByDueDate(data: ITransactionDTO[]) {
     const sortedData = data.sort((a, b) => {
@@ -124,12 +146,32 @@ const TransactionProvider: React.FC = ({ children }) => {
     return sortedData;
   }
 
+  function handleCancelledTransactionFilter() {
+    setCancelledTransactionFilter(!cancelledTransactionFilter);
+  }
+
+  function handleSortTransactionsByIntervalFilter() {
+    setSortTransactionsByInterval(!sortTransactionsByInterval);
+  }
+
+  function handleFromDateTransactionFilter(data: Date) {
+    setFromDateTransactionFilter(data);
+  }
+
+  function handleToDateTransactionFilter(data: Date) {
+    setToDateTransactionFilter(data);
+  }
+
   function handleSelectedEventTransaction(data: IEventTransactionDTO) {
     setSelectedEventTransaction(data);
   }
 
   function handleEditTransactionDueDateWindow() {
     setEditTransactionDueDateWindow(!editTransactionDueDateWindow);
+  }
+
+  function handleFilterTransactionWindow() {
+    setFilterTransactionWindow(!filterTransactionWindow);
   }
 
   function handleCancelEventTransactionConfirmationWindow() {
@@ -479,12 +521,14 @@ const TransactionProvider: React.FC = ({ children }) => {
         eventTotalExecutedCredit,
         eventTotalExecutedDebit,
         eventTransactions,
+        filterTransactionWindow,
         getAllEventTransactions,
         getPayerTransactions,
         handleCancelEventTransactionConfirmationWindow,
         handleCreateTransactionWindow,
         handleEditTransactionDueDateWindow,
         handleEventTransactions,
+        handleFilterTransactionWindow,
         handleNewAgreement,
         handleNewEventSupplierTransactionAgreement,
         handleSelectedDate,
@@ -503,6 +547,16 @@ const TransactionProvider: React.FC = ({ children }) => {
         selectNewTransactions,
         selectTransaction,
         updateEventSupplierTransactionAgreement,
+        cancelledTransactionFilter,
+        fromDateTransactionFilter,
+        handleCancelledTransactionFilter,
+        handleFromDateTransactionFilter,
+        handleSortTransactionsByIntervalFilter,
+        handleToDateTransactionFilter,
+        sortTransactionsByInterval,
+        toDateTransactionFilter,
+        handleFilterTransactionOption,
+        filterTransactionOption,
       }}
     >
       {children}

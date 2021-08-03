@@ -136,8 +136,7 @@ export const TransactionsContainer = styled(
     paddingBottom: getBottomSpace(),
   },
 })`
-  padding-top: 48px;
-  border-radius: 8px;
+  padding: 48px 0 40px;
   width: 100%;
   height: 240px;
 `;

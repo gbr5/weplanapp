@@ -20,6 +20,7 @@ import {
   Title,
   FormQuestion,
 } from './styles';
+import { FormButton } from '../../../../../components/FormButton';
 
 interface IFormData {
   first_name: string;
@@ -95,12 +96,11 @@ const NewGuestForm: React.FC<IProps> = ({
             </Container>
           </FormContainer>
         </TouchableWithoutFeedback>
-        <Button
+        <FormButton
           loading={loading}
-          onPress={() => formRef.current?.submitForm()}
-        >
-          Salvar
-        </Button>
+          handleSubmit={() => formRef.current?.submitForm()}
+          text="Criar"
+        />
       </KeyboardAvoidingVueContainer>
     </WindowContainer>
   );

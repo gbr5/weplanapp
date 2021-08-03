@@ -8,27 +8,22 @@ interface IProps {
 export const Container = styled.View<IProps>`
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme }) => theme.color.secondary_light};
-  margin: 8px 0;
+  background-color: ${({ theme }) => theme.color.text6};
+  border: 1px solid ${({ theme }) => theme.color.text3};
+  margin-top: 8px;
   border-radius: 8px;
-  padding: 16px 0;
+  padding: 8px 0;
   width: 100%;
-
-  ${(props) => props.isMine
-    && css`
-      background-color: ${({ theme }) => theme.color.secondary};
-    `}
 `;
 
 export const GuestIndex = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.roboto};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
 
   color: ${({ theme }) => theme.color.primary};
 
   text-align: center;
   width: 40px;
-  margin: 0 8px;
 `;
 
 export const GuestNameContainer = styled.View`
@@ -40,10 +35,10 @@ export const GuestNameContainer = styled.View`
 
 export const GuestName = styled.Text<IProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(18)}px;
   text-align: left;
 
-  color: ${({ theme, isMine }) => isMine ? theme.color.text6 : theme.color.text1};
+  color: ${({ theme, isMine }) => isMine ? theme.color.text1 : theme.color.text1};
 `;
 
 export const GoToGuestButton = styled.TouchableOpacity`

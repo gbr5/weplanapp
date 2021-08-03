@@ -4,16 +4,13 @@ import IEventTransactionDTO from '../../../dtos/IEventTransactionDTO';
 import { useTransaction } from '../../../hooks/transactions';
 import { formatBrlCurrency } from '../../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../../utils/formatOnlyDateShort';
-import formatOnlyTime from '../../../utils/formatOnlyTime';
 import { EventTransactionButtonInfo } from '../EventTransactionButtonInfo';
 
 import {
   Container,
   TextContainer,
-  Index,
   Sign,
   Amount,
-  DateText,
   InfoButton,
   InfoIcon,
   Underline,
@@ -72,14 +69,20 @@ export function EventTransactionButton({
   return (
     <>
       {firstOfMonth  && (
-        <MonthContainer>
-          <Month>{month}</Month>
-        </MonthContainer>
+        <>
+          <Underline />
+          <MonthContainer>
+            <Month>{month}</Month>
+          </MonthContainer>
+        </>
       )}
       {firstOfDay && (
-        <DayContainer>
-          <Day>{day}</Day>
-        </DayContainer>
+        <>
+          <Underline />
+          <DayContainer>
+            <Day>{day}</Day>
+          </DayContainer>
+        </>
       )}
       <Container
         isSelected={
@@ -93,8 +96,6 @@ export function EventTransactionButton({
         {eventTransaction.transaction.isCancelled && <CancelledTransaction />}
         {eventTransaction.transaction.payer_id === eventTransaction.event_id ? (
           <TextContainer>
-            {/* <Index>{index} )</Index> */}
-            {/* <DateText>{formatOnlyTime(String(eventTransaction.transaction.due_date))}</DateText> */}
             <Amount
               isOverdue={isOverdue}
               isPaid={eventTransaction.transaction.isPaid}
@@ -104,8 +105,6 @@ export function EventTransactionButton({
           </TextContainer>
         ) : (
           <TextContainer>
-            {/* <Index>{index} )</Index> */}
-            {/* <DateText>{formatOnlyTime(String(eventTransaction.transaction.due_date))}</DateText> */}
             <Amount
               style={{
                 textAlign: 'left',
@@ -134,13 +133,8 @@ export function EventTransactionButton({
         && selectedEventTransaction.transaction
         && selectedEventTransaction.transaction.id === eventTransaction.transaction.id
         && !eventTransaction.transaction.isCancelled && (
-          <>
-            <Underline />
             <EventTransactionButtonInfo />
-            <Underline />
-          </>
         )}
-      <Underline />
     </>
   );
 }

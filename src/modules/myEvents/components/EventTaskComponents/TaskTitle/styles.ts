@@ -19,12 +19,12 @@ export const TitleButton = styled(BorderlessButton)`
 
 
 export const Title = styled.Text`
-  color: ${({ theme }) => theme.color.text6};
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text1};
+  font-family: ${({ theme }) => theme.fonts.roboto};
   font-size: ${RFValue(18)}px;
   letter-spacing: 1px;
-  width: 87%;
-  text-align: justify;
+  width: 100%;
+  /* text-align: justify; */
   margin-right: 4px;
 `;
 
@@ -32,7 +32,7 @@ export const UnderlineTitle = styled.View`
   height: 2px;
   width: 100%;
   margin-top: 4px;
-  background-color: ${({ theme }) => theme.color.primary};
+  background-color: ${({ theme }) => theme.color.primary_light};
 `;
 
 export const EditTitleIcon = styled(Feather)`

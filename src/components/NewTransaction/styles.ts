@@ -64,7 +64,7 @@ export const IsPaidButton = styled(BorderlessButton)<IAmountProps>`
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  border: 1.5px solid ${({ theme }) => theme.color.text1};
+  border: 1px solid ${({ theme }) => theme.color.text1};
   margin: 0 12px 4px;
 `;
 

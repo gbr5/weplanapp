@@ -19,20 +19,25 @@ import IEventTaskDTO from '../dtos/IEventTaskDTO';
 import IEventBudgetDTO from '../dtos/IEventBudgetDTO';
 import { useMemo } from 'react';
 import { formatBrlCurrency } from '../utils/formatBrlCurrency';
+import IFriendDTO from '../dtos/IFriendDTO';
 
 interface MyEventContextType {
   eventFinancialSubSection: string;
   budgetWindow: boolean;
+  backdropSearch: boolean;
   loading: boolean;
   selectedEvent: IEventDTO;
   eventInfo: IEventInfoDTO;
   eventBudget: string;
+  selectedOwner: IEventOwnerDTO;
   owners: IEventOwnerDTO[];
+  selectedMember: IEventMemberDTO;
   members: IEventMemberDTO[];
   eventSuppliers: IEventSupplierDTO[];
   hiredSuppliers: IEventSupplierDTO[];
   dischargedSuppliers: IEventSupplierDTO[];
   notHiredSuppliers: IEventSupplierDTO[];
+  selectedFriend: IFriendDTO;
   selectedSupplier: IEventSupplierDTO;
   selectedTask: IEventTaskDTO;
   guests: IEventGuestDTO[];
@@ -48,16 +53,22 @@ interface MyEventContextType {
   currentSection: string;
   handleEventFinancialSubSection: (data: string) => void;
   handleBudgetWindow: () => void;
+  handleBackdropSearch: () => void;
   selectEvent: (event: IEventDTO) => void;
   getEventGuests: (eventId: string) => Promise<void>;
   selectEventTask: (task: IEventTaskDTO) => void;
   selectSupplier: (supplier: IEventSupplierDTO) => void;
+  selectOwner: (owner: IEventOwnerDTO) => void;
+  selectMember: (member: IEventMemberDTO) => void;
+  getEventOwners: (event_id: string) => Promise<void>;
+  getEventMembers: (event_id: string) => Promise<void>;
   getEventSuppliers: (event_id: string) => Promise<void>;
   getEventInfo: (event_id: string) => Promise<void>;
   selectGuest: (guest: IEventGuestDTO) => void;
   calculateTotalEventCost: () => void;
   selectEventSection: (e: string) => void;
   getEvent: (eventId: string) => Promise<void>;
+  handleSelectedFriend: (data: IFriendDTO) => void;
   createEventBudget: (budget: number) => Promise<void>;
   updateEventBudget: (data: IEventBudgetDTO) => Promise<void>;
   unsetEventVariables: () => void;
@@ -67,12 +78,14 @@ const MyEventContext = createContext({} as MyEventContextType);
 
 const MyEventProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
-
   const [eventFinancialSubSection, setEventFinancialSubSection] = useState('Main');
   const [loading, setLoading] = useState(false);
+  const [backdropSearch, setBackdropSearch] = useState(false);
   const [budgetWindow, setBudgetWindow] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({} as IEventDTO);
   const [eventInfo, setEventInfo] = useState({} as IEventInfoDTO);
+  const [selectedOwner, setSelectedOwner] = useState({} as IEventOwnerDTO);
+  const [selectedMember, setSelectedMember] = useState({} as IEventMemberDTO);
   const [owners, setOwners] = useState<IEventOwnerDTO[]>([]);
   const [members, setMembers] = useState<IEventMemberDTO[]>([]);
   const [eventSuppliers, setEventSuppliers] = useState<IEventSupplierDTO[]>([]);
@@ -92,6 +105,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [currentSection, setCurrentSection] = useState('Tasks');
   const [selectedTask, setSelectedTask] = useState({} as IEventTaskDTO);
   const [selectedSupplier, setSelectedSupplier] = useState({} as IEventSupplierDTO);
+  const [selectedFriend, setSelectedFriend] = useState({} as IFriendDTO);
 
   const eventBudget = useMemo(() => {
     if (selectedEvent && selectedEvent.id && selectedEvent.eventBudget)
@@ -114,6 +128,10 @@ const MyEventProvider: React.FC = ({ children }) => {
       .reduce((a, b) => a + b, 0);
     setTotalEventCost(totalCost);
   }, [hiredSuppliers]);
+
+  function handleSelectedFriend(data: IFriendDTO) {
+    setSelectedFriend(data);
+  }
 
   function handleEventFinancialSubSection(data: string) {
     setEventFinancialSubSection(data);
@@ -142,6 +160,10 @@ const MyEventProvider: React.FC = ({ children }) => {
 
   function handleBudgetWindow() {
     setBudgetWindow(!budgetWindow);
+  }
+
+  function handleBackdropSearch() {
+    setBackdropSearch(!backdropSearch);
   }
 
   function selectEventSection(e: string) {
@@ -210,7 +232,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   async function getEventMembers(eventId: string) {
     try {
       const response = await api
-        .get<IEventMemberDTO[]>(`events/${eventId}/event-members`);
+        .get<IEventMemberDTO[]>(`event-members/${eventId}`);
       setMembers(response.data);
     } catch (err) {
       throw new Error(err);
@@ -220,7 +242,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   async function getEventOwners(eventId: string) {
     try {
       const response = await api
-        .get<IEventOwnerDTO[]>(`events/${eventId}/event-owners`);
+        .get<IEventOwnerDTO[]>(`event-owners/${eventId}`);
       response.data.map((xOwner) => {
         xOwner.userEventOwner.id === user.id && setIsOwner(true);
         return xOwner;
@@ -300,6 +322,14 @@ const MyEventProvider: React.FC = ({ children }) => {
     setSelectedSupplier(supplier);
   }
 
+  function selectOwner(owner: IEventOwnerDTO) {
+    setSelectedOwner(owner);
+  }
+
+  function selectMember(member: IEventMemberDTO) {
+    setSelectedMember(member);
+  }
+
   return (
     <MyEventContext.Provider
       value={{
@@ -308,19 +338,25 @@ const MyEventProvider: React.FC = ({ children }) => {
         eventFinancialSubSection,
         eventBudget,
         budgetWindow,
+        backdropSearch,
         getEvent,
         createEventBudget,
         updateEventBudget,
         getEventSuppliers,
         getEventGuests,
+        handleSelectedFriend,
         selectedEvent,
         selectedGuest,
         eventInfo,
         owners,
         members,
         eventSuppliers,
+        handleBackdropSearch,
         hiredSuppliers,
         notHiredSuppliers,
+        getEventOwners,
+        getEventMembers,
+        getEventInfo,
         guests,
         myGuests,
         myGuestsConfirmed,
@@ -336,9 +372,13 @@ const MyEventProvider: React.FC = ({ children }) => {
         selectEvent,
         selectGuest,
         calculateTotalEventCost,
+        selectedFriend,
+        selectedMember,
+        selectedOwner,
+        selectMember,
+        selectOwner,
         selectEventSection,
         selectEventTask,
-        getEventInfo,
         selectedTask,
         selectSupplier,
         selectedSupplier,

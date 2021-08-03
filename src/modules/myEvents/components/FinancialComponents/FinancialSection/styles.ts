@@ -90,28 +90,32 @@ export const ResumeValue = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
   color: ${({ theme }) => theme.color.text1};
-  `;
+`;
 
-export const SectionButton = styled.ScrollView`
+export const SectionButton = styled.View`
   width: 100%;
   padding: 8px;
   padding-right: 18px;
   margin-top: 4px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const MenuButton = styled(BorderlessButton)<IMenuButtonProps>`
   flex-direction: row;
-  width: 180px;
-  height: 56px;
+  /* width: 180px; */
+  width: 32%;
+  height: 40px;
   border-radius: 5px;
   background-color: ${({ theme, isActive }) => isActive
     ? theme.color.primary
     : theme.color.secondary
   };
-  margin: 0 8px;
+  /* margin: 0 8px; */
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  /* padding: 8px; */
 `;
 
 export const ButtonTitle = styled.Text<IMenuButtonProps>`
@@ -131,5 +135,5 @@ export const MenuIcon = styled(Feather)<IMenuButtonProps>`
     ? theme.color.text1
     : theme.color.primary
   };
-  margin-left: 8px;
+  /* margin-left: 8px; */
 `;

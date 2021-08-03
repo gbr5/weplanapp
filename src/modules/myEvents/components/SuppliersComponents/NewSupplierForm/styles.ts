@@ -6,7 +6,6 @@ import Feather from 'react-native-vector-icons/Feather';
 export const Container = styled.View`
   align-items: center;
   flex: 1;
-  margin: 40px 0;
   width: 100%;
 `;
 

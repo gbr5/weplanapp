@@ -5,13 +5,18 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useUnsetEventVariables } from '../../hooks/unsetEventVariables';
 import { Container } from './styles';
 
-const BackButton: React.FC = () => {
+interface IProps {
+  unsetVariables?: () => void;
+}
+
+const BackButton: React.FC<IProps> = ({
+  unsetVariables,
+}) => {
   const navigation = useNavigation();
-  const { unsetVariables } = useUnsetEventVariables();
 
   const goBack = useCallback(() => {
     navigation.goBack();
-    unsetVariables();
+    unsetVariables && unsetVariables();
   }, [navigation]);
 
   return (

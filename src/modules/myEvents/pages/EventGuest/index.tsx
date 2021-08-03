@@ -27,7 +27,7 @@ import {
 const EventGuest: React.FC = () => {
   const { selectedGuest } = useMyEvent();
   const {
-    editGuestConfirmation,
+    editGuest,
     loading,
     selectGuestContact,
     selectedGuestContact,
@@ -38,9 +38,12 @@ const EventGuest: React.FC = () => {
   const [guestContactWindow, setGuestContactWindow] = useState(false);
   const [createContactWindow, setCreateContactWindow] = useState(false);
 
-  const handleEditGuestConfirmation = useCallback(() => {
-    editGuestConfirmation(selectedGuest);
-  }, [editGuestConfirmation, selectedGuest]);
+  const handleEditGuestConfirmation = useCallback(async () => {
+    await editGuest({
+      ...selectedGuest,
+      confirmed: selectedGuest.confirmed,
+    });
+  }, [editGuest, selectedGuest]);
   const handleEditGuestNameWindow = useCallback((e: boolean) => {
     setEditGuestNameWindow(e);
   }, []);

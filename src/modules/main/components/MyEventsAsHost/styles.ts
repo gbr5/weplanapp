@@ -7,7 +7,8 @@ import IEventOwnerDTO from '../../../../dtos/IEventOwnerDTO';
 
 export const Container = styled.View`
   width: 100%;
-  background: ${({ theme }) => theme.color.secondary};
+  background: ${({ theme }) => theme.color.text6};
+  border: 1px solid ${({ theme }) => theme.color.text4};
   border-radius: 8px;
   padding: 8px;
   margin: 16px 0;
@@ -19,22 +20,20 @@ export const SectionButton = styled(BorderlessButton)`
   justify-content: space-between;
   align-items: center;
   padding: 8px;
-  /* padding-right: 8px; */
 `;
 
 export const Label = styled.Text`
-  /* width: 100%; */
-  color: ${({ theme }) => theme.color.primary};
-  font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: ${RFValue(20)}px;
+  color: ${({ theme }) => theme.color.secondary};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  font-size: ${RFValue(18)}px;
   letter-spacing: 1px;
 `;
 
 export const LabelUnderline = styled.View`
   width: 80%;
-  height: 1px;
+  height: 1.8px;
   margin-left: 0;
-  background-color: ${({ theme }) => theme.color.text6};
+  background-color: ${({ theme }) => theme.color.title};
 `;
 
 export const EventContainer = styled(
@@ -48,6 +47,5 @@ export const EventContainer = styled(
   margin-top: 16px;
   border-radius: 8px;
   width: 100%;
-  background: ${({ theme }) => theme.color.text5};
   height: 240px;
 `;

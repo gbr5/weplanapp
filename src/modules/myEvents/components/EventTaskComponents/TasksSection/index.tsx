@@ -13,6 +13,7 @@ import {
 } from './styles';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useMemo } from 'react';
+import { SectionHeader } from '../../../../../components/SectionHeader';
 
 export function TasksSection(): JSX.Element {
   const { selectedEvent } = useMyEvent();
@@ -43,12 +44,17 @@ export function TasksSection(): JSX.Element {
   }, [selectedEvent, status]);
   return (
     <Container>
-      <TitleContainer>
+      <SectionHeader
+        handleAddButton={handleCreateTaskWindow}
+        handleInfoButton={handleCreateTaskWindow}
+        title="Suas Tarefas"
+      />
+      {/* <TitleContainer>
         <Title>Suas Tarefas</Title>
         <AddButton onPress={handleCreateTaskWindow}>
           <AddIcon name="plus" />
         </AddButton>
-      </TitleContainer>
+      </TitleContainer> */}
       <TasksMenu />
       {sortedTasks.length > 0 && (
         <TasksContainer

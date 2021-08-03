@@ -21,16 +21,7 @@ export function EventTaskFooter({
 }: IProps) {
   return (
     <Container>
-      <PriorityButton
-        priority={eventTask.priority}
-      >
-        <Legend>
-          {
-            eventTask.priority === 'low'
-              ? 'Baixa'
-              : (eventTask.priority === 'neutral' ? 'Neutra' : 'Alta')
-          }
-          </Legend>
+      <PriorityButton>
         <PriorityButtonIcon
           color={eventTask.priority === 'neutral'
             ? theme.color.info
@@ -42,6 +33,7 @@ export function EventTaskFooter({
           name="flag"
         />
       </PriorityButton>
+      <DateTime>Previsão</DateTime>
       <DateTime>{formatOnlyTime(String(eventTask.due_date))}</DateTime>
       <DateTime>{formatOnlyDateShort(String(eventTask.due_date))}</DateTime>
     </Container>

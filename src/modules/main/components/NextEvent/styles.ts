@@ -3,17 +3,18 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   width: 100%;
-  background: ${({ theme }) => theme.color.secondary};
+  background: ${({ theme }) => theme.color.text6};
   border-radius: 8px;
   padding: 8px;
+  border: 1px solid ${({ theme }) => theme.color.text4};
 `;
 
 export const Label = styled.Text`
   width: 100%;
   color: ${({ theme }) => theme.color.primary};
   letter-spacing: 1px;
-  font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: ${RFValue(20)}px;
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  font-size: ${RFValue(18)}px;
   padding-left: 8px;
 `;
 
@@ -21,25 +22,24 @@ export const LabelUnderline = styled.View`
   width: 80%;
   height: 1.5px;
   margin-left: 0;
-  background-color: ${({ theme }) => theme.color.text6};
+  background-color: ${({ theme }) => theme.color.title};
 `;
 
 export const Name = styled.Text`
   width: 100%;
   color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(28)}px;
+  font-size: ${RFValue(24)}px;
   text-align: center;
-  margin: 20px 0 12px;
+  margin: 8px 0;
   letter-spacing: 1.5px;
 `;
 
 export const Date = styled.Text`
   width: 100%;
-  color: ${({ theme }) => theme.color.text6};
+  color: ${({ theme }) => theme.color.text3};
   font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: ${RFValue(22)}px;
-  padding: 8px;
+  font-size: ${RFValue(18)}px;
   text-align: right;
   letter-spacing: 1px;
 `;

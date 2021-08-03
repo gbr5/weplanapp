@@ -5,12 +5,13 @@ interface IProps {
   isActive: boolean;
 }
 
-const menuButtonSize = RFValue(146);
-const heightProportion = 0.55;
+const menuButtonSize = RFValue(140);
+const heightProportion = 0.5;
 
 export const Container = styled.ScrollView`
   margin: 4px 0 0;
-  height: ${(menuButtonSize * heightProportion)}px;
+  padding: 4px 0 0;
+  /* height: ${(menuButtonSize * heightProportion)/2}px; */
   border: 1px solid ${({ theme }) => theme.color.text6};
 `;
 
@@ -18,10 +19,12 @@ export const MenuButton = styled.TouchableOpacity<IProps>`
   margin: 0 8px;
   height: ${menuButtonSize * heightProportion}px;
   width: ${menuButtonSize}px;
-  border-radius: ${menuButtonSize / 5}px;
-  background-color: ${({ theme }) => theme.color.text2};
+  /* border-radius: ${menuButtonSize / 5}px; */
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.color.text6};
   align-items: center;
   justify-content: center;
+  border: 1px solid ${({ theme }) => theme.color.text4};
 
   ${(props) => props.isActive
     && css`
@@ -31,7 +34,7 @@ export const MenuButton = styled.TouchableOpacity<IProps>`
 
 export const MenuButtonText = styled.Text<IProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  color: ${({ theme }) => theme.color.primary};
+  color: ${({ theme }) => theme.color.secondary};
   font-size: ${RFValue(18)}px;
 
   ${(props) => props.isActive
@@ -42,19 +45,12 @@ export const MenuButtonText = styled.Text<IProps>`
 
 export const MenuButtonNumber = styled.Text<IProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  color: ${({ theme }) => theme.color.text6};
+  color: ${({ theme }) => theme.color.secondary};
   margin-top: 4px;
-  font-size: ${RFValue(24)}px;
+  font-size: ${RFValue(20)}px;
 
   ${(props) => props.isActive
     && css`
       color: ${({ theme }) => theme.color.text1};
     `}
-`;
-
-export const BudgetInfo = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  color: ${({ theme }) => theme.color.text6};
-  font-size: ${RFValue(17)}px;
-  margin-top: 16px;
 `;

@@ -8,7 +8,6 @@ import {
   MenuButton,
   MenuButtonText,
   MenuButtonNumber,
-  BudgetInfo,
 } from './styles';
 
 export function MainMenu() {
@@ -20,8 +19,6 @@ export function MainMenu() {
     currentSection,
     selectEventSection,
     selectedEvent,
-    handleBudgetWindow,
-    eventBudget,
     members,
     owners,
   } = useMyEvent();
@@ -84,19 +81,6 @@ export function MainMenu() {
         </MenuButtonNumber>
       </MenuButton>
       <MenuButton
-        onPress={handleBudgetWindow}
-        isActive={false}
-      >
-        <MenuButtonText
-          isActive={false}
-        >
-          Orçamento
-        </MenuButtonText>
-        <BudgetInfo>
-          {eventBudget}
-        </BudgetInfo>
-      </MenuButton>
-      <MenuButton
         onPress={() => selectEventSection('Suppliers')}
         isActive={currentSection === 'Suppliers'}
       >
@@ -141,21 +125,23 @@ export function MainMenu() {
           {ownersInfo}
         </MenuButtonNumber>
       </MenuButton>
-      <MenuButton
-        onPress={() => selectEventSection('Members')}
-        isActive={currentSection === 'Members'}
-      >
-        <MenuButtonText
+      {selectedEvent.event_type === 'Prom' && (
+        <MenuButton
+          onPress={() => selectEventSection('Members')}
           isActive={currentSection === 'Members'}
         >
-          Membros
-        </MenuButtonText>
-        <MenuButtonNumber
-          isActive={currentSection === 'Members'}
-        >
-          {membersInfo}
-        </MenuButtonNumber>
-      </MenuButton>
+          <MenuButtonText
+            isActive={currentSection === 'Members'}
+          >
+            Membros
+          </MenuButtonText>
+          <MenuButtonNumber
+            isActive={currentSection === 'Members'}
+          >
+            {membersInfo}
+          </MenuButtonNumber>
+        </MenuButton>
+      )}
     </Container>
   );
 };

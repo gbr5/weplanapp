@@ -47,6 +47,15 @@ import { SupplierTransactionsWindow } from '../../components/SuppliersComponents
 import { EventSupplierAgreementTransactionsWindow } from '../../components/FinancialComponents/EventSupplierAgreementTransactionsWindow';
 import { MembersSection } from '../../components/MembersComponents/MembersSection';
 import { OwnersSection } from '../../components/OwnersComponents/OwnersSection';
+import { useEventOwners } from '../../../../hooks/eventOwners';
+import { OwnerDescriptionWindow } from '../../components/OwnersComponents/OwnerDescriptionWindow';
+import { useEventMembers } from '../../../../hooks/eventMembers';
+import { MemberDescriptionWindow } from '../../components/MembersComponents/MemberDescriptionWindow';
+import { useEventGuests } from '../../../../hooks/eventGuests';
+import { GuestSectionInfoWindow } from '../../components/EventGuestComponents/GuestSectionInfoWindow';
+import { GuestFilterWindow } from '../../components/EventGuestComponents/GuestFilterWindow';
+import { TransactionsFilterWindow } from '../../components/FinancialComponents/TransactionsFilterWindow';
+import { useUnsetEventVariables } from '../../../../hooks/unsetEventVariables';
 
 const MyEvent: React.FC = () => {
   const {
@@ -100,10 +109,14 @@ const MyEvent: React.FC = () => {
     selectedSupplierTransactionAgreement,
     eventSupplierAgreementTransactionsWindow,
   } = useEventSuppliers();
+  const { ownerDescriptionWindow } = useEventOwners();
+  const { memberDescriptionWindow } = useEventMembers();
+  const { guestSectionInfoWindow, guestFilterWindow } = useEventGuests();
   const { editNoteWindow, selectNote, handleEditNoteWindow } = useNote();
   const {
     cancelEventTransaction,
     cancelEventTransactionConfirmationWindow,
+    filterTransactionWindow,
     handleCancelEventTransactionConfirmationWindow,
     handleSelectedDateWindow,
     handleSelectedDate,
@@ -114,6 +127,7 @@ const MyEvent: React.FC = () => {
     selectedEventTransaction,
     selectedTransaction,
   } = useTransaction();
+  const { unsetVariables } = useUnsetEventVariables();
 
   const [newGuestForm, setNewGuestForm] = useState(false);
 
@@ -180,9 +194,17 @@ const MyEvent: React.FC = () => {
 
   return (
     <>
-      {budgetWindow && (
-        <BudgetWindow />
-      )}
+      {budgetWindow && <BudgetWindow />}
+
+      {ownerDescriptionWindow && <OwnerDescriptionWindow />}
+
+      {guestSectionInfoWindow && <GuestSectionInfoWindow />}
+
+      {guestFilterWindow && <GuestFilterWindow />}
+
+      {filterTransactionWindow && <TransactionsFilterWindow /> }
+
+      {memberDescriptionWindow && <MemberDescriptionWindow />}
 
       {selectedEventTransaction
         && selectedEventTransaction.transaction
@@ -228,9 +250,7 @@ const MyEvent: React.FC = () => {
         )
       }
 
-      {dischargingWindow && (
-        <DischargeSupplierWindow />
-      )}
+      {dischargingWindow && <DischargeSupplierWindow />}
       {newGuestForm && (
         <NewGuestForm closeWindow={() => handleNewGuestForm(false)} />
       )}
@@ -310,11 +330,7 @@ const MyEvent: React.FC = () => {
           />
       )}
 
-      {createTaskWindow && (
-        <NewTaskForm
-          closeWindow={handleCreateTaskWindow}
-        />
-      )}
+      {createTaskWindow && <NewTaskForm closeWindow={handleCreateTaskWindow} />}
 
       {deleteTaskConfirmationWindow && (
         <ShortConfirmationWindow
@@ -335,13 +351,9 @@ const MyEvent: React.FC = () => {
         <NewSupplierForm closeWindow={handleAddSupplierWindow} />
       )}
 
-      {supplierCategoryWindow && (
-        <SelectSupplierCategory />
-      )}
+      {supplierCategoryWindow && <SelectSupplierCategory />}
 
-      {supplierSubCategoryWindow && (
-        <SelectSupplierSubCategory />
-      )}
+      {supplierSubCategoryWindow && <SelectSupplierSubCategory />}
 
       {createSupplierTransactionAgreementWindow &&
         selectedSupplier &&
@@ -378,7 +390,7 @@ const MyEvent: React.FC = () => {
       )}
 
       <Container>
-        <PageHeader>
+        <PageHeader unsetVariables={unsetVariables} >
           <DashboardButton onPress={() => selectEventSection('Tasks')}>
             <EventName>{selectedEvent.name}</EventName>
           </DashboardButton>

@@ -7,7 +7,8 @@ import IEventMemberDTO from '../../../../dtos/IEventMemberDTO';
 
 export const Container = styled.View`
   width: 100%;
-  background: ${({ theme }) => theme.color.secondary};
+  background: ${({ theme }) => theme.color.text6};
+  border: 1px solid ${({ theme }) => theme.color.text4};
   border-radius: 8px;
   padding: 8px;
   margin-bottom: 32px;
@@ -24,17 +25,17 @@ export const SectionButton = styled(BorderlessButton)`
 
 export const Label = styled.Text`
   /* width: 100%; */
-  color: ${({ theme }) => theme.color.primary};
-  font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: ${RFValue(20)}px;
+  color: ${({ theme }) => theme.color.secondary};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  font-size: ${RFValue(18)}px;
   letter-spacing: 1px;
 `;
 
 export const LabelUnderline = styled.View`
   width: 80%;
-  height: 1.5px;
+  height: 1.8px;
   margin-left: 0;
-  background-color: ${({ theme }) => theme.color.text6};
+  background-color: ${({ theme }) => theme.color.title};
 `;
 
 export const EventContainer = styled(

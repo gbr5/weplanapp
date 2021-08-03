@@ -5,10 +5,11 @@ import { useMyEvent } from '../../../../../hooks/myEvent';
 import IEventTaskDTO from '../../../../../dtos/IEventTaskDTO';
 
 import { TaskTitle } from '../TaskTitle';
-
-import { Container } from './styles';
 import { EventTaskFooter } from '../EventTaskFooter';
 import { EventTaskBody } from '../EventTaskBody';
+
+import { Container, CloseButton, CloseButtonTitle } from './styles';
+import Button from '../../../../../components/Button';
 
 interface IProps {
   eventTask: IEventTaskDTO;
@@ -28,7 +29,15 @@ export function EventTask({
   }
 
   return (
-    <Container>
+    <Container
+      isActive={selectedTask.id === eventTask.id}
+      onPress={handleTaskBody}
+    >
+      {selectedTask.id === eventTask.id && (
+        <CloseButton onPress={handleTaskBody}>
+          <CloseButtonTitle>Fechar</CloseButtonTitle>
+        </CloseButton>
+      )}
       <TaskTitle
         handleTaskBody={handleTaskBody}
         taskBody={selectedTask.id === eventTask.id}
@@ -37,9 +46,9 @@ export function EventTask({
       {selectedTask.id !== eventTask.id
         && <EventTaskFooter eventTask={eventTask} />
       }
-      {selectedTask.id === eventTask.id && (
-        <EventTaskBody />
-      )}
+      {selectedTask.id === eventTask.id
+        && <EventTaskBody />
+      }
     </Container>
   );
 };

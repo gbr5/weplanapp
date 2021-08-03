@@ -16,6 +16,7 @@ import {
 } from './styles';
 import theme from '../../../../../global/styles/theme';
 import api from '../../../../../services/api';
+import { useEventGuests } from '../../../../../hooks/eventGuests';
 
 interface IProps {
   index?: number;
@@ -29,8 +30,10 @@ const GuestSectionButton: React.FC<IProps> = ({
   const { user } = useAuth();
   const navigation = useNavigation();
   const { selectGuest, getEventGuests } = useMyEvent();
+  const { editGuest } = useEventGuests();
 
   const [loading, setLoading] = useState(false);
+  const [updatedGuest, setUpdatedGuest] = useState(guest);
 
   const navigateToGuest = useCallback(() => {
     selectGuest(guest);
@@ -41,12 +44,11 @@ const GuestSectionButton: React.FC<IProps> = ({
     if (user.id !== guest.host_id) return;
     try {
       setLoading(true);
-      await api.put(`events/${guest.event_id}/guests/${guest.id}`, {
-        first_name: guest.first_name,
-        last_name: guest.last_name,
-        description: guest.description,
+      const response = await editGuest({
+        ...guest,
         confirmed: !guest.confirmed,
       });
+      setUpdatedGuest(response);
       await getEventGuests(guest.event_id);
     } catch (err) {
       throw new Error(err);
@@ -68,19 +70,16 @@ const GuestSectionButton: React.FC<IProps> = ({
           {guest.weplanGuest && guest.weplanGuest.id && (
             <Icon color={theme.color.primary} name="user" size={30} />
           )}
-          {guest.host_id === user.id && (
-            <Icon color={theme.color.title} name="edit-2" size={24} />
-          )}
         </GuestNameContainer>
       </GoToGuestButton>
       {loading ? (
         <Icon color={theme.color.text5} name="loader" size={30} />
       ) : (
         <GuestConfirmationButton onPress={handleEditGuestConfirmation}>
-          {guest.host_id === user.id && guest.confirmed ? (
-            <Icon color={theme.color.success_light} name="check-square" size={30} />
+          {guest.host_id === user.id && updatedGuest.confirmed ? (
+            <Icon color={theme.color.success} name="check-square" size={30} />
           ) : (
-            <Icon color={theme.color.atention_light} name="square" size={30} />
+            <Icon color={theme.color.atention} name="square" size={30} />
           )}
         </GuestConfirmationButton>
       )}

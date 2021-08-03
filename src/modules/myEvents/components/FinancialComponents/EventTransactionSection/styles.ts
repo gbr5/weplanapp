@@ -11,8 +11,8 @@ interface IsActiveProps {
 }
 
 export const Container = styled.View`
-  flex: 1;
-  min-height: 40%;
+  min-height: 65%;
+  width: 100%;
 `;
 
 export const FilterButton = styled(BorderlessButton)`
@@ -63,8 +63,7 @@ export const TransactionContainer = styled(
     paddingBottom: getBottomSpace(),
   },
 })`
-  padding-top: 48px;
-  border-radius: 16px;
+  padding: 48px 0 32px;
   width: 100%;
   flex: 1;
   min-height: 320px;

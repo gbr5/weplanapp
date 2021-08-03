@@ -7,12 +7,15 @@ export const Container = styled.View`
   width: 100%;
   align-items: center;
 `;
+
 export const FormContainer = styled.ScrollView`
   width: 100%;
 `;
+
 export const KeyboardAvoidingVueContainer = styled.KeyboardAvoidingView`
   width: 100%;
   flex: 1;
+  margin-top: 40px;
 `;
 
 export const Title = styled.Text`
@@ -42,6 +45,7 @@ export const SupplierText = styled.Text`
   color: ${({ theme }) => theme.color.text1};
   margin: 16px 0 4px;
 `;
+
 export const SupplierName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;

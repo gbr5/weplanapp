@@ -21,9 +21,7 @@ export const Container = styled(RectButton)<IsContainerProps>`
   justify-content: space-between;
   ${({ isCancelled }) => isCancelled && css`
     background-color: ${({ theme }) => theme.color.atention_light};
-  `}
-  ${({ isSelected }) => isSelected && css`
-    background-color: ${({ theme }) => theme.color.secondary_light};
+    opacity: 0.6;
   `}
 `;
 
@@ -39,7 +37,7 @@ export const CancelledTransaction = styled.View`
 `;
 
 export const TextContainer = styled.View`
-  width: 87%;
+  width: 95%;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -60,7 +58,7 @@ export const Sign = styled.Text`
 export const Amount = styled.Text<IAmountProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(18)}px;
   ${({ isOverdue, isPaid }) => !isPaid && isOverdue &&
     css`
       color: ${({ theme }) => theme.color.atention};
@@ -80,11 +78,9 @@ export const DateText = styled.Text`
 `;
 
 export const InfoButton = styled(BorderlessButton)`
-  padding: 4px;
   align-items: center;
   justify-content: center;
   border-radius: 16px;
-  border: 1.2px solid black;
 `;
 
 export const InfoIcon = styled(Feather)`
@@ -94,8 +90,8 @@ export const InfoIcon = styled(Feather)`
 
 export const Underline = styled.View`
   width: 100%;
-  height: 1.1px;
-  background-color: ${({ theme }) => theme.color.secondary};
+  height: 1px;
+  background-color: ${({ theme }) => theme.color.text4};
 `;
 
 export const DayContainer = styled.View`
@@ -109,15 +105,16 @@ export const DayContainer = styled.View`
 export const MonthContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   background-color: ${({ theme }) => theme.color.primary_light};
   z-index: 3;
   padding: 4px 8px;
   position: absolute;
   top: 0;
-  left: 8px;
+  left: 0px;
   border-radius: 8px;
   opacity: 0.8;
+  width: 120px;
 `;
 
 export const Month = styled.Text`
@@ -130,5 +127,5 @@ export const Month = styled.Text`
 export const Day = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
 `;

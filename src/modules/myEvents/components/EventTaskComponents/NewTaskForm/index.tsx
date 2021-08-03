@@ -22,11 +22,14 @@ import {
   Container,
   Title,
   FormQuestion,
+  DateContainer,
   DateText,
   DateButton,
   TimeText,
   Underline,
 } from './styles';
+import { FormButton } from '../../../../../components/FormButton';
+import { WindowHeader } from '../../../../../components/WindowHeader';
 
 interface IFormData {
   title: string;
@@ -83,6 +86,7 @@ const NewTaskForm: React.FC<IProps> = ({
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
       >
+        <WindowHeader title="Nova Tarefa" />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <FormContainer
             keyboardShouldPersistTaps="handled"
@@ -90,8 +94,6 @@ const NewTaskForm: React.FC<IProps> = ({
           >
             <Container>
               <Form ref={formRef} onSubmit={handleSubmit}>
-                <Title>Nova Tarefa</Title>
-                <Underline />
                 <FormQuestion>Título</FormQuestion>
                 <Input
                   placeholderTextColor={theme.color.secondary}
@@ -101,10 +103,13 @@ const NewTaskForm: React.FC<IProps> = ({
                   placeholder="Defina o título da tarefa"
                   returnKeyType="next"
                 />
-                <SelectTaskPriorityComponent
-                  handleTaskPriority={(data: 'low' | 'neutral' | 'high') => selectTaskPriority(data)}
-                  selectedPriority={selectedPriority}
-                />
+              </Form>
+              <SelectTaskPriorityComponent
+                handleTaskPriority={(data: 'low' | 'neutral' | 'high') => selectTaskPriority(data)}
+                selectedPriority={selectedPriority}
+              />
+              <FormQuestion>Data prevista</FormQuestion>
+              <DateContainer>
                 <DateButton
                   onPress={handleSelectTaskDateWindow}
                 >
@@ -115,17 +120,16 @@ const NewTaskForm: React.FC<IProps> = ({
                 >
                   <TimeText>{formatOnlyTime(String(taskDate))}</TimeText>
                 </DateButton>
-              </Form>
+              </DateContainer>
             </Container>
           </FormContainer>
         </TouchableWithoutFeedback>
+        <FormButton
+          loading={loading}
+          handleSubmit={() => formRef.current?.submitForm()}
+          text="Salvar"
+        />
       </KeyboardAvoidingVueContainer>
-      <Button
-        loading={loading}
-        onPress={() => formRef.current?.submitForm()}
-      >
-        Salvar
-      </Button>
     </WindowContainer>
   );
 };

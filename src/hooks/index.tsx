@@ -8,6 +8,8 @@ import { EventTasksProvider } from './eventTasks';
 import { EventInfoProvider } from './eventInfo';
 import { NoteProvider } from './notes';
 import { EventSuppliersProvider } from './eventSuppliers';
+import { EventOwnersProvider } from './eventOwners';
+import { EventMembersProvider } from './eventMembers';
 import { TransactionProvider } from './transactions';
 import { UnsetEventVariablesProvider } from './unsetEventVariables';
 
@@ -19,13 +21,17 @@ const AppProvider: React.FC = ({ children }) => (
           <EventGuestsProvider>
             <EventTasksProvider>
               <EventSuppliersProvider>
-                <EventInfoProvider>
-                  <TransactionProvider>
-                    <UnsetEventVariablesProvider>
-                      {children}
-                    </UnsetEventVariablesProvider>
-                  </TransactionProvider>
-                </EventInfoProvider>
+                <EventOwnersProvider>
+                  <EventMembersProvider>
+                    <EventInfoProvider>
+                      <TransactionProvider>
+                        <UnsetEventVariablesProvider>
+                          {children}
+                        </UnsetEventVariablesProvider>
+                      </TransactionProvider>
+                    </EventInfoProvider>
+                  </EventMembersProvider>
+                </EventOwnersProvider>
               </EventSuppliersProvider>
             </EventTasksProvider>
           </EventGuestsProvider>

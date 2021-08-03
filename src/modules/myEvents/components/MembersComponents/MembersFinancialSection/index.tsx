@@ -1,26 +1,30 @@
-import React from 'react';
-import { useState } from 'react';
-import { AddButton } from '../../../../../components/AddButton';
-import { InfoButton } from '../../../../../components/InfoButton';
-import { WindowHeader } from '../../../../../components/WindowHeader';
+import React, { useState } from 'react';
+import { MenuBooleanButton } from '../../../../../components/MenuBooleanButton';
 
 import {
   Container,
   Body,
+  MenuContainer,
+  MenuButton,
+  MenuTitle,
 } from './styles';
 
 export function MembersFinancialSection() {
-  const [section, setSection] = useState('Main');
+  const [financialSection, setFinancialSection] = useState('Contracts');
 
-  function handleSection(data: string) {
-    setSection(data);
+  function handleFinancialSection(data: string) {
+    setFinancialSection(data);
   }
-  function handleAddOwnerForm() {
 
-  }
   return (
     <Container>
-      <WindowHeader title="Financeiro" />
+      <MenuBooleanButton
+        firstActive={financialSection === 'Contracts'}
+        firstFunction={() => handleFinancialSection('Contracts')}
+        firstLabel="Contratos"
+        secondFunction={() => handleFinancialSection('Contracts')}
+        secondLabel="Transações"
+      />
       <Body />
     </Container>
   );
