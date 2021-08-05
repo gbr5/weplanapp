@@ -5,7 +5,7 @@ export const Container = styled(BorderlessButton)`
   position: absolute;
   top: 8px;
   right: 8px;
-  background-color: ${({ theme }) => theme.color.atention};
+  background-color: ${({ theme }) => theme.color.text6};
   border-radius: 16px;
   height: 32px;
   width: 32px;

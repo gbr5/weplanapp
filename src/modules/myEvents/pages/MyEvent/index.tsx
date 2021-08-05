@@ -56,6 +56,9 @@ import { GuestSectionInfoWindow } from '../../components/EventGuestComponents/Gu
 import { GuestFilterWindow } from '../../components/EventGuestComponents/GuestFilterWindow';
 import { TransactionsFilterWindow } from '../../components/FinancialComponents/TransactionsFilterWindow';
 import { useUnsetEventVariables } from '../../../../hooks/unsetEventVariables';
+import { useUserContacts } from '../../../../hooks/userContacts';
+import { NewGuestWindow } from '../../components/EventGuestComponents/NewGuestWindow';
+import { SelectMobileContacts } from '../../../../components/ContactComponents/SelectMobileContacts';
 
 const MyEvent: React.FC = () => {
   const {
@@ -111,7 +114,12 @@ const MyEvent: React.FC = () => {
   } = useEventSuppliers();
   const { ownerDescriptionWindow } = useEventOwners();
   const { memberDescriptionWindow } = useEventMembers();
-  const { guestSectionInfoWindow, guestFilterWindow } = useEventGuests();
+  const {
+    guestSectionInfoWindow,
+    guestFilterWindow,
+    newGuestForm,
+    newGuestWindow,
+  } = useEventGuests();
   const { editNoteWindow, selectNote, handleEditNoteWindow } = useNote();
   const {
     cancelEventTransaction,
@@ -127,9 +135,8 @@ const MyEvent: React.FC = () => {
     selectedEventTransaction,
     selectedTransaction,
   } = useTransaction();
+  const { selectMobileContactsWindow } = useUserContacts();
   const { unsetVariables } = useUnsetEventVariables();
-
-  const [newGuestForm, setNewGuestForm] = useState(false);
 
   function handleCloseEditTaskTitleWindow() {
     selectEventTask({} as IEventTaskDTO);
@@ -179,10 +186,6 @@ const MyEvent: React.FC = () => {
     handleCloseEditTaskTimeWindow();
   }
 
-  const handleNewGuestForm = useCallback((e: boolean) => {
-    setNewGuestForm(e);
-  }, []);
-
   async function handleDeleteTask() {
     await deleteTask(selectedTask);
     handleDeleteTaskConfirmationWindow();
@@ -195,6 +198,7 @@ const MyEvent: React.FC = () => {
   return (
     <>
       {budgetWindow && <BudgetWindow />}
+      {selectMobileContactsWindow && <SelectMobileContacts />}
 
       {ownerDescriptionWindow && <OwnerDescriptionWindow />}
 
@@ -251,9 +255,10 @@ const MyEvent: React.FC = () => {
       }
 
       {dischargingWindow && <DischargeSupplierWindow />}
-      {newGuestForm && (
-        <NewGuestForm closeWindow={() => handleNewGuestForm(false)} />
-      )}
+
+      {newGuestForm && <NewGuestForm />}
+      {newGuestWindow && <NewGuestWindow />}
+
       {editTaskTitleWindow
         && selectedTask
         && selectedTask.id && (
@@ -398,26 +403,12 @@ const MyEvent: React.FC = () => {
         <Body>
           <MainMenu />
           <BodyContainer>
-            {currentSection === 'Guests' && (
-              <GuestsSection
-                handleNewGuestForm={() => handleNewGuestForm(true)}
-              />
-            )}
-            {currentSection === 'Tasks' && (
-              <TasksSection />
-            )}
-            {currentSection === 'Suppliers' && (
-              <SuppliersSection />
-            )}
-            {currentSection === 'Financial' && (
-              <FinancialSection />
-            )}
-            {currentSection === 'Members' && (
-              <MembersSection />
-            )}
-            {currentSection === 'Owners' && (
-              <OwnersSection />
-            )}
+            {currentSection === 'Guests' && <GuestsSection />}
+            {currentSection === 'Tasks' && <TasksSection />}
+            {currentSection === 'Suppliers' && <SuppliersSection />}
+            {currentSection === 'Financial' && <FinancialSection />}
+            {currentSection === 'Members' && <MembersSection />}
+            {currentSection === 'Owners' && <OwnersSection />}
           </BodyContainer>
         </Body>
       </Container>

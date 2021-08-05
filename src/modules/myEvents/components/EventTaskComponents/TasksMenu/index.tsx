@@ -1,4 +1,5 @@
 import React from 'react';
+import theme from '../../../../../global/styles/theme';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 
 import {
@@ -9,6 +10,13 @@ import {
 } from './styles';
 
 export function TasksMenu(): JSX.Element {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.menuShadow;
   const iconSize = 30;
   const { selectStatus, status } = useEventTasks();
 
@@ -19,6 +27,13 @@ export function TasksMenu(): JSX.Element {
   return (
     <Container>
       <MenuButton
+        style={{
+          elevation,
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
         isActive={status === 'not started'}
         stage="not started"
         onPress={() => handleSection('not started')}
@@ -37,6 +52,13 @@ export function TasksMenu(): JSX.Element {
         </MenuButtonText>
       </MenuButton>
       <MenuButton
+        style={{
+          elevation,
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
         isActive={status === 'running'}
         stage="running"
         onPress={() => handleSection('running')}
@@ -55,6 +77,13 @@ export function TasksMenu(): JSX.Element {
         </MenuButtonText>
       </MenuButton>
       <MenuButton
+        style={{
+          elevation,
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
         isActive={status === 'finnished'}
         stage="finnished"
         onPress={() => handleSection('finnished')}

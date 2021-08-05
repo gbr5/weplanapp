@@ -54,7 +54,7 @@ const EditGuestName: React.FC<IProps> = ({ closeWindow }) => {
       closeWindow={closeWindow}
       top="5%"
       left="2%"
-      height="65%"
+      height="70%"
       width="96%"
       zIndex={11}
     >

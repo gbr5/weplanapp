@@ -3,10 +3,12 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'weplanapp' do
-  config = use_native_modules!
 
-  pod 'react-native-contacts', :path => '../node_modules/react-native-contacts' <-- add me
+target 'weplanapp' do
+  pod 'react-native-contacts',
+    :path => '../node_modules/react-native-contacts'
+
+  config = use_native_modules!
 
   use_react_native!(
     :path => config[:reactNativePath],

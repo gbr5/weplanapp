@@ -20,4 +20,5 @@ export const SuppliersContainer = styled(
   margin-top: 4px;
   border-radius: 8px;
   width: 100%;
+  padding: 2px;
 `;

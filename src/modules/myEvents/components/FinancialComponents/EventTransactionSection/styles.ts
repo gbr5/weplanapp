@@ -21,13 +21,12 @@ export const FilterButton = styled(BorderlessButton)`
   left: 2%;
   z-index: 3;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.color.secondary};
+  background-color: ${({ theme }) => theme.color.text6};
   align-items: center;
   justify-content: center;
   padding: 4px;
 `;
 export const FilterIcon = styled(Feather)`
-  color: ${({ theme }) => theme.color.primary};
   font-size: ${RFValue(28)}px;
 `;
 export const IsCancelledButton = styled(BorderlessButton)<IsActiveProps>`

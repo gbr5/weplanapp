@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
+import theme from '../../../../../global/styles/theme';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
@@ -25,6 +26,13 @@ export function SupplierAgreementButton({
   agreement,
   index,
 }: IProps) {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
   const { eventSuppliers } = useMyEvent();
   const {
     handleEventSupplierAgreementTransactionsWindow,
@@ -57,7 +65,16 @@ export function SupplierAgreementButton({
     handleEventSupplierAgreementTransactionsWindow();
   }
   return (
-    <Container onPress={handleSelectAgreement}>
+    <Container
+      style={{
+        elevation,
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+      }}
+      onPress={handleSelectAgreement}
+    >
       <Index>{index}</Index>
       <Body>
         {supplier && (
@@ -71,6 +88,13 @@ export function SupplierAgreementButton({
         </ContractInfo>
       </Body>
       <StatusContainer
+        style={{
+          elevation,
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
         isOverdue={isOverdue}
       >
         <Status

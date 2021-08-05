@@ -12,6 +12,7 @@ import {
   Name,
   Icon,
 } from './styles';
+import theme from '../../../../../global/styles/theme';
 
 interface IProps {
   owner: IEventOwnerDTO;
@@ -22,6 +23,14 @@ export function OwnerButton({
   owner,
   index,
 }: IProps) {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
+
   const { selectedOwner, selectOwner} = useMyEvent();
 
   const [ownerBody, setOwnerBody] = useState(false);
@@ -46,7 +55,17 @@ export function OwnerButton({
 
   return (
     <>
-      <Container onPress={handleOwnerBody} isActive={selectedOwner.id === owner.id}>
+      <Container
+        style={{
+          elevation,
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
+        onPress={handleOwnerBody}
+        isActive={selectedOwner.id === owner.id}
+      >
         <Index>{index}</Index>
         <Name>{owner.userEventOwner.name}</Name>
         {ownerBody ? (

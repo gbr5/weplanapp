@@ -1,4 +1,5 @@
 import React from 'react';
+import theme from '../../global/styles/theme';
 
 import {
   Container,
@@ -16,10 +17,22 @@ export function InfoButton({
   left,
   onPress,
 }: IProps) {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.iconButtonShadow;
   return (
     <Container
       onPress={onPress}
       style={{
+        elevation,
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
         top: `${top}`,
         left: `${left}`,
       }}

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { SupplierButtonInfo } from '../SupplierButtonInfo';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useEffect } from 'react';
+import theme from '../../../../../global/styles/theme';
 
 interface IProps {
   supplier: IEventSupplierDTO;
@@ -21,6 +22,13 @@ export function SupplierButton({
   supplier,
   index,
 }: IProps) {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
   const { selectedSupplier, selectSupplier} = useMyEvent();
 
   const [supplierBody, setSupplierBody] = useState(false);
@@ -45,7 +53,17 @@ export function SupplierButton({
 
   return (
     <>
-      <Container isActive={selectedSupplier.id === supplier.id} onPress={handleSupplierBody}>
+      <Container
+        style={{
+          elevation,
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
+        isActive={selectedSupplier.id === supplier.id}
+        onPress={handleSupplierBody}
+      >
         <SupplierIndex>{index}</SupplierIndex>
         <SupplierName>{supplier.name}</SupplierName>
         {supplierBody ? (

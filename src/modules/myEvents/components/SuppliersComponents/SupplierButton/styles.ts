@@ -15,7 +15,7 @@ export const Container = styled(BorderlessButton)<IButtonProps>`
   flex-direction: row;
   align-items: center;
   background-color: ${({ theme, isActive }) => isActive ? theme.color.text4 : theme.color.text6};
-  border: 1px solid ${({ theme }) => theme.color.text3};
+  border: 0.5px solid ${({ theme }) => theme.color.text3};
   margin-top: 8px;
   border-radius: 8px;
   padding: 8px 0;

@@ -10,6 +10,7 @@ import { EventTaskBody } from '../EventTaskBody';
 
 import { Container, CloseButton, CloseButtonTitle } from './styles';
 import Button from '../../../../../components/Button';
+import theme from '../../../../../global/styles/theme';
 
 interface IProps {
   eventTask: IEventTaskDTO;
@@ -18,6 +19,14 @@ interface IProps {
 export function EventTask({
   eventTask,
 }: IProps) {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
+
   const { selectEventTask, selectedTask } = useMyEvent();
 
   function handleTaskBody() {
@@ -30,6 +39,13 @@ export function EventTask({
 
   return (
     <Container
+      style={{
+        elevation,
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+      }}
       isActive={selectedTask.id === eventTask.id}
       onPress={handleTaskBody}
     >

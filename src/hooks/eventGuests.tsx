@@ -3,6 +3,7 @@ import React, {
   createContext,
   useState,
 } from 'react';
+import { Contact } from 'react-native-contacts';
 
 import api from '../services/api';
 
@@ -14,27 +15,32 @@ import IGuestContactDTO from '../dtos/IGuestContactDTO';
 import { useEffect } from 'react';
 
 interface EventGuestsContextType {
+  allGuestsFilter: boolean;
+  confirmedGuestsFilter: boolean;
   guestSectionInfoWindow: boolean;
   guestFilterWindow: boolean;
   loading: boolean;
-  allGuestsFilter: boolean;
-  confirmedGuestsFilter: boolean;
+  newGuestForm: boolean;
+  newGuestWindow: boolean;
   notConfirmedGuestsFilter: boolean;
   onlyMyGuestsFilter: boolean;
   selectedGuestContact: IGuestContactDTO;
   addNewGuest: (data: IAddNewEventGuestDTO) => Promise<void>;
+  createMultipleMobileGuests: (data: Contact[]) => Promise<void>;
   createGuestContact: (data: ICreateGuestContactDTO) => Promise<void>;
   deleteGuestContact: (data: IGuestContactDTO) => Promise<void>;
   editGuest: (data: IEventGuestDTO) => Promise<IEventGuestDTO>;
+  handleAllGuestsFilter: () => void;
+  handleConfirmedGuestsFilter: () => void;
   handleGuestSectionInfoWindow: () => void;
   handleGuestFilterWindow: () => void;
+  handleNewGuestForm: () => void;
+  handleNewGuestWindow: () => void;
+  handleNotConfirmedGuestsFilter: () => void;
+  handleOnlyMyGuestsFilter: () => void;
   selectGuestContact: (data: IGuestContactDTO) => void;
   updateGuestContact: (data: IGuestContactDTO) => Promise<void>;
   unsetEventGuestVariables: () => void;
-  handleAllGuestsFilter: () => void;
-  handleConfirmedGuestsFilter: () => void;
-  handleNotConfirmedGuestsFilter: () => void;
-  handleOnlyMyGuestsFilter: () => void;
 }
 
 const EventGuestsContext = createContext({} as EventGuestsContextType);
@@ -50,9 +56,19 @@ const EventGuestsProvider: React.FC = ({ children }) => {
   const [notConfirmedGuestsFilter, setNotConfirmedGuestsFilter] = useState(false);
   const [allGuestsFilter, setAllGuestsFilter] = useState(true);
   const [onlyMyGuestsFilter, setOnlyMyGuestsFilter] = useState(false);
+  const [newGuestForm, setNewGuestForm] = useState(false);
+  const [newGuestWindow, setNewGuestWindow] = useState(false);
 
   function handleAllGuestsFilter() {
     setAllGuestsFilter(!allGuestsFilter);
+  }
+
+  function handleNewGuestForm() {
+    setNewGuestForm(!newGuestForm);
+  }
+
+  function handleNewGuestWindow() {
+    setNewGuestWindow(!newGuestWindow);
   }
 
   function handleConfirmedGuestsFilter() {
@@ -91,6 +107,41 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         weplanUser: false,
         confirmed: false,
         user_id: '0',
+      });
+      await getEventGuests(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function createMultipleMobileGuests(data: Contact[]) {
+    try {
+      setLoading(true);
+      const contacts = data.map(({
+        givenName,
+        familyName,
+        phoneNumbers,
+        emailAddresses,
+      }) => {
+        return {
+          givenName,
+          familyName,
+          phoneNumbers: phoneNumbers.map(({ number }) => {
+            return {
+              number,
+            };
+          }),
+          emailAddresses: emailAddresses.map(({ email }) => {
+            return {
+              email,
+            };
+          }),
+        };
+      })
+      await api.post(`/create-multiple-guests/${selectedEvent.id}`, {
+        contacts,
       });
       await getEventGuests(selectedEvent.id);
     } catch (err) {
@@ -169,6 +220,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       value={{
         addNewGuest,
         createGuestContact,
+        createMultipleMobileGuests,
         deleteGuestContact,
         editGuest,
         guestSectionInfoWindow,
@@ -184,8 +236,12 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         confirmedGuestsFilter,
         handleAllGuestsFilter,
         handleConfirmedGuestsFilter,
+        handleNewGuestForm,
+        handleNewGuestWindow,
         handleNotConfirmedGuestsFilter,
         handleOnlyMyGuestsFilter,
+        newGuestForm,
+        newGuestWindow,
         notConfirmedGuestsFilter,
         onlyMyGuestsFilter,
       }}

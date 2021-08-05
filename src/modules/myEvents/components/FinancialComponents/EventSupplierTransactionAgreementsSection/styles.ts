@@ -28,4 +28,5 @@ export const AgreementsContainer = styled(
   width: 100%;
   flex: 1;
   max-height: 90%;
+  padding: 2px;
 `;

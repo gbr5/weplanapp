@@ -27,6 +27,13 @@ const GuestSectionButton: React.FC<IProps> = ({
   guest,
   index,
 }) => {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
   const { user } = useAuth();
   const navigation = useNavigation();
   const { selectGuest, getEventGuests } = useMyEvent();
@@ -58,7 +65,16 @@ const GuestSectionButton: React.FC<IProps> = ({
   }, [guest, user, getEventGuests]);
 
   return (
-    <Container isMine={guest.host_id === user.id}>
+    <Container
+      isMine={guest.host_id === user.id}
+      style={{
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+        elevation,
+      }}
+    >
       <GoToGuestButton onPress={navigateToGuest}>
         {index && <GuestIndex>{index}</GuestIndex>}
         <GuestNameContainer>

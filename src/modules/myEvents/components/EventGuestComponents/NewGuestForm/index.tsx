@@ -27,25 +27,19 @@ interface IFormData {
   last_name: string;
 }
 
-interface IProps {
-  closeWindow: () => void;
-}
-
-const NewGuestForm: React.FC<IProps> = ({
-  closeWindow,
-}) => {
-  const { addNewGuest, loading } = useEventGuests();
+const NewGuestForm: React.FC = () => {
+  const { addNewGuest, loading, handleNewGuestForm } = useEventGuests();
   const formRef = useRef<FormHandles>(null);
   const inputRef = useRef<TextInput>(null);
 
   const handleSubmit = useCallback(async (data: IFormData) => {
     await addNewGuest(data);
-    closeWindow();
-  }, [closeWindow, addNewGuest]);
+    handleNewGuestForm();
+  }, [handleNewGuestForm, addNewGuest]);
 
   return (
     <WindowContainer
-      closeWindow={closeWindow}
+      closeWindow={handleNewGuestForm}
       zIndex={11}
       top="10%"
       left="2%"

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import theme from '../../../../../global/styles/theme';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
@@ -29,6 +30,13 @@ import {
 
 export function FinancialSection() {
   const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.iconButtonShadow;
+  const {
     eventBudget,
     handleBudgetWindow,
     eventFinancialSubSection,
@@ -58,6 +66,13 @@ export function FinancialSection() {
         {eventFinancialSubSection === 'Main' && (
           <FirstSection>
             <BudgetSection
+              style={{
+                elevation,
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+              }}
               onPress={handleBudgetWindow}
             >
               <BudgetTitle>Orçamento</BudgetTitle>
@@ -79,46 +94,50 @@ export function FinancialSection() {
 
           </FirstSection>
         )}
-        <SectionButton
-          // horizontal
-        >
+        <SectionButton>
           <MenuButton
+            style={{
+              elevation,
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+            }}
             onPress={() => handleEventFinancialSubSection('Main')}
             isActive={eventFinancialSubSection === 'Main'}
           >
-            {/* <ButtonTitle
-              isActive={eventFinancialSubSection === 'Main'}
-            >
-              Principal
-            </ButtonTitle> */}
             <MenuIcon
               name="home"
               isActive={eventFinancialSubSection === 'Main'}
             />
           </MenuButton>
           <MenuButton
+            style={{
+              elevation,
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+            }}
             onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
             isActive={eventFinancialSubSection === 'TransactionAgreements'}
           >
-            {/* <ButtonTitle
-              isActive={eventFinancialSubSection === 'TransactionAgreements'}
-            >
-              Contratos
-            </ButtonTitle> */}
             <MenuIcon
               name="file-text"
               isActive={eventFinancialSubSection === 'TransactionAgreements'}
             />
           </MenuButton>
           <MenuButton
+            style={{
+              elevation,
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+            }}
             onPress={() => handleEventFinancialSubSection('Transactions')}
             isActive={eventFinancialSubSection === 'Transactions'}
           >
-            {/* <ButtonTitle
-              isActive={eventFinancialSubSection === 'Transactions'}
-            >
-              Transações
-            </ButtonTitle> */}
             <MenuIcon
               name="dollar-sign"
               isActive={eventFinancialSubSection === 'Transactions'}

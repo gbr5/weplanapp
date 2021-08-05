@@ -15,8 +15,16 @@ import {
   TransactionContainer,
   Title,
 } from './styles';
+import theme from '../../../../../global/styles/theme';
 
 export function EventTransactionSection() {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.iconButtonShadow;
   const { eventSuppliers } = useMyEvent();
   const {
     eventTransactions,
@@ -89,10 +97,35 @@ export function EventTransactionSection() {
     sortTransactionsByInterval,
   ]);
 
+  const filter = useMemo(() => {
+    if (
+      !cancelledTransactionFilter
+      && !sortTransactionsByInterval
+      && filterTransactionOption === 'all'
+    ) return false;
+    return true;
+  }, [
+    cancelledTransactionFilter,
+    sortTransactionsByInterval,
+    filterTransactionOption,
+  ]);
+
   return (
     <Container>
-      <FilterButton onPress={handleFilterTransactionWindow}>
-        <FilterIcon name="filter" />
+      <FilterButton
+        style={{
+          elevation,
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
+        onPress={handleFilterTransactionWindow}
+      >
+        <FilterIcon
+          color={filter ? theme.color.atention : theme.color.info}
+          name="filter"
+        />
       </FilterButton>
       <AddButton onPress={() => {}} right="2%" top="-6%" />
       <Title>Transações</Title>

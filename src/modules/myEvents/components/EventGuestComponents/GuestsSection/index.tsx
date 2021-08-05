@@ -23,23 +23,27 @@ import {
   FilterButton,
   FilterIcon,
   SearchButton,
-  CrossFilter,
+  FilterContainer,
 } from './styles';
 import { useEffect } from 'react';
 
-interface IProps {
-  handleNewGuestForm: () => void;
-}
-
-const GuestsSection: React.FC<IProps> = ({ handleNewGuestForm }) => {
+const GuestsSection: React.FC = () => {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.iconButtonShadow;
   const inputRef = useRef<TextInput>(null);
   const { user } = useAuth();
   const { guests, owners, members } = useMyEvent();
   const {
-    handleGuestSectionInfoWindow,
-    handleGuestFilterWindow,
     allGuestsFilter,
     confirmedGuestsFilter,
+    handleGuestSectionInfoWindow,
+    handleGuestFilterWindow,
+    handleNewGuestWindow,
     notConfirmedGuestsFilter,
     onlyMyGuestsFilter,
   } = useEventGuests();
@@ -133,7 +137,7 @@ const GuestsSection: React.FC<IProps> = ({ handleNewGuestForm }) => {
     <>
       <Container>
         <SectionHeader
-          handleAddButton={handleNewGuestForm}
+          handleAddButton={handleNewGuestWindow}
           handleInfoButton={handleGuestSectionInfoWindow}
           title="Convidados"
         />
@@ -149,25 +153,39 @@ const GuestsSection: React.FC<IProps> = ({ handleNewGuestForm }) => {
         {backdrop && (
           <Backdrop left="-10%" width="120%" zIndex={2} closeFunction={handleOffSearch} />
         )}
-        <InputContainer>
-          <FilterButton onPress={handleGuestFilterWindow}>
+        <FilterContainer>
+          {backdrop && (
+            <Backdrop left="-10%" width="120%" zIndex={2} closeFunction={handleOffSearch} />
+          )}
+          <FilterButton
+            style={{
+              elevation,
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+            }}
+            onPress={handleGuestFilterWindow}
+          >
             <FilterIcon isActive={!allGuestsFilter} name="filter" />
           </FilterButton>
-          {filterString !== undefined && (
-            <CloseButton onPress={handleResetSearch}>
-              <CloseIcon name="x" />
-            </CloseButton>
-          )}
-          <Input
-            ref={inputRef}
-            placeholderTextColor={theme.color.text1}
-            placeholder="Filtrar por ..."
-            onChangeText={(e) => handleLookForGuest(e)}
-          />
-          <SearchButton onPress={handleOffSearch}>
-            <Icon size={24} name="search" />
-          </SearchButton>
-        </InputContainer>
+          <InputContainer>
+            {filterString !== undefined && (
+              <CloseButton onPress={handleResetSearch}>
+                <CloseIcon name="x" />
+              </CloseButton>
+            )}
+            <Input
+              ref={inputRef}
+              placeholderTextColor={theme.color.text1}
+              placeholder="Filtrar por ..."
+              onChangeText={(e) => handleLookForGuest(e)}
+            />
+            <SearchButton onPress={handleOffSearch}>
+              <Icon size={24} name="search" />
+            </SearchButton>
+          </InputContainer>
+        </FilterContainer>
         {filteredGuests.length > 0 && (
           <GuestsContainer
             data={filteredGuests}

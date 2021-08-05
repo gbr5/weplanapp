@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
+import theme from '../../../../global/styles/theme';
 
 interface IProps {
   isActive: boolean;
@@ -15,7 +16,13 @@ export const Container = styled.ScrollView`
   border: 1px solid ${({ theme }) => theme.color.text6};
 `;
 
-export const MenuButton = styled.TouchableOpacity<IProps>`
+export const MenuButton = styled.TouchableOpacity.attrs({
+  shadowColor: theme.color.text2,
+  shadowOffset: { width: 2, height: 4},
+  shadowOpacity: 0.9,
+  shadowRadius: 5,
+  elevation: 5,
+})<IProps>`
   margin: 0 8px;
   height: ${menuButtonSize * heightProportion}px;
   width: ${menuButtonSize}px;

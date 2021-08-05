@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
+import theme from '../../global/styles/theme';
 
 import {
   ButtonText,
@@ -16,8 +17,23 @@ export function FormButton({
   text,
   loading,
 }: IProps) {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.buttonShadow;
   return (
-    <Container onPress={handleSubmit}>
+    <Container
+      style={{
+        elevation,
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+      }}
+      onPress={handleSubmit}>
       {loading ? (
         <Icon name="loader" size={32} />
       ) : (

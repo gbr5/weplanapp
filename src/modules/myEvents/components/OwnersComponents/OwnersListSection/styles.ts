@@ -25,4 +25,5 @@ export const OwnersContainer = styled(
   border-radius: 8px;
   width: 100%;
   height: 300px;
+  padding: 2px;
 `;

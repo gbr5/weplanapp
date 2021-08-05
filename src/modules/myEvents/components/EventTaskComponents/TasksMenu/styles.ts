@@ -16,24 +16,22 @@ export const Container = styled.View`
 
 export const MenuButton = styled(BorderlessButton)<IButtonProps>`
   height: ${({ isActive }) => (isActive ? `${RFValue(56)}px` : `${RFValue(56)}px`)};
+  background-color: ${({ theme }) => theme.color.text6};
   ${({ isActive }) => !isActive && css`
-    border: 1px solid ${({ theme }) => theme.color.text4};
+    border: 0.5px solid ${({ theme }) => theme.color.text3};
   `};
   align-items: center;
-  ${({ stage, isActive }) => stage === 'not started' && css`
-    background-color: ${({ theme }) => isActive
-      ? theme.color.info
-      : theme.color.text6};
+  ${({ stage, isActive }) => stage === 'not started' && isActive && css`
+    background-color: ${({ theme }) => theme.color.info};
+    border: 0.5px solid ${({ theme }) => theme.color.info};
   `}
-  ${({ stage, isActive }) => stage === 'running' && css`
-    background-color: ${({ theme }) => isActive
-      ? theme.color.atention
-      : theme.color.text6};
+  ${({ stage, isActive }) => stage === 'running' && isActive && css`
+    background-color: ${({ theme }) => theme.color.atention};
+    border: 0.5px solid ${({ theme }) => theme.color.atention};
   `}
-  ${({ stage, isActive }) => stage === 'finnished' && css`
-    background-color: ${({ theme }) => isActive
-      ? theme.color.success
-      : theme.color.text6};
+  ${({ stage, isActive }) => stage === 'finnished' && isActive && css`
+    background-color: ${({ theme }) => theme.color.success};
+    border: 0.5px solid ${({ theme }) => theme.color.success};
   `}
   justify-content: center;
   width: 30%;

@@ -51,4 +51,5 @@ export const TasksContainer = styled(
   margin-top: 16px;
   border-radius: 8px;
   width: 100%;
+  padding: 2px;
 `;

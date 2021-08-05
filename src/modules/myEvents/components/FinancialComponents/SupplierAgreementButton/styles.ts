@@ -10,7 +10,7 @@ interface IsOverdueProps {
 export const Container = styled(BorderlessButton)`
   width: 100%;
   padding: 16px;
-  background-color: ${({ theme }) => theme.color.secondary};
+  background-color: ${({ theme }) => theme.color.text6};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -19,8 +19,8 @@ export const Container = styled(BorderlessButton)`
 `;
 
 export const Index = styled.Text`
-  color: ${({ theme }) => theme.color.text5};
-  font-family: ${({ theme }) => theme.fonts.roboto};
+  color: ${({ theme }) => theme.color.primary};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(15)}px;
   width: 5%;
 `;
@@ -37,7 +37,7 @@ export const ContractInfo = styled.View`
 `;
 
 export const SupplierName = styled.Text`
-  color: ${({ theme }) => theme.color.primary};
+  color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto};
   letter-spacing: 1px;
   font-size: ${RFValue(20)}px;
@@ -46,7 +46,7 @@ export const SupplierName = styled.Text`
 
 export const Amount = styled.Text`
   min-width: 60%;
-  color: ${({ theme }) => theme.color.text6};
+  color: ${({ theme }) => theme.color.secondary};
   font-family: ${({ theme }) => theme.fonts.roboto};
   font-size: ${RFValue(20)}px;
   text-align: right;
@@ -66,7 +66,7 @@ export const IconContainer = styled(BorderlessButton)`
 `;
 
 export const Status = styled(Feather)<IsOverdueProps>`
-  color: ${({ theme, isOverdue }) => isOverdue ? theme.color.atention : theme.color.success};
+  color: ${({ theme, isOverdue }) => isOverdue ? theme.color.text6 : theme.color.text6};
   font-size: ${RFValue(20)}px;
 `;
 
@@ -85,8 +85,8 @@ export const PlusContainer = styled.View`
 `;
 
 export const StatusContainer = styled.View<IsOverdueProps>`
-  background-color: ${({ theme, isOverdue }) => isOverdue ? theme.color.atention_light : theme.color.success_light};
-  border: 1px solid ${({ theme }) => theme.color.text5};
+  background-color: ${({ theme, isOverdue }) => isOverdue ? theme.color.atention : theme.color.success};
+  border: 0.2px solid ${({ theme }) => theme.color.text3};
   padding: 4px;
   border-radius: 20px;
   align-items: center;

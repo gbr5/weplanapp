@@ -12,7 +12,7 @@ export const Container = styled(BorderlessButton)<IButtonProps>`
   background-color: ${({ theme, isActive }) => isActive ? theme.color.text4 : theme.color.text6};
   border-radius: 5px;
   margin-top: 8px;
-  border: 1px solid ${({ theme }) => theme.color.text3};
+  border: .5px solid ${({ theme }) => theme.color.text3};
 `;
 
 export const CloseButton = styled(RectButton)`

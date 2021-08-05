@@ -30,4 +30,32 @@ export default {
     roboto: 'RobotoSlab-Regular',
     roboto_medium: 'RobotoSlab-Medium',
   },
+  menuShadow: {
+    shadowColor: '#757575',
+    shadowOffset: { width: 2, height: 4},
+    shadowOpacity: 0.9,
+    shadowRadius: 5,
+    elevation: 5,
+  },
+  buttonShadow: {
+    shadowColor: '#757575',
+    shadowOffset: { width: 2, height: 5},
+    shadowOpacity: 0.8,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  objectButtonShadow: {
+    shadowColor: '#757575',
+    shadowOffset: { width: 0, height: 4},
+    shadowOpacity: 0.7,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  iconButtonShadow: {
+    shadowColor: '#757575',
+    shadowOffset: { width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 2,
+  }
 };

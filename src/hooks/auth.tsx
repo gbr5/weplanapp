@@ -89,6 +89,7 @@ const AuthProvider: React.FC = ({ children }) => {
       '@WePlan-Party:events-as-owner',
       '@WePlan-Party:events-as-member',
       '@WePlan-Party:events-as-guest',
+      '@WP-App:mobile-contacts',
     ]);
 
     setData({} as IAuthState);

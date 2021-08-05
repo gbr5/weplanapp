@@ -11,8 +11,17 @@ import {
   UserAvatar,
 } from './styles';
 import MenuButton from '../MenuButton';
+import theme from '../../global/styles/theme';
 
 const Header: React.FC = () => {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.menuShadow;
+
   const { user } = useAuth();
   const navigation = useNavigation();
 
@@ -21,7 +30,15 @@ const Header: React.FC = () => {
   }, [navigation]);
 
   return (
-    <Container>
+    <Container
+      // style={{
+      //   elevation,
+      //   shadowColor,
+      //   shadowOffset,
+      //   shadowOpacity,
+      //   shadowRadius,
+      // }}
+    >
       <MenuButton />
       <Logo source={logoImg} />
       <ProfileButton onPress={navigateToProfile}>

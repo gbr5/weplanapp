@@ -19,7 +19,7 @@ export const Container = styled.View`
   margin: 0 auto 8px;
   border-radius: 8px;
   padding: 8px;
-  border: 1.5px solid ${({ theme }) => theme.color.text3};
+  border: 0.5px solid ${({ theme }) => theme.color.title};
 `;
 
 export const GoToSupplierButton = styled(RectButton)`

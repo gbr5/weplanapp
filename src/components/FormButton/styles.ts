@@ -13,6 +13,7 @@ export const Container = styled(RectButton)`
   border-top-width: 1px;
   border-color: #232129;
   /* height: 64px; */
+  border-radius: 5px;
   margin-bottom: 32px;
 `;
 

@@ -34,6 +34,13 @@ import {
 } from './styles';
 
 export function SupplierButtonInfo() {
+  const {
+    elevation,
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
   const { selectedSupplier } = useMyEvent();
   const {
     handleCreateSupplierTransactionAgreementWindow,
@@ -83,7 +90,15 @@ export function SupplierButtonInfo() {
   }, [selectedSupplier]);
 
   return (
-    <Container>
+    <Container
+      style={{
+        elevation,
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+      }}
+    >
       <SupplierName>{selectedSupplier.supplier_sub_category}</SupplierName>
 
       <SectionBorder />

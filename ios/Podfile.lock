@@ -221,6 +221,8 @@ PODS:
     - React-jsi (= 0.64.0)
     - React-perflogger (= 0.64.0)
   - React-jsinspector (0.64.0)
+  - react-native-contacts (7.0.2):
+    - React-Core
   - react-native-date-picker (3.3.2):
     - React-Core
   - react-native-safe-area-context (3.2.0):
@@ -363,6 +365,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-contacts (from `../node_modules/react-native-contacts`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -433,6 +436,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-contacts:
+    :path: "../node_modules/react-native-contacts"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
   react-native-safe-area-context:
@@ -506,6 +511,7 @@ SPEC CHECKSUMS:
   React-jsi: 74341196d9547cbcbcfa4b3bbbf03af56431d5a1
   React-jsiexecutor: 06a9c77b56902ae7ffcdd7a4905f664adc5d237b
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
+  react-native-contacts: bc424db19c3384e44e6a9d9da9a78ee51b0aa7a1
   react-native-date-picker: 96a07ca27a6225da8a3935324d85046028456b0f
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -533,6 +539,6 @@ SPEC CHECKSUMS:
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
 
-PODFILE CHECKSUM: a136ad7f5a4722f4114d3b6d673eaf0c28cffc7d
+PODFILE CHECKSUM: 9bf18b4e605974fdc6d6a06079653770785d3e72
 
 COCOAPODS: 1.10.1
