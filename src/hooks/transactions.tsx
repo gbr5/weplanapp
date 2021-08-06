@@ -358,11 +358,18 @@ const TransactionProvider: React.FC = ({ children }) => {
   }: ICreateEventSupplierTransactionAgreementWithTransactionsDTO) {
     try {
       setLoading(true);
+      const updatedTransactions = transactions.map(transaction => {
+        const name = `${selectedSupplier.name} ${transactions.length > 1 ? `${transactions.findIndex(item => item === transaction) + 1} / ${transactions.length}` : ''}`;
+        return {
+          ...transaction,
+          name,
+        };
+      });
       await api.post(`/event-supplier-transaction-agreement-with-transactions`, {
         amount,
         number_of_installments,
         supplier_id,
-        transactions,
+        transactions: updatedTransactions,
       });
       if (!selectedSupplier.isHired) {
         await updateEventSupplier({

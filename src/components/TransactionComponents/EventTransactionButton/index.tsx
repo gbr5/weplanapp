@@ -10,11 +10,14 @@ import {
   Container,
   TextContainer,
   Sign,
+  Name,
   Amount,
   InfoButton,
   InfoIcon,
   Underline,
   CancelledTransaction,
+  YearContainer,
+  Year,
   MonthContainer,
   Month,
   DayContainer,
@@ -24,6 +27,7 @@ import {
 interface IProps {
   firstOfDay?: boolean;
   firstOfMonth?: boolean;
+  firstOfYear?: boolean;
   eventTransaction: IEventTransactionDTO;
   index: string;
 }
@@ -31,6 +35,7 @@ interface IProps {
 export function EventTransactionButton({
   eventTransaction,
   index,
+  firstOfYear,
   firstOfMonth,
   firstOfDay,
 }: IProps) {
@@ -65,9 +70,18 @@ export function EventTransactionButton({
   }, [eventTransaction]);
 
   const day = useMemo(() => formatOnlyDateShort(String(eventTransaction.transaction.due_date)), [eventTransaction]);
+  const year = new Date(eventTransaction.transaction.due_date).getFullYear();
 
   return (
     <>
+      {firstOfYear  && (
+        <>
+          <Underline />
+          <YearContainer>
+            <Year>{year}</Year>
+          </YearContainer>
+        </>
+      )}
       {firstOfMonth  && (
         <>
           <Underline />
@@ -96,6 +110,9 @@ export function EventTransactionButton({
         {eventTransaction.transaction.isCancelled && <CancelledTransaction />}
         {eventTransaction.transaction.payer_id === eventTransaction.event_id ? (
           <TextContainer>
+            <Name>
+              {eventTransaction.transaction.name}
+            </Name>
             <Amount
               isOverdue={isOverdue}
               isPaid={eventTransaction.transaction.isPaid}
@@ -105,6 +122,9 @@ export function EventTransactionButton({
           </TextContainer>
         ) : (
           <TextContainer>
+            <Name>
+              {eventTransaction.transaction.name}
+            </Name>
             <Amount
               style={{
                 textAlign: 'left',

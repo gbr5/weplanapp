@@ -50,6 +50,7 @@ export function EventSupplierTransactionForm() {
     selectNewTransactions([
       ...newTransactions,
       {
+        name: '',
         amount: Number(amount),
         due_date: new Date(selectedDate.setHours(10)),
         isPaid,

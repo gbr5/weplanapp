@@ -55,6 +55,8 @@ export function SelectMobileContacts() {
       throw new Error(err);
     } finally {
       setLoading(false);
+      setFilterString(undefined);
+      setFilteredContacts([]);
       handleResetSelectedMobileContacts();
       handleSelectMobileContactsWindow(false);
       handleNewGuestWindow();

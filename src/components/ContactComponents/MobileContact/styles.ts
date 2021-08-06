@@ -11,7 +11,7 @@ export const Container = styled(BorderlessButton)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 8px;
+  padding: 8px;
   margin-bottom: 8px;
   background-color: ${({ theme }) => theme.color.text6};
   border-radius: 5px;

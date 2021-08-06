@@ -68,7 +68,15 @@ export const Amount = styled.Text<IAmountProps>`
       color: ${({ theme }) => theme.color.success};
     `};
   text-align: right;
-  width: 95%;
+  flex: 1;
+`;
+
+export const Name = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto};
+  color: ${({ theme }) => theme.color.secondary};
+  font-size: ${RFValue(16)}px;
+  text-align: left;
+  flex: 1;
 `;
 
 export const DateText = styled.Text`
@@ -102,6 +110,16 @@ export const DayContainer = styled.View`
   padding: 0 16px;
 `;
 
+export const YearContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  position: absolute;
+  top: 0;
+  left: 40%;
+`;
+
 export const MonthContainer = styled.View`
   flex-direction: row;
   align-items: center;
@@ -125,8 +143,15 @@ export const Month = styled.Text`
   z-index: 2;
   opacity: 1;
 `;
+
 export const Day = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(16)}px;
+`;
+
+export const Year = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.primary};
+  font-size: ${RFValue(20)}px;
 `;

@@ -135,25 +135,37 @@ export function EventSupplierAgreementTransactionsWindow() {
               renderItem={({ item }) => {
                 const index = String(transactions
                   .findIndex(({ transaction }) => transaction.id === item.transaction.id) + 1);
-                const month = new Date(item.transaction.due_date).getMonth();
-                const date = new Date(item.transaction.due_date).getDate();
-                const firstOfMonth = transactions
-                  .filter(({ transaction }) =>
-                    new Date(transaction.due_date).getMonth() === month
-                  )[0].transaction.id === item.transaction.id;
-                const firstOfDay = transactions
-                  .filter(({ transaction }) =>
-                    new Date(transaction.due_date).getMonth() === month
-                    && new Date(transaction.due_date).getDate() === date
-                  )[0].transaction.id === item.transaction.id;
-                return (
-                  <EventTransactionButton
-                    firstOfDay={firstOfDay}
-                    firstOfMonth={firstOfMonth}
-                    index={index}
-                    eventTransaction={item}
-                    key={index}
-                  />
+                  const year = new Date(item.transaction.due_date).getFullYear();
+                  const month = new Date(item.transaction.due_date).getMonth();
+                  const date = new Date(item.transaction.due_date).getDate();
+
+                  const firstOfYear = transactions
+                    .filter(({ transaction }) =>
+                      new Date(transaction.due_date).getFullYear() === year
+                    )[0].transaction.id === item.transaction.id;
+
+                  const firstOfMonth = transactions
+                    .filter(({ transaction }) =>
+                      new Date(transaction.due_date).getFullYear() === year
+                      && new Date(transaction.due_date).getMonth() === month
+                    )[0].transaction.id === item.transaction.id;
+
+                  const firstOfDay = transactions
+                    .filter(({ transaction }) =>
+                      new Date(transaction.due_date).getFullYear() === year
+                      && new Date(transaction.due_date).getMonth() === month
+                      && new Date(transaction.due_date).getDate() === date
+                    )[0].transaction.id === item.transaction.id;
+
+                  return (
+                    <EventTransactionButton
+                      firstOfDay={firstOfDay}
+                      firstOfMonth={firstOfMonth}
+                      firstOfYear={firstOfYear}
+                      key={item.transaction.id}
+                      index={index}
+                      eventTransaction={item}
+                    />
               )}}
             />
           )}

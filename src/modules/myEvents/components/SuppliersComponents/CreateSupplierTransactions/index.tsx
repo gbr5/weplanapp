@@ -68,10 +68,12 @@ export function CreateSupplierTransactions() {
 
   function handleSubmit() {
     const transactions: ICreateTransactionDTO[] = [];
+
     if (isInstallmentsSameValue && installmentSequence === 'Monthly') {
       let i = 0;
       for (; i < newAgreementInstallments; i++) {
         transactions.push({
+          name: '',
           amount: newAgreementAmount/newAgreementInstallments,
           due_date: addMonths(selectedDate, i),
           isPaid: false,
@@ -84,6 +86,7 @@ export function CreateSupplierTransactions() {
       const transactions: ICreateTransactionDTO[] = [];
       for (let i = 0; i < newAgreementInstallments; i += 1) {
         transactions.push({
+          name: '',
           amount: newAgreementAmount/newAgreementInstallments,
           due_date: addDays(selectedDate, i * 7),
           isPaid: false,
