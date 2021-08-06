@@ -16,6 +16,7 @@ import {
   Title,
 } from './styles';
 import theme from '../../../../../global/styles/theme';
+import { SearchTransactions } from '../../../../../components/TransactionComponents/SearchTransactions';
 
 export function EventTransactionSection() {
   const {
@@ -35,9 +36,11 @@ export function EventTransactionSection() {
     filterTransactionOption,
   } = useTransaction();
 
+  const [filteredTransactions, setFilteredTransactions] = useState<IEventTransactionDTO[]>(eventTransactions);
+
   const transactions = useMemo<IEventTransactionDTO[]>(() => {
     if (sortTransactionsByInterval) {
-      const updatedTransactions = eventTransactions
+      const updatedTransactions = filteredTransactions
         .filter(({ transaction }) =>
           new Date(transaction.due_date) > fromDateTransactionFilter
             && new Date(transaction.due_date) < toDateTransactionFilter);
@@ -66,29 +69,29 @@ export function EventTransactionSection() {
       return updatedTransactions;
     }
     if (filterTransactionOption === 'paid') {
-      if (!cancelledTransactionFilter) return eventTransactions.filter(({ transaction }) =>
+      if (!cancelledTransactionFilter) return filteredTransactions.filter(({ transaction }) =>
         !transaction.isCancelled && transaction.isPaid);
-      return eventTransactions.filter(({ transaction }) =>
+      return filteredTransactions.filter(({ transaction }) =>
         transaction.isPaid);
     }
     if (filterTransactionOption === 'notPaid') {
-      if (!cancelledTransactionFilter) return eventTransactions.filter(({ transaction }) =>
+      if (!cancelledTransactionFilter) return filteredTransactions.filter(({ transaction }) =>
         !transaction.isCancelled && !transaction.isPaid);
-      return eventTransactions.filter(({ transaction }) =>
+      return filteredTransactions.filter(({ transaction }) =>
         !transaction.isPaid);
     }
     if (filterTransactionOption === 'delayed') {
-      if (!cancelledTransactionFilter) return eventTransactions.filter(({ transaction }) =>
+      if (!cancelledTransactionFilter) return filteredTransactions.filter(({ transaction }) =>
         !transaction.isCancelled && !transaction.isPaid
           && new Date() > new Date(transaction.due_date));
-      return eventTransactions.filter(({ transaction }) =>
+      return filteredTransactions.filter(({ transaction }) =>
         !transaction.isPaid && new Date() < new Date(transaction.due_date));
     }
-    if (!cancelledTransactionFilter) return eventTransactions.filter(({ transaction }) =>
+    if (!cancelledTransactionFilter) return filteredTransactions.filter(({ transaction }) =>
       !transaction.isCancelled);
-    return eventTransactions;
+    return filteredTransactions;
   }, [eventSuppliers,
-    eventTransactions,
+    filteredTransactions,
     filterTransactionOption,
     cancelledTransactionFilter,
     fromDateTransactionFilter,
@@ -109,6 +112,10 @@ export function EventTransactionSection() {
     filterTransactionOption,
   ]);
 
+  function handleFilteredTransactions(data: IEventTransactionDTO[]) {
+    setFilteredTransactions(data);
+  }
+
   return (
     <Container>
       <FilterButton
@@ -127,13 +134,18 @@ export function EventTransactionSection() {
       </FilterButton>
       <AddButton onPress={() => {}} right="2%" top="-6%" />
       <Title>Transações</Title>
+
+      <SearchTransactions
+        eventTransactions={eventTransactions}
+        handleEventTransactions={(data: IEventTransactionDTO[]) => handleFilteredTransactions(data)}
+      />
+
       {transactions
         && transactions.length > 0 && (
           <TransactionContainer
             data={transactions}
             keyExtractor={(item) => item.transaction.id}
             renderItem={({ item }) => {
-              const index = String(transactions.findIndex(transaction => transaction.transaction.id === item.transaction.id) + 1);
               const year = new Date(item.transaction.due_date).getFullYear();
               const month = new Date(item.transaction.due_date).getMonth();
               const date = new Date(item.transaction.due_date).getDate();
@@ -162,7 +174,6 @@ export function EventTransactionSection() {
                   firstOfMonth={firstOfMonth}
                   firstOfYear={firstOfYear}
                   key={item.transaction.id}
-                  index={index}
                   eventTransaction={item}
                 />
               );

@@ -68,7 +68,6 @@ export function SelectMobileContacts() {
     return `${selected} / ${contacts}`;
   }, [filteredContacts, selectedMobileContacts]);
 
-
   function handleResetSearch() {
     setFilterString(undefined);
     inputRef.current && inputRef.current.clear();

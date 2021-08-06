@@ -29,7 +29,7 @@ interface IProps {
   firstOfMonth?: boolean;
   firstOfYear?: boolean;
   eventTransaction: IEventTransactionDTO;
-  index: string;
+  index?: string;
 }
 
 export function EventTransactionButton({
