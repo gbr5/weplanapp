@@ -9,26 +9,24 @@ import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
+import theme from '../../../../../global/styles/theme';
 import getValidationErrors from '../../../../../utils/getValidationErros';
-
 import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 
+import { WindowHeader } from '../../../../../components/WindowHeader';
 import WindowContainer from '../../../../../components/WindowContainer';
 import Button from '../../../../../components/Button';
 import Input, { InputRefProps } from '../../../../../components/Input';
 
 import {
   Container,
-  Title,
   SupplierContainer,
   SupplierName,
   KeyboardAvoidingVueContainer,
   FormContainer,
   Question,
-  Underline,
   SupplierText,
 } from './styles';
-import theme from '../../../../../global/styles/theme';
 
 interface IFormData {
   amount: string;
@@ -110,66 +108,66 @@ export function CreateSupplierTransactionAgreement() {
       zIndex={15}
       top="5%"
       left="2%"
-      height="75%"
+      height="92%"
       width="96%"
     >
-      <Container>
-        <Title>Novo Contrato</Title>
-        <Underline />
-        <KeyboardAvoidingVueContainer
-          style={{ flex: 1, width: '100%' }}
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          enabled
-        >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <FormContainer
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ flex: 1 }}
-          >
-            <SupplierContainer>
-              <SupplierText>Fornecedor: </SupplierText>
-              <SupplierName>{selectedSupplier.name}</SupplierName>
-            </SupplierContainer>
-
-            <Form ref={formRef} onSubmit={handleSubmit}>
-              <Question>Valor do Contrato</Question>
-              <Input
-                name="amount"
-                keyboardType="numeric"
-                placeholderTextColor={theme.color.secondary}
-                autoCorrect={false}
-                autoCapitalize="none"
-                icon="dollar-sign"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  numberRef.current?.focus();
-                }}
-              />
-
-              <Question>Número de Parcelas</Question>
-              <Input
-                defaultValue="1"
-                name="number_of_installments"
-                ref={numberRef}
-                placeholderTextColor={theme.color.secondary}
-                autoCorrect={false}
-                autoCapitalize="none"
-                keyboardType="numeric"
-                icon="hash"
-                returnKeyType="send"
-                onSubmitEditing={() => formRef.current?.submitForm()}
-              />
-            </Form>
-          </FormContainer>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingVueContainer>
-      </Container>
-      <Button
-        loading={loading}
-        onPress={() => formRef.current?.submitForm()}
+      <KeyboardAvoidingVueContainer
+        style={{ flex: 1, width: '100%' }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled
       >
-        Próximo
-      </Button>
+        <WindowHeader title="Novo Contrato" />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <FormContainer
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ flex: 1 }}
+        >
+          <Container>
+
+          <SupplierContainer>
+            <SupplierText>Fornecedor: </SupplierText>
+            <SupplierName>{selectedSupplier.name}</SupplierName>
+          </SupplierContainer>
+
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <Question>Valor do Contrato</Question>
+            <Input
+              name="amount"
+              keyboardType="numeric"
+              placeholderTextColor={theme.color.secondary}
+              autoCorrect={false}
+              autoCapitalize="none"
+              icon="dollar-sign"
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                numberRef.current?.focus();
+              }}
+            />
+
+            <Question>Número de Parcelas</Question>
+            <Input
+              defaultValue="1"
+              name="number_of_installments"
+              ref={numberRef}
+              placeholderTextColor={theme.color.secondary}
+              autoCorrect={false}
+              autoCapitalize="none"
+              keyboardType="numeric"
+              icon="hash"
+              returnKeyType="send"
+              onSubmitEditing={() => formRef.current?.submitForm()}
+            />
+              </Form>
+            </Container>
+          </FormContainer>
+        </TouchableWithoutFeedback>
+        <Button
+          loading={loading}
+          onPress={() => formRef.current?.submitForm()}
+        >
+          Próximo
+        </Button>
+      </KeyboardAvoidingVueContainer>
     </WindowContainer>
   );
 }

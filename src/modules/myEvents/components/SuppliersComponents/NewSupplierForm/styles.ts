@@ -17,7 +17,7 @@ export const Title = styled.Text`
 export const FormQuestion = styled.Text`
   margin: 16px 0;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(18)}px;
   color: ${({ theme }) => theme.color.secondary};
 `;
 
@@ -26,7 +26,7 @@ export const BooleanField = styled.View`
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  margin: 16px 0;
+  margin: 8px 0;
 `;
 
 export const BooleanButton = styled.TouchableOpacity`
@@ -38,7 +38,7 @@ export const Icon = styled(Feather)`
 `;
 
 export const SupplierCategoryButton = styled.TouchableOpacity`
-  margin-top: 24px;
+  margin-top: 16px;
   padding: 16px;
   width: 100%;
   border-radius: 5px;

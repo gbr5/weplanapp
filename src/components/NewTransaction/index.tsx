@@ -15,6 +15,8 @@ import {
   IsPaidButton,
   IsPaidIcon,
   Underline,
+  AmountButton,
+  DateButton,
 } from './styles';
 
 interface IProps {
@@ -27,6 +29,9 @@ export function NewTransaction({
   index,
 }: IProps) {
   const {
+    handleEditNewTransactionValueWindow,
+    handleEditNewTransactionDueDateWindow,
+    handleSelectedNewTransaction,
     newTransactions,
     selectNewTransactions,
   } = useTransaction();
@@ -46,18 +51,34 @@ export function NewTransaction({
     return false;
   }, [transaction]);
 
+  function handleEditAmount() {
+    handleSelectedNewTransaction(transaction);
+    handleEditNewTransactionValueWindow();
+  }
+
+  function handleEditDate() {
+    handleSelectedNewTransaction(transaction);
+    handleEditNewTransactionDueDateWindow();
+  }
+
   return (
     <>
       <Container>
         <TextContainer>
-          <Index>{index} )</Index>
-          <Amount
-            isOverdue={isOverdue}
-            isPaid={transaction.isPaid}
-          >
-            {formatBrlCurrency(transaction.amount)}
-          </Amount>
-          <DateText>{formatOnlyDateShort(String(transaction.due_date))}</DateText>
+          <Index>{index}</Index>
+          <AmountButton onPress={handleEditAmount}>
+            <Amount
+              isOverdue={isOverdue}
+              isPaid={transaction.isPaid}
+            >
+              {formatBrlCurrency(transaction.amount)}
+            </Amount>
+          </AmountButton>
+          <DateButton onPress={handleEditDate}>
+            <DateText>
+              {formatOnlyDateShort(String( transaction.due_date ))}
+            </DateText>
+          </DateButton>
         </TextContainer>
         <IsPaidButton
           onPress={handleIsPaid}

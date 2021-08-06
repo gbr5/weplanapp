@@ -22,15 +22,25 @@ export const TextContainer = styled.View`
 
 export const Index = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(18)}px;
+  color: ${({ theme }) => theme.color.primary};
+  font-size: ${RFValue(16)}px;
   margin-right: 8px;
 `;
 
-export const Amount = styled.Text<IAmountProps>`
-  text-align: left;
+export const AmountButton = styled.TouchableOpacity`
+  align-items: flex-end;
+  justify-content: center;
   width: 65%;
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  margin-right: 8px;
+`;
+export const DateButton = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Amount = styled.Text<IAmountProps>`
+  text-align: right;
+  font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.text1};
   font-size: ${RFValue(18)}px;
   ${({ isOverdue, isPaid }) => !isPaid && isOverdue &&
@@ -44,8 +54,8 @@ export const Amount = styled.Text<IAmountProps>`
 `;
 
 export const DateText = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  color: ${({ theme }) => theme.color.text1};
+  font-family: ${({ theme }) => theme.fonts.roboto};
+  color: ${({ theme }) => theme.color.secondary};
   font-size: ${RFValue(16)}px;
   letter-spacing: 1px;
   text-align: right;

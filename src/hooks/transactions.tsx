@@ -39,6 +39,8 @@ interface ICreateEventSupplierTransactionAgreementWithTransactionsDTO extends IC
 interface TransactionContextType {
   createTransactionWindow: boolean;
   cancelEventTransactionConfirmationWindow: boolean;
+  editNewTransactionValueWindow: boolean;
+  editNewTransactionDueDateWindow: boolean;
   editTransactionDueDateWindow: boolean;
   eventTotalExecutedDebit: number;
   eventTotalDebit: number;
@@ -55,6 +57,7 @@ interface TransactionContextType {
   newAgreementInstallments: number;
   newEventSupplierTransactionAgreement: boolean;
   newTransactions: ICreateTransactionDTO[];
+  selectedNewTransaction: ICreateTransactionDTO;
   selectedDate: Date;
   selectedDateWindow: boolean;
   selectedTransaction: ITransactionDTO;
@@ -75,6 +78,8 @@ interface TransactionContextType {
   getPayerTransactions: (payer_id: string) => Promise<IPayerTransactionResponseDTO>
   handleCreateTransactionWindow: () => void;
   handleCancelEventTransactionConfirmationWindow: () => void;
+  handleEditNewTransactionValueWindow: () => void;
+  handleEditNewTransactionDueDateWindow: () => void;
   handleEditTransactionDueDateWindow: () => void;
   handleCancelledTransactionFilter: () => void;
   handleSortTransactionsByIntervalFilter: () => void;
@@ -88,6 +93,7 @@ interface TransactionContextType {
   handleUpdateTransactionDueDate: (data: Date) => void;
   handleSelectedDateWindow: () => void;
   handleSelectedEventTransaction: (data: IEventTransactionDTO) => void;
+  handleSelectedNewTransaction: (data: ICreateTransactionDTO) => void;
   selectNewTransactions: (data: ICreateTransactionDTO[]) => void;
   selectTransaction: (data: ITransactionDTO) => void;
   updateEventSupplierTransactionAgreement: (data: IUpdateEventSupplierTransactionAgreementDTO) => Promise<void>;
@@ -108,6 +114,8 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [createTransactionWindow, setCreateTransactionWindow] = useState(false);
   const [cancelEventTransactionConfirmationWindow, setCancelEventTransactionConfirmationWindow] = useState(false);
+  const [editNewTransactionValueWindow, setEditNewTransactionValueWindow] = useState(false);
+  const [editNewTransactionDueDateWindow, setEditNewTransactionDueDateWindow] = useState(false);
   const [editTransactionDueDateWindow, setEditTransactionDueDateWindow] = useState(false);
   const [eventTotalExecutedDebit, setEventTotalExecutedDebit] = useState(0);
   const [eventTotalDebit, setEventTotalDebit] = useState(0);
@@ -123,6 +131,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [newAgreementAmount, setNewAgreementAmount] = useState(0);
   const [newAgreementInstallments, setNewAgreementInstallments] = useState(1);
   const [newTransactions, setNewTransactions] = useState<ICreateTransactionDTO[]>([]);
+  const [selectedNewTransaction, setSelectedNewTransaction] = useState({} as ICreateTransactionDTO);
   const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 3));
   const [selectedDateWindow, setSelectedDateWindow] = useState(false);
   const [selectedEventTransaction, setSelectedEventTransaction] = useState({} as IEventTransactionDTO);
@@ -168,6 +177,14 @@ const TransactionProvider: React.FC = ({ children }) => {
 
   function handleEditTransactionDueDateWindow() {
     setEditTransactionDueDateWindow(!editTransactionDueDateWindow);
+  }
+
+  function handleEditNewTransactionValueWindow() {
+    setEditNewTransactionValueWindow(!editNewTransactionValueWindow);
+  }
+
+  function handleEditNewTransactionDueDateWindow() {
+    setEditNewTransactionDueDateWindow(!editNewTransactionDueDateWindow);
   }
 
   function handleFilterTransactionWindow() {
@@ -276,6 +293,9 @@ const TransactionProvider: React.FC = ({ children }) => {
   function handleSelectedDate(data: Date) {
     setSelectedDate(data);
     setSelectedDateWindow(false);
+  }
+  function handleSelectedNewTransaction(data: ICreateTransactionDTO) {
+    setSelectedNewTransaction(data);
   }
   function selectNewTransactions(data: ICreateTransactionDTO[]) {
     setNewTransactions(data);
@@ -517,6 +537,8 @@ const TransactionProvider: React.FC = ({ children }) => {
         createSupplierTransactionAgreementWithTransactions,
         deleteTransaction,
         deleteAllSupplierAgreements,
+        editNewTransactionDueDateWindow,
+        editNewTransactionValueWindow,
         editTransaction,
         editTransactionDueDateWindow,
         eventCancelledTransactions,
@@ -533,6 +555,8 @@ const TransactionProvider: React.FC = ({ children }) => {
         getPayerTransactions,
         handleCancelEventTransactionConfirmationWindow,
         handleCreateTransactionWindow,
+        handleEditNewTransactionDueDateWindow,
+        handleEditNewTransactionValueWindow,
         handleEditTransactionDueDateWindow,
         handleEventTransactions,
         handleFilterTransactionWindow,
@@ -541,10 +565,12 @@ const TransactionProvider: React.FC = ({ children }) => {
         handleSelectedDate,
         handleSelectedDateWindow,
         handleSelectedEventTransaction,
+        handleSelectedNewTransaction,
         handleUpdateTransactionDueDate,
         loading,
         newEventSupplierTransactionAgreement,
         newAgreementAmount,
+        selectedNewTransaction,
         newTransactions,
         newAgreementInstallments,
         selectedDate,

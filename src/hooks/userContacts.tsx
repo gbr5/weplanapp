@@ -55,8 +55,8 @@ const UserContactsProvider: React.FC = ({ children }) => {
       if (Platform.OS === 'ios') {
         const response = await getAll();
         response.map(contact => contacts.push(contact));
-      } else if (Platform.OS === 'android') {
-        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+      } else {
+        await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
           {
             title: 'Importar Lista Convidados!',
             message: 'A WePlan está requisitando acesso a sua lista de contatos.',

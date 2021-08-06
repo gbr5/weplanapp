@@ -1,11 +1,9 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
   flex: 1;
-  margin-top: 40px;
   width: 100%;
-  align-items: center;
 `;
 
 export const FormContainer = styled.ScrollView`
@@ -43,14 +41,13 @@ export const SupplierText = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   font-size: ${RFValue(18)}px;
   color: ${({ theme }) => theme.color.text1};
-  margin: 16px 0 4px;
 `;
 
 export const SupplierName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;
   color: ${({ theme }) => theme.color.text1};
-  margin: 8px 0 16px;
+  margin: 4px 0 8px;
   text-align: center;
 `;
 

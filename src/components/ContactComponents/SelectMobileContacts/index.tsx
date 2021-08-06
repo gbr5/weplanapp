@@ -7,7 +7,6 @@ import { useEventGuests } from '../../../hooks/eventGuests';
 import { useUserContacts } from '../../../hooks/userContacts';
 
 import Backdrop from '../../Backdrop';
-import Button from '../../Button';
 import WindowContainer from '../../WindowContainer';
 import { WindowHeader } from '../../WindowHeader';
 import { MobileContact } from '../MobileContact';
@@ -113,7 +112,12 @@ export function SelectMobileContacts() {
         <WindowHeader title="Contatos do Celular" />
         <NumberOfContacts>{numberOfContacts}</NumberOfContacts>
         {backdrop && (
-            <Backdrop left="-10%" width="120%" zIndex={2} closeFunction={handleOffSearch} />
+            <Backdrop
+              left="-10%"
+              width="120%"
+              zIndex={2}
+              closeFunction={handleOffSearch}
+            />
           )}
         <InputContainer
           style={isActive && {
@@ -155,7 +159,9 @@ export function SelectMobileContacts() {
           </SearchButton>
         </InputContainer>
 
-        {loading ? <Icon size={48} name="loader" /> : (
+        {loading ? (
+          <Icon color={theme.color.secondary} size={58} name="loader" />
+        ) : (
             <ContactContainer
               data={filteredContacts}
               keyExtractor={(item) => item.recordID}

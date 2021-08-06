@@ -5,8 +5,6 @@ platform :ios, '10.0'
 
 
 target 'weplanapp' do
-  pod 'react-native-contacts',
-    :path => '../node_modules/react-native-contacts'
 
   config = use_native_modules!
 

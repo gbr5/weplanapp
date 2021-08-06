@@ -11,7 +11,7 @@ interface IProps {
   closeWindow: () => void;
   selectDate: (date: Date) => void;
   selectedDate: Date;
-  loading: boolean;
+  loading?: boolean;
   zIndex?: number;
 }
 

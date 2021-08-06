@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
+import { Alert, Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
@@ -10,17 +10,12 @@ import theme from '../../../../../global/styles/theme';
 import ISupplierSubCategoryDTO from '../../../../../dtos/ISupplierSubCategoryDTO';
 
 import Input from '../../../../../components/Input';
-import Button from '../../../../../components/Button';
 import WindowContainer from '../../../../../components/WindowContainer';
 
 import { FormContainer, KeyboardAvoidingVueContainer } from '../CreateSupplierTransactionAgreement/styles';
 import {
   Container,
   FormQuestion,
-  BooleanField,
-  BooleanButton,
-  BooleanButtonTitle,
-  Icon,
   SupplierCategoryButton,
   SupplierCategoryButtonText,
 } from './styles';
@@ -52,6 +47,9 @@ const NewSupplierForm: React.FC<IProps> = ({
   const [weplanUser, setWeplanUser] = useState(false)
 
   const handleSubmit = useCallback(async ({ name }: IFormData) => {
+  if (name === '') return Alert.alert('Dê um nome ao fornecedor!');
+    if (selectedSupplierSubCategory && ! selectedSupplierSubCategory.id)
+      return Alert.alert('Defina a categoria do fonecedor!');
     await createEventSuppliers({
       isHired,
       name,
@@ -63,20 +61,12 @@ const NewSupplierForm: React.FC<IProps> = ({
     closeWindow();
   }, [closeWindow, createEventSuppliers]);
 
-  function handleSupplierIsHired() {
-    setIsHired(!isHired);
-  }
-
-  function handleSupplierWeplanUser() {
-    setWeplanUser(!weplanUser);
-  }
-
   return (
     <WindowContainer
       closeWindow={closeWindow}
       top="5%"
       left="2%"
-      height="87%"
+      height="90%"
       width="96%"
       zIndex={11}
     >
@@ -104,31 +94,6 @@ const NewSupplierForm: React.FC<IProps> = ({
                   returnKeyType="next"
                 />
               </Form>
-              <BooleanField>
-                <BooleanButtonTitle>Contratado?</BooleanButtonTitle>
-                <BooleanButton
-                  onPress={handleSupplierIsHired}
-                >
-                  {isHired ? (
-                    <Icon name="check-square" />
-                  ) : (
-                    <Icon name="square" />
-                  )}
-                </BooleanButton>
-              </BooleanField>
-
-              <BooleanField>
-                <BooleanButtonTitle>Usuário WePlan?</BooleanButtonTitle>
-                <BooleanButton
-                  onPress={handleSupplierWeplanUser}
-                >
-                  {weplanUser ? (
-                    <Icon name="check-square" />
-                  ) : (
-                    <Icon name="square" />
-                  )}
-                </BooleanButton>
-              </BooleanField>
 
               <SupplierCategoryButton
                 onPress={handleSupplierCategoryWindow}
