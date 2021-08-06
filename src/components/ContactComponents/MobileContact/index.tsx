@@ -17,7 +17,6 @@ interface IProps {
 
 export function MobileContact({ contact }: IProps) {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -50,7 +49,6 @@ export function MobileContact({ contact }: IProps) {
   return (
     <Container
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,

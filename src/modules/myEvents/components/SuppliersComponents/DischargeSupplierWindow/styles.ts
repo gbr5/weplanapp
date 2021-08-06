@@ -1,10 +1,5 @@
 import styled from 'styled-components/native';
-import { FlatList } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
-import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
-import ITransactionDTO from '../../../../../dtos/ITransactionDTO';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 interface IOptionProps {
   isActive: boolean;
@@ -18,7 +13,7 @@ export const Container = styled.ScrollView`
 
 export const OptionsContainer = styled.View``;
 
-export const OptionButton = styled(RectButton)<IOptionProps>`
+export const OptionButton = styled.TouchableOpacity<IOptionProps>`
   width: 100%;
   padding: 16px 0;
   align-items: center;

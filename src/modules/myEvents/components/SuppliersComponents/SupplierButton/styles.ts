@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -11,7 +10,7 @@ interface IButtonProps {
   isActive: boolean;
 }
 
-export const Container = styled(BorderlessButton)<IButtonProps>`
+export const Container = styled.TouchableOpacity<IButtonProps>`
   flex-direction: row;
   align-items: center;
   background-color: ${({ theme, isActive }) => isActive ? theme.color.text4 : theme.color.text6};
@@ -39,7 +38,7 @@ export const SupplierName = styled.Text`
   color: ${({ theme }) => theme.color.text1};
 `;
 
-export const SupplierConfirmationButton = styled(BorderlessButton)<ISupplierProps>`
+export const SupplierConfirmationButton = styled.TouchableOpacity<ISupplierProps>`
   width: 10%;
   color: ${({ theme }) => theme.color.atention};
 

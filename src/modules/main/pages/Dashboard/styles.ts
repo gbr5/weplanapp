@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
-import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { Platform } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -52,7 +51,7 @@ export const UserName = styled.Text`
   color: ${({ theme }) => theme.color.primary};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
-export const ProfileButton = styled(BorderlessButton)`
+export const ProfileButton = styled.TouchableOpacity`
 
 `;
 export const UserAvatar = styled.Image`
@@ -61,7 +60,7 @@ export const UserAvatar = styled.Image`
   border-radius: 28px;
 `;
 
-export const OpenDatePickerButton = styled(RectButton)`
+export const OpenDatePickerButton = styled.TouchableOpacity`
   height: 46px;
   width: 100%;
   background: ${({ theme }) => theme.color.primary};

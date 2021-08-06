@@ -1,13 +1,12 @@
-import { BorderlessButton } from 'react-native-gesture-handler';
-import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
-export const Container = styled(BorderlessButton)`
+export const Container = styled.TouchableOpacity`
   margin: 8px;
   padding: 8px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.text5};
-  border: 1px solid ${({ theme }) => theme.color.text4};
+  border: 0.5px solid ${({ theme }) => theme.color.text4};
 `;
 
 export const Name = styled.Text`

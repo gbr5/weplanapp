@@ -3,7 +3,6 @@ import { FlatList } from 'react-native';
 import { Contact } from 'react-native-contacts';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 
 export const Container = styled.View`
@@ -51,7 +50,7 @@ export const Input = styled.TextInput`
   flex: 1;
 `;
 
-export const CloseButton = styled(BorderlessButton)`
+export const CloseButton = styled.TouchableOpacity`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.text6};
   align-items: center;
@@ -60,7 +59,7 @@ export const CloseButton = styled(BorderlessButton)`
   padding: 2px;
 `;
 
-export const SearchButton = styled(BorderlessButton)`
+export const SearchButton = styled.TouchableOpacity`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.text6};
   align-items: center;

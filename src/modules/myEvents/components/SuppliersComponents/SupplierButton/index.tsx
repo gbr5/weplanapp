@@ -23,7 +23,6 @@ export function SupplierButton({
   index,
 }: IProps) {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -55,7 +54,6 @@ export function SupplierButton({
     <>
       <Container
         style={{
-          elevation,
           shadowColor,
           shadowOffset,
           shadowOpacity,

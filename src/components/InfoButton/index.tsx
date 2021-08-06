@@ -18,7 +18,6 @@ export function InfoButton({
   onPress,
 }: IProps) {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -28,7 +27,6 @@ export function InfoButton({
     <Container
       onPress={onPress}
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,

@@ -1,8 +1,7 @@
+import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
-import styled from 'styled-components/native';
 import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';
 
 interface IProps {
@@ -21,7 +20,7 @@ export const TransactionTitleContainer = styled.View`
   justify-content: space-around;
 `;
 
-export const TransactionTitleButton = styled(BorderlessButton)<IProps>`
+export const TransactionTitleButton = styled.TouchableOpacity<IProps>`
   background-color: ${({ theme, isActive }) => isActive
     ? theme.color.primary
     : theme.color.secondary
@@ -60,7 +59,7 @@ export const AgreementsContainer = styled.ScrollView`
   padding-right: 16px;
 `;
 
-export const AgreementContainer = styled(BorderlessButton)<IProps>`
+export const AgreementContainer = styled.TouchableOpacity<IProps>`
   background-color: ${({ theme, isActive }) => isActive
     ? theme.color.primary
     : theme.color.secondary
@@ -72,7 +71,7 @@ export const AgreementContainer = styled(BorderlessButton)<IProps>`
   justify-content: center;
 `;
 
-export const AgreementButton = styled(BorderlessButton)`
+export const AgreementButton = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;

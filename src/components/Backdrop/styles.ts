@@ -1,12 +1,11 @@
 import styled from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
 
 interface IProps {
   zIndex: number;
 }
 
-export const Container = styled(BorderlessButton)<IProps>`
+export const Container = styled.TouchableOpacity<IProps>`
   position: absolute;
   top: 0;
   left: 0;

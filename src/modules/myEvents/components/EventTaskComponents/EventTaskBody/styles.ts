@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -20,7 +19,7 @@ export const Menu = styled.ScrollView`
   margin: 7px 4px 0;
 `;
 
-export const MenuButton = styled(BorderlessButton)`
+export const MenuButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.text5};
   margin-bottom: 8px;
   border-radius: 24px;
@@ -74,7 +73,7 @@ export const DateText = styled.Text`
   letter-spacing: 1px;
 `;
 
-export const DateButton = styled(BorderlessButton)`
+export const DateButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.color.text6};

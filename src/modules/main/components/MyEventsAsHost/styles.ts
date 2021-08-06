@@ -1,8 +1,7 @@
+import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
-import styled from 'styled-components/native';
 import IEventOwnerDTO from '../../../../dtos/IEventOwnerDTO';
 
 export const Container = styled.View`
@@ -15,7 +14,7 @@ export const Container = styled.View`
   min-height: 80px;
 `;
 
-export const SectionButton = styled(BorderlessButton)`
+export const SectionButton = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;

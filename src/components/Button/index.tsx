@@ -1,11 +1,11 @@
 import React from 'react';
-import { RectButtonProperties } from 'react-native-gesture-handler';
+import { TouchableOpacityProps } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../../global/styles/theme';
 
 import { Container, ButtonText } from './styles';
 
-interface IButtonProps extends RectButtonProperties {
+interface IButtonProps extends TouchableOpacityProps {
   children: string;
   loading?: boolean;
 }
@@ -13,7 +13,6 @@ interface IButtonProps extends RectButtonProperties {
 // eslint-disable-next-line react/prop-types
 const Button: React.FC<IButtonProps> = ({ children, loading, ...rest }) => {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -23,7 +22,6 @@ const Button: React.FC<IButtonProps> = ({ children, loading, ...rest }) => {
   return (
     <Container
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,

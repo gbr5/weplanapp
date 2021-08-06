@@ -1,6 +1,5 @@
-import { RectButton } from 'react-native-gesture-handler';
-import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 interface IButtonProps {
   isActive: boolean;
@@ -12,7 +11,7 @@ export const Container = styled.View`
   margin-top: 16px;
 `;
 
-export const EventTypeButton = styled(RectButton)<IButtonProps>`
+export const EventTypeButton = styled.TouchableOpacity<IButtonProps>`
   border-radius: 5px;
   background-color: ${({ theme, isActive }) => (isActive
     ? theme.color.secondary

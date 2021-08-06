@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -12,7 +11,7 @@ export const Container = styled.ScrollView`
   padding: 0 16px;
 `;
 
-export const MenuButton = styled(BorderlessButton)<IButtonProps>`
+export const MenuButton = styled.TouchableOpacity<IButtonProps>`
   flex-direction: row;
   width: 180px;
   height: 56px;

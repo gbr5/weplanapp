@@ -9,7 +9,6 @@ interface IProps {
 
 const CloseButton: React.FC<IProps> = ({ closeFunction }) => {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -19,7 +18,6 @@ const CloseButton: React.FC<IProps> = ({ closeFunction }) => {
   return (
     <Container
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,

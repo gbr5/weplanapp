@@ -1,9 +1,7 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-export const Container = styled(RectButton)`
+export const Container = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: center;

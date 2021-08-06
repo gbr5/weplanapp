@@ -13,7 +13,6 @@ import {
 
 export function MainMenu() {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -64,7 +63,6 @@ export function MainMenu() {
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation,
         }}
         onPress={() => selectEventSection('Tasks')}
         isActive={currentSection === 'Tasks'}
@@ -86,7 +84,6 @@ export function MainMenu() {
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation,
         }}
         onPress={() => selectEventSection('Guests')}
         isActive={currentSection === 'Guests'}
@@ -108,7 +105,6 @@ export function MainMenu() {
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation,
         }}
         onPress={() => selectEventSection('Suppliers')}
         isActive={currentSection === 'Suppliers'}
@@ -130,7 +126,6 @@ export function MainMenu() {
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation,
         }}
         onPress={() => selectEventSection('Financial')}
         isActive={currentSection === 'Financial'}
@@ -152,7 +147,6 @@ export function MainMenu() {
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation,
         }}
         onPress={() => selectEventSection('Owners')}
         isActive={currentSection === 'Owners'}
@@ -175,7 +169,6 @@ export function MainMenu() {
             shadowOffset,
             shadowOpacity,
             shadowRadius,
-            elevation,
           }}
           onPress={() => selectEventSection('Members')}
           isActive={currentSection === 'Members'}

@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -34,7 +33,7 @@ export const FieldButtonText = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
 
-export const FieldButton = styled(BorderlessButton)`
+export const FieldButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.text6};
   padding: 12px;
   border-radius: 8px;
@@ -44,7 +43,7 @@ export const FieldButton = styled(BorderlessButton)`
   min-width: 48%;
 `;
 
-export const PaidButton = styled(BorderlessButton)<IsPaidParams>`
+export const PaidButton = styled.TouchableOpacity<IsPaidParams>`
   background-color: ${({ color }) => color};
   min-width: 36%;
   padding: 8px;
@@ -62,7 +61,7 @@ export const PaidIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.text1};
 `;
 
-export const DeleteButton = styled(BorderlessButton)`
+export const DeleteButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.atention_light};
   padding: 8px;
   border-radius: 8px;
@@ -78,7 +77,7 @@ export const DeleteIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.atention};
 `;
 
-export const ReceiptButton = styled(BorderlessButton)`
+export const ReceiptButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.info_light};
   padding: 8px;
   border-radius: 8px;

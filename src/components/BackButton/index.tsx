@@ -13,12 +13,6 @@ interface IProps {
 const BackButton: React.FC<IProps> = ({
   unsetVariables,
 }) => {
-  const {
-    elevation,
-    shadowOffset,
-    shadowOpacity,
-    shadowRadius,
-  } = theme.iconButtonShadow;
 
   const navigation = useNavigation();
 

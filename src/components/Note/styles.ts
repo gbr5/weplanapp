@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -41,7 +40,7 @@ export const NoteAuthor = styled.Text`
   font-size: ${RFValue(14)}px;
 `;
 
-export const EditNoteButton = styled(BorderlessButton)`
+export const EditNoteButton = styled.TouchableOpacity`
   position: absolute;
   top: 8px;
   right: 8px;

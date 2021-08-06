@@ -27,7 +27,6 @@ export function SupplierAgreementButton({
   index,
 }: IProps) {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -67,7 +66,6 @@ export function SupplierAgreementButton({
   return (
     <Container
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,
@@ -89,7 +87,6 @@ export function SupplierAgreementButton({
       </Body>
       <StatusContainer
         style={{
-          elevation,
           shadowColor,
           shadowOffset,
           shadowOpacity,

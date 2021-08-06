@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
@@ -37,7 +36,7 @@ export const DateContainer = styled.View`
   width: 100%;
 `;
 
-export const DateButton = styled(RectButton)`
+export const DateButton = styled.TouchableOpacity`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.secondary};
   padding: 12px;

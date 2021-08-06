@@ -20,7 +20,6 @@ export function EventTask({
   eventTask,
 }: IProps) {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -40,7 +39,6 @@ export function EventTask({
   return (
     <Container
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,

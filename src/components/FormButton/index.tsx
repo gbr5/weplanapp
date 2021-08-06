@@ -18,7 +18,6 @@ export function FormButton({
   loading,
 }: IProps) {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -27,7 +26,6 @@ export function FormButton({
   return (
     <Container
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,

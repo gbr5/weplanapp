@@ -1,4 +1,3 @@
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled, { css } from 'styled-components/native';
 
@@ -39,7 +38,7 @@ export const SendButtonText = styled.Text`
   font-size: ${RFValue(20)}px;
 `;
 
-export const SendButton = styled(BorderlessButton)`
+export const SendButton = styled.TouchableOpacity`
   border-radius: 5px;
   padding: 16px;
   align-items: center;

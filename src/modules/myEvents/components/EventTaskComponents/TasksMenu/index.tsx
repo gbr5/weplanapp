@@ -11,7 +11,6 @@ import {
 
 export function TasksMenu(): JSX.Element {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -28,7 +27,6 @@ export function TasksMenu(): JSX.Element {
     <Container>
       <MenuButton
         style={{
-          elevation,
           shadowColor,
           shadowOffset,
           shadowOpacity,
@@ -53,7 +51,6 @@ export function TasksMenu(): JSX.Element {
       </MenuButton>
       <MenuButton
         style={{
-          elevation,
           shadowColor,
           shadowOffset,
           shadowOpacity,
@@ -78,7 +75,6 @@ export function TasksMenu(): JSX.Element {
       </MenuButton>
       <MenuButton
         style={{
-          elevation,
           shadowColor,
           shadowOffset,
           shadowOpacity,

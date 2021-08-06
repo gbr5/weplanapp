@@ -1,12 +1,11 @@
 import styled from 'styled-components/native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface IButtonProps {
   isActive: boolean;
 }
 
-export const Container = styled(BorderlessButton)<IButtonProps>`
+export const Container = styled.TouchableOpacity<IButtonProps>`
   width: 100%;
   padding: 8px;
   background-color: ${({ theme, isActive }) => isActive ? theme.color.text4 : theme.color.text6};
@@ -15,7 +14,7 @@ export const Container = styled(BorderlessButton)<IButtonProps>`
   border: .5px solid ${({ theme }) => theme.color.text3};
 `;
 
-export const CloseButton = styled(RectButton)`
+export const CloseButton = styled.TouchableOpacity`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.text6};
   padding: 4px;

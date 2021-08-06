@@ -29,7 +29,6 @@ import { useEffect } from 'react';
 
 const GuestsSection: React.FC = () => {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -159,7 +158,6 @@ const GuestsSection: React.FC = () => {
           )}
           <FilterButton
             style={{
-              elevation,
               shadowColor,
               shadowOffset,
               shadowOpacity,

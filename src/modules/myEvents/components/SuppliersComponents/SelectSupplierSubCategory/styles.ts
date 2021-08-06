@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface ISubCategoryProps {
@@ -18,7 +17,7 @@ export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
 `;
 
-export const SubCategoryButton = styled(RectButton)<ISubCategoryProps>`
+export const SubCategoryButton = styled.TouchableOpacity<ISubCategoryProps>`
   background-color: ${({ theme }) => theme.color.primary};
   ${({ isActive }) => isActive && css`
     background-color: ${({ theme }) => theme.color.secondary};
@@ -40,7 +39,7 @@ export const SubCategoryButtonText = styled.Text<ISubCategoryProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
 
-export const GoBackButton = styled(BorderlessButton)`
+export const GoBackButton = styled.TouchableOpacity`
   padding: 16px;
   margin: 16px 0;
   background-color: ${({ theme }) => theme.color.secondary};

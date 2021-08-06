@@ -28,7 +28,6 @@ const GuestSectionButton: React.FC<IProps> = ({
   index,
 }) => {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -72,7 +71,6 @@ const GuestSectionButton: React.FC<IProps> = ({
         shadowOffset,
         shadowOpacity,
         shadowRadius,
-        elevation,
       }}
     >
       <GoToGuestButton onPress={navigateToGuest}>

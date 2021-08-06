@@ -27,7 +27,6 @@ import { FormButton } from '../../FormButton';
 
 export function SelectMobileContacts() {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -40,21 +39,22 @@ export function SelectMobileContacts() {
     mobileContacts,
     selectedMobileContacts,
     handleResetSelectedMobileContacts,
+    loading,
   } = useUserContacts();
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [backdrop, setBackdrop] = useState(false);
   const [filterString, setFilterString] = useState<string | undefined>(undefined);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>(mobileContacts);
 
   async function handleSubmit() {
     try {
-      setLoading(true);
+      setIsLoading(true);
       await createMultipleMobileGuests(selectedMobileContacts);
     } catch (err) {
       throw new Error(err);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
       setFilterString(undefined);
       setFilteredContacts([]);
       handleResetSelectedMobileContacts();
@@ -64,10 +64,10 @@ export function SelectMobileContacts() {
   }
 
   const numberOfContacts = useMemo(() => {
-    const contacts = mobileContacts.length;
+    const contacts = filteredContacts.length;
     const selected = selectedMobileContacts.length;
     return `${selected} / ${contacts}`;
-  }, [mobileContacts, selectedMobileContacts]);
+  }, [filteredContacts, selectedMobileContacts]);
 
 
   function handleResetSearch() {
@@ -117,7 +117,6 @@ export function SelectMobileContacts() {
           )}
         <InputContainer
           style={isActive && {
-            elevation,
             shadowColor: theme.color.text1,
             shadowOffset,
             shadowOpacity,
@@ -127,7 +126,6 @@ export function SelectMobileContacts() {
           {filterString !== undefined && (
             <CloseButton
               style={{
-                elevation,
                 shadowColor,
                 shadowOffset,
                 shadowOpacity,
@@ -146,7 +144,6 @@ export function SelectMobileContacts() {
           />
           <SearchButton
             style={{
-              elevation,
               shadowColor,
               shadowOffset,
               shadowOpacity,
@@ -158,8 +155,7 @@ export function SelectMobileContacts() {
           </SearchButton>
         </InputContainer>
 
-        {/* {mobileContacts.length > 0
-          && ( */}
+        {loading ? <Icon size={48} name="loader" /> : (
             <ContactContainer
               data={filteredContacts}
               keyExtractor={(item) => item.recordID}
@@ -169,10 +165,10 @@ export function SelectMobileContacts() {
                 );
               }}
             />
-          {/* )} */}
+           )}
       </Container>
       <FormButton
-        loading={loading}
+        loading={isLoading}
         handleSubmit={handleSubmit}
         text="Adicionar Contatos"
       />

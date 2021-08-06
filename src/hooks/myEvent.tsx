@@ -63,7 +63,6 @@ interface MyEventContextType {
   getEventOwners: (event_id: string) => Promise<void>;
   getEventMembers: (event_id: string) => Promise<void>;
   getEventSuppliers: (event_id: string) => Promise<void>;
-  getEventInfo: (event_id: string) => Promise<void>;
   selectGuest: (guest: IEventGuestDTO) => void;
   calculateTotalEventCost: () => void;
   selectEventSection: (e: string) => void;
@@ -219,16 +218,6 @@ const MyEventProvider: React.FC = ({ children }) => {
     }
   }
 
-  async function getEventInfo(eventId: string) {
-    try {
-      const response = await api.get<IEventInfoDTO>(`/events/${eventId}/event-info`);
-      setEventInfo(response.data);
-      setNumberOfGuests(response.data.number_of_guests);
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-
   async function getEventMembers(eventId: string) {
     try {
       const response = await api
@@ -258,7 +247,6 @@ const MyEventProvider: React.FC = ({ children }) => {
       unsetEventVariables();
     }
     Promise.all([
-      getEventInfo(data.id),
       getEventGuests(data.id),
       getEventOwners(data.id),
       getEventMembers(data.id),
@@ -356,7 +344,6 @@ const MyEventProvider: React.FC = ({ children }) => {
         notHiredSuppliers,
         getEventOwners,
         getEventMembers,
-        getEventInfo,
         guests,
         myGuests,
         myGuestsConfirmed,

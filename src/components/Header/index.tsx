@@ -15,7 +15,6 @@ import theme from '../../global/styles/theme';
 
 const Header: React.FC = () => {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -32,7 +31,6 @@ const Header: React.FC = () => {
   return (
     <Container
       // style={{
-      //   elevation,
       //   shadowColor,
       //   shadowOffset,
       //   shadowOpacity,

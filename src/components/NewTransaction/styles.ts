@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
 interface IAmountProps {
   isOverdue: boolean;
@@ -52,7 +51,7 @@ export const DateText = styled.Text`
   text-align: right;
 `;
 
-export const IsPaidButton = styled(BorderlessButton)<IAmountProps>`
+export const IsPaidButton = styled.TouchableOpacity<IAmountProps>`
   background-color: ${({ theme }) => theme.color.info_light};
   ${({ theme, isOverdue }) => isOverdue && css`
     background-color: ${theme.color.atention};

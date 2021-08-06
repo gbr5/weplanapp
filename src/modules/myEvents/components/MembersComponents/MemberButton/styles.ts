@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components/native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
+import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -7,7 +6,7 @@ interface IButtonProps {
   isActive: boolean;
 }
 
-export const Container = styled(RectButton)<IButtonProps>`
+export const Container = styled.TouchableOpacity<IButtonProps>`
   flex-direction: row;
   align-items: center;
   background-color: ${({ theme, isActive }) => isActive ? theme.color.text4 : theme.color.text6};

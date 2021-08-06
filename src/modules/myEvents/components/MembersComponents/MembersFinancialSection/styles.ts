@@ -1,6 +1,5 @@
-import { RectButton } from 'react-native-gesture-handler';
-import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 interface IMenuButtonProps {
   isActive: boolean;
@@ -19,7 +18,7 @@ export const MenuContainer = styled.View`
   justify-content: space-between;
 `;
 
-export const MenuButton = styled(RectButton)<IMenuButtonProps>`
+export const MenuButton = styled.TouchableOpacity<IMenuButtonProps>`
   width: 47%;
   padding: 8px;
   border-radius: 5px;

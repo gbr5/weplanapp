@@ -59,16 +59,14 @@ interface IAuthContextData {
 
 const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 
-// eslint-disable-next-line react/prop-types
 const AuthProvider: React.FC = ({ children }) => {
-  // const { addToast } = useToast();
   const [data, setData] = useState<IAuthState>({} as IAuthState);
   const [loading, setLoading] = useState(true);
 
   async function loadStorageData() {
     const [token, user] = await AsyncStorage.multiGet([
-      '@WePlan-Party:token',
-      '@WePlan-Party:user',
+      '@WP-App:token',
+      '@WP-App:user',
     ]);
 
     if (token[1] && user[1]) {
@@ -82,20 +80,20 @@ const AuthProvider: React.FC = ({ children }) => {
     loadStorageData();
   }, []);
 
-  const signOut = useCallback(async () => {
+  async function signOut() {
     await AsyncStorage.multiRemove([
-      '@WePlan-Party:token',
-      '@WePlan-Party:user',
-      '@WePlan-Party:events-as-owner',
-      '@WePlan-Party:events-as-member',
-      '@WePlan-Party:events-as-guest',
+      '@WP-App:token',
+      '@WP-App:user',
+      '@WP-App:events-as-owner',
+      '@WP-App:events-as-member',
+      '@WP-App:events-as-guest',
       '@WP-App:mobile-contacts',
     ]);
 
     setData({} as IAuthState);
-  }, []);
+  }
 
-  const signIn = useCallback(async ({ email, password }) => {
+  async function signIn({ email, password }: ISignInCredentials) {
     const response = await api.post('/sessions', {
       email,
       password,
@@ -104,17 +102,16 @@ const AuthProvider: React.FC = ({ children }) => {
     const { token, user } = response.data;
 
     await AsyncStorage.multiSet([
-      ['@WePlan-Party:token', token],
-      ['@WePlan-Party:user', JSON.stringify(user)],
+      ['@WP-App:token', token],
+      ['@WP-App:user', JSON.stringify(user)],
     ]);
 
     api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, user });
-  }, []);
+  };
 
-  const signInWithGoogle = useCallback(
-    async ({
+  async function signInWithGoogle({
       email,
       googleToken,
       googleId,
@@ -122,59 +119,54 @@ const AuthProvider: React.FC = ({ children }) => {
       familyName,
       givenName,
       name,
-    }: IGoogleSignInCredentials) => {
-      const response = await api.post('google-sessions', {
-        email,
-        token: googleToken,
-        googleId,
-        name,
-        familyName,
-        givenName,
-        imageUrl,
-      });
+    }: IGoogleSignInCredentials) {
+    const response = await api.post('google-sessions', {
+      email,
+      token: googleToken,
+      googleId,
+      name,
+      familyName,
+      givenName,
+      imageUrl,
+    });
 
-      const { token, user } = response.data;
+    const { token, user } = response.data;
 
-      await AsyncStorage.multiSet([
-        ['@WePlan-Party:token', token],
-        ['@WePlan-Party:user', JSON.stringify(user)],
-      ]);
+    await AsyncStorage.multiSet([
+      ['@WP-App:token', token],
+      ['@WP-App:user', JSON.stringify(user)],
+    ]);
 
-      api.defaults.headers.authorization = `Bearer ${token}`;
+    api.defaults.headers.authorization = `Bearer ${token}`;
 
-      setData({ token, user });
-    },
-    [],
-  );
+    setData({ token, user });
+  };
 
-  const createPersonInfo = useCallback(
-    async (personData: ICreatePersonInfoDTO) => {
-      try {
-        const findFirstAndLast_name = await api.get(
-          `person-info/${personData.first_name}/${personData.last_name}`,
-        );
-        if (findFirstAndLast_name.data.id) {
-          return Alert.alert(
-            'Erro no cadastro',
-            `Nome e Sobrenome "${personData.first_name} ${personData.last_name}" já cadastrado em outro perfil, tente novamente.`,
-          );
-        }
-        return await api.post(`/person-info/${personData.userId}`, {
-          person_id: personData.userId,
-          first_name: personData.first_name,
-          last_name: personData.last_name,
-        });
-      } catch (err) {
+  async function createPersonInfo(personData: ICreatePersonInfoDTO) {
+    try {
+      const findFirstAndLast_name = await api.get(
+        `person-info/${personData.first_name}/${personData.last_name}`,
+      );
+      if (findFirstAndLast_name.data.id) {
         return Alert.alert(
           'Erro no cadastro',
-          'Ocorreu um erro ao fazer o cadastro, tente novamente.',
+          `Nome e Sobrenome "${personData.first_name} ${personData.last_name}" já cadastrado em outro perfil, tente novamente.`,
         );
       }
-    },
-    [],
-  );
+      return await api.post(`/person-info/${personData.userId}`, {
+        person_id: personData.userId,
+        first_name: personData.first_name,
+        last_name: personData.last_name,
+      });
+    } catch (err) {
+      return Alert.alert(
+        'Erro no cadastro',
+        'Ocorreu um erro ao fazer o cadastro, tente novamente.',
+      );
+    }
+  };
 
-  const createdefaultContactInfo = useCallback((id: string) => {
+  function createdefaultContactInfo(id: string) {
     Promise.all([
       api.post(`/profile/contact-info/add/${id}`, {
         contact_info: `n/a - ${id}1`,
@@ -209,35 +201,29 @@ const AuthProvider: React.FC = ({ children }) => {
         contact_type: 'Website',
       }),
     ]);
-  }, []);
+  };
 
-  const updateUser = useCallback(
-    async (updatedUser: IUserDTO) => {
-      await AsyncStorage.setItem(
-        '@WePlan-Party:user',
-        JSON.stringify(updatedUser),
-      );
+  async function updateUser(updatedUser: IUserDTO) {
+    await AsyncStorage.setItem(
+      '@WP-App:user',
+      JSON.stringify(updatedUser),
+    );
 
-      setData({
-        token: data.token,
-        user: updatedUser,
+    setData({
+      token: data.token,
+      user: updatedUser,
+    });
+  };
+
+  async function resetPassword(email: string) {
+    try {
+      await api.post('/password/forgot', {
+        email,
       });
-    },
-    [data],
-  );
-
-  const resetPassword = useCallback(
-    async (email: string) => {
-      try {
-        await api.post('/password/forgot', {
-          email,
-        });
-      } catch (err) {
-        throw new Error(err);
-      }
-    },
-    [],
-  );
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
 
   async function getUser(id: string) {
     const response = await api.get(`/users/${id}`);

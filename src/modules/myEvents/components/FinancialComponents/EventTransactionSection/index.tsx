@@ -19,7 +19,6 @@ import theme from '../../../../../global/styles/theme';
 
 export function EventTransactionSection() {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -114,7 +113,6 @@ export function EventTransactionSection() {
     <Container>
       <FilterButton
         style={{
-          elevation,
           shadowColor,
           shadowOffset,
           shadowOpacity,

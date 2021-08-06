@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 
 interface IMenuButtonProps {
@@ -11,7 +10,7 @@ export const Container = styled.View`
   flex: 1;
 `;
 
-export const TitleButton = styled(BorderlessButton)`
+export const TitleButton = styled.TouchableOpacity`
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -31,7 +30,7 @@ export const FirstSection = styled.View`
   height: 60.7%;
 `;
 
-export const BudgetSection = styled(BorderlessButton)`
+export const BudgetSection = styled.TouchableOpacity`
   width: 100%;
   border-radius: 8px;
   padding: 8px;
@@ -102,7 +101,7 @@ export const SectionButton = styled.View`
   justify-content: space-between;
 `;
 
-export const MenuButton = styled(BorderlessButton)<IMenuButtonProps>`
+export const MenuButton = styled.TouchableOpacity<IMenuButtonProps>`
   flex-direction: row;
   /* width: 180px; */
   width: 32%;

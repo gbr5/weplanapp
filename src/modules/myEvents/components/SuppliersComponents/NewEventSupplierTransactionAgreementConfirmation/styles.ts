@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
-import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   width: 100%;
@@ -58,7 +57,7 @@ export const ButtonContainer = styled.View`
   margin: 0 0 32px;
 `;
 
-export const EndButton = styled(RectButton)`
+export const EndButton = styled.TouchableOpacity`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.primary};
   flex-direction: row;
@@ -68,7 +67,7 @@ export const EndButton = styled(RectButton)`
   justify-content: center;
 `;
 
-export const CancelButton = styled(RectButton)`
+export const CancelButton = styled.TouchableOpacity`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.atention_light};
   flex-direction: row;
@@ -78,7 +77,7 @@ export const CancelButton = styled(RectButton)`
   justify-content: center;
 `;
 
-export const EditButton = styled(RectButton)`
+export const EditButton = styled.TouchableOpacity`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.secondary};
   flex-direction: row;

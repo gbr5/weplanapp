@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
@@ -15,7 +14,7 @@ export const ButtonContainer = styled.View`
   margin-top: 16px;
 `;
 
-export const CancelButton = styled(RectButton)`
+export const CancelButton = styled.TouchableOpacity`
   padding: 16px 4px;
   align-items: center;
   justify-content: center;
@@ -23,7 +22,7 @@ export const CancelButton = styled(RectButton)`
   width: 45%;
   background-color: ${({ theme }) => theme.color.atention_light};
 `;
-export const Button = styled(RectButton)`
+export const Button = styled.TouchableOpacity`
   padding: 16px 4px;
   align-items: center;
   justify-content: center;

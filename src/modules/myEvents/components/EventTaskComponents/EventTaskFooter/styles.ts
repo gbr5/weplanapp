@@ -1,8 +1,6 @@
-import styled, { css } from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
-import IPriorityButtonDTO from '../../../../../dtos/IPriorityButtonDTO';
 
 const iconSize = 22;
 
@@ -30,7 +28,7 @@ export const PriorityButtonIcon = styled(Feather)`
   padding: 2px;
 `;
 
-export const PriorityButton = styled(BorderlessButton)`
+export const PriorityButton = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

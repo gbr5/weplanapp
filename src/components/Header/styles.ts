@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import { Platform } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   position: relative;
@@ -19,7 +18,7 @@ export const HeaderTitle = styled.Text`
   color: ${({ theme }) => theme.color.text6};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
-export const ProfileButton = styled(BorderlessButton)`
+export const ProfileButton = styled.TouchableOpacity`
 
 `;
 export const UserAvatar = styled.Image`

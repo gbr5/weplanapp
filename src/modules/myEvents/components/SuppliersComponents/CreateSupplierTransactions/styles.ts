@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.ScrollView`
   flex: 1;
@@ -68,7 +67,7 @@ export const ResponseText = styled.Text`
   color: ${({ theme }) => theme.color.text1};
 `;
 
-export const IconButton = styled(BorderlessButton)`
+export const IconButton = styled.TouchableOpacity`
   border-radius: 5px;
   padding: 8px;
   background-color: ${({ theme }) => theme.color.secondary};
@@ -76,7 +75,7 @@ export const IconButton = styled(BorderlessButton)`
   justify-content: center;
 `;
 
-export const QuestionButton = styled(BorderlessButton)`
+export const QuestionButton = styled.TouchableOpacity`
   border-radius: 5px;
   width: 100%;
   min-height: 64px;
@@ -92,7 +91,7 @@ export const ResponseButtonText = styled.Text`
   letter-spacing: 1.8px;
 `;
 
-export const BackButton = styled(BorderlessButton)`
+export const BackButton = styled.TouchableOpacity`
   border-radius: 5px;
   padding: 8px;
   background-color: ${({ theme }) => theme.color.secondary};
@@ -106,7 +105,7 @@ export const BackText = styled.Text`
   color: ${({ theme }) => theme.color.text6};
   margin: 16px 0px 8px;
 `;
-export const SelectButtonWindow = styled(RectButton)`
+export const SelectButtonWindow = styled.TouchableOpacity`
   border-radius: 5px;
   padding: 8px;
   background-color: ${({ theme }) => theme.color.text4};

@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 
 export const Container = styled.View`
@@ -30,7 +29,7 @@ export const BooleanField = styled.View`
   margin: 16px 0;
 `;
 
-export const BooleanButton = styled(BorderlessButton)`
+export const BooleanButton = styled.TouchableOpacity`
   color: ${({ theme }) => theme.color.atention};
 `;
 
@@ -38,7 +37,7 @@ export const Icon = styled(Feather)`
   font-size: ${RFValue(30)}px;
 `;
 
-export const SupplierCategoryButton = styled(RectButton)`
+export const SupplierCategoryButton = styled.TouchableOpacity`
   margin-top: 24px;
   padding: 16px;
   width: 100%;

@@ -40,11 +40,6 @@ const EventProvider: React.FC = ({ children }) => {
   const [eventsAsMember, setEventsAsMember] = useState<IEventMemberDTO[]>([]);
   const [eventsAsGuest, setEventsAsGuest] = useState<IEventGuestDTO[]>([]);
   async function loadStorageData() {
-    // const [events_as_owner, events_as_member, events_as_guest] = await AsyncStorage.multiGet([
-    // '@WePlan-Party:events-as-owner',
-    // '@WePlan-Party:events-as-member',
-    // '@WePlan-Party:events-as-guest',
-    // ]);
     const events_as_owner = await AsyncStorage.getItem('@WePlan-Party:events-as-owner');
     const events_as_member = await AsyncStorage.getItem('@WePlan-Party:events-as-member');
     const events_as_guest = await AsyncStorage.getItem('@WePlan-Party:events-as-guest');

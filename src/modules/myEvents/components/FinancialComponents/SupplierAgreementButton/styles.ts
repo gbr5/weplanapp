@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -7,7 +6,7 @@ interface IsOverdueProps {
   isOverdue: boolean;
 }
 
-export const Container = styled(BorderlessButton)`
+export const Container = styled.TouchableOpacity`
   width: 100%;
   padding: 16px;
   background-color: ${({ theme }) => theme.color.text6};
@@ -58,7 +57,7 @@ export const NumberOfInstallments = styled.Text`
   font-size: ${RFValue(16)}px;
 `;
 
-export const IconContainer = styled(BorderlessButton)`
+export const IconContainer = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

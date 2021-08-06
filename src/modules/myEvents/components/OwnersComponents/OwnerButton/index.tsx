@@ -24,7 +24,6 @@ export function OwnerButton({
   index,
 }: IProps) {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -57,7 +56,6 @@ export function OwnerButton({
     <>
       <Container
         style={{
-          elevation,
           shadowColor,
           shadowOffset,
           shadowOpacity,

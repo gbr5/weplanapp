@@ -35,7 +35,6 @@ import {
 
 export function SupplierButtonInfo() {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -92,7 +91,6 @@ export function SupplierButtonInfo() {
   return (
     <Container
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,

@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -9,7 +8,7 @@ export const Container = styled.View`
   width: 100%;
 `;
 
-export const Option = styled(BorderlessButton)`
+export const Option = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -27,7 +26,7 @@ export const Text = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
 
-export const CancelOption = styled(BorderlessButton)`
+export const CancelOption = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -64,7 +63,7 @@ export const DateTitle = styled.Text`
   margin: 0 0 5%;
 `;
 
-export const DateButton = styled(BorderlessButton)`
+export const DateButton = styled.TouchableOpacity`
   border-radius: 8px;
   padding: 8px;
   min-width: 45%;

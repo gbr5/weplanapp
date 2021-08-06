@@ -18,7 +18,6 @@ export function AddButton({
   onPress,
 }: IProps) {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -27,7 +26,6 @@ export function AddButton({
   return (
     <Container
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,

@@ -3,7 +3,6 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { Platform } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;
@@ -50,7 +49,7 @@ export const Icon = styled(FeatherIcon)`
 export const PasswordField = styled.View`
 `;
 
-export const PasswordSecureButton = styled(BorderlessButton)`
+export const PasswordSecureButton = styled.TouchableOpacity`
   position: absolute;
   top: 31%;
   right: 8px;

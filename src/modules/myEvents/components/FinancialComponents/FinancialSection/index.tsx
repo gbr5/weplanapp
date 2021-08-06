@@ -30,7 +30,6 @@ import {
 
 export function FinancialSection() {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -67,7 +66,6 @@ export function FinancialSection() {
           <FirstSection>
             <BudgetSection
               style={{
-                elevation,
                 shadowColor,
                 shadowOffset,
                 shadowOpacity,
@@ -97,7 +95,6 @@ export function FinancialSection() {
         <SectionButton>
           <MenuButton
             style={{
-              elevation,
               shadowColor,
               shadowOffset,
               shadowOpacity,
@@ -113,7 +110,6 @@ export function FinancialSection() {
           </MenuButton>
           <MenuButton
             style={{
-              elevation,
               shadowColor,
               shadowOffset,
               shadowOpacity,
@@ -129,7 +125,6 @@ export function FinancialSection() {
           </MenuButton>
           <MenuButton
             style={{
-              elevation,
               shadowColor,
               shadowOffset,
               shadowOpacity,

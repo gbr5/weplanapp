@@ -1,4 +1,3 @@
-import { BorderlessButton } from 'react-native-gesture-handler';
 import styled, { css } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
@@ -14,7 +13,7 @@ export const Container = styled.View`
   align-items: center;
 `;
 
-export const MenuButton = styled(BorderlessButton)<IButtonProps>`
+export const MenuButton = styled.TouchableOpacity<IButtonProps>`
   height: ${({ isActive }) => (isActive ? `${RFValue(56)}px` : `${RFValue(56)}px`)};
   background-color: ${({ theme }) => theme.color.text6};
   ${({ isActive }) => !isActive && css`

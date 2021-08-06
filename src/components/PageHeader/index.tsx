@@ -11,7 +11,6 @@ interface IProps {
 
 const PageHeader: React.FC<IProps> = ({ unsetVariables, children }) => {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -20,7 +19,6 @@ const PageHeader: React.FC<IProps> = ({ unsetVariables, children }) => {
   return (
     <Container
       style={{
-        elevation,
         shadowColor,
         shadowOffset,
         shadowOpacity,

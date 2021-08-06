@@ -15,7 +15,6 @@ import { useUserContacts } from '../../../../../hooks/userContacts';
 
 export function NewGuestWindow() {
   const {
-    elevation,
     shadowColor,
     shadowOffset,
     shadowOpacity,
@@ -23,12 +22,12 @@ export function NewGuestWindow() {
   } = theme.buttonShadow;
   const { handleNewGuestForm, handleNewGuestWindow } = useEventGuests();
   const {
-    getUserContacts,
+    getUserMobileContacts,
     handleSelectMobileContactsWindow,
   } = useUserContacts();
 
   async function handleNewMobileGuest() {
-    await getUserContacts();
+    await getUserMobileContacts();
     handleSelectMobileContactsWindow(true);
   }
 
@@ -38,7 +37,7 @@ export function NewGuestWindow() {
       zIndex={10}
       top="10%"
       left="2%"
-      height="60%"
+      height="45%"
       width="96%"
     >
       <Container>
@@ -49,11 +48,10 @@ export function NewGuestWindow() {
             shadowOffset,
             shadowOpacity,
             shadowRadius,
-            elevation,
           }}
           onPress={handleNewMobileGuest}
         >
-          <ButtonTitle>Contatos do celular</ButtonTitle>
+          <ButtonTitle>Selecionar do celular</ButtonTitle>
         </Button>
         <Button
           style={{
@@ -61,11 +59,10 @@ export function NewGuestWindow() {
             shadowOffset,
             shadowOpacity,
             shadowRadius,
-            elevation,
           }}
           onPress={handleNewGuestForm}
         >
-          <ButtonTitle>Manualmente</ButtonTitle>
+          <ButtonTitle>Criar manualmente</ButtonTitle>
         </Button>
       </Container>
     </WindowContainer>

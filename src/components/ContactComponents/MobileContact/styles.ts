@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -7,7 +6,7 @@ interface ISelectedProps {
   isSelected: boolean;
 }
 
-export const Container = styled(BorderlessButton)`
+export const Container = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -25,7 +24,7 @@ export const Name = styled.Text`
   text-align: left;
 `;
 
-export const Button = styled(BorderlessButton)`
+export const Button = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 `;

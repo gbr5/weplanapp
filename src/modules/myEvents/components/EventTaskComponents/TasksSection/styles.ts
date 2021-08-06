@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 import { FlatList, Platform } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import IEventTaskDTO from '../../../../../dtos/IEventTaskDTO';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -27,7 +26,7 @@ export const Title = styled.Text`
   margin: 8px 0;
 `;
 
-export const AddButton = styled(BorderlessButton)`
+export const AddButton = styled.TouchableOpacity`
   position: absolute;
   right: 4px;
   border-radius: 8px;

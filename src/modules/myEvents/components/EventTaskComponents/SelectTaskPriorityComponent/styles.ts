@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 import IPriorityButton from '../../../../../dtos/IPriorityButtonDTO';
@@ -30,7 +29,7 @@ export const IconContainer = styled.View`
   border: 1px solid ${({ theme }) => theme.color.text3};
 `;
 
-export const IconButton = styled(BorderlessButton)<IButtonProps>`
+export const IconButton = styled.TouchableOpacity<IButtonProps>`
   border: 1px solid ${({ theme }) => theme.color.text3};
   background-color: ${({ theme }) => theme.color.text6};
   padding: 6px;

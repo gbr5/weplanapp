@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -11,7 +10,7 @@ export const Container = styled.View`
 export const TitleContainer = styled.View`
 `;
 
-export const TitleButton = styled(BorderlessButton)`
+export const TitleButton = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -54,7 +53,7 @@ export const ArrowIcon = styled(Feather)`
   font-size: ${RFValue(20)}px;
 `;
 
-export const ArrowButton = styled(BorderlessButton)`
+export const ArrowButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   background-color: ${({ theme }) => theme.color.text3};

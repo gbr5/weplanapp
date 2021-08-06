@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface ICategoryProps {
@@ -17,7 +16,7 @@ export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
 `;
 
-export const CategoryButton = styled(RectButton)<ICategoryProps>`
+export const CategoryButton = styled.TouchableOpacity<ICategoryProps>`
   background-color: ${({ theme }) => theme.color.primary};
   ${({ isActive }) => isActive && css`
     background-color: ${({ theme }) => theme.color.secondary};

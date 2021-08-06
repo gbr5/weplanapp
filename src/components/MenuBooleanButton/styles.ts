@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface IButtonProps {
@@ -12,7 +11,7 @@ export const Container = styled.View`
   align-items: center;
 `;
 
-export const MenuButton = styled(RectButton)<IButtonProps>`
+export const MenuButton = styled.TouchableOpacity<IButtonProps>`
   border-radius: 5px;
   padding: 8px;
   width: 47%;

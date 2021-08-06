@@ -1,4 +1,3 @@
-import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
@@ -21,7 +20,7 @@ export const Container = styled.View`
   width: 108%;
 `;
 
-export const SequenceButton = styled(RectButton)<IProps>`
+export const SequenceButton = styled.TouchableOpacity<IProps>`
   border-radius: 5px;
   background-color: ${({ theme, isActive }) =>
     isActive

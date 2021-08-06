@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components/native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -22,7 +21,7 @@ export const Container = styled.View`
   border: 0.5px solid ${({ theme }) => theme.color.title};
 `;
 
-export const GoToSupplierButton = styled(RectButton)`
+export const GoToSupplierButton = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   width: 100%;
@@ -37,7 +36,7 @@ export const SupplierName = styled.Text`
   text-align: center;
 `;
 
-export const SupplierConfirmationButton = styled(BorderlessButton)<ISupplierProps>`
+export const SupplierConfirmationButton = styled.TouchableOpacity<ISupplierProps>`
   flex-direction: row;
   border-radius: 8px;
   width: 100%;
@@ -113,7 +112,7 @@ export const MenuButtonSection = styled.ScrollView`
   margin: 7px 4px 0;
 `;
 
-export const MenuButton = styled(BorderlessButton)`
+export const MenuButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.text6};
   margin-bottom: 8px;
   border-radius: 24px;

@@ -3,7 +3,6 @@ import { FlatList } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 
 interface IsActiveProps {
@@ -15,7 +14,7 @@ export const Container = styled.View`
   width: 100%;
 `;
 
-export const FilterButton = styled(BorderlessButton)`
+export const FilterButton = styled.TouchableOpacity`
   position: absolute;
   top: -6%;
   left: 2%;
@@ -29,7 +28,7 @@ export const FilterButton = styled(BorderlessButton)`
 export const FilterIcon = styled(Feather)`
   font-size: ${RFValue(28)}px;
 `;
-export const IsCancelledButton = styled(BorderlessButton)<IsActiveProps>`
+export const IsCancelledButton = styled.TouchableOpacity<IsActiveProps>`
   position: absolute;
   top: -9%;
   left: 2%;
@@ -73,7 +72,7 @@ export const Menu = styled.ScrollView`
   width: 100%;
 `;
 
-export const MenuButton = styled(RectButton)<IsActiveProps>`
+export const MenuButton = styled.TouchableOpacity<IsActiveProps>`
   width: 140px;
   height: 40px;
   border-radius: 5px;

@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 
 interface IAmountProps {
   isOverdue: boolean;
@@ -13,7 +12,7 @@ interface IsContainerProps {
   isSelected: boolean;
 }
 
-export const Container = styled(RectButton)<IsContainerProps>`
+export const Container = styled.TouchableOpacity<IsContainerProps>`
   width: 100%;
   padding: 8px 4px;
   flex-direction: row;
@@ -85,7 +84,7 @@ export const DateText = styled.Text`
   font-size: ${RFValue(18)}px;
 `;
 
-export const InfoButton = styled(BorderlessButton)`
+export const InfoButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   border-radius: 16px;

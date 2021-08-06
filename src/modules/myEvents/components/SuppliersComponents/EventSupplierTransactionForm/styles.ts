@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 
@@ -22,7 +21,7 @@ export const IsPaidSection = styled.View`
   width: 100%;
 `;
 
-export const IsPaidButton = styled(BorderlessButton)<IsPaidProps>`
+export const IsPaidButton = styled.TouchableOpacity<IsPaidProps>`
   background-color: ${({ theme, isPaid }) => isPaid ? theme.color.success : theme.color.atention};
 `;
 
@@ -31,7 +30,7 @@ export const IsPaidIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.text1};
 `;
 
-export const DateButton = styled(RectButton)`
+export const DateButton = styled.TouchableOpacity`
   border-radius: 5px;
   padding: 16px;
   width: 100px;
