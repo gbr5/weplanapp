@@ -79,7 +79,11 @@ export function SearchTransactions({
           closeFunction={handleOffSearch}
         />
       )}
-      <Container>
+      <Container
+        style={{
+          zIndex: backdrop ? 3 : 1,
+        }}
+      >
         <InputContainer
           style={isActive && {
             shadowColor: theme.color.text1,

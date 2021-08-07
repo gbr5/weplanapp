@@ -140,7 +140,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [toDateTransactionFilter, setToDateTransactionFilter] = useState(new Date());
   const [sortTransactionsByInterval, setSortTransactionsByInterval] = useState(false);
   const [cancelledTransactionFilter, setCancelledTransactionFilter] = useState(false);
-  const [filterTransactionOption, setFilterTransactionOption] = useState('');
+  const [filterTransactionOption, setFilterTransactionOption] = useState('all');
 
   function handleFilterTransactionOption(data: string) {
     setFilterTransactionOption(data);
