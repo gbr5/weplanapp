@@ -57,6 +57,8 @@ import {
   DashboardButton,
   BodyContainer,
 } from './styles';
+import { EditSupplierName } from '../../components/SuppliersComponents/EditSupplierName';
+import { EditSupplierCategory } from '../../components/SuppliersComponents/EditSupplierCategory';
 
 const MyEvent: React.FC = () => {
   const {
@@ -107,6 +109,8 @@ const MyEvent: React.FC = () => {
     supplierTransactionsWindow,
     selectedSupplierTransactionAgreement,
     eventSupplierAgreementTransactionsWindow,
+    editSupplierNameWindow,
+    editSupplierCategoryWindow,
   } = useEventSuppliers();
   const {
     guestFilterWindow,
@@ -199,6 +203,16 @@ const MyEvent: React.FC = () => {
         && selectedEventTransaction.transaction
         && editTransactionName
         && <EditTransactionName />}
+
+      {selectedSupplier
+        && selectedSupplier.id
+        && editSupplierNameWindow
+        && <EditSupplierName />}
+
+      {selectedSupplier
+        && selectedSupplier.id
+        && editSupplierCategoryWindow
+        && <EditSupplierCategory />}
 
       {selectedEventTransaction
         && selectedEventTransaction.transaction

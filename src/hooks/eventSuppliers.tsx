@@ -29,6 +29,8 @@ interface EventSuppliersContextType {
   cancelAgreementsWindow: boolean;
   dischargeOption: string;
   dischargingWindow: boolean;
+  editSupplierNameWindow: boolean;
+  editSupplierCategoryWindow: boolean;
   eventSupplierAgreementTransactionsWindow: boolean;
   loading: boolean;
   selectedSupplierCategory: string;
@@ -47,6 +49,8 @@ interface EventSuppliersContextType {
   handleDichargeOption: (data: string) => void;
   handleAddSupplierWindow: () => void;
   handleDischargingWindow: () => void;
+  handleEditSupplierNameWindow: () => void;
+  handleEditSupplierCategoryWindow: () => void;
   handleSupplierCategoryWindow: () => void;
   handleSupplierSubCategoryWindow: () => void;
   handleSupplierTransactionsWindow: () => void;
@@ -83,6 +87,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   const [cancelNotPaidTransactionsWindow, setCancelNotPaidTransactionsWindow] = useState(false);
   const [dischargeOption, setDischargeOption] = useState('');
   const [dischargingWindow, setDischargingWindow] = useState(false);
+  const [editSupplierNameWindow, setEditSupplierNameWindow] = useState(false);
+  const [editSupplierCategoryWindow, setEditSupplierCategoryWindow] = useState(false);
   const [eventSupplierAgreementTransactionsWindow, setEventSupplierAgreementTransactionsWindow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [supplierCategoryWindow, setSupplierCategoryWindow] = useState(false);
@@ -154,6 +160,12 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   }
   function handleAddSupplierWindow() {
     setAddSupplierWindow(!addSupplierWindow)
+  }
+  function handleEditSupplierNameWindow() {
+    setEditSupplierNameWindow(!editSupplierNameWindow)
+  }
+  function handleEditSupplierCategoryWindow() {
+    setEditSupplierCategoryWindow(!editSupplierCategoryWindow)
   }
 
   function handleDischargingWindow() {
@@ -398,6 +410,10 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         updateEventSupplier,
         updateEventSupplierTransactionAgreement,
         unsetEventSuppliersVariables,
+        editSupplierCategoryWindow,
+        editSupplierNameWindow,
+        handleEditSupplierCategoryWindow,
+        handleEditSupplierNameWindow,
       }}
     >
       {children}

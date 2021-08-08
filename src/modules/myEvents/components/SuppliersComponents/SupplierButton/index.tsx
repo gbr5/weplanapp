@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+import theme from '../../../../../global/styles/theme';
 import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
+import { useMyEvent } from '../../../../../hooks/myEvent';
+
+import { SupplierButtonInfo } from '../SupplierButtonInfo';
 
 import {
   Container,
@@ -7,11 +12,6 @@ import {
   SupplierName,
   Icon,
 } from './styles';
-import { useState } from 'react';
-import { SupplierButtonInfo } from '../SupplierButtonInfo';
-import { useMyEvent } from '../../../../../hooks/myEvent';
-import { useEffect } from 'react';
-import theme from '../../../../../global/styles/theme';
 
 interface IProps {
   supplier: IEventSupplierDTO;

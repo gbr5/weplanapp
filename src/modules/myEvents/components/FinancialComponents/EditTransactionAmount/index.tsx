@@ -95,7 +95,7 @@ export function EditTransactionAmount() {
   return (
     <WindowContainer
       closeWindow={handleEditEventTransactionValueWindow}
-      zIndex={15}
+      zIndex={25}
       top="5%"
       left="0%"
       height="70%"

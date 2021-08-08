@@ -31,6 +31,9 @@ import {
   SectionTitleLine,
   SectionTitle,
   TransactionText,
+  SupplierNameButton,
+  SupplierLabel,
+  FieldContainer,
 } from './styles';
 
 export function SupplierButtonInfo() {
@@ -45,6 +48,9 @@ export function SupplierButtonInfo() {
     handleCreateSupplierTransactionAgreementWindow,
     handleDischargingWindow,
     handleSupplierTransactionsWindow,
+    handleEditSupplierNameWindow,
+    handleEditSupplierCategoryWindow,
+    selectSupplierCategory,
   } = useEventSuppliers();
   const { eventDebitTransactions } = useTransaction();
 
@@ -62,10 +68,23 @@ export function SupplierButtonInfo() {
     }
   }
 
+  function openSelectCategoryWindow() {
+    selectSupplierCategory(selectedSupplier.supplier_sub_category);
+    handleEditSupplierCategoryWindow();
+  }
+
+  const totalCost = useMemo(() => {
+    return selectedSupplier.transactionAgreements
+      .filter(agreement => !agreement.isCancelled)
+      .map(agreement => agreement.amount)
+      .reduce((acc, cv) => acc + cv, 0);
+  }, [selectedSupplier]);
+
   const nextPayment = useMemo(() => {
     const today = new Date();
 
     return eventDebitTransactions
+      .filter(transaction => !transaction.isPaid)
       .filter(transaction => transaction.payee_id === selectedSupplier.id)
       .sort((a, b) => {
         if (
@@ -88,6 +107,10 @@ export function SupplierButtonInfo() {
       })[0];
   }, [selectedSupplier]);
 
+  const nextPaymentLate = useMemo(() => {
+    return new Date(nextPayment.due_date) < new Date();
+  }, [nextPayment])
+
   return (
     <Container
       style={{
@@ -97,7 +120,35 @@ export function SupplierButtonInfo() {
         shadowRadius,
       }}
     >
-      <SupplierName>{selectedSupplier.supplier_sub_category}</SupplierName>
+      <FieldContainer>
+        <SupplierLabel>Categoria</SupplierLabel>
+        <SupplierNameButton
+          onPress={openSelectCategoryWindow}
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
+        >
+          <SupplierName>{selectedSupplier.supplier_sub_category}</SupplierName>
+        </SupplierNameButton>
+      </FieldContainer>
+      <SectionBorder />
+      <FieldContainer>
+        <SupplierLabel>Nome</SupplierLabel>
+        <SupplierNameButton
+          onPress={handleEditSupplierNameWindow}
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
+        >
+          <SupplierName>{selectedSupplier.name}</SupplierName>
+        </SupplierNameButton>
+      </FieldContainer>
 
       <SectionBorder />
 
@@ -144,6 +195,11 @@ export function SupplierButtonInfo() {
           <IconContainer
             color={theme.color.info_light}
           >
+            <NotificationContainer>
+              <NotificationNumber>
+                0
+              </NotificationNumber>
+            </NotificationContainer>
             <Icon name="file-text" />
           </IconContainer>
         </MenuButton>
@@ -226,17 +282,41 @@ export function SupplierButtonInfo() {
       {nextPayment && nextPayment.id && (
         <>
           <NextTransactionContainer>
-            <SectionTitle>Próximo pagamento</SectionTitle>
+            <SectionTitle>
+              {nextPaymentLate ? (
+                'Pagamento Atrasado'
+              ) : (
+                'Próximo pagamento'
+              )}
+                </SectionTitle>
             <SectionTitleLine />
             <TransactionRow>
-              <TransactionText>{formatBrlCurrency(nextPayment.amount)}  -  {formatOnlyDateShort(String(nextPayment.due_date))}</TransactionText>
-              <Icon name="square" />
+              {/* <TransactionText>{nextPayment.name} | </TransactionText> */}
+              <TransactionText
+                isLate={nextPaymentLate}
+              >
+                {formatBrlCurrency(nextPayment.amount)}  -  {formatOnlyDateShort(String(nextPayment.due_date))}
+              </TransactionText>
+              {/* <Icon name="square" /> */}
             </TransactionRow>
 
           </NextTransactionContainer>
           <SectionBorder />
         </>
       )}
+      <NextTransactionContainer>
+        <SectionTitle>Total Contratado</SectionTitle>
+        <SectionTitleLine />
+        <TransactionRow>
+          <TransactionText
+            isLate={false}
+          >
+            {formatBrlCurrency(totalCost)}
+          </TransactionText>
+        </TransactionRow>
+      </NextTransactionContainer>
+      <SectionBorder />
+
       <RowContainer>
         <SupplierConfirmationButton
           style={{

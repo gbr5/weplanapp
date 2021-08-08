@@ -65,6 +65,8 @@ export const TransactionContainer = styled(
   flex: 1;
   min-height: 320px;
   margin-top: 8px;
+  padding-bottom: 32px;
+  margin-bottom: 32px;
 `;
 
 export const Menu = styled.ScrollView`

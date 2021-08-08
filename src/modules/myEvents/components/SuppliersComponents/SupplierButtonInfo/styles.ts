@@ -6,6 +6,10 @@ interface ISupplierProps {
   isHired: boolean;
 }
 
+interface IsLate {
+  isLate: boolean;
+}
+
 interface IBackgroundColor {
   color: string;
 }
@@ -29,11 +33,34 @@ export const GoToSupplierButton = styled.TouchableOpacity`
 
 export const SupplierName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(20)}px;
-  text-align: left;
+  font-size: ${RFValue(18)}px;
   color: ${({ theme }) => theme.color.text1};
-  margin: 8px 0;
   text-align: center;
+`;
+
+export const SupplierLabel = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto};
+  font-size: ${RFValue(16)}px;
+  color: ${({ theme }) => theme.color.secondary};
+  position: absolute;
+  top: 4px;
+  left: 4px;
+`;
+
+export const FieldContainer = styled.View`
+  height: 84px;
+  width: 100%;
+  justify-content: flex-end;
+`;
+
+export const SupplierNameButton = styled.TouchableOpacity`
+  border-radius: 8px;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.color.text5};
+  border: 1px solid ${({ theme }) => theme.color.text4};
+  margin: 8px;
 `;
 
 export const SupplierConfirmationButton = styled.TouchableOpacity<ISupplierProps>`
@@ -104,7 +131,7 @@ export const FooterContainer = styled.View`
 export const TransactionRow = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 8px;
 `;
 
@@ -131,11 +158,12 @@ export const SectionTitle = styled.Text`
   color: ${({ theme }) => theme.color.text1};
 `;
 
-export const TransactionText = styled.Text`
+export const TransactionText = styled.Text<IsLate>`
   margin-bottom: 4px;
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.roboto};
-  color: ${({ theme }) => theme.color.text1};
+  color: ${({ theme, isLate }) => isLate ? theme.color.atention : theme.color.text1};
+  text-align: center;
 `;
 
 export const MenuText = styled.Text`
