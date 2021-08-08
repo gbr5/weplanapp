@@ -6,4 +6,5 @@ export default interface ICreateTransactionDTO {
     payer_id: string;
     payee_id: string;
     index?: string;
+    category?: string;
   }

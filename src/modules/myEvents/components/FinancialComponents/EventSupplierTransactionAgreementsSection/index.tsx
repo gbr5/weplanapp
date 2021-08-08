@@ -12,19 +12,8 @@ import {
 
 export function EventSupplierTransactionAgreementsSection() {
   const {
-    eventSuppliers,
+    supplierAgreements,
   } = useMyEvent();
-
-  const supplierAgreements = useMemo(() => {
-    const findAgreements: IEventSupplierTransactionAgreementDTO[] = [];
-    eventSuppliers.map(supplier => {
-      supplier.transactionAgreements
-        .filter(agreement => !agreement.isCancelled)
-        .map(agreement => findAgreements.push(agreement));
-      return supplier;
-    });
-    return findAgreements;
-  }, [eventSuppliers]);
 
   return (
     <Container>

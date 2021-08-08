@@ -5,22 +5,15 @@ import api from '../services/api';
 import { useMyEvent } from './myEvent';
 
 interface EventMembersContextType {
-  memberDescriptionWindow: boolean;
   editEventMember: (data: IEventMemberDTO) => void;
   createEventMember: (data: ICreateEventMemberDTO) => void;
   deleteEventMember: (id: string) => void;
-  handleMemberDescriptionWindow: () => void;
 }
 
 const EventMembersContext = createContext({} as EventMembersContextType);
 
 const EventMembersProvider: React.FC = ({ children }) => {
   const { getEventMembers, selectedEvent } = useMyEvent();
-  const [memberDescriptionWindow, setMemberDescriptionWindow] = useState(false);
-
-  function handleMemberDescriptionWindow() {
-    setMemberDescriptionWindow(!memberDescriptionWindow);
-  }
 
   async function createEventMember(data: ICreateEventMemberDTO) {
     try {
@@ -55,8 +48,6 @@ const EventMembersProvider: React.FC = ({ children }) => {
         editEventMember,
         createEventMember,
         deleteEventMember,
-        handleMemberDescriptionWindow,
-        memberDescriptionWindow,
       }}
     >
       {children}

@@ -26,7 +26,7 @@ export function TasksMenu(): JSX.Element {
   return (
     <Container>
       <MenuButton
-        style={{
+        style={status !== 'not started' && {
           shadowColor,
           shadowOffset,
           shadowOpacity,
@@ -50,7 +50,7 @@ export function TasksMenu(): JSX.Element {
         </MenuButtonText>
       </MenuButton>
       <MenuButton
-        style={{
+        style={status !== 'running' && {
           shadowColor,
           shadowOffset,
           shadowOpacity,
@@ -74,7 +74,7 @@ export function TasksMenu(): JSX.Element {
         </MenuButtonText>
       </MenuButton>
       <MenuButton
-        style={{
+        style={status !== 'finnished' && {
           shadowColor,
           shadowOffset,
           shadowOpacity,

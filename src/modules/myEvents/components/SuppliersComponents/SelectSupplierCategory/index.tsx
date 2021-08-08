@@ -1,25 +1,30 @@
 import React from 'react';
 import WindowContainer from '../../../../../components/WindowContainer';
+import { WindowHeader } from '../../../../../components/WindowHeader';
+import theme from '../../../../../global/styles/theme';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import {
   Container,
-  Title,
   CategoryButton,
   CategoryButtonText,
 } from './styles';
 
 export function SelectSupplierCategory() {
   const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
+  const {
     selectSupplierCategory,
     selectedSupplierCategory,
     handleSupplierCategoryWindow,
-    handleSupplierSubCategoryWindow,
   } = useEventSuppliers();
 
   function handleSelectSupplierCategory(category: string) {
     selectSupplierCategory(category);
-    handleSupplierSubCategoryWindow();
     handleSupplierCategoryWindow();
   }
 
@@ -30,79 +35,89 @@ export function SelectSupplierCategory() {
       backdropZIndex={14}
       top="5%"
       left="0%"
-      height="90%"
+      height="65%"
       width="100%"
     >
       <Container>
-        <Title>Selecione a Categoria</Title>
+        <WindowHeader overTitle="Novo(a) Fornecedor(a)" title="Categoria" />
         <CategoryButton
-          isActive={selectedSupplierCategory === 'Catering'}
-          onPress={() => handleSelectSupplierCategory('Catering')}
+          isActive={selectedSupplierCategory === 'Comes & Bebes'}
+          onPress={() => handleSelectSupplierCategory('Comes & Bebes')}
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
         >
           <CategoryButtonText
-            isActive={selectedSupplierCategory === 'Catering'}
+            isActive={selectedSupplierCategory === 'Comes & Bebes'}
           >
-            Buffet
+            Comes & Bebes
           </CategoryButtonText>
         </CategoryButton>
         <CategoryButton
-          isActive={selectedSupplierCategory === 'Planning'}
-          onPress={() => handleSelectSupplierCategory('Planning')}
+          isActive={selectedSupplierCategory === 'Planejamento'}
+          onPress={() => handleSelectSupplierCategory('Planejamento')}
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
         >
           <CategoryButtonText
-            isActive={selectedSupplierCategory === 'Planning'}
+            isActive={selectedSupplierCategory === 'Planejamento'}
           >
             Planejamento
           </CategoryButtonText>
         </CategoryButton>
         <CategoryButton
-          isActive={selectedSupplierCategory === 'Event_Design'}
-          onPress={() => handleSelectSupplierCategory('Event_Design')}
+          isActive={selectedSupplierCategory === 'Decoração'}
+          onPress={() => handleSelectSupplierCategory('Decoração')}
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
         >
           <CategoryButtonText
-            isActive={selectedSupplierCategory === 'Event_Design'}
+            isActive={selectedSupplierCategory === 'Decoração'}
           >
             Decoração
           </CategoryButtonText>
         </CategoryButton>
         <CategoryButton
-          isActive={selectedSupplierCategory === 'Venue'}
-          onPress={() => handleSelectSupplierCategory('Venue')}
+          isActive={selectedSupplierCategory === 'Estrutura'}
+          onPress={() => handleSelectSupplierCategory('Estrutura')}
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
         >
           <CategoryButtonText
-            isActive={selectedSupplierCategory === 'Venue'}
+            isActive={selectedSupplierCategory === 'Estrutura'}
           >
-            Espaços
+            Estrutura
           </CategoryButtonText>
         </CategoryButton>
         <CategoryButton
-          isActive={selectedSupplierCategory === 'Film_And_Photography'}
-          onPress={() => handleSelectSupplierCategory('Film_And_Photography')}
+          isActive={selectedSupplierCategory === 'Atrações'}
+          onPress={() => handleSelectSupplierCategory('Atrações')}
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
         >
           <CategoryButtonText
-            isActive={selectedSupplierCategory === 'Film_And_Photography'}
+            isActive={selectedSupplierCategory === 'Atrações'}
           >
-            Filmagem e Fotos
-          </CategoryButtonText>
-        </CategoryButton>
-        <CategoryButton
-          isActive={selectedSupplierCategory === 'Dance_Floors_Structures_And_Lighting'}
-          onPress={() => handleSelectSupplierCategory('Dance_Floors_Structures_And_Lighting')}
-        >
-          <CategoryButtonText
-            isActive={selectedSupplierCategory === 'Dance_Floors_Structures_And_Lighting'}
-          >
-            Boate, Estruturas e Luz Cênica
-          </CategoryButtonText>
-        </CategoryButton>
-        <CategoryButton
-          isActive={selectedSupplierCategory === 'Bartenders_And_Drinks'}
-          onPress={() => handleSelectSupplierCategory('Bartenders_And_Drinks')}
-        >
-          <CategoryButtonText
-            isActive={selectedSupplierCategory === 'Bartenders_And_Drinks'}
-          >
-            Serviço de Bar e Bebidas
+            Atrações
           </CategoryButtonText>
         </CategoryButton>
       </Container>

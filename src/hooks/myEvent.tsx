@@ -20,6 +20,7 @@ import IEventBudgetDTO from '../dtos/IEventBudgetDTO';
 import { useMemo } from 'react';
 import { formatBrlCurrency } from '../utils/formatBrlCurrency';
 import IFriendDTO from '../dtos/IFriendDTO';
+import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
 
 interface MyEventContextType {
   eventFinancialSubSection: string;
@@ -38,6 +39,7 @@ interface MyEventContextType {
   dischargedSuppliers: IEventSupplierDTO[];
   notHiredSuppliers: IEventSupplierDTO[];
   selectedFriend: IFriendDTO;
+  supplierAgreements: IEventSupplierTransactionAgreementDTO[];
   selectedSupplier: IEventSupplierDTO;
   selectedTask: IEventTaskDTO;
   guests: IEventGuestDTO[];
@@ -51,8 +53,10 @@ interface MyEventContextType {
   totalEventCost: number;
   isOwner: boolean;
   currentSection: string;
+  sectionDescriptionWindow: boolean;
   handleEventFinancialSubSection: (data: string) => void;
   handleBudgetWindow: () => void;
+  handleSectionDescriptionWindow: () => void;
   handleBackdropSearch: () => void;
   selectEvent: (event: IEventDTO) => void;
   getEventGuests: (eventId: string) => Promise<void>;
@@ -81,6 +85,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [backdropSearch, setBackdropSearch] = useState(false);
   const [budgetWindow, setBudgetWindow] = useState(false);
+  const [sectionDescriptionWindow, setSectionDescriptionWindow] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState({} as IEventDTO);
   const [eventInfo, setEventInfo] = useState({} as IEventInfoDTO);
   const [selectedOwner, setSelectedOwner] = useState({} as IEventOwnerDTO);
@@ -105,6 +110,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [selectedTask, setSelectedTask] = useState({} as IEventTaskDTO);
   const [selectedSupplier, setSelectedSupplier] = useState({} as IEventSupplierDTO);
   const [selectedFriend, setSelectedFriend] = useState({} as IFriendDTO);
+  const [supplierAgreements, setSupplierAgreements] = useState<IEventSupplierTransactionAgreementDTO[]>([]);
 
   const eventBudget = useMemo(() => {
     if (selectedEvent && selectedEvent.id && selectedEvent.eventBudget)
@@ -161,6 +167,10 @@ const MyEventProvider: React.FC = ({ children }) => {
     setBudgetWindow(!budgetWindow);
   }
 
+  function handleSectionDescriptionWindow() {
+    setSectionDescriptionWindow(!sectionDescriptionWindow);
+  }
+
   function handleBackdropSearch() {
     setBackdropSearch(!backdropSearch);
   }
@@ -181,6 +191,12 @@ const MyEventProvider: React.FC = ({ children }) => {
         findSupplier && setSelectedSupplier(findSupplier);
       }
       setEventSuppliers(response.data);
+      const agreements: IEventSupplierTransactionAgreementDTO[] = [];
+      response.data.map(supplier => {
+        supplier.transactionAgreements.map(agreement => !agreement.isCancelled && agreements.push(agreement));
+        return supplier;
+      });
+      setSupplierAgreements(agreements);
       const newNotHired = response.data.filter((selected) => !selected.isHired && !selected.isDischarged);
       const newHired = response.data.filter((selected) => selected.isHired && !selected.isDischarged);
       const newDischarged = response.data.filter((selected) => selected.isDischarged);
@@ -370,6 +386,9 @@ const MyEventProvider: React.FC = ({ children }) => {
         selectSupplier,
         selectedSupplier,
         unsetEventVariables,
+        supplierAgreements,
+        handleSectionDescriptionWindow,
+        sectionDescriptionWindow,
       }}
     >
       {children}

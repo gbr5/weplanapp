@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import theme from '../../../../../global/styles/theme';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
-import { useEventOwners } from '../../../../../hooks/eventOwners';
-import { useTransaction } from '../../../../../hooks/transactions';
 
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
@@ -11,9 +9,6 @@ import {
   Container,
   NotificationContainer,
   NotificationNumber,
-  ConfirmationButton,
-  RowContainer,
-  RowTitle,
   Name,
   DateText,
   Icon,
@@ -22,16 +17,11 @@ import {
   MenuButton,
   MenuText,
   FooterContainer,
-  NextTransactionContainer,
-  TransactionRow,
   SectionBorder,
-  SectionTitleLine,
-  SectionTitle,
-  TransactionText,
 } from './styles';
 
 export function OwnerButtonInfo() {
-  const { selectedOwner } = useMyEvent();
+  const { selectedOwner, selectedEvent } = useMyEvent();
   // const { } = useEventOwners();
   // const { eventDebitTransactions } = useTransaction();
 
@@ -46,55 +36,43 @@ export function OwnerButtonInfo() {
       <SectionBorder />
 
       <MenuButtonSection horizontal >
-
-        <MenuButton>
-          <MenuText>Tarefas</MenuText>
-          <IconContainer
-            color={theme.color.atention_light}
-          >
-            <NotificationContainer>
-              <NotificationNumber>0</NotificationNumber>
-            </NotificationContainer>
-            <Icon name="bell" />
-          </IconContainer>
-        </MenuButton>
-
-        <MenuButton>
-          <MenuText>Transações</MenuText>
-          <IconContainer
-            color={theme.color.title}
-          >
-            <Icon name="dollar-sign" />
-          </IconContainer>
-        </MenuButton>
-        <MenuButton>
+        {selectedEvent.event_type === 'Prom' && (
+          <MenuButton>
+            <MenuText>Transações</MenuText>
+            <IconContainer
+              color={theme.color.title}
+            >
+              <Icon name="dollar-sign" />
+            </IconContainer>
+          </MenuButton>
+        )}
+        {/* <MenuButton>
           <MenuText>Notas</MenuText>
           <IconContainer
             color={theme.color.info_light}
           >
             <Icon name="file-text" />
           </IconContainer>
-        </MenuButton>
+        </MenuButton> */}
+        {selectedEvent.event_type === 'Prom' && (
+          <MenuButton>
+            <MenuText>Contratos</MenuText>
+            <IconContainer
+              color={theme.color.success_light}
+            >
+              <Icon name="lock" />
+            </IconContainer>
+          </MenuButton>
+        )}
 
-        <MenuButton>
-          <MenuText>Contratos</MenuText>
-          <IconContainer
-            color={theme.color.success_light}
-          >
-            <Icon name="lock" />
-          </IconContainer>
-        </MenuButton>
-
-        <MenuButton>
-          <MenuText>Votos</MenuText>
-          <IconContainer
-            color={theme.color.title}
-          >
-            <Icon name="star" />
-          </IconContainer>
-        </MenuButton>
-
-        <MenuButton>
+        <MenuButton
+          style={{
+            shadowColor: theme.menuShadow.shadowColor,
+            shadowOffset: theme.menuShadow.shadowOffset,
+            shadowOpacity: theme.menuShadow.shadowOpacity,
+            shadowRadius: theme.menuShadow.shadowRadius,
+          }}
+        >
           <MenuText>Mais</MenuText>
           <IconContainer
             color={theme.color.primary_light}

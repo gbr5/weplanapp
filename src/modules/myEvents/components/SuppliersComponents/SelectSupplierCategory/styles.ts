@@ -6,8 +6,9 @@ interface ICategoryProps {
 }
 
 export const Container = styled.ScrollView`
-  margin: 40px 0;
+  margin-top: 40px;
   flex: 1;
+  width: 100%;
 `;
 
 export const Title = styled.Text`
@@ -17,13 +18,14 @@ export const Title = styled.Text`
 `;
 
 export const CategoryButton = styled.TouchableOpacity<ICategoryProps>`
-  background-color: ${({ theme }) => theme.color.primary};
+  background-color: ${({ theme }) => theme.color.text6};
   ${({ isActive }) => isActive && css`
-    background-color: ${({ theme }) => theme.color.secondary};
+    background-color: ${({ theme }) => theme.color.text6};
   `};
+  border: .5px solid ${({ theme }) => theme.color.text4};
   border-radius: 5px;
-  margin: 16px 0;
-  padding: 16px;
+  margin: 8px;
+  padding: 12px;
   align-items: center;
   justify-content: center;
 `;

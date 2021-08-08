@@ -85,24 +85,26 @@ export function SearchTransactions({
         }}
       >
         <InputContainer
-          style={isActive && {
-            shadowColor: theme.color.text1,
+          style={{
+            shadowColor: isActive ? theme.color.text1 : 'rgba(0,0,0,0)',
             shadowOffset,
             shadowOpacity,
             shadowRadius,
           }}
         >
-          <CloseButton
-            style={{
-              shadowColor,
-              shadowOffset,
-              shadowOpacity,
-              shadowRadius,
-            }}
-            onPress={handleResetSearch}
-          >
-            <CloseIcon name="x" />
-          </CloseButton>
+          {filterString !== undefined && (
+            <CloseButton
+              style={{
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+              }}
+              onPress={handleResetSearch}
+            >
+              <CloseIcon name="x" />
+            </CloseButton>
+          )}
           <Input
             ref={inputRef}
             placeholderTextColor={theme.color.text1}

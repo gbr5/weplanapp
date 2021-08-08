@@ -1,6 +1,7 @@
 export default interface ITransactionDTO {
   id: string;
   name: string;
+  category?: string;
   amount: number;
   due_date: Date;
   isPaid: boolean;

@@ -61,10 +61,10 @@ export const TransactionContainer = styled(
     paddingBottom: getBottomSpace(),
   },
 })`
-  padding: 48px 0 32px;
   width: 100%;
   flex: 1;
   min-height: 320px;
+  margin-top: 8px;
 `;
 
 export const Menu = styled.ScrollView`

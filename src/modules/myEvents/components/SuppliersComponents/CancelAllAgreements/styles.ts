@@ -55,7 +55,7 @@ export const AgreementsContainer = styled.ScrollView`
   border-radius: 8px;
   padding: 8px 0;
   margin: 4px 0 8px;
-  max-height: 120px;
+  max-height: 100px;
   padding-right: 16px;
 `;
 
@@ -65,7 +65,7 @@ export const AgreementContainer = styled.TouchableOpacity<IProps>`
     : theme.color.secondary
   };
   border-radius: 8px;
-  padding: 16px;
+  padding: 0 16px;
   margin: 0 8px;
   align-items: center;
   justify-content: center;
@@ -83,7 +83,7 @@ export const AgreementIndex = styled.Text<IProps>`
     : theme.color.text6
   };
   font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
   position: absolute;
   top: 0px;
   left: 4px;
@@ -95,7 +95,8 @@ export const AgreementDate = styled.Text<IProps>`
     : theme.color.primary
   };
   font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
+  letter-spacing: 1px;
 `;
 
 export const AgreementValue = styled.Text<IProps>`
@@ -104,7 +105,7 @@ export const AgreementValue = styled.Text<IProps>`
     : theme.color.primary
   };
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(16)}px;
   letter-spacing: 1px;
   margin: 0 auto;
 `;
@@ -115,8 +116,9 @@ export const NumberOfInstallments = styled.Text<IProps>`
     : theme.color.primary
   };
   font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
   letter-spacing: 1px;
+  margin-left: 8px;
 `;
 
 
@@ -135,7 +137,6 @@ export const TransactionsContainer = styled(
     paddingBottom: getBottomSpace(),
   },
 })`
-  margin-top: 16px;
   border-radius: 8px;
   width: 100%;
   height: 240px;

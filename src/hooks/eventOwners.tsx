@@ -5,22 +5,15 @@ import api from '../services/api';
 import { useMyEvent } from './myEvent';
 
 interface EventOwnersContextType {
-  ownerDescriptionWindow: boolean;
   editEventOwner: (data: IEventOwnerDTO) => Promise<void>;
   createEventOwner: (data: ICreateEventOwnerDTO) => Promise<void>;
   deleteEventOwner: (id: string) => Promise<void>;
-  handleOwnerDescriptionWindow: () => void;
 }
 
 const EventOwnersContext = createContext({} as EventOwnersContextType);
 
 const EventOwnersProvider: React.FC = ({ children }) => {
   const { selectedEvent, getEventOwners } = useMyEvent();
-  const [ownerDescriptionWindow, setOwnerDescriptionWindow] = useState(false);
-
-  function handleOwnerDescriptionWindow() {
-    setOwnerDescriptionWindow(!ownerDescriptionWindow);
-  }
 
   async function createEventOwner(data: ICreateEventOwnerDTO) {
     try {
@@ -56,8 +49,6 @@ const EventOwnersProvider: React.FC = ({ children }) => {
         editEventOwner,
         createEventOwner,
         deleteEventOwner,
-        handleOwnerDescriptionWindow,
-        ownerDescriptionWindow,
       }}
     >
       {children}

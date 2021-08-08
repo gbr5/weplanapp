@@ -12,7 +12,11 @@ import {
 } from './styles';
 
 export function SuppliersSection() {
-  const { hiredSuppliers, notHiredSuppliers } = useMyEvent();
+  const {
+    hiredSuppliers,
+    notHiredSuppliers,
+    handleSectionDescriptionWindow,
+  } = useMyEvent();
   const { handleAddSupplierWindow } = useEventSuppliers();
   const [hiredSuppliersSection, setHiredSuppliersSection] = useState(true);
 
@@ -24,7 +28,7 @@ export function SuppliersSection() {
     <Container>
       <SectionHeader
         handleAddButton={handleAddSupplierWindow}
-        handleInfoButton={handleAddSupplierWindow}
+        handleInfoButton={handleSectionDescriptionWindow}
         title="Fornecedores"
       />
       <MenuBooleanButton

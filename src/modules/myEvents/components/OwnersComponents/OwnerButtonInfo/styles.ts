@@ -117,14 +117,14 @@ export const MenuButtonSection = styled.ScrollView`
 `;
 
 export const MenuButton = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.color.text5};
+  background-color: ${({ theme }) => theme.color.text6};
   margin-bottom: 8px;
   border-radius: 24px;
   align-items: center;
   justify-content: center;
   width: 112px;
   height: 112px;
-  border: 1px solid ${({ theme }) => theme.color.title};
+  border: 0.5px solid ${({ theme }) => theme.color.text4};
   margin-right: 16px;
 `;
 

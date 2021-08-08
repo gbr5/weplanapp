@@ -36,25 +36,22 @@ const NewSupplierForm: React.FC<IProps> = ({
   const {
     createEventSuppliers,
     loading,
-    selectedSupplierSubCategory,
+    selectedSupplierCategory,
     handleSupplierCategoryWindow,
     selectSupplierCategory,
     selectSupplierSubCategory,
   } = useEventSuppliers();
   const formRef = useRef<FormHandles>(null);
 
-  const [isHired, setIsHired] = useState(false)
-  const [weplanUser, setWeplanUser] = useState(false)
-
   const handleSubmit = useCallback(async ({ name }: IFormData) => {
-  if (name === '') return Alert.alert('Dê um nome ao fornecedor!');
-    if (selectedSupplierSubCategory && ! selectedSupplierSubCategory.id)
+    if (name === '') return Alert.alert('Dê um nome ao fornecedor!');
+    if (selectedSupplierCategory === '')
       return Alert.alert('Defina a categoria do fonecedor!');
     await createEventSuppliers({
-      isHired,
+      isHired: false,
       name,
-      supplier_sub_category: selectedSupplierSubCategory.sub_category,
-      weplanUser,
+      supplier_sub_category: selectedSupplierCategory,
+      weplanUser: false,
     });
     selectSupplierCategory('')
     selectSupplierSubCategory({} as ISupplierSubCategoryDTO);
@@ -99,10 +96,9 @@ const NewSupplierForm: React.FC<IProps> = ({
                 onPress={handleSupplierCategoryWindow}
               >
                 <SupplierCategoryButtonText>
-                  {selectedSupplierSubCategory
-                    && selectedSupplierSubCategory.id
-                      ? selectedSupplierSubCategory.sub_category
-                      : 'Defina a categoria'
+                  {selectedSupplierCategory !== ''
+                    ? selectedSupplierCategory
+                    : 'Defina a categoria'
                   }
                 </SupplierCategoryButtonText>
               </SupplierCategoryButton>

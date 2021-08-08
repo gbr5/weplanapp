@@ -58,7 +58,7 @@ export function MainMenu() {
   return (
     <Container horizontal>
       <MenuButton
-        style={{
+        style={currentSection !== 'Tasks' && {
           shadowColor,
           shadowOffset,
           shadowOpacity,
@@ -79,7 +79,7 @@ export function MainMenu() {
         </MenuButtonNumber>
       </MenuButton>
       <MenuButton
-        style={{
+        style={currentSection !== 'Guests' && {
           shadowColor,
           shadowOffset,
           shadowOpacity,
@@ -100,7 +100,7 @@ export function MainMenu() {
         </MenuButtonNumber>
       </MenuButton>
       <MenuButton
-        style={{
+        style={currentSection !== 'Suppliers' && {
           shadowColor,
           shadowOffset,
           shadowOpacity,
@@ -121,7 +121,7 @@ export function MainMenu() {
         </MenuButtonNumber>
       </MenuButton>
       <MenuButton
-        style={{
+        style={currentSection !== 'Financial' && {
           shadowColor,
           shadowOffset,
           shadowOpacity,
@@ -142,7 +142,7 @@ export function MainMenu() {
         </MenuButtonNumber>
       </MenuButton>
       <MenuButton
-        style={{
+        style={currentSection !== 'Owners' && {
           shadowColor,
           shadowOffset,
           shadowOpacity,

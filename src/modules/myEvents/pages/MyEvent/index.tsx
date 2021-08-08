@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { useMyEvent } from '../../../../hooks/myEvent';
 import { useEventTasks } from '../../../../hooks/eventTasks';
@@ -15,7 +15,6 @@ import NewSupplierForm from '../../components/SuppliersComponents/NewSupplierFor
 import { BudgetWindow } from '../../components/BudgetWindow';
 import { CreateSupplierTransactionAgreement } from '../../components/SuppliersComponents/CreateSupplierTransactionAgreement';
 import { FinancialSection } from '../../components/FinancialComponents/FinancialSection';
-import { CreateSupplierTransactions } from '../../components/SuppliersComponents/CreateSupplierTransactions';
 import { NewEventSupplierTransactionAgreementConfirmation } from '../../components/SuppliersComponents/NewEventSupplierTransactionAgreementConfirmation';
 import { MainMenu } from '../../components/MainMenu';
 import NewGuestForm from '../../components/EventGuestComponents/NewGuestForm';
@@ -33,8 +32,23 @@ import ShortConfirmationWindow from '../../../../components/ShortConfirmationWin
 import { EditNoteWindow } from '../../../../components/EditNoteWindow';
 import { SuppliersSection } from '../../components/SuppliersComponents/SuppliersSection';
 import { DischargeSupplierWindow } from '../../components/SuppliersComponents/DischargeSupplierWindow';
-import { EditTransactionValue } from '../../components/SuppliersComponents/EditTransactionValue';
 import { CancelAllAgreements } from '../../components/SuppliersComponents/CancelAllAgreements';
+import { SupplierTransactionsWindow } from '../../components/SuppliersComponents/SupplierTransactionsWindow';
+import { EventSupplierAgreementTransactionsWindow } from '../../components/FinancialComponents/EventSupplierAgreementTransactionsWindow';
+import { MembersSection } from '../../components/MembersComponents/MembersSection';
+import { OwnersSection } from '../../components/OwnersComponents/OwnersSection';
+import { SectionDescriptionWindow } from '../../components/OwnersComponents/SectionDescriptionWindow';
+import { useEventGuests } from '../../../../hooks/eventGuests';
+import { GuestFilterWindow } from '../../components/EventGuestComponents/GuestFilterWindow';
+import { TransactionsFilterWindow } from '../../components/FinancialComponents/TransactionsFilterWindow';
+import { useUnsetEventVariables } from '../../../../hooks/unsetEventVariables';
+import { useUserContacts } from '../../../../hooks/userContacts';
+import { NewGuestWindow } from '../../components/EventGuestComponents/NewGuestWindow';
+import { SelectMobileContacts } from '../../../../components/ContactComponents/SelectMobileContacts';
+import { EditTransactionName } from '../../../../components/TransactionComponents/EditTransactionName';
+import { CreateEventTransaction } from '../../../../components/TransactionComponents/CreateEventTransaction';
+import { EditTransactionAmount } from '../../components/FinancialComponents/EditTransactionAmount';
+import { EditTransactionCategory } from '../../../../components/TransactionComponents/EditTransactionCategory';
 
 import {
   Container,
@@ -43,22 +57,6 @@ import {
   DashboardButton,
   BodyContainer,
 } from './styles';
-import { SupplierTransactionsWindow } from '../../components/SuppliersComponents/SupplierTransactionsWindow';
-import { EventSupplierAgreementTransactionsWindow } from '../../components/FinancialComponents/EventSupplierAgreementTransactionsWindow';
-import { MembersSection } from '../../components/MembersComponents/MembersSection';
-import { OwnersSection } from '../../components/OwnersComponents/OwnersSection';
-import { useEventOwners } from '../../../../hooks/eventOwners';
-import { OwnerDescriptionWindow } from '../../components/OwnersComponents/OwnerDescriptionWindow';
-import { useEventMembers } from '../../../../hooks/eventMembers';
-import { MemberDescriptionWindow } from '../../components/MembersComponents/MemberDescriptionWindow';
-import { useEventGuests } from '../../../../hooks/eventGuests';
-import { GuestSectionInfoWindow } from '../../components/EventGuestComponents/GuestSectionInfoWindow';
-import { GuestFilterWindow } from '../../components/EventGuestComponents/GuestFilterWindow';
-import { TransactionsFilterWindow } from '../../components/FinancialComponents/TransactionsFilterWindow';
-import { useUnsetEventVariables } from '../../../../hooks/unsetEventVariables';
-import { useUserContacts } from '../../../../hooks/userContacts';
-import { NewGuestWindow } from '../../components/EventGuestComponents/NewGuestWindow';
-import { SelectMobileContacts } from '../../../../components/ContactComponents/SelectMobileContacts';
 
 const MyEvent: React.FC = () => {
   const {
@@ -71,6 +69,7 @@ const MyEvent: React.FC = () => {
     selectEventTask,
     budgetWindow,
     calculateTotalEventCost,
+    sectionDescriptionWindow,
   } = useMyEvent();
   const {
     loading,
@@ -100,22 +99,16 @@ const MyEvent: React.FC = () => {
   const {
     addSupplierWindow,
     cancelAgreementsWindow,
-    selectedSupplierTransaction,
     dischargingWindow,
     supplierCategoryWindow,
     supplierSubCategoryWindow,
     createSupplierTransactionAgreementWindow,
     handleAddSupplierWindow,
-    createSupplierTransactionsWindow,
     supplierTransactionsWindow,
-    editTransactionValueWindow,
     selectedSupplierTransactionAgreement,
     eventSupplierAgreementTransactionsWindow,
   } = useEventSuppliers();
-  const { ownerDescriptionWindow } = useEventOwners();
-  const { memberDescriptionWindow } = useEventMembers();
   const {
-    guestSectionInfoWindow,
     guestFilterWindow,
     newGuestForm,
     newGuestWindow,
@@ -124,6 +117,8 @@ const MyEvent: React.FC = () => {
   const {
     cancelEventTransaction,
     cancelEventTransactionConfirmationWindow,
+    editTransactionName,
+    editTransactionCategory,
     filterTransactionWindow,
     handleCancelEventTransactionConfirmationWindow,
     handleSelectedDateWindow,
@@ -133,7 +128,8 @@ const MyEvent: React.FC = () => {
     selectedDate,
     selectedDateWindow,
     selectedEventTransaction,
-    selectedTransaction,
+    createTransactionWindow,
+    editEventTransactionValueWindow,
   } = useTransaction();
   const { selectMobileContactsWindow } = useUserContacts();
   const { unsetVariables } = useUnsetEventVariables();
@@ -199,17 +195,26 @@ const MyEvent: React.FC = () => {
     <>
       {budgetWindow && <BudgetWindow />}
 
+      {selectedEventTransaction
+        && selectedEventTransaction.transaction
+        && editTransactionName
+        && <EditTransactionName />}
+
+      {selectedEventTransaction
+        && selectedEventTransaction.transaction
+        && editTransactionCategory
+        && <EditTransactionCategory />}
+
       {selectMobileContactsWindow && <SelectMobileContacts />}
 
-      {ownerDescriptionWindow && <OwnerDescriptionWindow />}
+      {createTransactionWindow && <CreateEventTransaction />}
 
-      {guestSectionInfoWindow && <GuestSectionInfoWindow />}
+      {sectionDescriptionWindow && <SectionDescriptionWindow />}
+
 
       {guestFilterWindow && <GuestFilterWindow />}
 
       {filterTransactionWindow && <TransactionsFilterWindow /> }
-
-      {memberDescriptionWindow && <MemberDescriptionWindow />}
 
       {selectedEventTransaction
         && selectedEventTransaction.transaction
@@ -225,15 +230,6 @@ const MyEvent: React.FC = () => {
             backdropLeft="0%"
           />
         )}
-
-      {selectedSupplierTransaction
-        && selectedSupplierTransaction.id
-        && selectedTransaction
-        && selectedTransaction.id
-        && editTransactionValueWindow && (
-          <EditTransactionValue />
-        )
-      }
 
       {selectedSupplierTransactionAgreement
         && selectedSupplierTransactionAgreement.id
@@ -367,12 +363,9 @@ const MyEvent: React.FC = () => {
           <CreateSupplierTransactionAgreement />
         )}
 
-      {createSupplierTransactionsWindow &&
-        selectedSupplier &&
-        selectedSupplier.id && (
-          <CreateSupplierTransactions />
-        )}
-
+      {editEventTransactionValueWindow && (
+        <EditTransactionAmount />
+      )}
       {selectedDateWindow && (
         <DatePickerWindow
           closeWindow={handleSelectedDateWindow}

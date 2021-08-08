@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { AddButton } from '../../../../../components/AddButton';
-import { InfoButton } from '../../../../../components/InfoButton';
+
+import { useMyEvent } from '../../../../../hooks/myEvent';
+
 import { SectionHeader } from '../../../../../components/SectionHeader';
-import { WindowHeader } from '../../../../../components/WindowHeader';
-import { useEventMembers } from '../../../../../hooks/eventMembers';
 import { MembersFinancialSection } from '../MembersFinancialSection';
 import { MembersFooterMenu } from '../MembersFooterMenu';
 import { MembersListSection } from '../MembersListSection';
@@ -15,9 +14,7 @@ import {
 } from './styles';
 
 export function MembersSection() {
-  const noUserMemberUUID = '89890569-ed93-4bf3-b123-91813838aade';
-
-  const { handleMemberDescriptionWindow } = useEventMembers();
+  const { handleSectionDescriptionWindow } = useMyEvent();
 
   const [section, setSection] = useState('Main');
 
@@ -31,7 +28,7 @@ export function MembersSection() {
     <Container>
       <SectionHeader
         handleAddButton={handleAddMemberForm}
-        handleInfoButton={handleMemberDescriptionWindow}
+        handleInfoButton={handleSectionDescriptionWindow}
         title="Membros"
       />
       <Body>

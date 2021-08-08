@@ -1,11 +1,8 @@
-import React from 'react';
-import { useState } from 'react';
-import { AddButton } from '../../../../../components/AddButton';
-import { InfoButton } from '../../../../../components/InfoButton';
-import { SectionHeader } from '../../../../../components/SectionHeader';
-import { WindowHeader } from '../../../../../components/WindowHeader';
-import { useEventOwners } from '../../../../../hooks/eventOwners';
+import React, { useState } from 'react';
+
 import { useMyEvent } from '../../../../../hooks/myEvent';
+
+import { SectionHeader } from '../../../../../components/SectionHeader';
 import { OwnersFinancialSection } from '../OwnersFinancialSection';
 import { OwnersFooterMenu } from '../OwnersFooterMenu';
 import { OwnersListSection } from '../OwnersListSection';
@@ -17,8 +14,7 @@ import {
 } from './styles';
 
 export function OwnersSection() {
-  const { selectedEvent } = useMyEvent();
-  const { handleOwnerDescriptionWindow } = useEventOwners();
+  const { selectedEvent, handleSectionDescriptionWindow } = useMyEvent();
 
   const [section, setSection] = useState(selectedEvent.event_type === 'Prom' ? 'Main' : 'Owners');
 
@@ -33,7 +29,7 @@ export function OwnersSection() {
       <SectionHeader
         title="Anfitriões"
         handleAddButton={handleAddOwnerForm}
-        handleInfoButton={handleOwnerDescriptionWindow}
+        handleInfoButton={handleSectionDescriptionWindow}
       />
       <Body>
         {section === 'Main' && selectedEvent.event_type === 'Prom' && <OwnersMainSection />}

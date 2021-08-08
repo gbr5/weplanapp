@@ -17,7 +17,6 @@ import { useEffect } from 'react';
 interface EventGuestsContextType {
   allGuestsFilter: boolean;
   confirmedGuestsFilter: boolean;
-  guestSectionInfoWindow: boolean;
   guestFilterWindow: boolean;
   loading: boolean;
   newGuestForm: boolean;
@@ -32,7 +31,6 @@ interface EventGuestsContextType {
   editGuest: (data: IEventGuestDTO) => Promise<IEventGuestDTO>;
   handleAllGuestsFilter: () => void;
   handleConfirmedGuestsFilter: () => void;
-  handleGuestSectionInfoWindow: () => void;
   handleGuestFilterWindow: () => void;
   handleNewGuestForm: () => void;
   handleNewGuestWindow: () => void;
@@ -49,7 +47,6 @@ const EventGuestsProvider: React.FC = ({ children }) => {
   const { selectedEvent, getEventGuests, selectGuest } = useMyEvent();
 
   const [loading, setLoading] = useState(false);
-  const [guestSectionInfoWindow, setGuestSectionInfoWindow] = useState(false);
   const [guestFilterWindow, setGuestFilterWindow] = useState(false);
   const [selectedGuestContact, setSelectedGuestContact] = useState({} as IGuestContactDTO);
   const [confirmedGuestsFilter, setConfirmedGuestsFilter] = useState(false);
@@ -90,9 +87,6 @@ const EventGuestsProvider: React.FC = ({ children }) => {
     setSelectedGuestContact({} as IGuestContactDTO);
   }
 
-  function handleGuestSectionInfoWindow() {
-    setGuestSectionInfoWindow(!guestSectionInfoWindow);
-  }
   function handleGuestFilterWindow() {
     setGuestFilterWindow(!guestFilterWindow);
   }
@@ -223,9 +217,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         createMultipleMobileGuests,
         deleteGuestContact,
         editGuest,
-        guestSectionInfoWindow,
         guestFilterWindow,
-        handleGuestSectionInfoWindow,
         handleGuestFilterWindow,
         loading,
         selectGuestContact,

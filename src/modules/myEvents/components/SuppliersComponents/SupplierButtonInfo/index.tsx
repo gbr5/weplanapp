@@ -103,8 +103,8 @@ export function SupplierButtonInfo() {
 
       <MenuButtonSection horizontal >
 
-        <MenuButton>
-          <MenuText>Tarefas</MenuText>
+        {/* <MenuButton>
+          <MenuText>Agenda</MenuText>
           <IconContainer
             color={theme.color.atention_light}
           >
@@ -113,10 +113,17 @@ export function SupplierButtonInfo() {
             </NotificationContainer>
             <Icon name="bell" />
           </IconContainer>
-        </MenuButton>
+        </MenuButton> */}
 
         {selectedSupplier.isHired && (
-          <MenuButton onPress={handleSupplierTransactionsWindow}>
+          <MenuButton
+            style={{
+              shadowColor: theme.menuShadow.shadowColor,
+              shadowOffset: theme.menuShadow.shadowOffset,
+              shadowOpacity: theme.menuShadow.shadowOpacity,
+              shadowRadius: theme.menuShadow.shadowRadius,
+            }}
+            onPress={handleSupplierTransactionsWindow}>
             <MenuText>Transações</MenuText>
             <IconContainer
               color={theme.color.title}
@@ -125,7 +132,14 @@ export function SupplierButtonInfo() {
             </IconContainer>
           </MenuButton>
         )}
-        <MenuButton>
+        <MenuButton
+          style={{
+              shadowColor: theme.menuShadow.shadowColor,
+              shadowOffset: theme.menuShadow.shadowOffset,
+              shadowOpacity: theme.menuShadow.shadowOpacity,
+              shadowRadius: theme.menuShadow.shadowRadius,
+            }}
+        >
           <MenuText>Notas</MenuText>
           <IconContainer
             color={theme.color.info_light}
@@ -135,7 +149,14 @@ export function SupplierButtonInfo() {
         </MenuButton>
 
         {selectedSupplier.isHired && (
-          <MenuButton>
+          <MenuButton
+            style={{
+              shadowColor: theme.menuShadow.shadowColor,
+              shadowOffset: theme.menuShadow.shadowOffset,
+              shadowOpacity: theme.menuShadow.shadowOpacity,
+              shadowRadius: theme.menuShadow.shadowRadius,
+            }}
+          >
             <MenuText>Contratos</MenuText>
             <IconContainer
               color={theme.color.success_light}
@@ -146,7 +167,14 @@ export function SupplierButtonInfo() {
         )}
 
         {!selectedSupplier.isHired && (
-          <MenuButton>
+          <MenuButton
+            style={{
+              shadowColor: theme.menuShadow.shadowColor,
+              shadowOffset: theme.menuShadow.shadowOffset,
+              shadowOpacity: theme.menuShadow.shadowOpacity,
+              shadowRadius: theme.menuShadow.shadowRadius,
+            }}
+          >
             <MenuText>Orçamento</MenuText>
             <IconContainer
               color={theme.color.success_light}
@@ -156,8 +184,15 @@ export function SupplierButtonInfo() {
           </MenuButton>
         )}
 
-        {!selectedSupplier.weplanUser && (
-          <MenuButton>
+        {selectedSupplier.weplanUser && (
+          <MenuButton
+            style={{
+              shadowColor: theme.menuShadow.shadowColor,
+              shadowOffset: theme.menuShadow.shadowOffset,
+              shadowOpacity: theme.menuShadow.shadowOpacity,
+              shadowRadius: theme.menuShadow.shadowRadius,
+            }}
+          >
             <MenuText>Avaliações</MenuText>
             <IconContainer
               color={theme.color.title}
@@ -167,14 +202,23 @@ export function SupplierButtonInfo() {
           </MenuButton>
         )}
 
-        <MenuButton>
-          <MenuText>Mais</MenuText>
-          <IconContainer
-            color={theme.color.primary_light}
+        {selectedSupplier.weplanUser && (
+          <MenuButton
+            style={{
+              shadowColor: theme.menuShadow.shadowColor,
+              shadowOffset: theme.menuShadow.shadowOffset,
+              shadowOpacity: theme.menuShadow.shadowOpacity,
+              shadowRadius: theme.menuShadow.shadowRadius,
+            }}
           >
-            <Icon name="plus" />
-          </IconContainer>
-        </MenuButton>
+            <MenuText>Mais</MenuText>
+            <IconContainer
+              color={theme.color.primary_light}
+            >
+              <Icon name="plus" />
+            </IconContainer>
+          </MenuButton>
+        )}
 
       </MenuButtonSection>
 
@@ -195,6 +239,12 @@ export function SupplierButtonInfo() {
       )}
       <RowContainer>
         <SupplierConfirmationButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
           isHired={selectedSupplier.isHired}
           onPress={updateSupplierIsHired}
         >

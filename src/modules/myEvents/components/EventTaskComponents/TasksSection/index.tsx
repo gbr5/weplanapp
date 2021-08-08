@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
+
 import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventTasks } from '../../../../../hooks/eventTasks';
+
 import { TasksMenu } from '../TasksMenu';
 import { EventTask } from '../EventTask';
+import { SectionHeader } from '../../../../../components/SectionHeader';
 
 import {
   Container,
-  TitleContainer,
-  Title,
   TasksContainer,
-  AddButton,
-  AddIcon,
 } from './styles';
-import { useEventTasks } from '../../../../../hooks/eventTasks';
-import { useMemo } from 'react';
-import { SectionHeader } from '../../../../../components/SectionHeader';
 
 export function TasksSection(): JSX.Element {
-  const { selectedEvent } = useMyEvent();
+  const { selectedEvent, handleSectionDescriptionWindow } = useMyEvent();
   const { status, handleCreateTaskWindow } = useEventTasks();
 
   const sortedTasks = useMemo(() => {
@@ -46,15 +43,9 @@ export function TasksSection(): JSX.Element {
     <Container>
       <SectionHeader
         handleAddButton={handleCreateTaskWindow}
-        handleInfoButton={handleCreateTaskWindow}
+        handleInfoButton={handleSectionDescriptionWindow}
         title="Suas Tarefas"
       />
-      {/* <TitleContainer>
-        <Title>Suas Tarefas</Title>
-        <AddButton onPress={handleCreateTaskWindow}>
-          <AddIcon name="plus" />
-        </AddButton>
-      </TitleContainer> */}
       <TasksMenu />
       {sortedTasks.length > 0 && (
         <TasksContainer

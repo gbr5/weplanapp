@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import { addDays } from 'date-fns';
 import { TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 
 import theme from '../../../../../global/styles/theme';
@@ -12,24 +11,21 @@ import { useMyEvent } from '../../../../../hooks/myEvent';
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
 import formatOnlyTime from '../../../../../utils/formatOnlyTime';
 
-import Button from '../../../../../components/Button';
 import WindowContainer from '../../../../../components/WindowContainer';
 import Input from '../../../../../components/Input';
 import { SelectTaskPriorityComponent } from '../SelectTaskPriorityComponent';
+import { FormButton } from '../../../../../components/FormButton';
+import { WindowHeader } from '../../../../../components/WindowHeader';
 
 import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import {
   Container,
-  Title,
   FormQuestion,
   DateContainer,
   DateText,
   DateButton,
   TimeText,
-  Underline,
 } from './styles';
-import { FormButton } from '../../../../../components/FormButton';
-import { WindowHeader } from '../../../../../components/WindowHeader';
 
 interface IFormData {
   title: string;
@@ -77,7 +73,7 @@ const NewTaskForm: React.FC<IProps> = ({
       closeWindow={closeWindow}
       top="5%"
       left="2%"
-      height="80%"
+      height="85%"
       width="96%"
       zIndex={15}
       backdropZIndex={14}

@@ -129,12 +129,6 @@ export function SupplierTransactionsWindow() {
                   new Date(transaction.due_date).getFullYear() === year
                 )[0].transaction.id === item.transaction.id;
 
-              const firstOfMonth = transactions
-                .filter(({ transaction }) =>
-                  new Date(transaction.due_date).getFullYear() === year
-                  && new Date(transaction.due_date).getMonth() === month
-                )[0].transaction.id === item.transaction.id;
-
               const firstOfDay = transactions
                 .filter(({ transaction }) =>
                   new Date(transaction.due_date).getFullYear() === year
@@ -145,7 +139,6 @@ export function SupplierTransactionsWindow() {
               return (
                 <EventTransactionButton
                   firstOfDay={firstOfDay}
-                  firstOfMonth={firstOfMonth}
                   firstOfYear={firstOfYear}
                   key={item.transaction.id}
                   index={index}

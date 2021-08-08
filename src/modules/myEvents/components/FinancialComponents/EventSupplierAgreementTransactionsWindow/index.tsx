@@ -29,6 +29,7 @@ export function EventSupplierAgreementTransactionsWindow() {
   const {
     selectSupplier,
     eventSuppliers,
+    supplierAgreements,
   } = useMyEvent();
   const {
     selectSupplierTransaction,
@@ -98,7 +99,7 @@ export function EventSupplierAgreementTransactionsWindow() {
       return handleEventTransactions(selectedSupplierTransactionAgreement.transactions
         .filter(agreementTransaction => !agreementTransaction.transaction.isCancelled)
         .map(({ transaction }) => transaction));
-  }, [selectedSupplierTransactionAgreement, eventSuppliers]);
+  }, [selectedSupplierTransactionAgreement.transactions, eventSuppliers, supplierAgreements]);
 
   return (
     <WindowContainer
@@ -125,7 +126,7 @@ export function EventSupplierAgreementTransactionsWindow() {
           title="Transações"
         />
 
-        <Title>Custo Total do Contrato:  {transactionsSum}</Title>
+        <Title>Valor Total:  {transactionsSum}</Title>
 
         {transactions
           && transactions.length > 0 && (
@@ -143,13 +144,6 @@ export function EventSupplierAgreementTransactionsWindow() {
                     .filter(({ transaction }) =>
                       new Date(transaction.due_date).getFullYear() === year
                     )[0].transaction.id === item.transaction.id;
-
-                  const firstOfMonth = transactions
-                    .filter(({ transaction }) =>
-                      new Date(transaction.due_date).getFullYear() === year
-                      && new Date(transaction.due_date).getMonth() === month
-                    )[0].transaction.id === item.transaction.id;
-
                   const firstOfDay = transactions
                     .filter(({ transaction }) =>
                       new Date(transaction.due_date).getFullYear() === year
@@ -160,7 +154,6 @@ export function EventSupplierAgreementTransactionsWindow() {
                   return (
                     <EventTransactionButton
                       firstOfDay={firstOfDay}
-                      firstOfMonth={firstOfMonth}
                       firstOfYear={firstOfYear}
                       key={item.transaction.id}
                       index={index}

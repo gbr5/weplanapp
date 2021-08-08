@@ -17,7 +17,6 @@ import ITransactionDTO from '../dtos/ITransactionDTO';
 import IUpdateEventSupplierTransactionAgreementDTO from '../dtos/IUpdateEventSupplierTransactionAgreementDTO';
 import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
-import { Alert } from 'react-native';
 
 interface  IPayerTransactionResponseDTO {
   transactions: ITransactionDTO[];
@@ -39,7 +38,10 @@ interface ICreateEventSupplierTransactionAgreementWithTransactionsDTO extends IC
 interface TransactionContextType {
   createTransactionWindow: boolean;
   cancelEventTransactionConfirmationWindow: boolean;
+  editTransactionName: boolean;
+  editTransactionCategory: boolean;
   editNewTransactionValueWindow: boolean;
+  editEventTransactionValueWindow: boolean;
   editNewTransactionDueDateWindow: boolean;
   editTransactionDueDateWindow: boolean;
   eventTotalExecutedDebit: number;
@@ -51,6 +53,7 @@ interface TransactionContextType {
   eventDebitTransactions: ITransactionDTO[];
   eventCreditTransactions: ITransactionDTO[];
   eventCancelledTransactions: ITransactionDTO[];
+  filteredEventTransactions: IEventTransactionDTO[];
   filterTransactionWindow: boolean;
   loading: boolean;
   newAgreementAmount: number;
@@ -69,21 +72,25 @@ interface TransactionContextType {
   filterTransactionOption: string;
   handleFilterTransactionOption: (data: string) => void;
   cancelEventTransaction: () => Promise<void>;
-  createSupplierTransactionAgreement: (data: ICreateEventSupplierTransactionAgreementDTO) => Promise<void>;
   createSupplierTransactionAgreementWithTransactions: (data: ICreateEventSupplierTransactionAgreementWithTransactionsDTO) => Promise<void>;
   deleteAllSupplierAgreements: () => Promise<void>;
   deleteTransaction: (id: string) => Promise<void>;
+  createTransaction: (data: ICreateTransactionDTO) => Promise<ITransactionDTO>;
   editTransaction: (data: ITransactionDTO) => Promise<ITransactionDTO>;
   getAllEventTransactions: () => Promise<void>;
   getPayerTransactions: (payer_id: string) => Promise<IPayerTransactionResponseDTO>
   handleCreateTransactionWindow: () => void;
   handleCancelEventTransactionConfirmationWindow: () => void;
+  handleEditTransactionName: () => void;
+  handleEditTransactionCategory: () => void;
   handleEditNewTransactionValueWindow: () => void;
   handleEditNewTransactionDueDateWindow: () => void;
   handleEditTransactionDueDateWindow: () => void;
   handleCancelledTransactionFilter: () => void;
+  handleEditEventTransactionValueWindow: () => void;
   handleSortTransactionsByIntervalFilter: () => void;
   handleFromDateTransactionFilter: (data: Date) => void;
+  handleFilteredEventTransactions: (data: IEventTransactionDTO[]) => void;
   handleToDateTransactionFilter: (data: Date) => void;
   handleEventTransactions: (data: ITransactionDTO[]) => IEventTransactionDTO[];
   handleFilterTransactionWindow: () => void;
@@ -105,16 +112,18 @@ const TransactionProvider: React.FC = ({ children }) => {
   const { getEventSuppliers, selectedSupplier, selectedEvent, eventSuppliers } = useMyEvent();
   const {
     selectSupplierTransactionAgreement,
-    handleCreateSupplierTransactionAgreementWindow,
-    handleCreateSupplierTransactionsWindow,
     handleUpdateAgreementAndTransactions,
     updateEventSupplier,
+    selectedSupplierTransactionAgreement,
   } = useEventSuppliers();
 
   const [loading, setLoading] = useState(false);
   const [createTransactionWindow, setCreateTransactionWindow] = useState(false);
   const [cancelEventTransactionConfirmationWindow, setCancelEventTransactionConfirmationWindow] = useState(false);
+  const [editTransactionName, setEditTransactionName] = useState(false);
+  const [editTransactionCategory, setEditTransactionCategory] = useState(false);
   const [editNewTransactionValueWindow, setEditNewTransactionValueWindow] = useState(false);
+  const [editEventTransactionValueWindow, setEditEventTransactionValueWindow] = useState(false);
   const [editNewTransactionDueDateWindow, setEditNewTransactionDueDateWindow] = useState(false);
   const [editTransactionDueDateWindow, setEditTransactionDueDateWindow] = useState(false);
   const [eventTotalExecutedDebit, setEventTotalExecutedDebit] = useState(0);
@@ -141,6 +150,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [sortTransactionsByInterval, setSortTransactionsByInterval] = useState(false);
   const [cancelledTransactionFilter, setCancelledTransactionFilter] = useState(false);
   const [filterTransactionOption, setFilterTransactionOption] = useState('all');
+  const [filteredEventTransactions, setFilteredEventTransactions] = useState<IEventTransactionDTO[]>(eventTransactions);
 
   function handleFilterTransactionOption(data: string) {
     setFilterTransactionOption(data);
@@ -159,8 +169,16 @@ const TransactionProvider: React.FC = ({ children }) => {
     setCancelledTransactionFilter(!cancelledTransactionFilter);
   }
 
+  function handleEditEventTransactionValueWindow() {
+    setEditEventTransactionValueWindow(!editEventTransactionValueWindow);
+  }
+
   function handleSortTransactionsByIntervalFilter() {
     setSortTransactionsByInterval(!sortTransactionsByInterval);
+  }
+
+  function handleFilteredEventTransactions(data: IEventTransactionDTO[]) {
+    setFilteredEventTransactions(data);
   }
 
   function handleFromDateTransactionFilter(data: Date) {
@@ -173,6 +191,14 @@ const TransactionProvider: React.FC = ({ children }) => {
 
   function handleSelectedEventTransaction(data: IEventTransactionDTO) {
     setSelectedEventTransaction(data);
+  }
+
+  function handleEditTransactionName() {
+    setEditTransactionName(!editTransactionName);
+  }
+
+  function handleEditTransactionCategory() {
+    setEditTransactionCategory(!editTransactionCategory);
   }
 
   function handleEditTransactionDueDateWindow() {
@@ -237,6 +263,7 @@ const TransactionProvider: React.FC = ({ children }) => {
       );
       const response = handleEventTransactions(transactions);
       setEventTransactions(response);
+      setFilteredEventTransactions(response);
 
       setEventCreditTransactions(sortedCreditTransactions);
       setEventDebitTransactions(sortedDebitTransactions);
@@ -316,9 +343,41 @@ const TransactionProvider: React.FC = ({ children }) => {
     setCreateTransactionWindow(!createTransactionWindow);
   }
 
+  async function createTransaction({
+    amount,
+    name,
+    due_date,
+    isPaid,
+    payee_id,
+    payer_id,
+    category,
+  }: ICreateTransactionDTO) {
+    try {
+      setLoading(true);
+      const response = await api.post('/transactions', {
+        amount,
+        name,
+        due_date,
+        isPaid,
+        payee_id,
+        payer_id,
+        category,
+      });
+      selectedEvent && selectedEvent.id && await getAllEventTransactions();
+      selectedEvent && selectedEvent.id && await getEventSuppliers(selectedEvent.id);
+      return response.data;
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function editTransaction({
     id,
     amount,
+    name,
+    category,
     due_date,
     isPaid,
   }: ITransactionDTO) {
@@ -327,12 +386,55 @@ const TransactionProvider: React.FC = ({ children }) => {
       const response = await api.put('/transactions', {
         id,
         amount,
+        name,
+        category,
         due_date,
         isPaid,
       });
+      if (selectedSupplierTransactionAgreement
+        && selectedSupplierTransactionAgreement.id) {
+          const updatedAgreement = selectedSupplierTransactionAgreement.transactions.map(transaction => {
+            return transaction.id === id ? {
+              ...transaction,
+              transaction: {
+                ...transaction.transaction,
+                amount,
+                name,
+                category,
+                due_date,
+                isPaid,
+              },
+            } : transaction;
+          });
+          selectSupplierTransactionAgreement({
+            ...selectedSupplierTransactionAgreement,
+            transactions: updatedAgreement,
+          });
+        }
+      if (filteredEventTransactions.length > 0) {
+        const updatedFilteredTransactions: IEventTransactionDTO[] = filteredEventTransactions.map(item => {
+          if (item.transaction.id === id) {
+            return {
+              ...item,
+              transaction: response.data,
+            };
+          }
+          return item;
+        });
+        handleFilteredEventTransactions(updatedFilteredTransactions)
+      }
       selectedTransaction && selectedTransaction.id && setSelectedTransaction(response.data);
+      selectedEventTransaction
+        && selectedEventTransaction.transaction
+        && setSelectedEventTransaction({
+          ...selectedEventTransaction,
+          transaction: response.data,
+        });
+      selectedEventTransaction
+        && selectedEventTransaction.transaction
+        && selectedEventTransaction.agreement_type === 'suppliers'
+        && await getEventSuppliers(selectedEvent.id);
       selectedEvent && selectedEvent.id && await getAllEventTransactions();
-      selectedSupplier && selectedSupplier.id && await getEventSuppliers(selectedSupplier.event_id);
       return response.data;
     } catch (err) {
       throw new Error(err);
@@ -342,9 +444,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   }
 
   async function handleUpdateTransactionDueDate(data: Date) {
-    Alert.alert(`${data}`);
     data.setHours(10);
-    Alert.alert(`${new Date(data)}`);
     const oldTransaction = selectedEventTransaction;
     const response = await editTransaction({
       ...selectedEventTransaction.transaction,
@@ -398,29 +498,6 @@ const TransactionProvider: React.FC = ({ children }) => {
         });
       }
       await getEventSuppliers(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function createSupplierTransactionAgreement({
-    amount,
-    number_of_installments,
-    supplier_id,
-  }: ICreateEventSupplierTransactionAgreementDTO) {
-    try {
-      setLoading(true);
-      const response = await api.post(`/event-supplier-transaction-agreements`, {
-        amount,
-        number_of_installments,
-        supplier_id,
-      });
-      selectSupplierTransactionAgreement(response.data);
-      await getEventSuppliers(selectedEvent.id);
-      handleCreateSupplierTransactionAgreementWindow();
-      handleCreateSupplierTransactionsWindow();
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -533,7 +610,6 @@ const TransactionProvider: React.FC = ({ children }) => {
         cancelEventTransaction,
         cancelEventTransactionConfirmationWindow,
         createTransactionWindow,
-        createSupplierTransactionAgreement,
         createSupplierTransactionAgreementWithTransactions,
         deleteTransaction,
         deleteAllSupplierAgreements,
@@ -548,8 +624,10 @@ const TransactionProvider: React.FC = ({ children }) => {
         eventTotalCredit,
         eventTotalDebit,
         eventTotalExecutedCredit,
+        editEventTransactionValueWindow,
         eventTotalExecutedDebit,
         eventTransactions,
+        filteredEventTransactions,
         filterTransactionWindow,
         getAllEventTransactions,
         getPayerTransactions,
@@ -557,8 +635,11 @@ const TransactionProvider: React.FC = ({ children }) => {
         handleCreateTransactionWindow,
         handleEditNewTransactionDueDateWindow,
         handleEditNewTransactionValueWindow,
+        handleEditEventTransactionValueWindow,
         handleEditTransactionDueDateWindow,
         handleEventTransactions,
+        handleFilteredEventTransactions,
+        createTransaction,
         handleFilterTransactionWindow,
         handleNewAgreement,
         handleNewEventSupplierTransactionAgreement,
@@ -590,6 +671,10 @@ const TransactionProvider: React.FC = ({ children }) => {
         toDateTransactionFilter,
         handleFilterTransactionOption,
         filterTransactionOption,
+        editTransactionName,
+        handleEditTransactionName,
+        editTransactionCategory,
+        handleEditTransactionCategory,
       }}
     >
       {children}

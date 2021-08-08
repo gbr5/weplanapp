@@ -34,64 +34,76 @@ export function EventTransactionSection() {
     toDateTransactionFilter,
     handleFilterTransactionWindow,
     filterTransactionOption,
+    handleCreateTransactionWindow,
+    handleSelectedDate,
+    filteredEventTransactions,
+    handleFilteredEventTransactions,
   } = useTransaction();
 
-  const [filteredTransactions, setFilteredTransactions] = useState<IEventTransactionDTO[]>(eventTransactions);
-
   const transactions = useMemo<IEventTransactionDTO[]>(() => {
+    if (filteredEventTransactions.length < 0) return [];
     if (sortTransactionsByInterval) {
-      const updatedTransactions = filteredTransactions
-        .filter(({ transaction }) =>
-          new Date(transaction.due_date) > fromDateTransactionFilter
-            && new Date(transaction.due_date) < toDateTransactionFilter);
+      const updatedTransactions = filteredEventTransactions
+        .filter(({ transaction }) => transaction
+          && new Date(transaction.due_date) > fromDateTransactionFilter
+          && new Date(transaction.due_date) < toDateTransactionFilter);
       if (filterTransactionOption === 'paid') {
         if (!cancelledTransactionFilter) return updatedTransactions
-          .filter(({ transaction }) =>
-            !transaction.isCancelled && transaction.isPaid);
-        return updatedTransactions.filter(({ transaction }) =>
-          transaction.isPaid);
+          .filter(({ transaction }) => transaction
+            && !transaction.isCancelled && transaction.isPaid);
+        return updatedTransactions.filter(({ transaction }) => transaction
+          && transaction.isPaid);
       }
       if (filterTransactionOption === 'notPaid') {
-        if (!cancelledTransactionFilter) return updatedTransactions.filter(({ transaction }) =>
-          !transaction.isCancelled && !transaction.isPaid);
-        return updatedTransactions.filter(({ transaction }) =>
-          !transaction.isPaid);
+        if (!cancelledTransactionFilter)
+          return updatedTransactions.filter(({ transaction }) => transaction
+            && !transaction.isCancelled && !transaction.isPaid);
+        return updatedTransactions.filter(({ transaction }) => transaction
+          && !transaction.isPaid);
       }
       if (filterTransactionOption === 'delayed') {
-        if (!cancelledTransactionFilter) return updatedTransactions.filter(({ transaction }) =>
-          !transaction.isCancelled && !transaction.isPaid
+        if (!cancelledTransactionFilter)
+          return updatedTransactions.filter(({ transaction }) => transaction
+            && !transaction.isCancelled && !transaction.isPaid
             && new Date() > new Date(transaction.due_date));
-        return updatedTransactions.filter(({ transaction }) =>
-          !transaction.isPaid && new Date() < new Date(transaction.due_date));
+        return updatedTransactions.filter(({ transaction }) => transaction
+          && !transaction.isPaid && new Date() < new Date(transaction.due_date));
       }
-      if (!cancelledTransactionFilter) return updatedTransactions.filter(({ transaction }) =>
-        !transaction.isCancelled);
+      if (!cancelledTransactionFilter)
+        return updatedTransactions.filter(({ transaction }) => transaction
+          && !transaction.isCancelled);
       return updatedTransactions;
     }
     if (filterTransactionOption === 'paid') {
-      if (!cancelledTransactionFilter) return filteredTransactions.filter(({ transaction }) =>
-        !transaction.isCancelled && transaction.isPaid);
-      return filteredTransactions.filter(({ transaction }) =>
-        transaction.isPaid);
+      if (!cancelledTransactionFilter)
+        return filteredEventTransactions.filter(({ transaction }) => transaction
+          && !transaction.isCancelled && transaction.isPaid);
+      return filteredEventTransactions.filter(({ transaction }) => transaction
+        && transaction.isPaid);
     }
     if (filterTransactionOption === 'notPaid') {
-      if (!cancelledTransactionFilter) return filteredTransactions.filter(({ transaction }) =>
-        !transaction.isCancelled && !transaction.isPaid);
-      return filteredTransactions.filter(({ transaction }) =>
-        !transaction.isPaid);
+      if (!cancelledTransactionFilter)
+        return filteredEventTransactions.filter(({ transaction }) => transaction
+          && !transaction.isCancelled && !transaction.isPaid);
+      return filteredEventTransactions.filter(({ transaction }) => transaction
+        && !transaction.isPaid);
     }
     if (filterTransactionOption === 'delayed') {
-      if (!cancelledTransactionFilter) return filteredTransactions.filter(({ transaction }) =>
-        !transaction.isCancelled && !transaction.isPaid
+      if (!cancelledTransactionFilter)
+        return filteredEventTransactions.filter(({ transaction }) => transaction
+          && !transaction.isCancelled
+          && !transaction.isPaid
           && new Date() > new Date(transaction.due_date));
-      return filteredTransactions.filter(({ transaction }) =>
+      return filteredEventTransactions.filter(({ transaction }) =>
         !transaction.isPaid && new Date() < new Date(transaction.due_date));
     }
-    if (!cancelledTransactionFilter) return filteredTransactions.filter(({ transaction }) =>
-      !transaction.isCancelled);
-    return filteredTransactions;
-  }, [eventSuppliers,
-    filteredTransactions,
+    if (!cancelledTransactionFilter)
+      return filteredEventTransactions.filter(
+        ({ transaction }) => transaction && !transaction.isCancelled);
+    return filteredEventTransactions;
+  }, [
+    eventSuppliers,
+    filteredEventTransactions,
     filterTransactionOption,
     cancelledTransactionFilter,
     fromDateTransactionFilter,
@@ -112,8 +124,9 @@ export function EventTransactionSection() {
     filterTransactionOption,
   ]);
 
-  function handleFilteredTransactions(data: IEventTransactionDTO[]) {
-    setFilteredTransactions(data);
+  function handleOpenCreateTransactionWindow() {
+    handleSelectedDate(new Date());
+    handleCreateTransactionWindow();
   }
 
   return (
@@ -132,12 +145,12 @@ export function EventTransactionSection() {
           name="filter"
         />
       </FilterButton>
-      <AddButton onPress={() => {}} right="2%" top="-6%" />
+      <AddButton onPress={handleOpenCreateTransactionWindow} right="2%" top="-6%" />
       <Title>Transações</Title>
 
       <SearchTransactions
         eventTransactions={eventTransactions}
-        handleEventTransactions={(data: IEventTransactionDTO[]) => handleFilteredTransactions(data)}
+        handleEventTransactions={(data: IEventTransactionDTO[]) => handleFilteredEventTransactions(data)}
       />
 
       {transactions

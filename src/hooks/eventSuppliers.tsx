@@ -26,11 +26,9 @@ interface IUpdateAgreementAndTransactionsDTO {
 interface EventSuppliersContextType {
   addSupplierWindow: boolean;
   createSupplierTransactionAgreementWindow: boolean;
-  createSupplierTransactionsWindow: boolean;
   cancelAgreementsWindow: boolean;
   dischargeOption: string;
   dischargingWindow: boolean;
-  editTransactionValueWindow: boolean;
   eventSupplierAgreementTransactionsWindow: boolean;
   loading: boolean;
   selectedSupplierCategory: string;
@@ -53,11 +51,9 @@ interface EventSuppliersContextType {
   handleSupplierSubCategoryWindow: () => void;
   handleSupplierTransactionsWindow: () => void;
   handleCreateSupplierTransactionAgreementWindow: () => void;
-  handleCreateSupplierTransactionsWindow: () => void;
   handleCancelAllAgreementsWindow: () => void;
   handleCancelFutureTransactionsWindow: () => void;
   handleCancelNotPaidTransactionsWindow: () => void;
-  handleEditTransactionValueWindow: () => void;
   handleEventSupplierAgreementTransactionsWindow: () => void;
   handleUpdateAgreementAndTransactions: (data: IUpdateAgreementAndTransactionsDTO) => IUpdateEventSupplierTransactionAgreementDTO;
   selectSupplierCategory: (category: string) => Promise<void>;
@@ -82,13 +78,11 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
 
   const [addSupplierWindow, setAddSupplierWindow] = useState(false);
   const [createSupplierTransactionAgreementWindow, setCreateSupplierTransactionAgreementWindow] = useState(false);
-  const [createSupplierTransactionsWindow, setCreateSupplierTransactionsWindow] = useState(false);
   const [cancelAgreementsWindow, setCancelAllAgreementsWindow] = useState(false);
   const [cancelFutureTransactionsWindow, setCancelFutureTransactionsWindow] = useState(false);
   const [cancelNotPaidTransactionsWindow, setCancelNotPaidTransactionsWindow] = useState(false);
   const [dischargeOption, setDischargeOption] = useState('');
   const [dischargingWindow, setDischargingWindow] = useState(false);
-  const [editTransactionValueWindow, setEditTransactionValueWindow] = useState(false);
   const [eventSupplierAgreementTransactionsWindow, setEventSupplierAgreementTransactionsWindow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [supplierCategoryWindow, setSupplierCategoryWindow] = useState(false);
@@ -104,13 +98,11 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   function unsetEventSuppliersVariables() {
     setAddSupplierWindow(false);
     setCreateSupplierTransactionAgreementWindow(false);
-    setCreateSupplierTransactionsWindow(false);
     setCancelAllAgreementsWindow(false);
     setCancelFutureTransactionsWindow(false);
     setCancelNotPaidTransactionsWindow(false);
     setDischargeOption('');
     setDischargingWindow(false);
-    setEditTransactionValueWindow(false);
     setEventSupplierAgreementTransactionsWindow(false);
     setLoading(false);
     setSupplierCategoryWindow(false);
@@ -164,10 +156,6 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
     setAddSupplierWindow(!addSupplierWindow)
   }
 
-  function handleEditTransactionValueWindow() {
-    setEditTransactionValueWindow(!editTransactionValueWindow)
-  }
-
   function handleDischargingWindow() {
     setDischargingWindow(!dischargingWindow)
   }
@@ -190,10 +178,6 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
 
   function handleCreateSupplierTransactionAgreementWindow() {
     setCreateSupplierTransactionAgreementWindow(!createSupplierTransactionAgreementWindow)
-  }
-
-  function handleCreateSupplierTransactionsWindow() {
-    setCreateSupplierTransactionsWindow(!createSupplierTransactionsWindow)
   }
 
   function handleCancelFutureTransactionsWindow() {
@@ -377,24 +361,20 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       value={{
         addSupplierWindow,
         createSupplierTransactionAgreementWindow,
-        createSupplierTransactionsWindow,
         cancelAgreementsWindow,
         createEventSuppliers,
         dischargeOption,
         dischargingWindow,
-        editTransactionValueWindow,
         eventSupplierAgreementTransactionsWindow,
         getEventSupplierTransactionAgreements,
         getEventSupplierTransactions,
         handleAddSupplierWindow,
         handleCreateSupplierTransactionAgreementWindow,
-        handleCreateSupplierTransactionsWindow,
         handleCancelAllAgreementsWindow,
         handleCancelFutureTransactionsWindow,
         handleCancelNotPaidTransactionsWindow,
         handleDichargeOption,
         handleDischargingWindow,
-        handleEditTransactionValueWindow,
         handleEventSupplierAgreementTransactionsWindow,
         handleSupplierCategoryWindow,
         handleSupplierSubCategoryWindow,

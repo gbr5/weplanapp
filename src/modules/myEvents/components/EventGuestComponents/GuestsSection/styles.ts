@@ -38,6 +38,7 @@ export const GuestsContainer = styled(
   max-height: 600px;
   margin: 8px 0;
   padding: 2px;
+  padding-bottom: 32px;
 `;
 
 export const FilterContainer = styled.View`

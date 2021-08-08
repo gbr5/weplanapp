@@ -36,11 +36,15 @@ const GuestsSection: React.FC = () => {
   } = theme.iconButtonShadow;
   const inputRef = useRef<TextInput>(null);
   const { user } = useAuth();
-  const { guests, owners, members } = useMyEvent();
+  const {
+    guests,
+    owners,
+    members,
+    handleSectionDescriptionWindow,
+  } = useMyEvent();
   const {
     allGuestsFilter,
     confirmedGuestsFilter,
-    handleGuestSectionInfoWindow,
     handleGuestFilterWindow,
     handleNewGuestWindow,
     notConfirmedGuestsFilter,
@@ -137,7 +141,7 @@ const GuestsSection: React.FC = () => {
       <Container>
         <SectionHeader
           handleAddButton={handleNewGuestWindow}
-          handleInfoButton={handleGuestSectionInfoWindow}
+          handleInfoButton={handleSectionDescriptionWindow}
           title="Convidados"
         />
         {myGuestSection && (

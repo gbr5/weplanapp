@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import { Alert, Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
-import { addDays } from 'date-fns';
+import { addDays, addMonths } from 'date-fns';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
@@ -27,6 +27,8 @@ import {
   Question,
   SupplierText,
 } from './styles';
+import ICreateTransactionDTO from '../../../../../dtos/ICreateTransactionDTO';
+import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
 interface IFormData {
   amount: string;
@@ -36,12 +38,23 @@ interface IFormData {
 export function CreateSupplierTransactionAgreement() {
   const formRef = useRef<FormHandles>(null);
   const numberRef = useRef<InputRefProps>(null);
-  const { selectedSupplier, loading, selectSupplier } = useMyEvent();
+  const {
+    selectedSupplier,
+    loading,
+    selectSupplier,
+    selectedEvent,
+  } = useMyEvent();
   const {
     handleCreateSupplierTransactionAgreementWindow,
-    handleCreateSupplierTransactionsWindow,
   } = useEventSuppliers();
-  const { handleNewAgreement, selectNewTransactions, handleSelectedDate } = useTransaction();
+  const {
+    handleNewAgreement,
+    selectNewTransactions,
+    handleSelectedDate,
+    selectedDate,
+    handleSelectedDateWindow,
+    handleNewEventSupplierTransactionAgreement,
+  } = useTransaction();
 
   function closeWindow() {
     handleNewAgreement({
@@ -90,8 +103,22 @@ export function CreateSupplierTransactionAgreement() {
         amount: data.amount,
         installments: data.number_of_installments,
       });
+      const transactions: ICreateTransactionDTO[] = [];
+      let i = 0;
+      for (; i < data.number_of_installments; i++) {
+        transactions.push({
+          name: '',
+          amount: data.amount/data.number_of_installments,
+          due_date: addMonths(new Date(selectedDate.setHours(10)), i),
+          isPaid: false,
+          payee_id: selectedSupplier.id,
+          payer_id: selectedEvent.id,
+        });
+      }
+      selectNewTransactions(transactions);
+
       handleCreateSupplierTransactionAgreementWindow();
-      handleCreateSupplierTransactionsWindow();
+      handleNewEventSupplierTransactionAgreement();
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const error = getValidationErrors(err);
@@ -118,45 +145,52 @@ export function CreateSupplierTransactionAgreement() {
       >
         <WindowHeader title="Novo Contrato" />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <FormContainer
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ flex: 1 }}
-        >
-          <Container>
+          <FormContainer
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ flex: 1 }}
+          >
+            <Container>
+              <SupplierContainer>
+                <SupplierText>Fornecedor: </SupplierText>
+                <SupplierName>{selectedSupplier.name}</SupplierName>
+              </SupplierContainer>
 
-          <SupplierContainer>
-            <SupplierText>Fornecedor: </SupplierText>
-            <SupplierName>{selectedSupplier.name}</SupplierName>
-          </SupplierContainer>
+              <Form ref={formRef} onSubmit={handleSubmit}>
+                <Question>Valor do Contrato</Question>
+                <Input
+                  name="amount"
+                  keyboardType="numeric"
+                  placeholderTextColor={theme.color.secondary}
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  icon="dollar-sign"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    numberRef.current?.focus();
+                  }}
+                />
 
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <Question>Valor do Contrato</Question>
-            <Input
-              name="amount"
-              keyboardType="numeric"
-              placeholderTextColor={theme.color.secondary}
-              autoCorrect={false}
-              autoCapitalize="none"
-              icon="dollar-sign"
-              returnKeyType="next"
-              onSubmitEditing={() => {
-                numberRef.current?.focus();
-              }}
-            />
+                <Question>Número de Parcelas</Question>
+                <Input
+                  defaultValue="1"
+                  name="number_of_installments"
+                  ref={numberRef}
+                  placeholderTextColor={theme.color.secondary}
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  keyboardType="numeric"
+                  icon="hash"
+                  returnKeyType="send"
+                  onSubmitEditing={() => formRef.current?.submitForm()}
+                />
 
-            <Question>Número de Parcelas</Question>
-            <Input
-              defaultValue="1"
-              name="number_of_installments"
-              ref={numberRef}
-              placeholderTextColor={theme.color.secondary}
-              autoCorrect={false}
-              autoCapitalize="none"
-              keyboardType="numeric"
-              icon="hash"
-              returnKeyType="send"
-              onSubmitEditing={() => formRef.current?.submitForm()}
-            />
+                <Question>Data da primeira parcela</Question>
+
+                <Button
+                  onPress={handleSelectedDateWindow}
+                >
+                  {formatOnlyDateShort(String(selectedDate))}
+                </Button>
               </Form>
             </Container>
           </FormContainer>

@@ -16,24 +16,26 @@ import Button from '../../../../../components/Button';
 
 import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import { Container, ValueContainer, CurrentValue, Title } from './styles';
+import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
+import { useMyEvent } from '../../../../../hooks/myEvent';
 
 interface IFormParams {
   amount: string;
 }
 
-interface IProps {
-  handleEditTransactionValue: (amount: number) => Promise<void>;
-  closeWindow: () => void;
-}
-
-export function EditTransactionAmount({
-  handleEditTransactionValue,
-  closeWindow,
-}: IProps) {
+export function EditTransactionAmount() {
   const formRef = useRef<FormHandles>(null);
 
+  const { getEventSuppliers } = useMyEvent();
+  const {
+    handleUpdateAgreementAndTransactions,
+  } = useEventSuppliers();
   const {
     selectedEventTransaction,
+    editTransaction,
+    handleSelectedEventTransaction,
+    handleEditEventTransactionValueWindow,
+    updateEventSupplierTransactionAgreement,
   } = useTransaction();
 
   const [loading, setLoading] = useState(false);
@@ -53,8 +55,31 @@ export function EditTransactionAmount({
         return Alert.alert('Valor da Transação', 'Apenas valores maiores do que zero são aceitos!');
       }
       const amount = Number(data.amount);
-      await handleEditTransactionValue(amount);
-      closeWindow();
+      const oldEventTransaction = selectedEventTransaction;
+      if (selectedEventTransaction.agreement_type === 'none') {
+        const response = await editTransaction({
+          ...selectedEventTransaction.transaction,
+          amount,
+        });
+        handleSelectedEventTransaction({
+          ...oldEventTransaction,
+          transaction: response,
+        });
+      }
+      if (selectedEventTransaction.agreement_type === 'supplier') {
+        const updatedAgreement = handleUpdateAgreementAndTransactions({
+          id: selectedEventTransaction.agreement_id,
+          transactions: [
+            {
+              ...selectedEventTransaction.transaction,
+              amount,
+            },
+          ]
+        });
+        await updateEventSupplierTransactionAgreement(updatedAgreement);
+        await getEventSuppliers(selectedEventTransaction.event_id);
+      }
+      handleEditEventTransactionValueWindow();
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const error = getValidationErrors(err);
@@ -69,11 +94,11 @@ export function EditTransactionAmount({
 
   return (
     <WindowContainer
-      closeWindow={closeWindow}
-      zIndex={45}
-      top="-25%"
+      closeWindow={handleEditEventTransactionValueWindow}
+      zIndex={15}
+      top="5%"
       left="0%"
-      height="140%"
+      height="70%"
       width="100%"
     >
             <Container>

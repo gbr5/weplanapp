@@ -5,11 +5,7 @@ import theme from '../../../global/styles/theme';
 import { formatBrlCurrency } from '../../../utils/formatBrlCurrency';
 import formatOnlyDate from '../../../utils/formatOnlyDate';
 
-import { useEventSuppliers } from '../../../hooks/eventSuppliers';
-import { useMyEvent } from '../../../hooks/myEvent';
 import { useTransaction } from '../../../hooks/transactions';
-
-import { EditTransactionAmount } from '../../../modules/myEvents/components/FinancialComponents/EditTransactionAmount';
 
 import {
   Container,
@@ -23,11 +19,12 @@ import {
   ReceiptIcon,
   DeleteButton,
   DeleteIcon,
+  CategoryContainer,
+  Label,
+  FieldLabel,
 } from './styles';
 
 export function EventTransactionButtonInfo() {
-  const { getEventSuppliers } = useMyEvent();
-  const { handleUpdateAgreementAndTransactions } = useEventSuppliers();
   const {
     editTransaction,
     handleCancelEventTransactionConfirmationWindow,
@@ -35,11 +32,12 @@ export function EventTransactionButtonInfo() {
     handleSelectedDateWindow,
     handleSelectedDate,
     selectedEventTransaction,
-    updateEventSupplierTransactionAgreement,
+    handleEditTransactionName,
+    handleEditTransactionCategory,
+    handleEditEventTransactionValueWindow,
   } = useTransaction();
 
   const [loading, setLoading] = useState(false);
-  const [editValueWindow, setEditValueWindow] = useState(false);
 
   const color = useMemo(() => {
     const today = new Date();
@@ -49,10 +47,6 @@ export function EventTransactionButtonInfo() {
       return theme.color.atention_light;
     return theme.color.info_light;
   }, [selectedEventTransaction, theme]);
-
-  function handleEditValueWindow() {
-    setEditValueWindow(!editValueWindow);
-  }
 
   async function updateTransactionIsPaid() {
     try {
@@ -77,102 +71,73 @@ export function EventTransactionButtonInfo() {
     handleSelectedDateWindow();
   }
 
-  async function updateTransactionValue(amount: number) {
-    try {
-      setLoading(true);
-      const oldEventTransaction = selectedEventTransaction;
-      if (selectedEventTransaction.agreement_type === 'none') {
-        const response = await editTransaction({
-          ...selectedEventTransaction.transaction,
-          amount,
-        });
-        handleSelectedEventTransaction({
-          ...oldEventTransaction,
-          transaction: response,
-        });
-      }
-      if (selectedEventTransaction.agreement_type === 'supplier') {
-        const updatedAgreement = handleUpdateAgreementAndTransactions({
-          id: selectedEventTransaction.agreement_id,
-          transactions: [
-            {
-              ...selectedEventTransaction.transaction,
-              amount,
-            },
-          ]
-        });
-        await updateEventSupplierTransactionAgreement(updatedAgreement);
-        await getEventSuppliers(selectedEventTransaction.event_id);
-      }
-    } catch (err) {
-      throw new Error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
-    <>
-    {/* Falta Recriar o Update Transaction Amount e colocar aqui!! */}
-      {editValueWindow && (
-        <>
-          <EditTransactionAmount
-            handleEditTransactionValue={(amount: number) => updateTransactionValue(amount)}
-            closeWindow={handleEditValueWindow}
-          />
-        </>
-      )}
-      <Container>
-        <FieldContainer>
-          <FieldButton
-            onPress={handleEditValueWindow}
-          >
-            <FieldButtonText>
-              {formatBrlCurrency(Number(selectedEventTransaction.transaction.amount))}
-            </FieldButtonText>
+    <Container>
+      {/* {selectedEventTransaction.transaction.category && ( */}
+        <CategoryContainer>
+          <FieldButton onPress={handleEditTransactionCategory}>
+            <FieldLabel>Categoria</FieldLabel>
+            <Label>
+              {selectedEventTransaction.transaction.category}
+            </Label>
           </FieldButton>
-          <FieldButton
-            onPress={handleOpenUpdateTransactionDueDateWindow}
-          >
-            <FieldButtonText>
-              {formatOnlyDate(String(selectedEventTransaction.transaction.due_date))}
-            </FieldButtonText>
-          </FieldButton>
-        </FieldContainer>
-        <FieldContainer>
-          <PaidButton
-            color={color}
-            onPress={updateTransactionIsPaid}
-          >
-            {loading ? (
-              <PaidIcon name="loader" />
+        </CategoryContainer>
+      {/* )} */}
+      <FieldButton onPress={handleEditTransactionName}>
+        <FieldLabel>Nome</FieldLabel>
+        <Label>
+          {selectedEventTransaction.transaction.name}
+        </Label>
+      </FieldButton>
+      <FieldContainer>
+        <FieldButton
+          onPress={handleEditEventTransactionValueWindow}
+        >
+          <FieldButtonText>
+            {formatBrlCurrency(Number(selectedEventTransaction.transaction.amount))}
+          </FieldButtonText>
+        </FieldButton>
+        <FieldButton
+          onPress={handleOpenUpdateTransactionDueDateWindow}
+        >
+          <FieldButtonText>
+            {formatOnlyDate(String(selectedEventTransaction.transaction.due_date))}
+          </FieldButtonText>
+        </FieldButton>
+      </FieldContainer>
+      <FieldContainer>
+        <PaidButton
+          color={color}
+          onPress={updateTransactionIsPaid}
+        >
+          {loading ? (
+            <PaidIcon name="loader" />
+          ) : (
+            selectedEventTransaction.transaction.isPaid ? (
+              <>
+                <FieldText>Paga</FieldText>
+                <PaidIcon name="check-square" />
+              </>
             ) : (
-              selectedEventTransaction.transaction.isPaid ? (
-                <>
-                  <FieldText>Paga</FieldText>
-                  <PaidIcon name="check-square" />
-                </>
-              ) : (
-                <>
-                  <FieldText>Pagar</FieldText>
-                  <PaidIcon name="square" />
-                </>
-              )
-            )}
-            </PaidButton>
-          <ReceiptButton>
-            <ReceiptIcon name="file-text" />
-          </ReceiptButton>
-          <ReceiptButton>
-            <ReceiptIcon name="file" />
-          </ReceiptButton>
-          <DeleteButton
-            onPress={handleCancelEventTransactionConfirmationWindow}
-          >
-            <DeleteIcon name="trash-2" />
-          </DeleteButton>
-        </FieldContainer>
-      </Container>
-    </>
+              <>
+                <FieldText>Pagar</FieldText>
+                <PaidIcon name="square" />
+              </>
+            )
+          )}
+          </PaidButton>
+        <ReceiptButton>
+          <ReceiptIcon name="file-text" />
+        </ReceiptButton>
+        <ReceiptButton>
+          <ReceiptIcon name="file" />
+        </ReceiptButton>
+        <DeleteButton
+          onPress={handleCancelEventTransactionConfirmationWindow}
+        >
+          <DeleteIcon name="trash-2" />
+        </DeleteButton>
+      </FieldContainer>
+    </Container>
   );
 }

@@ -13,6 +13,7 @@ import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 import { EditNewTransactionAmount } from '../../../../../components/TransactionComponents/EditNewTransactionAmount';
 import { NewTransaction } from '../../../../../components/NewTransaction';
 import WindowContainer from '../../../../../components/WindowContainer';
+import { EditNewTransactionDueDate } from '../../../../../components/TransactionComponents/EditNewTransactionDueDate';
 
 import {
   Container,
@@ -28,12 +29,11 @@ import {
   CancelButton,
   ButtonContainer,
 } from './styles';
-import { EditNewTransactionDueDate } from '../../../../../components/TransactionComponents/EditNewTransactionDueDate';
 
 export function NewEventSupplierTransactionAgreementConfirmation() {
   const { selectedSupplier, selectSupplier, calculateTotalEventCost } = useMyEvent();
   const {
-    handleCreateSupplierTransactionsWindow,
+    handleCreateSupplierTransactionAgreementWindow,
   } = useEventSuppliers();
   const {
     createSupplierTransactionAgreementWithTransactions,
@@ -81,7 +81,7 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
 
   function handleGoBack() {
     handleNewEventSupplierTransactionAgreement();
-    handleCreateSupplierTransactionsWindow();
+    handleCreateSupplierTransactionAgreementWindow();
   }
 
   return (

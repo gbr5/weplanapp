@@ -111,16 +111,16 @@ export function SelectMobileContacts() {
         <WindowHeader title="Contatos do Celular" />
         <NumberOfContacts>{numberOfContacts}</NumberOfContacts>
         {backdrop && (
-            <Backdrop
-              left="-10%"
-              width="120%"
-              zIndex={2}
-              closeFunction={handleOffSearch}
-            />
-          )}
+          <Backdrop
+            left="-10%"
+            width="120%"
+            zIndex={2}
+            closeFunction={handleOffSearch}
+          />
+        )}
         <InputContainer
-          style={isActive && {
-            shadowColor: theme.color.text1,
+          style={{
+            shadowColor: isActive ? theme.color.text1 : 'rgba(0,0,0,0)',
             shadowOffset,
             shadowOpacity,
             shadowRadius,
