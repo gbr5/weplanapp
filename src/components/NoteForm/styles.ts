@@ -10,7 +10,7 @@ export const TextAreaContainer = styled.View`
   width: 100%;
   min-height: 64px;
   padding: 0 16px;
-  background: ${({ theme }) => theme.color.text5};
+  background: ${({ theme }) => theme.color.text6};
   margin: 16px 0 16px;
   border-radius: 10px;
   flex-direction: row;
@@ -23,7 +23,6 @@ export const TextAreaInput = styled.TextInput`
   color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto};
   font-size: ${RFValue(16)}px;
-  line-height: ${RFValue(26)}px;
 `;
 
 export const NumberOfCharacters = styled.Text`

@@ -23,8 +23,12 @@ import {
   Label,
   FieldLabel,
 } from './styles';
+import { NotificationNumber } from '../../NotificationNumber';
+import { useNote } from '../../../hooks/notes';
+import { useEffect } from 'react';
 
 export function EventTransactionButtonInfo() {
+  const { getTransactionNotes, selectedTransactionNotes } = useNote();
   const {
     editTransaction,
     handleCancelEventTransactionConfirmationWindow,
@@ -35,6 +39,8 @@ export function EventTransactionButtonInfo() {
     handleEditTransactionName,
     handleEditTransactionCategory,
     handleEditEventTransactionValueWindow,
+    handleTransactionNotesWindow,
+    handleTransactionFilesWindow,
   } = useTransaction();
 
   const [loading, setLoading] = useState(false);
@@ -71,6 +77,10 @@ export function EventTransactionButtonInfo() {
     handleSelectedDateWindow();
   }
 
+  useEffect(() => {
+    getTransactionNotes(selectedEventTransaction.transaction.id);
+  }, []);
+
   return (
     <Container>
       {/* {selectedEventTransaction.transaction.category && ( */}
@@ -78,7 +88,8 @@ export function EventTransactionButtonInfo() {
           <FieldButton onPress={handleEditTransactionCategory}>
             <FieldLabel>Categoria</FieldLabel>
             <Label>
-              {selectedEventTransaction.transaction.category}
+              {selectedEventTransaction.transaction.category
+                && selectedEventTransaction.transaction.category}
             </Label>
           </FieldButton>
         </CategoryContainer>
@@ -126,10 +137,20 @@ export function EventTransactionButtonInfo() {
             )
           )}
           </PaidButton>
-        <ReceiptButton>
+        <ReceiptButton onPress={handleTransactionNotesWindow}>
+          <NotificationNumber
+            number={selectedTransactionNotes.length}
+            left="-55%"
+            top="-55%"
+          />
           <ReceiptIcon name="file-text" />
         </ReceiptButton>
-        <ReceiptButton>
+        <ReceiptButton onPress={handleTransactionFilesWindow}>
+          <NotificationNumber
+            number={selectedEventTransaction.transaction.files.length}
+            left="-55%"
+            top="-55%"
+          />
           <ReceiptIcon name="file" />
         </ReceiptButton>
         <DeleteButton

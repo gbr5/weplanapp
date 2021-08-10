@@ -138,7 +138,7 @@ export const MonthContainer = styled.View`
 export const Month = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
   z-index: 2;
   opacity: 1;
 `;

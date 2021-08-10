@@ -1,9 +1,8 @@
 import INoteDTO from './INoteDTO';
-import IUserDTO from './IUserDTO';
 
-export default interface IEventNoteDTO {
+export default interface ITransactionNoteDTO {
   id: string;
-  event_id: string;
+  transaction_id: string;
   note_id: string;
   note: INoteDTO;
   created_at: Date;

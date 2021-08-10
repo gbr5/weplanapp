@@ -11,7 +11,7 @@ export const Container = styled.View`
 
 export const Label = styled.Text`
   width: 100%;
-  color: ${({ theme }) => theme.color.primary};
+  color: ${({ theme }) => theme.color.text1};
   letter-spacing: 1px;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(18)}px;
@@ -22,7 +22,7 @@ export const LabelUnderline = styled.View`
   width: 80%;
   height: 1.5px;
   margin-left: 0;
-  background-color: ${({ theme }) => theme.color.title};
+  background-color: ${({ theme }) => theme.color.primary};
 `;
 
 export const Name = styled.Text`

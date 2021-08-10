@@ -51,6 +51,8 @@ export function SupplierButtonInfo() {
     handleEditSupplierNameWindow,
     handleEditSupplierCategoryWindow,
     selectSupplierCategory,
+    handleSupplierTransactionAgreementsWindow,
+    handleSupplierNotesWindow,
   } = useEventSuppliers();
   const { eventDebitTransactions } = useTransaction();
 
@@ -108,8 +110,12 @@ export function SupplierButtonInfo() {
   }, [selectedSupplier]);
 
   const nextPaymentLate = useMemo(() => {
-    return new Date(nextPayment.due_date) < new Date();
+    return !nextPayment ?? new Date(nextPayment.due_date) < new Date();
   }, [nextPayment])
+
+  const numberOfNotes = useMemo(() => {
+    return selectedSupplier.notes.length;
+  }, [selectedSupplier.notes]);
 
   return (
     <Container
@@ -184,6 +190,7 @@ export function SupplierButtonInfo() {
           </MenuButton>
         )}
         <MenuButton
+          onPress={handleSupplierNotesWindow}
           style={{
               shadowColor: theme.menuShadow.shadowColor,
               shadowOffset: theme.menuShadow.shadowOffset,
@@ -197,7 +204,7 @@ export function SupplierButtonInfo() {
           >
             <NotificationContainer>
               <NotificationNumber>
-                0
+                {numberOfNotes}
               </NotificationNumber>
             </NotificationContainer>
             <Icon name="file-text" />
@@ -206,6 +213,7 @@ export function SupplierButtonInfo() {
 
         {selectedSupplier.isHired && (
           <MenuButton
+            onPress={handleSupplierTransactionAgreementsWindow}
             style={{
               shadowColor: theme.menuShadow.shadowColor,
               shadowOffset: theme.menuShadow.shadowOffset,
@@ -304,18 +312,37 @@ export function SupplierButtonInfo() {
           <SectionBorder />
         </>
       )}
-      <NextTransactionContainer>
-        <SectionTitle>Total Contratado</SectionTitle>
-        <SectionTitleLine />
-        <TransactionRow>
-          <TransactionText
-            isLate={false}
-          >
-            {formatBrlCurrency(totalCost)}
-          </TransactionText>
-        </TransactionRow>
-      </NextTransactionContainer>
-      <SectionBorder />
+      {selectedSupplier.isHired ? (
+        <>
+          <NextTransactionContainer>
+            <SectionTitle>Total Contratado</SectionTitle>
+            <SectionTitleLine />
+            <TransactionRow>
+              <TransactionText
+                isLate={false}
+              >
+                {formatBrlCurrency(totalCost)}
+              </TransactionText>
+            </TransactionRow>
+          </NextTransactionContainer>
+          <SectionBorder />
+        </>
+      ) : (
+        <>
+          <NextTransactionContainer>
+            <SectionTitle>Total Orçado</SectionTitle>
+            <SectionTitleLine />
+            <TransactionRow>
+              <TransactionText
+                isLate={false}
+              >
+                {formatBrlCurrency(totalCost)}
+              </TransactionText>
+            </TransactionRow>
+          </NextTransactionContainer>
+          <SectionBorder />
+        </>
+      )}
 
       <RowContainer>
         <SupplierConfirmationButton

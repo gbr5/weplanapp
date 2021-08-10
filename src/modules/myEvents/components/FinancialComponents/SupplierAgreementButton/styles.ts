@@ -21,7 +21,7 @@ export const Index = styled.Text`
   color: ${({ theme }) => theme.color.primary};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(15)}px;
-  width: 5%;
+  width: 10%;
 `;
 
 export const Body = styled.View`
@@ -52,7 +52,7 @@ export const Amount = styled.Text`
 `;
 
 export const NumberOfInstallments = styled.Text`
-  color: ${({ theme }) => theme.color.text5};
+  color: ${({ theme }) => theme.color.secondary};
   font-family: ${({ theme }) => theme.fonts.roboto};
   font-size: ${RFValue(16)}px;
 `;

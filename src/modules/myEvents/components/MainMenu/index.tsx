@@ -37,6 +37,7 @@ export function MainMenu() {
     setSuppliersInfo(`${hiredSuppliers.length} / ${notHiredSuppliers.length + hiredSuppliers.length}`)
   }, [hiredSuppliers.length, notHiredSuppliers.length]);
 
+  const notesInfo = useMemo(() => `${selectedEvent.notes.length}`, [selectedEvent.notes]);
   const guestsInfo = useMemo(() => `${confirmedGuests} / ${guests.length}`, [confirmedGuests, guests]);
   const membersInfo = useMemo(() => `${members.length}`, [members]);
   const ownersInfo = useMemo(() => `${owners.length}`, [owners]);
@@ -57,6 +58,27 @@ export function MainMenu() {
 
   return (
     <Container horizontal>
+      <MenuButton
+        style={currentSection !== 'Notes' && {
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
+        onPress={() => selectEventSection('Notes')}
+        isActive={currentSection === 'Notes'}
+      >
+        <MenuButtonText
+          isActive={currentSection === 'Notes'}
+        >
+          Notas
+        </MenuButtonText>
+        <MenuButtonNumber
+          isActive={currentSection === 'Notes'}
+        >
+          {notesInfo}
+        </MenuButtonNumber>
+      </MenuButton>
       <MenuButton
         style={currentSection !== 'Tasks' && {
           shadowColor,

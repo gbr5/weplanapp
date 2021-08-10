@@ -1,31 +1,30 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { useCallback } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Keyboard, TextInput } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import IEventTransactionDTO from '../../../dtos/IEventTransactionDTO';
 
-import theme from '../../../global/styles/theme';
-import formatOnlyDateShort from '../../../utils/formatOnlyDateShort';
-import Backdrop from '../../Backdrop';
+import INoteDTO from '../../../../../dtos/INoteDTO';
+import theme from '../../../../../global/styles/theme';
+
+import Backdrop from '../../../../../components/Backdrop';
 
 import {
-  Container,
   CloseButton,
   CloseIcon,
+  Container,
   Input,
   InputContainer,
-  NumberOfTransactions,
   SearchButton,
 } from './styles';
+import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
 interface IProps {
-  eventTransactions: IEventTransactionDTO[];
-  handleEventTransactions: (data: IEventTransactionDTO[]) => void;
+  notes: INoteDTO[];
+  handleNotes: (data: INoteDTO[]) => void;
 }
 
-export function SearchTransactions({
-  eventTransactions,
-  handleEventTransactions,
+export function SearchNotes({
+  handleNotes,
+  notes,
 }: IProps) {
   const {
     shadowColor,
@@ -43,26 +42,24 @@ export function SearchTransactions({
     inputRef.current && inputRef.current.clear();
     Keyboard.dismiss();
     setBackdrop(false);
-    handleEventTransactions(eventTransactions);
+    handleNotes(notes);
   }
+
+  const handleLookForNote = useCallback((data: string) => {
+    setFilterString(data);
+    if (data === '') return handleNotes(notes);
+    setBackdrop(true);
+    const findNotes = notes.filter(note => {
+      return note.note.toLowerCase().includes(data.toLowerCase())
+        || formatOnlyDateShort(String(note.updated_at)).includes(data);
+    });
+    handleNotes(findNotes);
+  }, []);
 
   function handleOffSearch() {
     Keyboard.dismiss();
     setBackdrop(false);
   }
-
-  const handleLookForTransaction = useCallback((data: string) => {
-    setFilterString(data);
-    if (data === '') return handleEventTransactions(eventTransactions);
-    setBackdrop(true);
-    const findTransactions = eventTransactions.filter(({ transaction }) => {
-      return transaction.name.toLowerCase().includes(data.toLowerCase())
-      || String(transaction.amount).toLowerCase().includes(data.toLowerCase())
-      || formatOnlyDateShort(String(transaction.due_date)).includes(data)
-      || formatOnlyDateShort(String(transaction.created_at)).includes(data)
-    });
-    handleEventTransactions(findTransactions);
-  }, []);
 
   const isActive = useMemo(() => {
     return filterString && filterString !== '' ? true : false;
@@ -109,7 +106,7 @@ export function SearchTransactions({
             ref={inputRef}
             placeholderTextColor={theme.color.text1}
             placeholder="Filtrar por ..."
-            onChangeText={(e) => handleLookForTransaction(e)}
+            onChangeText={(e) => handleLookForNote(e)}
           />
           <SearchButton>
             <Feather name="search" size={24} />

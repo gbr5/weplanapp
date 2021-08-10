@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import INoteDTO from '../../dtos/INoteDTO';
 import IUserDTO from '../../dtos/IUserDTO';
+import theme from '../../global/styles/theme';
 import { useAuth } from '../../hooks/auth';
 import { useNote } from '../../hooks/notes';
 import formatDateToString from '../../utils/formatDateToString';
@@ -22,6 +23,12 @@ interface IProps {
 export function Note({
   selectedNote,
 }: IProps) {
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
   const { getUser, user } = useAuth();
   const { handleEditNoteWindow, selectNote } = useNote();
 
@@ -43,10 +50,23 @@ export function Note({
   }, []);
 
   return (
-    <Container>
+    <Container
+      style={{
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+      }}
+    >
       <TextNote>{selectedNote.note}</TextNote>
       <EditNoteButton
         onPress={handleEditNote}
+        style={{
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
       >
         <EditNoteIcon name="edit-2" />
       </EditNoteButton>

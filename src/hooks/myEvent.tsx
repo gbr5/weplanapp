@@ -106,7 +106,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [availableNumberOfGuests, setAvailableNumberOfGuests] = useState(0);
   const [totalEventCost, setTotalEventCost] = useState(0);
   const [isOwner, setIsOwner] = useState(false);
-  const [currentSection, setCurrentSection] = useState('Tasks');
+  const [currentSection, setCurrentSection] = useState('Notes');
   const [selectedTask, setSelectedTask] = useState({} as IEventTaskDTO);
   const [selectedSupplier, setSelectedSupplier] = useState({} as IEventSupplierDTO);
   const [selectedFriend, setSelectedFriend] = useState({} as IFriendDTO);
@@ -268,7 +268,7 @@ const MyEventProvider: React.FC = ({ children }) => {
       getEventMembers(data.id),
       getEventSuppliers(data.id),
     ]);
-    setCurrentSection('Tasks');
+    setCurrentSection('Notes');
     setSelectedEvent(data);
   }
 

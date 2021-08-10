@@ -11,6 +11,7 @@ import {
   LabelUnderline,
   EventContainer,
 } from './styles';
+import theme from '../../../../global/styles/theme';
 
 interface IProps {
   handleSection: (section: ISectionProps) => void;
@@ -21,10 +22,23 @@ const MyEventsAsHost: React.FC<IProps> = ({
   handleSection,
   selectedSection,
 }: IProps) => {
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
   const { eventsAsOwner } = useEvent();
 
   return (
-    <Container>
+    <Container
+      style={{
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+      }}
+    >
       {selectedSection === 'host' ? (
         <SectionButton onPress={() => handleSection({ section: '' })}>
           <Label>Eventos como Anfitrião</Label>

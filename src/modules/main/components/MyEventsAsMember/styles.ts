@@ -24,7 +24,7 @@ export const SectionButton = styled.TouchableOpacity`
 
 export const Label = styled.Text`
   /* width: 100%; */
-  color: ${({ theme }) => theme.color.secondary};
+  color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(18)}px;
   letter-spacing: 1px;
@@ -34,7 +34,7 @@ export const LabelUnderline = styled.View`
   width: 80%;
   height: 1.8px;
   margin-left: 0;
-  background-color: ${({ theme }) => theme.color.title};
+  background-color: ${({ theme }) => theme.color.primary};
 `;
 
 export const EventContainer = styled(

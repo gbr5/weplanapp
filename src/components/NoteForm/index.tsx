@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useRef } from 'react';
 import { useEffect } from 'react';
+import { TextInput } from 'react-native';
 import Button from '../Button';
 
 import {
@@ -20,12 +22,14 @@ export function NoteForm({
   placeholder,
   handleNote,
 }: IProps) {
+  const textAreaRef = useRef<TextInput>(null);
   const [textValue, setTextValue] = useState('');
   const [numberOfLines, setNumberOfLines] = useState(1);
 
   function submitNote() {
     handleNote(textValue);
     setTextValue('');
+    textAreaRef.current?.clear();
   }
 
   useEffect(() => {
@@ -38,6 +42,7 @@ export function NoteForm({
       <Container>
         <TextAreaContainer>
           <TextAreaInput
+            ref={textAreaRef}
             multiline={true}
             numberOfLines={numberOfLines}
             underlineColorAndroid="transparent"

@@ -105,10 +105,11 @@ export function CreateSupplierTransactionAgreement() {
       });
       const transactions: ICreateTransactionDTO[] = [];
       let i = 0;
-      for (; i < data.number_of_installments; i++) {
+      for (i; i < data.number_of_installments; i++) {
         transactions.push({
           name: '',
           amount: data.amount/data.number_of_installments,
+          category: selectedSupplier.supplier_sub_category,
           due_date: addMonths(new Date(selectedDate.setHours(10)), i),
           isPaid: false,
           payee_id: selectedSupplier.id,

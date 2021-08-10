@@ -2,6 +2,7 @@ import IEventBudgetDTO from './IEventBudgetDTO';
 import IEventFileDTO from './IEventFileDTO';
 import IEventImageDTO from './IEventImageDTO';
 import IEventInfoDTO from './IEventInfoDTO';
+import IEventNoteDTO from './IEventNoteDTO';
 import IEventTaskDTO from './IEventTaskDTO';
 
 interface IEventDateDTO {
@@ -31,4 +32,5 @@ export default interface IEventDTO {
   eventBudget: IEventBudgetDTO;
   created_at: Date;
   updated_at: Date;
+  notes: IEventNoteDTO[];
 }

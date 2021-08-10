@@ -1,6 +1,8 @@
 import React from 'react';
+import theme from '../../../../global/styles/theme';
 import { useEvent } from '../../../../hooks/event';
 import formatDateToString from '../../../../utils/formatDateToString';
+import { EventButton } from '../EventButton';
 
 import {
   Container,
@@ -11,12 +13,27 @@ import {
 } from './styles';
 
 const NextEvent: React.FC = () => {
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
+
   const { nextEvent } = useEvent();
+
   return (
-    <Container>
+    <Container
+      style={{
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+      }}
+    >
       <Label>Próximo Evento</Label>
       <LabelUnderline />
-      <Name>
+      {/* <Name>
         {
           nextEvent
           && nextEvent.event
@@ -33,7 +50,11 @@ const NextEvent: React.FC = () => {
             ? formatDateToString(String(nextEvent.event.date))
             : '-'
         }
-      </Date>
+      </Date> */}
+      <EventButton
+        key={nextEvent.event.id}
+        event={nextEvent.event}
+      />
     </Container>
   );
 };

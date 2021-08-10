@@ -59,6 +59,12 @@ import {
 } from './styles';
 import { EditSupplierName } from '../../components/SuppliersComponents/EditSupplierName';
 import { EditSupplierCategory } from '../../components/SuppliersComponents/EditSupplierCategory';
+import { SupplierTransactionAgreementsWindow } from '../../components/FinancialComponents/SupplierTransactionAgreementsWindow';
+import { EventNotesSection } from '../../components/EventNotesComponents/EventNotesSection';
+import { EventNoteForm } from '../../components/EventNotesComponents/EventNoteForm';
+import { SupplierNotesSection } from '../../components/SuppliersComponents/SupplierNotesWindow';
+import { TransactionNotesWindow } from '../../../../components/TransactionComponents/TransactionNotesWindow';
+import { TransactionFilesWindow } from '../../../../components/TransactionComponents/TransactionFilesWindow';
 
 const MyEvent: React.FC = () => {
   const {
@@ -111,13 +117,20 @@ const MyEvent: React.FC = () => {
     eventSupplierAgreementTransactionsWindow,
     editSupplierNameWindow,
     editSupplierCategoryWindow,
+    supplierTransactionAgreementsWindow,
+    supplierNotesWindow,
   } = useEventSuppliers();
   const {
     guestFilterWindow,
     newGuestForm,
     newGuestWindow,
   } = useEventGuests();
-  const { editNoteWindow, selectNote, handleEditNoteWindow } = useNote();
+  const {
+    editNoteWindow,
+    selectNote,
+    handleEditNoteWindow,
+    createEventNoteWindow,
+  } = useNote();
   const {
     cancelEventTransaction,
     cancelEventTransactionConfirmationWindow,
@@ -134,6 +147,8 @@ const MyEvent: React.FC = () => {
     selectedEventTransaction,
     createTransactionWindow,
     editEventTransactionValueWindow,
+    transactionNotesWindow,
+    transactionFilesWindow,
   } = useTransaction();
   const { selectMobileContactsWindow } = useUserContacts();
   const { unsetVariables } = useUnsetEventVariables();
@@ -199,6 +214,11 @@ const MyEvent: React.FC = () => {
     <>
       {budgetWindow && <BudgetWindow />}
 
+      {createEventNoteWindow && <EventNoteForm />}
+      {supplierNotesWindow && <SupplierNotesSection />}
+      {transactionNotesWindow && <TransactionNotesWindow />}
+      {transactionFilesWindow && <TransactionFilesWindow />}
+
       {selectedEventTransaction
         && selectedEventTransaction.transaction
         && editTransactionName
@@ -219,6 +239,7 @@ const MyEvent: React.FC = () => {
         && editTransactionCategory
         && <EditTransactionCategory />}
 
+      {supplierTransactionAgreementsWindow && <SupplierTransactionAgreementsWindow />}
       {selectMobileContactsWindow && <SelectMobileContacts />}
 
       {createTransactionWindow && <CreateEventTransaction />}
@@ -411,6 +432,7 @@ const MyEvent: React.FC = () => {
         <Body>
           <MainMenu />
           <BodyContainer>
+            {currentSection === 'Notes' && <EventNotesSection />}
             {currentSection === 'Guests' && <GuestsSection />}
             {currentSection === 'Tasks' && <TasksSection />}
             {currentSection === 'Suppliers' && <SuppliersSection />}

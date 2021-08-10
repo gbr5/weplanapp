@@ -5,7 +5,9 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
+
 import { addDays, subDays } from 'date-fns';
+import DocumentPicker from 'react-native-document-picker';
 
 import api from '../services/api';
 
@@ -37,6 +39,7 @@ interface ICreateEventSupplierTransactionAgreementWithTransactionsDTO extends IC
 }
 interface TransactionContextType {
   createTransactionWindow: boolean;
+  transactionFilesWindow: boolean;
   cancelEventTransactionConfirmationWindow: boolean;
   editTransactionName: boolean;
   editTransactionCategory: boolean;
@@ -67,11 +70,14 @@ interface TransactionContextType {
   selectedEventTransaction: IEventTransactionDTO;
   cancelledTransactionFilter: boolean;
   sortTransactionsByInterval: boolean;
+  transactionNotesWindow: boolean;
   fromDateTransactionFilter: Date;
   toDateTransactionFilter: Date;
   filterTransactionOption: string;
   handleFilterTransactionOption: (data: string) => void;
   cancelEventTransaction: () => Promise<void>;
+  importTransactionFile: (transaction_id: string) => Promise<void>;
+  handleTransactionFilesWindow: () => void;
   createSupplierTransactionAgreementWithTransactions: (data: ICreateEventSupplierTransactionAgreementWithTransactionsDTO) => Promise<void>;
   deleteAllSupplierAgreements: () => Promise<void>;
   deleteTransaction: (id: string) => Promise<void>;
@@ -86,6 +92,7 @@ interface TransactionContextType {
   handleEditNewTransactionValueWindow: () => void;
   handleEditNewTransactionDueDateWindow: () => void;
   handleEditTransactionDueDateWindow: () => void;
+  handleTransactionNotesWindow: () => void;
   handleCancelledTransactionFilter: () => void;
   handleEditEventTransactionValueWindow: () => void;
   handleSortTransactionsByIntervalFilter: () => void;
@@ -118,6 +125,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   } = useEventSuppliers();
 
   const [loading, setLoading] = useState(false);
+  const [transactionNotesWindow, setTransactionNotesWindow] = useState(false);
   const [createTransactionWindow, setCreateTransactionWindow] = useState(false);
   const [cancelEventTransactionConfirmationWindow, setCancelEventTransactionConfirmationWindow] = useState(false);
   const [editTransactionName, setEditTransactionName] = useState(false);
@@ -149,9 +157,13 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [toDateTransactionFilter, setToDateTransactionFilter] = useState(new Date());
   const [sortTransactionsByInterval, setSortTransactionsByInterval] = useState(false);
   const [cancelledTransactionFilter, setCancelledTransactionFilter] = useState(false);
+  const [transactionFilesWindow, setTransactionFilesWindow] = useState(false);
   const [filterTransactionOption, setFilterTransactionOption] = useState('all');
   const [filteredEventTransactions, setFilteredEventTransactions] = useState<IEventTransactionDTO[]>(eventTransactions);
 
+  function handleTransactionFilesWindow() {
+    setTransactionFilesWindow(!transactionFilesWindow);
+  }
   function handleFilterTransactionOption(data: string) {
     setFilterTransactionOption(data);
   }
@@ -167,6 +179,10 @@ const TransactionProvider: React.FC = ({ children }) => {
 
   function handleCancelledTransactionFilter() {
     setCancelledTransactionFilter(!cancelledTransactionFilter);
+  }
+
+  function handleTransactionNotesWindow() {
+    setTransactionNotesWindow(!transactionNotesWindow);
   }
 
   function handleEditEventTransactionValueWindow() {
@@ -604,6 +620,35 @@ const TransactionProvider: React.FC = ({ children }) => {
     }
   }
 
+  async function importTransactionFile(transaction_id: string) {
+    try {
+      const response = await DocumentPicker.pickSingle({
+        mode: 'import',
+        allowMultiSelection: false,
+        type: [DocumentPicker.types.pdf, DocumentPicker.types.images],
+      });
+      let data = new FormData();
+      data.append(
+        'file',
+        {
+          uri: response.uri,
+          type: response.type,
+          name: response.name
+        },
+      );
+      await api.post(`/transaction-files/${transaction_id}`, data);
+      await getEventSuppliers(selectedEvent.id);
+      await getAllEventTransactions();
+    } catch(err) {
+      if (DocumentPicker.isCancel(err)) {
+        return;
+      } else {
+        throw new Error(err);
+      }
+
+    }
+  }
+
   return (
     <TransactionContext.Provider
       value={{
@@ -675,6 +720,11 @@ const TransactionProvider: React.FC = ({ children }) => {
         handleEditTransactionName,
         editTransactionCategory,
         handleEditTransactionCategory,
+        handleTransactionNotesWindow,
+        transactionNotesWindow,
+        handleTransactionFilesWindow,
+        transactionFilesWindow,
+        importTransactionFile,
       }}
     >
       {children}

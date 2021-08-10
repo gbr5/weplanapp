@@ -1,3 +1,4 @@
+import IEventSupplierNoteDTO from './IEventSupplierNoteDTO';
 import IEventSupplierTransactionAgreementDTO from './IEventSupplierTransactionAgreementDTO';
 import IUserDTO from './IUserDTO';
 
@@ -17,4 +18,5 @@ export default interface IEventSupplierDTO {
   updated_at: Date;
   eventWeplanSupplier: IEventWeplanSupplier;
   transactionAgreements: IEventSupplierTransactionAgreementDTO[];
+  notes: IEventSupplierNoteDTO[];
 }

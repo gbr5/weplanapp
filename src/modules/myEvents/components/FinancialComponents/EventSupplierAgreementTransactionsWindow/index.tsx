@@ -51,7 +51,6 @@ export function EventSupplierAgreementTransactionsWindow() {
 
   function closeWindow() {
     handleEventSupplierAgreementTransactionsWindow();
-    selectSupplier({} as IEventSupplierDTO);
     selectSupplierTransaction({} as IEventSupplierTransactionDTO);
     selectSupplierTransactionAgreement({} as IEventSupplierTransactionAgreementDTO);
   }

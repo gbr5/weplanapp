@@ -4,6 +4,7 @@ import theme from '../../../../../global/styles/theme';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
+import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
 import {
   Container,
@@ -20,11 +21,13 @@ import {
 interface IProps {
   index: number;
   agreement: IEventSupplierTransactionAgreementDTO;
+  isSupplierSelected?: boolean;
 }
 
 export function SupplierAgreementButton({
   agreement,
   index,
+  isSupplierSelected,
 }: IProps) {
   const {
     shadowColor,
@@ -75,11 +78,15 @@ export function SupplierAgreementButton({
     >
       <Index>{index}</Index>
       <Body>
-        {supplier && (
-          <SupplierName>{supplier.name}</SupplierName>
+        {!isSupplierSelected ? (
+          supplier && <SupplierName>{supplier.name}</SupplierName>
+        ) : (
+          <SupplierName>
+            Criado dia:  {formatOnlyDateShort(String(agreement.created_at))}
+          </SupplierName>
         )}
         <ContractInfo>
-          <Amount>{formatBrlCurrency(agreement.amount)}</Amount>
+          <Amount>{formatBrlCurrency(agreement.amount)} | </Amount>
           <NumberOfInstallments>
             {numberOfPaidTransactions} / {agreement.number_of_installments}
           </NumberOfInstallments>

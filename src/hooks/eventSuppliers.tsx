@@ -39,19 +39,23 @@ interface EventSuppliersContextType {
   selectedSupplierTransaction: IEventSupplierTransactionDTO;
   supplierAgreementTransactions: IEventSupplierTransactionDTO[] | undefined;
   supplierCategoryWindow: boolean;
+  supplierNotesWindow: boolean;
   supplierSubCategoryWindow: boolean;
   supplierSubCategories: ISupplierSubCategoryDTO[];
   supplierTransactionsWindow: boolean;
+  supplierTransactionAgreementsWindow: boolean;
   supplierTransactions: ITransactionDTO[] | undefined;
   createEventSuppliers: (data: ICreateEventSupplierDTO) => Promise<void>;
   getEventSupplierTransactionAgreements: (supplier_id: string) => Promise<IEventSupplierTransactionAgreementDTO[]>;
   getEventSupplierTransactions: (agreement_id: string) => Promise<IEventSupplierTransactionDTO[]>;
   handleDichargeOption: (data: string) => void;
   handleAddSupplierWindow: () => void;
+  handleSupplierTransactionAgreementsWindow: () => void;
   handleDischargingWindow: () => void;
   handleEditSupplierNameWindow: () => void;
   handleEditSupplierCategoryWindow: () => void;
   handleSupplierCategoryWindow: () => void;
+  handleSupplierNotesWindow: () => void;
   handleSupplierSubCategoryWindow: () => void;
   handleSupplierTransactionsWindow: () => void;
   handleCreateSupplierTransactionAgreementWindow: () => void;
@@ -81,6 +85,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   } = useMyEvent();
 
   const [addSupplierWindow, setAddSupplierWindow] = useState(false);
+  const [supplierNotesWindow, setSupplierNotesWindow] = useState(false);
   const [createSupplierTransactionAgreementWindow, setCreateSupplierTransactionAgreementWindow] = useState(false);
   const [cancelAgreementsWindow, setCancelAllAgreementsWindow] = useState(false);
   const [cancelFutureTransactionsWindow, setCancelFutureTransactionsWindow] = useState(false);
@@ -100,6 +105,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   const [supplierSubCategoryWindow, setSupplierSubCategoryWindow] = useState(false);
   const [supplierSubCategories, setSupplierSubCategories] = useState<ISupplierSubCategoryDTO[]>([]);
   const [supplierTransactionsWindow, setSupplierTransactionsWindow] = useState(false);
+  const [supplierTransactionAgreementsWindow, setSupplierTransactionAgreementsWindow] = useState(false);
 
   function unsetEventSuppliersVariables() {
     setAddSupplierWindow(false);
@@ -167,7 +173,9 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   function handleEditSupplierCategoryWindow() {
     setEditSupplierCategoryWindow(!editSupplierCategoryWindow)
   }
-
+  function handleSupplierNotesWindow() {
+    setSupplierNotesWindow(!supplierNotesWindow)
+  }
   function handleDischargingWindow() {
     setDischargingWindow(!dischargingWindow)
   }
@@ -178,6 +186,10 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
 
   function handleSupplierCategoryWindow() {
     setSupplierCategoryWindow(!supplierCategoryWindow)
+  }
+
+  function handleSupplierTransactionAgreementsWindow() {
+    setSupplierTransactionAgreementsWindow(!supplierTransactionAgreementsWindow)
   }
 
   function handleSupplierTransactionsWindow() {
@@ -414,6 +426,10 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         editSupplierNameWindow,
         handleEditSupplierCategoryWindow,
         handleEditSupplierNameWindow,
+        handleSupplierTransactionAgreementsWindow,
+        supplierTransactionAgreementsWindow,
+        handleSupplierNotesWindow,
+        supplierNotesWindow,
       }}
     >
       {children}
