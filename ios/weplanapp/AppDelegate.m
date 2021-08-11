@@ -3,6 +3,11 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+  // Block from Expo
+#import <UMCore/UMModuleRegistry.h>
+#import <UMReactNativeAdapter/UMNativeModulesProxy.h>
+#import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
+  // End Block from Expo
 #import "RNSplashScreen.h"
 
 #ifdef FB_SONARKIT_ENABLED
@@ -24,6 +29,14 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
+  // Block from Expo
+@interface AppDelegate () <RCTBridgeDelegate>
+
+@property (nonatomic, strong) UMModuleRegistryAdapter *moduleRegistryAdapter;
+
+@end
+  // End Block from Expo
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -31,6 +44,9 @@ static void InitializeFlipper(UIApplication *application) {
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
+
+  // Line from Expo
+  self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
@@ -49,10 +65,22 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
 
+  // Line from Expo
+  [super application:application didFinishLaunchingWithOptions:launchOptions];
+
   [RNSplashScreen show];
 
   return YES;
 }
+
+  // Block from Expo
+- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge
+{
+    NSArray<id<RCTBridgeModule>> *extraModules = [_moduleRegistryAdapter extraModulesForBridge:bridge];
+    // If you'd like to export some custom RCTBridgeModules that are not Expo modules, add them here!
+    return extraModules;
+}
+  // End Block from Expo
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {

@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-
+import * as ImagePicker from 'expo-image-picker';
 import { addDays, subDays } from 'date-fns';
 import DocumentPicker from 'react-native-document-picker';
 
@@ -77,6 +77,7 @@ interface TransactionContextType {
   handleFilterTransactionOption: (data: string) => void;
   cancelEventTransaction: () => Promise<void>;
   importTransactionFile: (transaction_id: string) => Promise<void>;
+  importTransactionImage: (transaction_id: string) => Promise<void>;
   handleTransactionFilesWindow: () => void;
   createSupplierTransactionAgreementWithTransactions: (data: ICreateEventSupplierTransactionAgreementWithTransactionsDTO) => Promise<void>;
   deleteAllSupplierAgreements: () => Promise<void>;
@@ -620,8 +621,43 @@ const TransactionProvider: React.FC = ({ children }) => {
     }
   }
 
+  async function importTransactionImage(transaction_id: string) {
+    try {
+      setLoading(true);
+      let response = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        // aspect: [4, 3],
+        quality: 0.5,
+      });
+      if (!response.cancelled) {
+        let data = new FormData();
+        data.append(
+          'file',
+          {
+            uri: response.uri,
+            type: `${response.type}/${response.uri.replace(/^[^\r\n]+\./g, '')}`,
+            name: response.uri.replace(/^[^\r\n]+ImagePicker\//g, ''),
+          },
+        );
+        await api.post(`/transaction-files/${transaction_id}`, data);
+        await getEventSuppliers(selectedEvent.id);
+        await getAllEventTransactions();
+      }
+    } catch(err) {
+      if (DocumentPicker.isCancel(err)) {
+        return;
+      } else {
+        throw new Error(err);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function importTransactionFile(transaction_id: string) {
     try {
+      setLoading(true);
       const response = await DocumentPicker.pickSingle({
         mode: 'import',
         allowMultiSelection: false,
@@ -645,7 +681,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       } else {
         throw new Error(err);
       }
-
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -725,6 +762,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         handleTransactionFilesWindow,
         transactionFilesWindow,
         importTransactionFile,
+        importTransactionImage,
       }}
     >
       {children}

@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { getAll, Contact } from 'react-native-contacts';
 import { Alert, PermissionsAndroid, Platform } from 'react-native';
-import { useEventGuests } from './eventGuests';
 
 interface UserContactsContextType {
   loading: boolean;

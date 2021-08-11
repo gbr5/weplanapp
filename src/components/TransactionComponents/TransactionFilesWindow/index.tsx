@@ -1,35 +1,56 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Alert,
   Linking,
+  Platform,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+
 import { useTransaction } from '../../../hooks/transactions';
 
+import { WindowHeader } from '../../WindowHeader';
+import { MenuBooleanButton } from '../../MenuBooleanButton';
 import WindowContainer from '../../WindowContainer';
 import Button from '../../Button';
 
 import {
   Container,
   FileContainer,
-  Image,
+  IconContainer,
+  Icon,
 } from './styles';
-import { SectionHeader } from '../../SectionHeader';
-import { useMyEvent } from '../../../hooks/myEvent';
-import { Link } from '@react-navigation/native';
+import theme from '../../../global/styles/theme';
 
 export function TransactionFilesWindow() {
-  const {
-    handleSectionDescriptionWindow,
-  } = useMyEvent();
   const {
     selectedEventTransaction,
     handleTransactionFilesWindow,
     importTransactionFile,
+    importTransactionImage,
+    loading,
   } = useTransaction();
 
+  const [imageButton, setImageButton] = useState(true);
+
   async function handleFile() {
+    setImageButton(false);
     await importTransactionFile(selectedEventTransaction.transaction.id);
   }
+
+  async function handleImages() {
+    setImageButton(true);
+    await importTransactionImage(selectedEventTransaction.transaction.id);
+  }
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
 
   const handlePress = useCallback(async (url: string) => {
     // Checking if the link is supported for links with custom URL scheme.
@@ -55,12 +76,20 @@ export function TransactionFilesWindow() {
       width="100%"
     >
       <Container>
-        {/* <WindowHeader overTitle={`Transação: ${selectedEventTransaction.transaction.name}`} title="Arquivos" /> */}
-        <SectionHeader
-          handleAddButton={handleFile}
-          handleInfoButton={handleSectionDescriptionWindow}
-          title={`Arquivos de ${selectedEventTransaction.transaction.name}`}
-        />
+        <WindowHeader overTitle={`Transação: ${selectedEventTransaction.transaction.name}`} title="Arquivos" />
+        {loading ? (
+          <IconContainer>
+            <Icon name="loader" />
+          </IconContainer>
+        ) : (
+          <MenuBooleanButton
+            firstActive={imageButton}
+            firstFunction={handleImages}
+            firstLabel="+ Imagem"
+            secondFunction={handleFile}
+            secondLabel="+ Arquivo"
+          />
+        )}
         {selectedEventTransaction.transaction.files.length > 0 && (
           <FileContainer
             data={selectedEventTransaction.transaction.files}

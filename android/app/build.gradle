@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
+// Previous line from Expo
 
 import com.android.build.OutputFile
 
@@ -196,6 +198,8 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+      // Next line from Expo
+    addUnimodulesDependencies()
 
     // React Native Contacts - react-native-contacts
     implementation project(':react-native-contacts')

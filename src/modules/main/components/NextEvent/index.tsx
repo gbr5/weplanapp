@@ -51,10 +51,16 @@ const NextEvent: React.FC = () => {
             : '-'
         }
       </Date> */}
-      <EventButton
-        key={nextEvent.event.id}
-        event={nextEvent.event}
-      />
+      {
+        nextEvent && nextEvent.event ? (
+          <EventButton
+            key={nextEvent.event.id}
+            event={nextEvent.event}
+          />
+        ) : (
+          <Name>-</Name>
+        )
+      }
     </Container>
   );
 };

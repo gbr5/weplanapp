@@ -21,11 +21,19 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>206</string>
+	<string>210</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSContactsUsageDescription</key>
-	<string>Importar lista de convidados</string>
+	<string>Este app requer acesso para importar lista de convidados</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Este app requer acesso para importar imagem</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Este app requer acesso para importar imagens</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Este app requer acesso para importar arquivos</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Este app requer acesso para importar imagens</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
