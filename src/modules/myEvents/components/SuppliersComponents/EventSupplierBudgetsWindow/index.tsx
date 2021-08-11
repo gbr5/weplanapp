@@ -19,6 +19,7 @@ import {
 } from './styles';
 import { useTransaction } from '../../../../../hooks/transactions';
 import { addMonths } from 'date-fns';
+import { EventSupplierBudgetButton } from '../EventSupplierBudgetButton';
 
 export function EventSupplierBudgetsWindow() {
   const {
@@ -49,6 +50,7 @@ export function EventSupplierBudgetsWindow() {
       left="0%"
       height="90%"
       width="100%"
+      backdropZIndex={15}
     >
       <Container>
         <SectionHeader
@@ -61,12 +63,14 @@ export function EventSupplierBudgetsWindow() {
             data={selectedSupplier.budgets}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
+              const index = String(selectedSupplier.budgets
+                .findIndex(budget => budget.id === item.id) + 1);
               return (
-                <Button
+                <EventSupplierBudgetButton
+                  budget={item}
                   key={item.id}
-                >
-                  {String(item.amount)}
-                </Button>
+                  index={index}
+                />
               );
             }}
           />

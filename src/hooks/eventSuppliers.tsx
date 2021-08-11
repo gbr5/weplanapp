@@ -19,6 +19,7 @@ import ISupplierSubCategoryDTO from '../dtos/ISupplierSubCategoryDTO';
 import ITransactionDTO from '../dtos/ITransactionDTO';
 import IUpdateEventSupplierTransactionAgreementDTO from '../dtos/IUpdateEventSupplierTransactionAgreementDTO';
 import ICreateEventSupplierBudgetDTO from '../dtos/ICreateEventSupplierBudgetDTO';
+import IEventSupplierBudgetDTO from '../dtos/IEventSupplierBudgetDTO';
 
 interface IUpdateAgreementAndTransactionsDTO {
   id: string;
@@ -32,6 +33,8 @@ interface EventSuppliersContextType {
   dischargeOption: string;
   dischargingWindow: boolean;
   editSupplierNameWindow: boolean;
+  editSupplierBudgetAmountWindow: boolean;
+  editSupplierBudgetDescriptionWindow: boolean;
   editSupplierCategoryWindow: boolean;
   eventSupplierAgreementTransactionsWindow: boolean;
   loading: boolean;
@@ -49,9 +52,17 @@ interface EventSuppliersContextType {
   supplierSubCategories: ISupplierSubCategoryDTO[];
   supplierTransactionsWindow: boolean;
   supplierTransactionAgreementsWindow: boolean;
+  supplierSelectedDateWindow: boolean;
   supplierTransactions: ITransactionDTO[] | undefined;
+  supplierSelectedDate: Date;
+  selectedSupplierBudget: IEventSupplierBudgetDTO,
+  selectSupplierBudget: (data: IEventSupplierBudgetDTO) => void,
+  handleSupplierSelectedDate: (date: Date) => void;
+  handleSupplierSelectedDateWindow: () => void;
   createEventSuppliers: (data: ICreateEventSupplierDTO) => Promise<void>;
+  updateSupplierBudgetDueDate: (due_date: Date) => Promise<void>;
   createSupplierBudget: (data: ICreateEventSupplierBudgetDTO) => Promise<void>;
+  updateSupplierBudget: (data: IEventSupplierBudgetDTO) => Promise<void>;
   getEventSupplierTransactionAgreements: (supplier_id: string) => Promise<IEventSupplierTransactionAgreementDTO[]>;
   getEventSupplierTransactions: (agreement_id: string) => Promise<IEventSupplierTransactionDTO[]>;
   handleDichargeOption: (data: string) => void;
@@ -64,6 +75,8 @@ interface EventSuppliersContextType {
   handleSupplierNotesWindow: () => void;
   handleSupplierFilesWindow: () => void;
   handleSupplierBudgetsWindow: () => void;
+  handleEditSupplierBudgetAmountWindow: () => void;
+  handleEditSupplierBudgetDescriptionWindow: () => void;
   handleSupplierBudgetForm: () => void;
   handleSupplierSubCategoryWindow: () => void;
   handleSupplierTransactionsWindow: () => void;
@@ -107,6 +120,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   const [dischargeOption, setDischargeOption] = useState('');
   const [dischargingWindow, setDischargingWindow] = useState(false);
   const [editSupplierNameWindow, setEditSupplierNameWindow] = useState(false);
+  const [editSupplierBudgetAmountWindow, setEditSupplierBudgetAmountWindow] = useState(false);
+  const [editSupplierBudgetDescriptionWindow, setEditSupplierBudgetDescriptionWindow] = useState(false);
   const [editSupplierCategoryWindow, setEditSupplierCategoryWindow] = useState(false);
   const [eventSupplierAgreementTransactionsWindow, setEventSupplierAgreementTransactionsWindow] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -115,11 +130,22 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   const [selectedSupplierSubCategory, setSelectedSupplierSubCategory] = useState({} as ISupplierSubCategoryDTO);
   const [selectedSupplierTransactionAgreement, setSelectedSupplierTransactionAgreement] = useState({} as IEventSupplierTransactionAgreementDTO);
   const [selectedSupplierTransaction, setSelectedSupplierTransaction] = useState({} as IEventSupplierTransactionDTO);
+  const [selectedSupplierBudget, setSelectedSupplierBudget] = useState({} as IEventSupplierBudgetDTO);
   const [supplierAgreementTransactions, setSupplierAgreementTransactions] = useState<IEventSupplierTransactionDTO[]>([]);
   const [supplierSubCategoryWindow, setSupplierSubCategoryWindow] = useState(false);
   const [supplierSubCategories, setSupplierSubCategories] = useState<ISupplierSubCategoryDTO[]>([]);
   const [supplierTransactionsWindow, setSupplierTransactionsWindow] = useState(false);
   const [supplierTransactionAgreementsWindow, setSupplierTransactionAgreementsWindow] = useState(false);
+  const [supplierSelectedDateWindow, setSupplierSelectedDateWindow] = useState(false);
+  const [supplierSelectedDate, setSupplierSelectedDate] = useState(new Date());
+
+  function handleSupplierSelectedDate(date: Date) {
+    setSupplierSelectedDate(date);
+  }
+
+  function handleSupplierSelectedDateWindow() {
+    setSupplierSelectedDateWindow(!supplierSelectedDateWindow);
+  }
 
   function unsetEventSuppliersVariables() {
     setAddSupplierWindow(false);
@@ -181,6 +207,12 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   }
   function handleEditSupplierNameWindow() {
     setEditSupplierNameWindow(!editSupplierNameWindow)
+  }
+  function handleEditSupplierBudgetAmountWindow() {
+    setEditSupplierBudgetAmountWindow(!editSupplierBudgetAmountWindow)
+  }
+  function handleEditSupplierBudgetDescriptionWindow() {
+    setEditSupplierBudgetDescriptionWindow(!editSupplierBudgetDescriptionWindow)
   }
   function handleEditSupplierCategoryWindow() {
     setEditSupplierCategoryWindow(!editSupplierCategoryWindow)
@@ -287,8 +319,32 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   }: ICreateEventSupplierBudgetDTO) {
     try {
       setLoading(true);
-      const response = await api.post(`/event-supplier-budgets/`, {
+      await api.post(`/event-supplier-budgets/`, {
         supplier_id,
+        amount,
+        description,
+        due_date,
+        isActive,
+      });
+
+      await getEventSuppliers(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function updateSupplierBudget({
+    id,
+    amount,
+    description,
+    due_date,
+    isActive,
+  }: IEventSupplierBudgetDTO) {
+    try {
+      setLoading(true);
+      await api.put(`/event-supplier-budgets/`, {
+        id,
         amount,
         description,
         due_date,
@@ -357,6 +413,9 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   }
   function selectSupplierTransaction(supplierTransaction: IEventSupplierTransactionDTO) {
     setSelectedSupplierTransaction(supplierTransaction);
+  }
+  async function selectSupplierBudget(budget: IEventSupplierBudgetDTO) {
+    setSelectedSupplierBudget(budget);
   }
   async function selectSupplierCategory(category: string) {
     setSelectedSupplierCategory(category);
@@ -427,6 +486,12 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
+  async function updateSupplierBudgetDueDate(due_date: Date) {
+    await updateSupplierBudget({
+      ...selectedSupplierBudget,
+      due_date,
+    });
+  }
   const supplierTransactions = useMemo(() => {
     if (selectedSupplier && selectedSupplier.id) {
       const transactions: ITransactionDTO[] = [];
@@ -468,10 +533,16 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
     <EventSuppliersContext.Provider
       value={{
         addSupplierWindow,
+        handleSupplierSelectedDate,
+        supplierSelectedDate,
+        updateSupplierBudgetDueDate,
+        selectSupplierBudget,
+        selectedSupplierBudget,
         createSupplierTransactionAgreementWindow,
         cancelAgreementsWindow,
         createEventSuppliers,
         createSupplierBudget,
+        updateSupplierBudget,
         dischargeOption,
         dischargingWindow,
         eventSupplierAgreementTransactionsWindow,
@@ -509,6 +580,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         unsetEventSuppliersVariables,
         editSupplierCategoryWindow,
         editSupplierNameWindow,
+        editSupplierBudgetAmountWindow,
+        editSupplierBudgetDescriptionWindow,
         handleEditSupplierCategoryWindow,
         handleEditSupplierNameWindow,
         handleSupplierTransactionAgreementsWindow,
@@ -516,6 +589,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         handleSupplierNotesWindow,
         handleSupplierFilesWindow,
         handleSupplierBudgetsWindow,
+        handleEditSupplierBudgetAmountWindow,
+        handleEditSupplierBudgetDescriptionWindow,
         supplierNotesWindow,
         supplierFilesWindow,
         supplierBudgetsWindow,
@@ -523,6 +598,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         importSupplierImage,
         handleSupplierBudgetForm,
         supplierBudgetForm,
+        handleSupplierSelectedDateWindow,
+        supplierSelectedDateWindow,
       }}
     >
       {children}

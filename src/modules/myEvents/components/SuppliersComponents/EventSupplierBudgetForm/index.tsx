@@ -107,11 +107,12 @@ export function EventSupplierBudgetForm() {
                   name="description"
                   autoCorrect={false}
                   autoCapitalize="words"
-                  placeholder="Defina o título da tarefa"
+                  placeholder="Descrição"
                   returnKeyType="next"
                   onSubmitEditing={() => {
                     formRef.current?.submitForm();
-                  }}                />
+                  }}
+                />
               </Form>
               <FormQuestion>Data de Vencimento</FormQuestion>
               <DateContainer>

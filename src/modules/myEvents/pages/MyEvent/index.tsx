@@ -68,6 +68,8 @@ import { TransactionFilesWindow } from '../../../../components/TransactionCompon
 import { EventSupplierFilesWindow } from '../../components/SuppliersComponents/EventSupplierFilesWindow';
 import { EventSupplierBudgetsWindow } from '../../components/SuppliersComponents/EventSupplierBudgetsWindow';
 import { EventSupplierBudgetForm } from '../../components/SuppliersComponents/EventSupplierBudgetForm';
+import { EditSupplierBudgetAmount } from '../../components/SuppliersComponents/EditSupplierBudgetAmount';
+import { EditSupplierBudgetDescription } from '../../components/SuppliersComponents/EditSupplierBudgetDescription';
 
 const MyEvent: React.FC = () => {
   const {
@@ -125,6 +127,13 @@ const MyEvent: React.FC = () => {
     supplierFilesWindow,
     supplierBudgetsWindow,
     supplierBudgetForm,
+    selectedSupplierBudget,
+    editSupplierBudgetAmountWindow,
+    editSupplierBudgetDescriptionWindow,
+    supplierSelectedDateWindow,
+    supplierSelectedDate,
+    updateSupplierBudgetDueDate,
+    handleSupplierSelectedDateWindow,
   } = useEventSuppliers();
   const {
     guestFilterWindow,
@@ -219,7 +228,6 @@ const MyEvent: React.FC = () => {
   return (
     <>
       {budgetWindow && <BudgetWindow />}
-
       {createEventNoteWindow && <EventNoteForm />}
       {supplierNotesWindow && <SupplierNotesSection />}
       {supplierFilesWindow && <EventSupplierFilesWindow />}
@@ -227,39 +235,46 @@ const MyEvent: React.FC = () => {
       {supplierBudgetForm && <EventSupplierBudgetForm />}
       {transactionNotesWindow && <TransactionNotesWindow />}
       {transactionFilesWindow && <TransactionFilesWindow />}
-
+      {editSupplierBudgetDescriptionWindow
+        && selectedSupplierBudget
+        && selectedSupplierBudget.id
+        && <EditSupplierBudgetDescription />}
+      {editSupplierBudgetAmountWindow
+        && selectedSupplierBudget
+        && selectedSupplierBudget.id
+        && <EditSupplierBudgetAmount />}
+      {supplierSelectedDateWindow
+        && selectedSupplierBudget
+        && selectedSupplierBudget.id
+        && (
+          <DatePickerWindow
+            closeWindow={handleSupplierSelectedDateWindow}
+            selectDate={updateSupplierBudgetDueDate}
+            selectedDate={new Date(supplierSelectedDate)}
+          />
+        )}
       {selectedEventTransaction
         && selectedEventTransaction.transaction
         && editTransactionName
         && <EditTransactionName />}
-
       {selectedSupplier
         && selectedSupplier.id
         && editSupplierNameWindow
         && <EditSupplierName />}
-
       {selectedSupplier
         && selectedSupplier.id
         && editSupplierCategoryWindow
         && <EditSupplierCategory />}
-
       {selectedEventTransaction
         && selectedEventTransaction.transaction
         && editTransactionCategory
         && <EditTransactionCategory />}
-
       {supplierTransactionAgreementsWindow && <SupplierTransactionAgreementsWindow />}
       {selectMobileContactsWindow && <SelectMobileContacts />}
-
       {createTransactionWindow && <CreateEventTransaction />}
-
       {sectionDescriptionWindow && <SectionDescriptionWindow />}
-
-
       {guestFilterWindow && <GuestFilterWindow />}
-
       {filterTransactionWindow && <TransactionsFilterWindow /> }
-
       {selectedEventTransaction
         && selectedEventTransaction.transaction
         && cancelEventTransactionConfirmationWindow && (
@@ -274,29 +289,24 @@ const MyEvent: React.FC = () => {
             backdropLeft="0%"
           />
         )}
-
       {selectedSupplierTransactionAgreement
         && selectedSupplierTransactionAgreement.id
         && eventSupplierAgreementTransactionsWindow && (
           <EventSupplierAgreementTransactionsWindow />
         )}
-
       {selectedSupplier
         && selectedSupplier.id
         && supplierTransactionsWindow && (
           <SupplierTransactionsWindow />
         )
       }
-
       {selectedSupplier
         && selectedSupplier.id
         && cancelAgreementsWindow && (
           <CancelAllAgreements />
         )
       }
-
       {dischargingWindow && <DischargeSupplierWindow />}
-
       {newGuestForm && <NewGuestForm />}
       {newGuestWindow && <NewGuestWindow />}
 
