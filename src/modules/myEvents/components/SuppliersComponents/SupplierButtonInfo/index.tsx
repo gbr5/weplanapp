@@ -12,8 +12,6 @@ import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
 import {
   Container,
-  NotificationContainer,
-  NotificationNumber,
   SupplierConfirmationButton,
   RowContainer,
   RowTitle,
@@ -35,6 +33,7 @@ import {
   SupplierLabel,
   FieldContainer,
 } from './styles';
+import { NotificationNumber } from '../../../../../components/NotificationNumber';
 
 export function SupplierButtonInfo() {
   const {
@@ -53,6 +52,8 @@ export function SupplierButtonInfo() {
     selectSupplierCategory,
     handleSupplierTransactionAgreementsWindow,
     handleSupplierNotesWindow,
+    handleSupplierFilesWindow,
+    handleSupplierBudgetsWindow,
   } = useEventSuppliers();
   const { eventDebitTransactions } = useTransaction();
 
@@ -116,6 +117,30 @@ export function SupplierButtonInfo() {
   const numberOfNotes = useMemo(() => {
     return selectedSupplier.notes.length;
   }, [selectedSupplier.notes]);
+
+  const numberOfBudgets = useMemo(() => {
+    return selectedSupplier.budgets.length;
+  }, [selectedSupplier.notes]);
+  const numberOfFiles = useMemo(() => {
+    return selectedSupplier.files.length;
+  }, [selectedSupplier.notes]);
+  const numberOfTransactions = useMemo(() => {
+    let transactions = 0;
+    selectedSupplier.transactionAgreements
+      .filter(agreement => !agreement.isCancelled)
+      .map(agreement => {
+        return agreement.transactions.filter(({ transaction }) =>
+          !transaction.isCancelled && transactions ++);
+      }).length;
+    return transactions;
+  }, [selectedSupplier.notes]);
+  const numberOfTransactionAgreements = useMemo(() => {
+    return selectedSupplier.transactionAgreements
+      .filter(agreement => !agreement.isCancelled).length;
+  }, [selectedSupplier.notes]);
+
+  const top = '-50%';
+  const left = '-20%';
 
   return (
     <Container
@@ -185,6 +210,11 @@ export function SupplierButtonInfo() {
             <IconContainer
               color={theme.color.title}
             >
+              <NotificationNumber
+                top={top}
+                left={left}
+                number={numberOfTransactions}
+              />
               <Icon name="dollar-sign" />
             </IconContainer>
           </MenuButton>
@@ -202,11 +232,11 @@ export function SupplierButtonInfo() {
           <IconContainer
             color={theme.color.info_light}
           >
-            <NotificationContainer>
-              <NotificationNumber>
-                {numberOfNotes}
-              </NotificationNumber>
-            </NotificationContainer>
+            <NotificationNumber
+              top={top}
+              left={left}
+              number={numberOfNotes}
+            />
             <Icon name="file-text" />
           </IconContainer>
         </MenuButton>
@@ -225,6 +255,11 @@ export function SupplierButtonInfo() {
             <IconContainer
               color={theme.color.success_light}
             >
+              <NotificationNumber
+                top={top}
+                left={left}
+                number={numberOfTransactionAgreements}
+              />
               <Icon name="lock" />
             </IconContainer>
           </MenuButton>
@@ -232,6 +267,7 @@ export function SupplierButtonInfo() {
 
         {!selectedSupplier.isHired && (
           <MenuButton
+            onPress={handleSupplierBudgetsWindow}
             style={{
               shadowColor: theme.menuShadow.shadowColor,
               shadowOffset: theme.menuShadow.shadowOffset,
@@ -239,32 +275,41 @@ export function SupplierButtonInfo() {
               shadowRadius: theme.menuShadow.shadowRadius,
             }}
           >
-            <MenuText>Orçamento</MenuText>
+            <MenuText>Orçamentos</MenuText>
             <IconContainer
               color={theme.color.success_light}
-              >
+            >
+              <NotificationNumber
+                top={top}
+                left={left}
+                number={numberOfBudgets}
+              />
               <Icon name="mail" />
             </IconContainer>
           </MenuButton>
         )}
 
-        {selectedSupplier.weplanUser && (
-          <MenuButton
-            style={{
-              shadowColor: theme.menuShadow.shadowColor,
-              shadowOffset: theme.menuShadow.shadowOffset,
-              shadowOpacity: theme.menuShadow.shadowOpacity,
-              shadowRadius: theme.menuShadow.shadowRadius,
-            }}
+        <MenuButton
+          onPress={handleSupplierFilesWindow}
+          style={{
+            shadowColor: theme.menuShadow.shadowColor,
+            shadowOffset: theme.menuShadow.shadowOffset,
+            shadowOpacity: theme.menuShadow.shadowOpacity,
+            shadowRadius: theme.menuShadow.shadowRadius,
+          }}
+        >
+          <MenuText>Arquivos</MenuText>
+          <IconContainer
+            color={theme.color.text4}
           >
-            <MenuText>Avaliações</MenuText>
-            <IconContainer
-              color={theme.color.title}
-            >
-              <Icon name="star" />
-            </IconContainer>
-          </MenuButton>
-        )}
+            <NotificationNumber
+              top={top}
+              left={left}
+              number={numberOfFiles}
+            />
+            <Icon name="folder" />
+          </IconContainer>
+        </MenuButton>
 
         {selectedSupplier.weplanUser && (
           <MenuButton

@@ -10,9 +10,9 @@ import { addDays, subDays } from 'date-fns';
 import DocumentPicker from 'react-native-document-picker';
 
 import api from '../services/api';
-
 import { useMyEvent } from './myEvent';
 import { useEventSuppliers } from './eventSuppliers';
+
 import ICreateEventSupplierTransactionAgreementDTO from '../dtos/ICreateEventSupplierTransactionAgreementDTO';
 import ICreateTransactionDTO from '../dtos/ICreateTransactionDTO';
 import ITransactionDTO from '../dtos/ITransactionDTO';
@@ -168,7 +168,6 @@ const TransactionProvider: React.FC = ({ children }) => {
   function handleFilterTransactionOption(data: string) {
     setFilterTransactionOption(data);
   }
-
   function sortTransactionsByDueDate(data: ITransactionDTO[]) {
     const sortedData = data.sort((a, b) => {
       if (new Date(a.due_date) > new Date(b.due_date)) return 1;
@@ -177,68 +176,51 @@ const TransactionProvider: React.FC = ({ children }) => {
     });
     return sortedData;
   }
-
   function handleCancelledTransactionFilter() {
     setCancelledTransactionFilter(!cancelledTransactionFilter);
   }
-
   function handleTransactionNotesWindow() {
     setTransactionNotesWindow(!transactionNotesWindow);
   }
-
   function handleEditEventTransactionValueWindow() {
     setEditEventTransactionValueWindow(!editEventTransactionValueWindow);
   }
-
   function handleSortTransactionsByIntervalFilter() {
     setSortTransactionsByInterval(!sortTransactionsByInterval);
   }
-
   function handleFilteredEventTransactions(data: IEventTransactionDTO[]) {
     setFilteredEventTransactions(data);
   }
-
   function handleFromDateTransactionFilter(data: Date) {
     setFromDateTransactionFilter(data);
   }
-
   function handleToDateTransactionFilter(data: Date) {
     setToDateTransactionFilter(data);
   }
-
   function handleSelectedEventTransaction(data: IEventTransactionDTO) {
     setSelectedEventTransaction(data);
   }
-
   function handleEditTransactionName() {
     setEditTransactionName(!editTransactionName);
   }
-
   function handleEditTransactionCategory() {
     setEditTransactionCategory(!editTransactionCategory);
   }
-
   function handleEditTransactionDueDateWindow() {
     setEditTransactionDueDateWindow(!editTransactionDueDateWindow);
   }
-
   function handleEditNewTransactionValueWindow() {
     setEditNewTransactionValueWindow(!editNewTransactionValueWindow);
   }
-
   function handleEditNewTransactionDueDateWindow() {
     setEditNewTransactionDueDateWindow(!editNewTransactionDueDateWindow);
   }
-
   function handleFilterTransactionWindow() {
     setFilterTransactionWindow(!filterTransactionWindow);
   }
-
   function handleCancelEventTransactionConfirmationWindow() {
     setCancelEventTransactionConfirmationWindow(!cancelEventTransactionConfirmationWindow);
   }
-
-
   function handleEventTransactions(data: ITransactionDTO[]) {
     const updatedTransactions = data.map(transaction => {
       const supplierAgreements: IEventSupplierTransactionAgreementDTO[] = [];
@@ -264,7 +246,6 @@ const TransactionProvider: React.FC = ({ children }) => {
     });
     return updatedTransactions;
   }
-
   const getAllEventTransactions = useCallback(async () => {
     try {
       const transactions: ITransactionDTO[] = [];
@@ -325,15 +306,12 @@ const TransactionProvider: React.FC = ({ children }) => {
       throw new Error(err);
     }
   }, [selectedEvent]);
-
   useEffect(() => {
     getAllEventTransactions();
   }, [getAllEventTransactions, eventSuppliers, selectedEvent]);
-
   function handleNewEventSupplierTransactionAgreement() {
     setNewEventSupplierTransactionAgreement(!newEventSupplierTransactionAgreement);
   }
-
   function handleSelectedDate(data: Date) {
     setSelectedDate(data);
     setSelectedDateWindow(false);
@@ -350,16 +328,13 @@ const TransactionProvider: React.FC = ({ children }) => {
   function selectTransaction(data: ITransactionDTO) {
     setSelectedTransaction(data);
   }
-
   function handleNewAgreement({ amount, installments }: INewAgreementDTO) {
     setNewAgreementAmount(amount);
     setNewAgreementInstallments(installments);
   }
-
   function handleCreateTransactionWindow() {
     setCreateTransactionWindow(!createTransactionWindow);
   }
-
   async function createTransaction({
     amount,
     name,
@@ -389,7 +364,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
-
   async function editTransaction({
     id,
     amount,
@@ -459,7 +433,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
-
   async function handleUpdateTransactionDueDate(data: Date) {
     data.setHours(10);
     const oldTransaction = selectedEventTransaction;
@@ -475,7 +448,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       transaction: response.data,
     });
   }
-
   async function deleteTransaction(id: string) {
     try {
       setLoading(true);
@@ -486,7 +458,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
-
   async function createSupplierTransactionAgreementWithTransactions({
     amount,
     number_of_installments,
@@ -521,7 +492,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
-
   async function updateEventSupplierTransactionAgreement({
     amount,
     number_of_installments,
@@ -546,7 +516,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
-
   async function deleteAllSupplierAgreements() {
     try {
       await api.delete(`/delete-event-supplier-transaction-agreements/${selectedSupplier.id}`);
@@ -555,7 +524,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       throw new Error(err);
     }
   }
-
   async function getPayerTransactions(payer_id: string) {
     try {
       const response = await api.get<ITransactionDTO[]>(`/list-payer-transactions/${payer_id}`);
@@ -587,7 +555,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       throw new Error(err);
     }
   }
-
   async function cancelEventTransaction() {
     try {
       setLoading(true);
@@ -620,7 +587,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
-
   async function importTransactionImage(transaction_id: string) {
     try {
       setLoading(true);
@@ -654,7 +620,6 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
-
   async function importTransactionFile(transaction_id: string) {
     try {
       setLoading(true);

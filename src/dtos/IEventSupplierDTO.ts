@@ -1,3 +1,5 @@
+import IEventSupplierBudgetDTO from './IEventSupplierBudgetDTO';
+import IEventSupplierFileDTO from './IEventSupplierFileDTO';
 import IEventSupplierNoteDTO from './IEventSupplierNoteDTO';
 import IEventSupplierTransactionAgreementDTO from './IEventSupplierTransactionAgreementDTO';
 import IUserDTO from './IUserDTO';
@@ -19,4 +21,6 @@ export default interface IEventSupplierDTO {
   eventWeplanSupplier: IEventWeplanSupplier;
   transactionAgreements: IEventSupplierTransactionAgreementDTO[];
   notes: IEventSupplierNoteDTO[];
+  files: IEventSupplierFileDTO[];
+  budgets: IEventSupplierBudgetDTO[];
 }

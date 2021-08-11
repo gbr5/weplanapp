@@ -65,6 +65,9 @@ import { EventNoteForm } from '../../components/EventNotesComponents/EventNoteFo
 import { SupplierNotesSection } from '../../components/SuppliersComponents/SupplierNotesWindow';
 import { TransactionNotesWindow } from '../../../../components/TransactionComponents/TransactionNotesWindow';
 import { TransactionFilesWindow } from '../../../../components/TransactionComponents/TransactionFilesWindow';
+import { EventSupplierFilesWindow } from '../../components/SuppliersComponents/EventSupplierFilesWindow';
+import { EventSupplierBudgetsWindow } from '../../components/SuppliersComponents/EventSupplierBudgetsWindow';
+import { EventSupplierBudgetForm } from '../../components/SuppliersComponents/EventSupplierBudgetForm';
 
 const MyEvent: React.FC = () => {
   const {
@@ -119,6 +122,9 @@ const MyEvent: React.FC = () => {
     editSupplierCategoryWindow,
     supplierTransactionAgreementsWindow,
     supplierNotesWindow,
+    supplierFilesWindow,
+    supplierBudgetsWindow,
+    supplierBudgetForm,
   } = useEventSuppliers();
   const {
     guestFilterWindow,
@@ -216,6 +222,9 @@ const MyEvent: React.FC = () => {
 
       {createEventNoteWindow && <EventNoteForm />}
       {supplierNotesWindow && <SupplierNotesSection />}
+      {supplierFilesWindow && <EventSupplierFilesWindow />}
+      {supplierBudgetsWindow && <EventSupplierBudgetsWindow />}
+      {supplierBudgetForm && <EventSupplierBudgetForm />}
       {transactionNotesWindow && <TransactionNotesWindow />}
       {transactionFilesWindow && <TransactionFilesWindow />}
 
