@@ -17,7 +17,7 @@ interface IFormData {
 export function BudgetWindow() {
   const formRef = useRef<FormHandles>(null);
   const {
-    selectedEvent,
+    eventBudget,
     loading,
     createEventBudget,
     updateEventBudget,
@@ -25,11 +25,11 @@ export function BudgetWindow() {
   } = useMyEvent();
 
   async function handleSubmit({ budget }: IFormData) {
-    if (selectedEvent && selectedEvent.id && !selectedEvent.eventBudget) {
+    if (eventBudget && !eventBudget.id) {
       await createEventBudget(budget);
     } else {
       await updateEventBudget({
-        ...selectedEvent.eventBudget,
+        ...eventBudget,
         budget,
       });
     }
@@ -56,9 +56,9 @@ export function BudgetWindow() {
             name="budget"
             icon="dollar-sign"
             placeholder={
-              selectedEvent.eventBudget
-                && selectedEvent.eventBudget.budget
-                ? formatBrlCurrency(selectedEvent.eventBudget.budget)
+              eventBudget
+                && eventBudget.budget
+                ? formatBrlCurrency(eventBudget.budget)
                 : formatBrlCurrency(0)}
             returnKeyType="send"
             keyboardType="number-pad"

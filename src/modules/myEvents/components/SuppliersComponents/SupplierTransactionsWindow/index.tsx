@@ -24,6 +24,7 @@ export function SupplierTransactionsWindow() {
   const {
     selectedSupplier,
     selectedEvent,
+    eventTransactions,
   } = useMyEvent();
   const {
     selectSupplierTransaction,
@@ -32,7 +33,6 @@ export function SupplierTransactionsWindow() {
   } = useEventSuppliers();
   const {
     handleSelectedEventTransaction,
-    eventTransactions,
   } = useTransaction();
 
   function closeWindow() {

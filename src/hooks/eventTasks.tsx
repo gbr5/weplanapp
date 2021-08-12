@@ -52,7 +52,12 @@ interface EventTasksContextType {
 const EventTasksContext = createContext({} as EventTasksContextType);
 
 const EventTasksProvider: React.FC = ({ children }) => {
-  const { getEvent, selectedEvent } = useMyEvent();
+  const {
+    getEvent,
+    selectedEvent,
+    getEventNotes,
+    getEventTasks,
+  } = useMyEvent();
   const [editTaskTitleWindow, setEditTaskTitleWindow] = useState(false);
   const [editTaskPriorityWindow, setEditTaskPriorityWindow] = useState(false);
   const [editTaskStatusWindow, setEditTaskStatusWindow] = useState(false);
@@ -139,7 +144,8 @@ const EventTasksProvider: React.FC = ({ children }) => {
         status,
         title,
       });
-      await getEvent(event_id);
+      await getEventTasks(event_id);
+      await getEventNotes(event_id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -151,7 +157,8 @@ const EventTasksProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       await api.put(`/event-tasks/${data.id}`, data);
-      await getEvent(data.event_id);
+      await getEventTasks(data.event_id);
+      await getEventNotes(data.event_id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -163,7 +170,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       await api.delete(`/event-tasks/${data.id}`);
-      await getEvent(data.event_id);
+      await getEventTasks(data.event_id);
     } catch (err) {
       throw new Error(err);
     } finally {

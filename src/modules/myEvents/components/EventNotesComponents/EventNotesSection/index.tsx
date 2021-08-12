@@ -12,7 +12,7 @@ import {
 } from './styles';
 
 export function EventNotesSection() {
-  const { selectedEvent, handleSectionDescriptionWindow } = useMyEvent();
+  const { eventNotes, handleSectionDescriptionWindow } = useMyEvent();
   const { handleCreateEventNoteWindow } = useNote();
 
   const [filteredNotes, setFilteredNotes] = useState<INoteDTO[]>([]);
@@ -22,7 +22,7 @@ export function EventNotesSection() {
   }
 
   const notes = useMemo(() => {
-    const onlyNotes = selectedEvent.notes
+    const onlyNotes = eventNotes
       .map(({ note }) => note)
       .sort((a, b) => {
         if (new Date(a.updated_at) < new Date(b.updated_at)) return 1;
@@ -31,7 +31,7 @@ export function EventNotesSection() {
       });
     setFilteredNotes(onlyNotes);
     return onlyNotes;
-  }, [selectedEvent.notes]);
+  }, [eventNotes]);
 
   return (
     <Container>

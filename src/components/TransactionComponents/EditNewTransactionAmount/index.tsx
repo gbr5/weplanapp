@@ -60,7 +60,7 @@ export function EditNewTransactionAmount() {
       zIndex={31}
       top="5%"
       left="2%"
-      height="60%"
+      height="50%"
       width="96%"
     >
       <KeyboardAvoidingVueContainer

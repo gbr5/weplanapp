@@ -106,6 +106,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
     selectedEvent,
     selectedSupplier,
     selectSupplier,
+    getEventNotes,
   } = useMyEvent();
 
   const [addSupplierWindow, setAddSupplierWindow] = useState(false);
@@ -328,6 +329,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       });
 
       await getEventSuppliers(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -381,6 +383,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         number_of_installments,
       });
       response.data && setSelectedSupplierTransactionAgreement(response.data);
+      await getEventNotes(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     }

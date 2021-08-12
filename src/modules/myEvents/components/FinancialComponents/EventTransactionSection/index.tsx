@@ -25,9 +25,8 @@ export function EventTransactionSection() {
     shadowOpacity,
     shadowRadius,
   } = theme.iconButtonShadow;
-  const { eventSuppliers } = useMyEvent();
+  const { eventSuppliers, eventTransactions } = useMyEvent();
   const {
-    eventTransactions,
     cancelledTransactionFilter,
     sortTransactionsByInterval,
     fromDateTransactionFilter,

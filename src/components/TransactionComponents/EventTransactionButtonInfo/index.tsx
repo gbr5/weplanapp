@@ -26,8 +26,10 @@ import {
 import { NotificationNumber } from '../../NotificationNumber';
 import { useNote } from '../../../hooks/notes';
 import { useEffect } from 'react';
+import { useMyEvent } from '../../../hooks/myEvent';
 
 export function EventTransactionButtonInfo() {
+  const { getEventTransactions } = useMyEvent();
   const { getTransactionNotes, selectedTransactionNotes } = useNote();
   const {
     editTransaction,

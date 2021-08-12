@@ -13,15 +13,12 @@ import {
 } from './styles';
 
 export function TasksSection(): JSX.Element {
-  const { selectedEvent, handleSectionDescriptionWindow } = useMyEvent();
+  const { eventTasks, handleSectionDescriptionWindow } = useMyEvent();
   const { status, handleCreateTaskWindow } = useEventTasks();
 
   const sortedTasks = useMemo(() => {
-    return selectedEvent
-      && selectedEvent.id
-      && selectedEvent.eventTasks
-      && selectedEvent.eventTasks.length > 0
-        ? selectedEvent.eventTasks
+    return eventTasks.length > 0
+        ? eventTasks
           .filter(task => task.status === status)
           .sort((a, b) => {
             if (a.priority === 'low' && b.priority === 'neutral'
@@ -38,7 +35,7 @@ export function TasksSection(): JSX.Element {
             return 0;
           })
         : [];
-  }, [selectedEvent, status]);
+  }, [eventTasks, status]);
   return (
     <Container>
       <SectionHeader

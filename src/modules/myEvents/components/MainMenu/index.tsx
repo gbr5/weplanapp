@@ -28,8 +28,11 @@ export function MainMenu() {
     selectedEvent,
     members,
     owners,
+    eventNotes,
+    eventTasks,
+    eventBudget,
+    eventTransactions,
   } = useMyEvent();
-  const { eventTotalDebit } = useTransaction();
 
   const [suppliersInfo, setSuppliersInfo] = useState('');
 
@@ -37,24 +40,29 @@ export function MainMenu() {
     setSuppliersInfo(`${hiredSuppliers.length} / ${notHiredSuppliers.length + hiredSuppliers.length}`)
   }, [hiredSuppliers.length, notHiredSuppliers.length]);
 
-  const notesInfo = useMemo(() => `${selectedEvent.notes.length}`, [selectedEvent.notes]);
+  const notesInfo = useMemo(() => `${eventNotes.length}`, [eventNotes]);
   const guestsInfo = useMemo(() => `${confirmedGuests} / ${guests.length}`, [confirmedGuests, guests]);
   const membersInfo = useMemo(() => `${members.length}`, [members]);
   const ownersInfo = useMemo(() => `${owners.length}`, [owners]);
 
   const financialInfo = useMemo(() => {
-    if (selectedEvent.eventBudget && selectedEvent.eventBudget.budget) {
-      return `${Math.round((eventTotalDebit / Number(selectedEvent.eventBudget.budget)) * 100)} %`;
+    if (eventBudget && eventBudget.budget) {
+      const hiredValue = eventTransactions
+        .filter(({ transaction }) => transaction.payer_id === selectedEvent.id && !transaction.isCancelled)
+        .map(({ transaction }) => Number(transaction.amount))
+        .reduce((acc, cv) => acc + cv, 0);
+
+      return `${Math.round(hiredValue / Number(eventBudget.budget) * 100)} %`;
     }
     return '0 %';
-  }, [eventTotalDebit, selectedEvent.eventBudget]);
+  }, [eventTransactions, eventBudget]);
 
   const tasksInfo = useMemo(() => {
-    if (selectedEvent.eventTasks && selectedEvent.eventTasks.length > 0) {
-      const finnishedTasks = selectedEvent.eventTasks.filter(task => task.status === 'finnished').length;
-      return `${finnishedTasks} / ${selectedEvent.eventTasks.length}`;
+    if (eventTasks && eventTasks.length > 0) {
+      const finnishedTasks = eventTasks.filter(task => task.status === 'finnished').length;
+      return `${finnishedTasks} / ${eventTasks.length}`;
     }
-  }, [selectedEvent.eventTasks]);
+  }, [eventTasks]);
 
   return (
     <Container horizontal>

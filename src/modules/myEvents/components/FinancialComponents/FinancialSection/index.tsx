@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import theme from '../../../../../global/styles/theme';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
@@ -24,7 +24,6 @@ import {
   ResumeValue,
   SectionButton,
   MenuButton,
-  ButtonTitle,
   MenuIcon,
 } from './styles';
 
@@ -40,13 +39,34 @@ export function FinancialSection() {
     handleBudgetWindow,
     eventFinancialSubSection,
     handleEventFinancialSubSection,
-    totalEventCost,
+    eventTransactions,
+    selectedEvent
   } = useMyEvent();
-  const { eventTotalExecutedDebit, getAllEventTransactions } = useTransaction();
 
-  useEffect(() => {
-    getAllEventTransactions();
-  }, [getAllEventTransactions]);
+  const budget = useMemo(() => {
+    return eventBudget ? formatBrlCurrency(eventBudget.budget) : formatBrlCurrency(0);
+  }, [eventBudget]);
+
+  const totalExecutedValue = useMemo(() => {
+    return formatBrlCurrency(eventTransactions
+      .filter(
+        ({ transaction }) => transaction.payer_id === selectedEvent.id
+          && transaction.isPaid
+          && !transaction.isCancelled
+      )
+      .map(({ transaction }) => Number(transaction.amount))
+      .reduce((acc, cv) => acc + cv, 0));
+  }, [eventTransactions]);
+
+  const totalHiredValue = useMemo(() => {
+    return formatBrlCurrency(eventTransactions
+      .filter(
+        ({ transaction }) => transaction.payer_id === selectedEvent.id
+          && !transaction.isCancelled
+      )
+      .map(({ transaction }) => Number(transaction.amount))
+      .reduce((acc, cv) => acc + cv, 0));
+  }, [eventTransactions]);
 
   return (
     <>
@@ -76,18 +96,18 @@ export function FinancialSection() {
               <BudgetTitle>Orçamento</BudgetTitle>
               <PercentageUnderline />
               <BudgetValue>
-                {eventBudget}
+                {budget}
               </BudgetValue>
             </BudgetSection>
             <Resume>
               <ResumeTitle>Valores Contratados:</ResumeTitle>
               <ResumeUnderline />
-              <ResumeValue>{formatBrlCurrency(totalEventCost)}</ResumeValue>
+              <ResumeValue>{totalHiredValue}</ResumeValue>
             </Resume>
             <Resume>
               <ResumeTitle>Valores Executados:</ResumeTitle>
               <ResumeUnderline />
-              <ResumeValue>{formatBrlCurrency(eventTotalExecutedDebit)}</ResumeValue>
+              <ResumeValue>{totalExecutedValue}</ResumeValue>
             </Resume>
 
           </FirstSection>

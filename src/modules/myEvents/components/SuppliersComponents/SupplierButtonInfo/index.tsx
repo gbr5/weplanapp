@@ -42,7 +42,7 @@ export function SupplierButtonInfo() {
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedSupplier } = useMyEvent();
+  const { selectedSupplier, eventTransactions } = useMyEvent();
   const {
     handleCreateSupplierTransactionAgreementWindow,
     handleDischargingWindow,
@@ -55,7 +55,6 @@ export function SupplierButtonInfo() {
     handleSupplierFilesWindow,
     handleSupplierBudgetsWindow,
   } = useEventSuppliers();
-  const { eventDebitTransactions } = useTransaction();
 
   const [loading, setLoading] = useState(false);
 
@@ -86,23 +85,23 @@ export function SupplierButtonInfo() {
   const nextPayment = useMemo(() => {
     const today = new Date();
 
-    return eventDebitTransactions
-      .filter(transaction => !transaction.isPaid)
-      .filter(transaction => transaction.payee_id === selectedSupplier.id)
+    return eventTransactions
+      .filter(({ transaction }) => !transaction.isPaid)
+      .filter(({ transaction }) => transaction.payee_id === selectedSupplier.id)
       .sort((a, b) => {
         if (
           differenceInMilliseconds(
-            new Date(a.due_date),
+            new Date(a.transaction.due_date),
             today,
-          ) > differenceInMilliseconds(new Date(b.due_date), today)
+          ) > differenceInMilliseconds(new Date(b.transaction.due_date), today)
         ) {
           return 1
         };
         if (
           differenceInMilliseconds(
-            new Date(a.due_date),
+            new Date(a.transaction.due_date),
             today,
-          ) < differenceInMilliseconds(new Date(b.due_date), today)
+          ) < differenceInMilliseconds(new Date(b.transaction.due_date), today)
         ) {
           return -1
         };
@@ -111,7 +110,7 @@ export function SupplierButtonInfo() {
   }, [selectedSupplier]);
 
   const nextPaymentLate = useMemo(() => {
-    return !nextPayment ?? new Date(nextPayment.due_date) < new Date();
+    return !nextPayment ?? new Date(nextPayment.transaction.due_date) < new Date();
   }, [nextPayment])
 
   const numberOfNotes = useMemo(() => {
@@ -336,7 +335,7 @@ export function SupplierButtonInfo() {
       </MenuButtonSection>
 
       <SectionBorder />
-      {nextPayment && nextPayment.id && (
+      {nextPayment && nextPayment.transaction.id && (
         <>
           <NextTransactionContainer>
             <SectionTitle>
@@ -348,11 +347,11 @@ export function SupplierButtonInfo() {
                 </SectionTitle>
             <SectionTitleLine />
             <TransactionRow>
-              {/* <TransactionText>{nextPayment.name} | </TransactionText> */}
+              {/* <TransactionText>{nextPayment.transaction.name} | </TransactionText> */}
               <TransactionText
                 isLate={nextPaymentLate}
               >
-                {formatBrlCurrency(nextPayment.amount)}  -  {formatOnlyDateShort(String(nextPayment.due_date))}
+                {formatBrlCurrency(nextPayment.transaction.amount)}  -  {formatOnlyDateShort(String(nextPayment.transaction.due_date))}
               </TransactionText>
               {/* <Icon name="square" /> */}
             </TransactionRow>

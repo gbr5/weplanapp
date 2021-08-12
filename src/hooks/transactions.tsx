@@ -47,15 +47,6 @@ interface TransactionContextType {
   editEventTransactionValueWindow: boolean;
   editNewTransactionDueDateWindow: boolean;
   editTransactionDueDateWindow: boolean;
-  eventTotalExecutedDebit: number;
-  eventTotalDebit: number;
-  eventBalance: number;
-  eventTotalExecutedCredit: number;
-  eventTotalCredit: number;
-  eventTransactions: IEventTransactionDTO[];
-  eventDebitTransactions: ITransactionDTO[];
-  eventCreditTransactions: ITransactionDTO[];
-  eventCancelledTransactions: ITransactionDTO[];
   filteredEventTransactions: IEventTransactionDTO[];
   filterTransactionWindow: boolean;
   loading: boolean;
@@ -84,7 +75,6 @@ interface TransactionContextType {
   deleteTransaction: (id: string) => Promise<void>;
   createTransaction: (data: ICreateTransactionDTO) => Promise<ITransactionDTO>;
   editTransaction: (data: ITransactionDTO) => Promise<ITransactionDTO>;
-  getAllEventTransactions: () => Promise<void>;
   getPayerTransactions: (payer_id: string) => Promise<IPayerTransactionResponseDTO>
   handleCreateTransactionWindow: () => void;
   handleCancelEventTransactionConfirmationWindow: () => void;
@@ -117,7 +107,15 @@ interface TransactionContextType {
 const TransactionContext = createContext({} as TransactionContextType);
 
 const TransactionProvider: React.FC = ({ children }) => {
-  const { getEventSuppliers, selectedSupplier, selectedEvent, eventSuppliers } = useMyEvent();
+  const {
+    getEventSuppliers,
+    selectedSupplier,
+    selectedEvent,
+    eventSuppliers,
+    getEventNotes,
+    getEventTransactions,
+    eventTransactions,
+  } = useMyEvent();
   const {
     selectSupplierTransactionAgreement,
     handleUpdateAgreementAndTransactions,
@@ -135,15 +133,6 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [editEventTransactionValueWindow, setEditEventTransactionValueWindow] = useState(false);
   const [editNewTransactionDueDateWindow, setEditNewTransactionDueDateWindow] = useState(false);
   const [editTransactionDueDateWindow, setEditTransactionDueDateWindow] = useState(false);
-  const [eventTotalExecutedDebit, setEventTotalExecutedDebit] = useState(0);
-  const [eventTotalDebit, setEventTotalDebit] = useState(0);
-  const [eventTotalExecutedCredit, setEventTotalExecutedCredit] = useState(0);
-  const [eventTotalCredit, setEventTotalCredit] = useState(0);
-  const [eventBalance, setEventBalance] = useState(0);
-  const [eventTransactions, setEventTransactions] = useState<IEventTransactionDTO[]>([]);
-  const [eventDebitTransactions, setEventDebitTransactions] = useState<ITransactionDTO[]>([]);
-  const [eventCreditTransactions, setEventCreditTransactions] = useState<ITransactionDTO[]>([]);
-  const [eventCancelledTransactions, setEventCancelledTransactions] = useState<ITransactionDTO[]>([]);
   const [filterTransactionWindow, setFilterTransactionWindow] = useState(false);
   const [newEventSupplierTransactionAgreement, setNewEventSupplierTransactionAgreement] = useState(false);
   const [newAgreementAmount, setNewAgreementAmount] = useState(0);
@@ -246,69 +235,6 @@ const TransactionProvider: React.FC = ({ children }) => {
     });
     return updatedTransactions;
   }
-  const getAllEventTransactions = useCallback(async () => {
-    try {
-      const transactions: ITransactionDTO[] = [];
-      const debitTransactions = await api.get<ITransactionDTO[]>(`/list-payer-transactions/${selectedEvent.id}`);
-      const creditTransactions = await api.get<ITransactionDTO[]>(`/list-payee-transactions/${selectedEvent.id}`);
-      debitTransactions.data.map(transaction => transactions.push(transaction));
-      creditTransactions.data.map(transaction => transactions.push(transaction));
-      const sortedDebitTransactions = sortTransactionsByDueDate(debitTransactions.data
-        .filter(transaction => !transaction.isCancelled)
-      );
-      const sortedCreditTransactions = sortTransactionsByDueDate(creditTransactions.data
-        .filter(transaction => !transaction.isCancelled)
-      );
-      const response = handleEventTransactions(transactions);
-      setEventTransactions(response);
-      setFilteredEventTransactions(response);
-
-      setEventCreditTransactions(sortedCreditTransactions);
-      setEventDebitTransactions(sortedDebitTransactions);
-      setEventCancelledTransactions(sortedDebitTransactions);
-      setEventTotalCredit(
-        creditTransactions.data
-          .map(transaction => Number(transaction.amount))
-          .reduce((accumulator, currentValue) => {
-            return accumulator + currentValue;
-          }, 0)
-      );
-      const entries = creditTransactions.data
-        .filter(transaction => transaction.isPaid)
-        .map(transaction => Number(transaction.amount))
-        .reduce((accumulator, currentValue) => {
-          return accumulator + currentValue;
-        }, 0);
-      setEventTotalExecutedCredit(entries);
-      setEventTotalDebit(
-        debitTransactions.data
-        .map(transaction => Number(transaction.amount))
-        .reduce((accumulator, currentValue) => {
-          return accumulator + currentValue;
-          }, 0)
-      );
-      const spent = debitTransactions.data
-        .filter(transaction => transaction.isPaid)
-        .map(transaction => Number(transaction.amount))
-        .reduce((accumulator, currentValue) => {
-          return accumulator + currentValue;
-        }, 0);
-      setEventTotalExecutedDebit(spent);
-      setEventBalance(entries - spent);
-      if (selectedEventTransaction && selectedEventTransaction.transaction) {
-        const findTransaction = transactions.find(transaction => transaction.id === selectedEventTransaction.transaction.id);
-        findTransaction && setSelectedEventTransaction({
-          ...selectedEventTransaction,
-          transaction: findTransaction,
-        });
-      }
-    } catch (err) {
-      throw new Error(err);
-    }
-  }, [selectedEvent]);
-  useEffect(() => {
-    getAllEventTransactions();
-  }, [getAllEventTransactions, eventSuppliers, selectedEvent]);
   function handleNewEventSupplierTransactionAgreement() {
     setNewEventSupplierTransactionAgreement(!newEventSupplierTransactionAgreement);
   }
@@ -355,8 +281,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         payer_id,
         category,
       });
-      selectedEvent && selectedEvent.id && await getAllEventTransactions();
-      selectedEvent && selectedEvent.id && await getEventSuppliers(selectedEvent.id);
+      await getEventTransactions(selectedEvent.id);
       return response.data;
     } catch (err) {
       throw new Error(err);
@@ -414,7 +339,6 @@ const TransactionProvider: React.FC = ({ children }) => {
         });
         handleFilteredEventTransactions(updatedFilteredTransactions)
       }
-      selectedTransaction && selectedTransaction.id && setSelectedTransaction(response.data);
       selectedEventTransaction
         && selectedEventTransaction.transaction
         && setSelectedEventTransaction({
@@ -425,7 +349,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         && selectedEventTransaction.transaction
         && selectedEventTransaction.agreement_type === 'suppliers'
         && await getEventSuppliers(selectedEvent.id);
-      selectedEvent && selectedEvent.id && await getAllEventTransactions();
+      await getEventTransactions(selectedEvent.id);
       return response.data;
     } catch (err) {
       throw new Error(err);
@@ -440,7 +364,7 @@ const TransactionProvider: React.FC = ({ children }) => {
       ...selectedEventTransaction.transaction,
       due_date: data,
     });
-    await getAllEventTransactions();
+    await getEventTransactions(selectedEvent.id);
     oldTransaction.agreement_type === 'supplier'
       && await getEventSuppliers(selectedEventTransaction.event_id);
     setSelectedEventTransaction({
@@ -486,6 +410,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         });
       }
       await getEventSuppliers(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -510,6 +435,7 @@ const TransactionProvider: React.FC = ({ children }) => {
       });
       selectSupplierTransactionAgreement(response.data);
       await getEventSuppliers(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -520,6 +446,7 @@ const TransactionProvider: React.FC = ({ children }) => {
     try {
       await api.delete(`/delete-event-supplier-transaction-agreements/${selectedSupplier.id}`);
       await getEventSuppliers(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     }
@@ -608,7 +535,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         );
         await api.post(`/transaction-files/${transaction_id}`, data);
         await getEventSuppliers(selectedEvent.id);
-        await getAllEventTransactions();
+        await getEventTransactions(selectedEvent.id);
       }
     } catch(err) {
       if (DocumentPicker.isCancel(err)) {
@@ -639,7 +566,7 @@ const TransactionProvider: React.FC = ({ children }) => {
       );
       await api.post(`/transaction-files/${transaction_id}`, data);
       await getEventSuppliers(selectedEvent.id);
-      await getAllEventTransactions();
+      await getEventTransactions(selectedEvent.id);
     } catch(err) {
       if (DocumentPicker.isCancel(err)) {
         return;
@@ -664,19 +591,9 @@ const TransactionProvider: React.FC = ({ children }) => {
         editNewTransactionValueWindow,
         editTransaction,
         editTransactionDueDateWindow,
-        eventCancelledTransactions,
-        eventBalance,
-        eventCreditTransactions,
-        eventDebitTransactions,
-        eventTotalCredit,
-        eventTotalDebit,
-        eventTotalExecutedCredit,
         editEventTransactionValueWindow,
-        eventTotalExecutedDebit,
-        eventTransactions,
         filteredEventTransactions,
         filterTransactionWindow,
-        getAllEventTransactions,
         getPayerTransactions,
         handleCancelEventTransactionConfirmationWindow,
         handleCreateTransactionWindow,
