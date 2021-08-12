@@ -3,13 +3,11 @@ import styled from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity`
   width: 100%;
-  position: absolute;
-  top: 90%;
   padding: 24px 16px 8px 16px;
   border-radius: 5px;
   border: 0.5px solid ${({ theme }) => theme.color.text4};
   background-color: ${({ theme }) => theme.color.text6};
-
+  top: -8px;
 `;
 
 export const Row = styled.View`

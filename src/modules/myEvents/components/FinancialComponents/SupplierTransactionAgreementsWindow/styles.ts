@@ -10,6 +10,10 @@ export const Container = styled.View`
   flex: 1;
 `;
 
+export const HeaderContainer = styled.View`
+  width: 100%;
+`;
+
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;

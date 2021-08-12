@@ -8,14 +8,19 @@ import { SupplierAgreementButton } from '../SupplierAgreementButton';
 
 import {
   Container,
+  HeaderContainer,
   AgreementsContainer,
 } from './styles';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import Button from '../../../../../components/Button';
+import { AddButton } from '../../../../../components/AddButton';
 
 export function SupplierTransactionAgreementsWindow() {
   const { selectedSupplier } = useMyEvent();
-  const { handleSupplierTransactionAgreementsWindow } = useEventSuppliers();
+  const {
+    handleSupplierTransactionAgreementsWindow,
+    handleCreateSupplierTransactionAgreementWindow,
+  } = useEventSuppliers();
 
   const agreements = useMemo(() => {
     return selectedSupplier
@@ -36,8 +41,14 @@ export function SupplierTransactionAgreementsWindow() {
       width="100%"
     >
       <Container>
-        <WindowHeader overTitle={`Fornecedor: ${selectedSupplier.name}`} title="Contratos" />
-
+        <HeaderContainer>
+          <WindowHeader overTitle={`Fornecedor: ${selectedSupplier.name}`} title="Contratos" />
+          <AddButton
+            onPress={handleCreateSupplierTransactionAgreementWindow}
+            top="20%"
+            right="5%"
+          />
+        </HeaderContainer>
         {agreements && agreements.length > 0 && (
           <AgreementsContainer
             data={agreements}

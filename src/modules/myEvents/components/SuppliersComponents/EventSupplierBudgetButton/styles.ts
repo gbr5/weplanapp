@@ -1,6 +1,11 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
+export const OverContainer = styled.View`
+  margin-top: 8px;
+  width: 100%;
+`;
+
 export const Container = styled.TouchableOpacity`
   width: 100%;
   z-index: 2;
@@ -35,7 +40,7 @@ export const DueDate = styled.Text`
 `;
 
 export const Index = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.roboto};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(16)}px;
   color: ${({ theme }) => theme.color.primary};
   text-align: center;

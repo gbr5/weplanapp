@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import { Keyboard, Platform, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { Alert, Keyboard, Platform, TextInput, TouchableWithoutFeedback } from 'react-native';
 
 import { useEventGuests } from '../../../../../hooks/eventGuests';
 
@@ -21,6 +21,7 @@ import {
   FormQuestion,
 } from './styles';
 import { FormButton } from '../../../../../components/FormButton';
+import { useMyEvent } from '../../../../../hooks/myEvent';
 
 interface IFormData {
   first_name: string;
@@ -28,12 +29,19 @@ interface IFormData {
 }
 
 const NewGuestForm: React.FC = () => {
+  const { guests } = useMyEvent();
   const { addNewGuest, loading, handleNewGuestForm } = useEventGuests();
   const formRef = useRef<FormHandles>(null);
   const inputRef = useRef<TextInput>(null);
 
-  const handleSubmit = useCallback(async (data: IFormData) => {
-    await addNewGuest(data);
+  const handleSubmit = useCallback(async ({
+    first_name,
+    last_name,
+  }: IFormData) => {
+    await addNewGuest({
+      first_name,
+      last_name,
+    });
     handleNewGuestForm();
   }, [handleNewGuestForm, addNewGuest]);
 

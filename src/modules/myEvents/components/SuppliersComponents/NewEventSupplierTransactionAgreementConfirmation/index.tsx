@@ -58,7 +58,6 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
       installments: 1,
     });
     handleNewEventSupplierTransactionAgreement();
-    selectSupplier({} as IEventSupplierDTO);
     handleSelectedDate(addDays(new Date(), 3));
   }
   async function handleSubmit() {

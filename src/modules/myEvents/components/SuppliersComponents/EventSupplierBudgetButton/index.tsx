@@ -8,6 +8,7 @@ import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 import { EventSupplierBudgetButtonInfo } from '../EventSupplierBudgetButtonInfo';
 
 import {
+  OverContainer,
   Container,
   Index,
   Amount,
@@ -58,7 +59,7 @@ export function EventSupplierBudgetButton({
   }
 
   return (
-    <>
+    <OverContainer>
       <Container
         onPress={handleBudgetInfo}
         style={{
@@ -86,6 +87,6 @@ export function EventSupplierBudgetButton({
       {selectedSupplierBudget.id === budget.id && (
         <EventSupplierBudgetButtonInfo budget={budget} />
       )}
-    </>
+    </OverContainer>
   );
 }

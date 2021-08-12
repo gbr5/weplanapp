@@ -13,6 +13,7 @@ import { useMyEvent } from './myEvent';
 import ICreateGuestContactDTO from '../dtos/ICreateGuestContactDTO';
 import IGuestContactDTO from '../dtos/IGuestContactDTO';
 import { useEffect } from 'react';
+import { Alert } from 'react-native';
 
 interface EventGuestsContextType {
   allGuestsFilter: boolean;
@@ -44,7 +45,7 @@ interface EventGuestsContextType {
 const EventGuestsContext = createContext({} as EventGuestsContextType);
 
 const EventGuestsProvider: React.FC = ({ children }) => {
-  const { selectedEvent, getEventGuests, selectGuest } = useMyEvent();
+  const { selectedEvent, getEventGuests, selectGuest, guests } = useMyEvent();
 
   const [loading, setLoading] = useState(false);
   const [guestFilterWindow, setGuestFilterWindow] = useState(false);
@@ -94,6 +95,14 @@ const EventGuestsProvider: React.FC = ({ children }) => {
   async function addNewGuest({ first_name, last_name }: IAddNewEventGuestDTO) {
     try {
       setLoading(true);
+      const findGuest = guests.find(
+        guest => guest.last_name === last_name && guest.first_name === first_name,
+      );
+      if (findGuest)
+        return Alert.alert(
+          `Convidado Duplicado`,
+          `Já existe um convidado com este nome - ${first_name} ${last_name}!`,
+        );
       await api.post(`events/${selectedEvent.id}/guests`, {
         first_name,
         last_name: last_name ? last_name : '',
@@ -119,6 +128,14 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         phoneNumbers,
         emailAddresses,
       }) => {
+        const findGuest = guests.find(
+          guest => guest.last_name === familyName && guest.first_name === givenName,
+        );
+        if (findGuest)
+          return Alert.alert(
+            `Convidado Duplicado`,
+            `Já existe um convidado com este nome - ${givenName} ${familyName}!`,
+          );
         return {
           givenName,
           familyName,
