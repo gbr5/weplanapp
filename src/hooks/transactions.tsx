@@ -225,7 +225,7 @@ const TransactionProvider: React.FC = ({ children }) => {
     const updatedTransactions = data.map(transaction => {
       const supplierAgreements: IEventSupplierTransactionAgreementDTO[] = [];
       eventSuppliers.map(supplier => {
-        const agreement  = supplier.transactionAgreements.find(thisAgreement => {
+        const agreement = supplier.transactionAgreements.find(thisAgreement => {
           const findTransaction = !!thisAgreement.transactions.find(item => item.transaction.id === transaction.id);
           return findTransaction ? supplierAgreements.push(thisAgreement) : undefined;
         });

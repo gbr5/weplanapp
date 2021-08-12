@@ -8,7 +8,6 @@ import { useTransaction } from '../../../../../hooks/transactions';
 
 import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
 import IEventSupplierTransactionDTO from '../../../../../dtos/IEventSupplierTransactionDTO';
-import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 import WindowContainer from '../../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../../components/WindowHeader';
 import { EventTransactionButton } from '../../../../../components/TransactionComponents/EventTransactionButton';
@@ -25,7 +24,6 @@ export function SupplierTransactionsWindow() {
   const {
     selectedSupplier,
     selectedEvent,
-    selectSupplier,
   } = useMyEvent();
   const {
     selectSupplierTransaction,
@@ -37,12 +35,8 @@ export function SupplierTransactionsWindow() {
     eventTransactions,
   } = useTransaction();
 
-  const [cancelled, setCancelled] = useState(false);
-  const [menuOption, setMenuOption] = useState('all');
-
   function closeWindow() {
     handleSupplierTransactionsWindow();
-    selectSupplier({} as IEventSupplierDTO);
     handleSelectedEventTransaction({} as IEventTransactionDTO);
     selectSupplierTransaction({} as IEventSupplierTransactionDTO);
     selectSupplierTransactionAgreement(
@@ -55,31 +49,7 @@ export function SupplierTransactionsWindow() {
       ({ transaction }) =>
         transaction.payee_id === selectedSupplier.id
         || transaction.payer_id === selectedSupplier.id);
-    if (sortedTransactions.length > 0) {
-      if (menuOption === 'paid') {
-        if (!cancelled) return sortedTransactions.filter(({ transaction }) =>
-          !transaction.isCancelled && transaction.isPaid);
-        return sortedTransactions.filter(({ transaction }) =>
-          transaction.isPaid);
-      }
-      if (menuOption === 'notPaid') {
-        if (!cancelled) return sortedTransactions.filter(({ transaction }) =>
-          !transaction.isCancelled && !transaction.isPaid);
-        return sortedTransactions.filter(({ transaction }) =>
-          !transaction.isPaid);
-      }
-      if (menuOption === 'delayed') {
-        if (!cancelled) return sortedTransactions.filter(({ transaction }) =>
-          !transaction.isCancelled && !transaction.isPaid
-            && new Date() > new Date(transaction.due_date));
-        return sortedTransactions.filter(({ transaction }) =>
-          !transaction.isPaid && new Date() < new Date(transaction.due_date));
-      }
-      if (!cancelled) return sortedTransactions.filter(({ transaction }) =>
-        !transaction.isCancelled);
-      return eventTransactions;
-    }
-    return [];
+    return sortedTransactions;
   }, [eventTransactions, selectedSupplier]);
 
   const transactionsSum = useMemo(() => {

@@ -79,7 +79,7 @@ export function SupplierButtonInfo() {
   const totalCost = useMemo(() => {
     return selectedSupplier.transactionAgreements
       .filter(agreement => !agreement.isCancelled)
-      .map(agreement => agreement.amount)
+      .map(agreement => Number(agreement.amount))
       .reduce((acc, cv) => acc + cv, 0);
   }, [selectedSupplier]);
 
@@ -129,9 +129,13 @@ export function SupplierButtonInfo() {
     selectedSupplier.transactionAgreements
       .filter(agreement => !agreement.isCancelled)
       .map(agreement => {
-        return agreement.transactions.filter(({ transaction }) =>
-          !transaction.isCancelled && transactions ++);
-      }).length;
+        return agreement.transactions.map(({ transaction }) => {
+          if (!transaction.isCancelled) {
+            transactions = transactions + 1;
+          }
+          return transaction;
+        });
+      });
     return transactions;
   }, [selectedSupplier.notes]);
   const numberOfTransactionAgreements = useMemo(() => {

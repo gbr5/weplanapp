@@ -26,7 +26,6 @@ interface IFormParams {
 export function EditTransactionAmount() {
   const formRef = useRef<FormHandles>(null);
 
-  const { getEventSuppliers } = useMyEvent();
   const {
     handleUpdateAgreementAndTransactions,
   } = useEventSuppliers();
@@ -77,7 +76,6 @@ export function EditTransactionAmount() {
           ]
         });
         await updateEventSupplierTransactionAgreement(updatedAgreement);
-        await getEventSuppliers(selectedEventTransaction.event_id);
       }
       handleEditEventTransactionValueWindow();
     } catch (err) {

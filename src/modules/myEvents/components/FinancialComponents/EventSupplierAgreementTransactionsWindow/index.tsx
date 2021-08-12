@@ -10,7 +10,6 @@ import { useTransaction } from '../../../../../hooks/transactions';
 import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
 import ITransactionDTO from '../../../../../dtos/ITransactionDTO';
 import IEventSupplierTransactionDTO from '../../../../../dtos/IEventSupplierTransactionDTO';
-import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 
 import ShortConfirmationWindow from '../../../../../components/ShortConfirmationWindow';
 import WindowContainer from '../../../../../components/WindowContainer';
@@ -26,11 +25,7 @@ import { useMemo } from 'react';
 import Button from '../../../../../components/Button';
 
 export function EventSupplierAgreementTransactionsWindow() {
-  const {
-    selectSupplier,
-    eventSuppliers,
-    supplierAgreements,
-  } = useMyEvent();
+  const { eventSuppliers } = useMyEvent();
   const {
     selectSupplierTransaction,
     selectSupplierTransactionAgreement,
@@ -83,22 +78,16 @@ export function EventSupplierAgreementTransactionsWindow() {
     }
   }
 
-  const transactionsSum = useMemo(() => {
-    if (selectedSupplierTransactionAgreement.transactions.length > 0)
-      return formatBrlCurrency(
-        selectedSupplierTransactionAgreement.transactions
-          .filter(agreementTransaction => !agreementTransaction.transaction.isCancelled)
-          .map(agreementTransaction => Number(agreementTransaction.transaction.amount))
-          .reduce((acc, cv) => acc + cv, 0)
-        );
-  }, [selectedSupplierTransactionAgreement, eventSuppliers]);
+  const agreementAmount = useMemo(() => {
+    return formatBrlCurrency(selectedSupplierTransactionAgreement.amount);
+  }, [selectedSupplierTransactionAgreement]);
 
   const transactions = useMemo(() => {
     if (selectedSupplierTransactionAgreement.transactions.length > 0)
       return handleEventTransactions(selectedSupplierTransactionAgreement.transactions
         .filter(agreementTransaction => !agreementTransaction.transaction.isCancelled)
         .map(({ transaction }) => transaction));
-  }, [selectedSupplierTransactionAgreement.transactions, eventSuppliers, supplierAgreements]);
+  }, [selectedSupplierTransactionAgreement.transactions]);
 
   return (
     <WindowContainer
@@ -125,7 +114,7 @@ export function EventSupplierAgreementTransactionsWindow() {
           title="Transações"
         />
 
-        <Title>Valor Total:  {transactionsSum}</Title>
+        <Title>Valor Total:  {agreementAmount}</Title>
 
         {transactions
           && transactions.length > 0 && (
