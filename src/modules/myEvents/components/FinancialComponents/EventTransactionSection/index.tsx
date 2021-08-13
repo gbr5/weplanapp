@@ -25,7 +25,7 @@ export function EventTransactionSection() {
     shadowOpacity,
     shadowRadius,
   } = theme.iconButtonShadow;
-  const { eventSuppliers, eventTransactions } = useMyEvent();
+  const { eventTransactions } = useMyEvent();
   const {
     cancelledTransactionFilter,
     sortTransactionsByInterval,
@@ -42,7 +42,7 @@ export function EventTransactionSection() {
   const transactions = useMemo<IEventTransactionDTO[]>(() => {
     if (filteredEventTransactions.length < 0) return [];
     if (sortTransactionsByInterval) {
-      const updatedTransactions = filteredEventTransactions
+      const updatedTransactions = eventTransactions
         .filter(({ transaction }) => transaction
           && new Date(transaction.due_date) > fromDateTransactionFilter
           && new Date(transaction.due_date) < toDateTransactionFilter);
@@ -75,39 +75,39 @@ export function EventTransactionSection() {
     }
     if (filterTransactionOption === 'paid') {
       if (!cancelledTransactionFilter)
-        return filteredEventTransactions.filter(({ transaction }) => transaction
+        return eventTransactions.filter(({ transaction }) => transaction
           && !transaction.isCancelled && transaction.isPaid);
-      return filteredEventTransactions.filter(({ transaction }) => transaction
+      return eventTransactions.filter(({ transaction }) => transaction
         && transaction.isPaid);
     }
     if (filterTransactionOption === 'notPaid') {
       if (!cancelledTransactionFilter)
-        return filteredEventTransactions.filter(({ transaction }) => transaction
+        return eventTransactions.filter(({ transaction }) => transaction
           && !transaction.isCancelled && !transaction.isPaid);
-      return filteredEventTransactions.filter(({ transaction }) => transaction
+      return eventTransactions.filter(({ transaction }) => transaction
         && !transaction.isPaid);
     }
     if (filterTransactionOption === 'delayed') {
       if (!cancelledTransactionFilter)
-        return filteredEventTransactions.filter(({ transaction }) => transaction
+        return eventTransactions.filter(({ transaction }) => transaction
           && !transaction.isCancelled
           && !transaction.isPaid
           && new Date() > new Date(transaction.due_date));
-      return filteredEventTransactions.filter(({ transaction }) =>
+      return eventTransactions.filter(({ transaction }) =>
         !transaction.isPaid && new Date() < new Date(transaction.due_date));
     }
     if (!cancelledTransactionFilter)
-      return filteredEventTransactions.filter(
+      return eventTransactions.filter(
         ({ transaction }) => transaction && !transaction.isCancelled);
-    return filteredEventTransactions;
+    return eventTransactions;
   }, [
-    eventSuppliers,
     filteredEventTransactions,
     filterTransactionOption,
     cancelledTransactionFilter,
     fromDateTransactionFilter,
     toDateTransactionFilter,
     sortTransactionsByInterval,
+    eventTransactions,
   ]);
 
   const filter = useMemo(() => {

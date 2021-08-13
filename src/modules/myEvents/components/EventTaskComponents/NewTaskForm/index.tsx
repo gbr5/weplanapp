@@ -99,6 +99,7 @@ const NewTaskForm: React.FC<IProps> = ({
                   autoCapitalize="words"
                   placeholder="Defina o título da tarefa"
                   returnKeyType="next"
+                  onSubmitEditing={() => Keyboard.dismiss()}
                 />
               </Form>
               <SelectTaskPriorityComponent

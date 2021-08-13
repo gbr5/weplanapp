@@ -8,12 +8,19 @@ import { Container } from './styles';
 
 interface IProps {
   unsetVariables?: () => void;
+  shadow?: boolean;
 }
 
 const BackButton: React.FC<IProps> = ({
   unsetVariables,
+  shadow,
 }) => {
-
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.menuShadow;
   const navigation = useNavigation();
 
   const goBack = useCallback(() => {
@@ -23,6 +30,13 @@ const BackButton: React.FC<IProps> = ({
 
   return (
     <Container
+      style={shadow && {
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+        elevation: 5,
+      }}
       onPress={goBack}
     >
       <Icon size={40} name="chevron-left" />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMemo } from 'react';
 import IEventTransactionDTO from '../../../dtos/IEventTransactionDTO';
+import theme from '../../../global/styles/theme';
 import { useTransaction } from '../../../hooks/transactions';
 import { formatBrlCurrency } from '../../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../../utils/formatOnlyDateShort';
@@ -39,6 +40,12 @@ export function EventTransactionButton({
   firstOfMonth,
   firstOfDay,
 }: IProps) {
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
   const {
     selectedEventTransaction,
     handleSelectedEventTransaction,
@@ -85,7 +92,15 @@ export function EventTransactionButton({
       {firstOfMonth  && (
         <>
           <Underline />
-          <MonthContainer>
+          <MonthContainer
+            style={{
+              shadowColor: theme.color.text3,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 8,
+            }}
+          >
             <Month>{month}</Month>
           </MonthContainer>
         </>

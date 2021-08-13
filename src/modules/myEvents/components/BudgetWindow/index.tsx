@@ -9,12 +9,19 @@ import Input from '../../../../components/Input';
 import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
 import Button from '../../../../components/Button';
 import theme from '../../../../global/styles/theme';
+import { WindowHeader } from '../../../../components/WindowHeader';
 
 interface IFormData {
   budget: number;
 }
 
 export function BudgetWindow() {
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.buttonShadow;
   const formRef = useRef<FormHandles>(null);
   const {
     eventBudget,
@@ -42,14 +49,14 @@ export function BudgetWindow() {
       zIndex={15}
       top="10%"
       left="2%"
-      height="40%"
+      height="70%"
       width="96%"
     >
       <Container
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
       >
-        <Title>Orçamento do Evento</Title>
+        <WindowHeader title="Orçamento do Evento" />
         <Form ref={formRef} onSubmit={handleSubmit}>
           <Input
             placeholderTextColor={theme.color.secondary}
@@ -58,8 +65,8 @@ export function BudgetWindow() {
             placeholder={
               eventBudget
                 && eventBudget.budget
-                ? formatBrlCurrency(eventBudget.budget)
-                : formatBrlCurrency(0)}
+                  ? formatBrlCurrency(eventBudget.budget)
+                  : formatBrlCurrency(0)}
             returnKeyType="send"
             keyboardType="number-pad"
             onSubmitEditing={() => formRef.current?.submitForm()}
@@ -67,6 +74,13 @@ export function BudgetWindow() {
         </Form>
       </Container>
       <Button
+        style={{
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+          elevation: 15,
+        }}
         loading={loading}
         onPress={() => formRef.current?.submitForm()}
       >

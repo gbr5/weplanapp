@@ -45,6 +45,7 @@ export function EventButton({
         shadowOffset,
         shadowOpacity,
         shadowRadius,
+        elevation: 8,
       }}
       onPress={() => selectMyEvent()}
     >

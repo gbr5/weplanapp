@@ -37,7 +37,7 @@ export function NewGuestWindow() {
       zIndex={10}
       top="10%"
       left="2%"
-      height="45%"
+      height="70%"
       width="96%"
     >
       <Container>

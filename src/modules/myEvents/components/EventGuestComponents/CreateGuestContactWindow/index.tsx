@@ -56,7 +56,7 @@ const CreateGuestContactWindow: React.FC<IProps> = ({
       )}
       <WindowContainer
         closeWindow={closeWindow}
-        height="40%"
+        height="70%"
         left="2%"
         top="10%"
         width="96%"

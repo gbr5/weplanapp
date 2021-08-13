@@ -51,7 +51,7 @@ interface IAuthContextData {
   signInWithGoogle(credentials: IGoogleSignInCredentials): Promise<void>;
   signOut(): void;
   createdefaultContactInfo(id: string): void;
-  updateUser(user: IUserDTO): void;
+  refreshUser(user: IUserDTO): void;
   createPersonInfo(personInfo: ICreatePersonInfoDTO): void;
   resetPassword(email: string): Promise<void>;
   getUser(id: string): Promise<IUserDTO | undefined>;
@@ -203,7 +203,7 @@ const AuthProvider: React.FC = ({ children }) => {
     ]);
   };
 
-  async function updateUser(updatedUser: IUserDTO) {
+  async function refreshUser(updatedUser: IUserDTO) {
     await AsyncStorage.setItem(
       '@WP-App:user',
       JSON.stringify(updatedUser),
@@ -241,7 +241,7 @@ const AuthProvider: React.FC = ({ children }) => {
         signInWithGoogle,
         signOut,
         createdefaultContactInfo,
-        updateUser,
+        refreshUser,
         createPersonInfo,
         getUser,
       }}

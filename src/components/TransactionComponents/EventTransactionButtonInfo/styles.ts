@@ -9,8 +9,8 @@ interface IsPaidParams {
 export const Container = styled.View`
   width: 100%;
   padding: 8px;
-  background-color: ${({ theme }) => theme.color.text6};
-  border: 1px solid ${({ theme }) => theme.color.text3};
+  background-color: ${({ theme }) => theme.color.text5};
+  border: 0.5px solid ${({ theme }) => theme.color.text3};
 `;
 
 export const FieldContainer = styled.View`
@@ -58,7 +58,7 @@ export const FieldButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.text6};
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid black;
+  border: 0.5px solid ${({ theme }) => theme.color.secondary};
   align-items: center;
   justify-content: center;
   min-width: 48%;

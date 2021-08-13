@@ -29,6 +29,7 @@ const NextEvent: React.FC = () => {
         shadowOffset,
         shadowOpacity,
         shadowRadius,
+        elevation: 20,
       }}
     >
       <Label>Próximo Evento</Label>

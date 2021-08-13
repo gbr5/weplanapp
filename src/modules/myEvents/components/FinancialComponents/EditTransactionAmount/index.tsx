@@ -17,7 +17,6 @@ import Button from '../../../../../components/Button';
 import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import { Container, ValueContainer, CurrentValue, Title } from './styles';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
-import { useMyEvent } from '../../../../../hooks/myEvent';
 
 interface IFormParams {
   amount: string;

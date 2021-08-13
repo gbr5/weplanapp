@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { NoteForm } from '../../../../../components/NoteForm';
 import WindowContainer from '../../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../../components/WindowHeader';
@@ -19,13 +20,14 @@ export function EventNoteForm() {
     });
     handleCreateEventNoteWindow();
   }
+  const height = Platform.OS === 'ios' ? '40%' : '60%';
   return (
     <WindowContainer
       closeWindow={handleCreateEventNoteWindow}
       zIndex={15}
       top="5%"
       left="0%"
-      height="40%"
+      height={height}
       width="100%"
     >
       <WindowHeader title="Nova Nota do Evento" />

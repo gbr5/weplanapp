@@ -73,6 +73,7 @@ export function SupplierAgreementButton({
         shadowOffset,
         shadowOpacity,
         shadowRadius,
+        elevation: 15,
       }}
       onPress={handleSelectAgreement}
     >
@@ -98,6 +99,7 @@ export function SupplierAgreementButton({
           shadowOffset,
           shadowOpacity,
           shadowRadius,
+          elevation: 15,
         }}
         isOverdue={isOverdue}
       >

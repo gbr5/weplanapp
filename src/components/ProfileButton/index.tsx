@@ -16,11 +16,9 @@ const ProfileButton: React.FC = () => {
 
   return (
     <Container onPress={navigateToProfile}>
-      {user.avatar_url ? (
-        <UserAvatar source={{ uri: user.avatar_url }} />
-      ) : (
-        <UserAvatar source={profilePlaceholder} />
-      )}
+      <UserAvatar
+        source={!user.avatar_url ? profilePlaceholder : { uri: user.avatar_url }}
+      />
     </Container>
   );
 };

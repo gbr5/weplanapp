@@ -11,11 +11,13 @@ interface IProps {
   handleSubmit: () => void;
   text: string;
   loading?: boolean;
+  elevation?: number;
 }
 export function FormButton({
   handleSubmit,
   text,
   loading,
+  elevation,
 }: IProps) {
   const {
     shadowColor,
@@ -30,6 +32,7 @@ export function FormButton({
         shadowOffset,
         shadowOpacity,
         shadowRadius,
+        elevation,
       }}
       onPress={handleSubmit}>
       {loading ? (

@@ -75,7 +75,6 @@ interface TransactionContextType {
   deleteTransaction: (id: string) => Promise<void>;
   createTransaction: (data: ICreateTransactionDTO) => Promise<ITransactionDTO>;
   editTransaction: (data: ITransactionDTO) => Promise<ITransactionDTO>;
-  getPayerTransactions: (payer_id: string) => Promise<IPayerTransactionResponseDTO>
   handleCreateTransactionWindow: () => void;
   handleCancelEventTransactionConfirmationWindow: () => void;
   handleEditTransactionName: () => void;
@@ -156,14 +155,6 @@ const TransactionProvider: React.FC = ({ children }) => {
   }
   function handleFilterTransactionOption(data: string) {
     setFilterTransactionOption(data);
-  }
-  function sortTransactionsByDueDate(data: ITransactionDTO[]) {
-    const sortedData = data.sort((a, b) => {
-      if (new Date(a.due_date) > new Date(b.due_date)) return 1;
-      if (new Date(a.due_date) < new Date(b.due_date)) return -1;
-      return 0;
-    });
-    return sortedData;
   }
   function handleCancelledTransactionFilter() {
     setCancelledTransactionFilter(!cancelledTransactionFilter);
@@ -376,6 +367,7 @@ const TransactionProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       await api.delete(`/transactions/${id}`)
+      await getEventTransactions(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -411,6 +403,7 @@ const TransactionProvider: React.FC = ({ children }) => {
       }
       await getEventSuppliers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
+      await getEventTransactions(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -436,6 +429,7 @@ const TransactionProvider: React.FC = ({ children }) => {
       selectSupplierTransactionAgreement(response.data);
       await getEventSuppliers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
+      await getEventTransactions(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -447,37 +441,7 @@ const TransactionProvider: React.FC = ({ children }) => {
       await api.delete(`/delete-event-supplier-transaction-agreements/${selectedSupplier.id}`);
       await getEventSuppliers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-  async function getPayerTransactions(payer_id: string) {
-    try {
-      const response = await api.get<ITransactionDTO[]>(`/list-payer-transactions/${payer_id}`);
-      const transactions = sortTransactionsByDueDate(response.data);
-      const paidTransactions = transactions.filter(transaction => transaction.isPaid);
-      const notPaidTransactions = transactions.filter(transaction => !transaction.isPaid);
-
-      const totalTransactions = response.data
-        .map(transaction => transaction.amount)
-        .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-      const totalPaid = paidTransactions
-        .map(transaction => transaction.amount)
-        .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-      const totalNotPaid = notPaidTransactions
-        .map(transaction => transaction.amount)
-        .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
-      return {
-        transactions,
-        paidTransactions,
-        notPaidTransactions,
-        totalTransactions,
-        totalPaid,
-        totalNotPaid,
-      };
+      await getEventTransactions(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     }
@@ -506,7 +470,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         await updateEventSupplierTransactionAgreement(agreement);
         await getEventSuppliers(eventId);
       }
-      await getPayerTransactions(eventId);
+      await getEventTransactions(eventId);
       setCancelEventTransactionConfirmationWindow(false);
     } catch (err) {
       throw new Error(err);
@@ -578,6 +542,14 @@ const TransactionProvider: React.FC = ({ children }) => {
     }
   }
 
+  useEffect(() => {
+    if (selectedEventTransaction && selectedEventTransaction.transaction) {
+      const findTransaction = eventTransactions.find(item => item.transaction.id === selectedEventTransaction.transaction.id);
+      findTransaction && setSelectedEventTransaction(findTransaction);
+    }
+    setFilteredEventTransactions(eventTransactions);
+  }, [eventTransactions]);
+
   return (
     <TransactionContext.Provider
       value={{
@@ -594,7 +566,6 @@ const TransactionProvider: React.FC = ({ children }) => {
         editEventTransactionValueWindow,
         filteredEventTransactions,
         filterTransactionWindow,
-        getPayerTransactions,
         handleCancelEventTransactionConfirmationWindow,
         handleCreateTransactionWindow,
         handleEditNewTransactionDueDateWindow,

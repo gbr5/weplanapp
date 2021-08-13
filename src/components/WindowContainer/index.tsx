@@ -12,6 +12,7 @@ interface IProps {
   height: string;
   width: string;
   backdropZIndex?: number;
+  elevation?: number;
 }
 
 const WindowContainer: React.FC<IProps> = ({
@@ -22,6 +23,7 @@ const WindowContainer: React.FC<IProps> = ({
   left,
   top,
   width,
+  elevation,
 }) => (
   <>
     <Backdrop
@@ -34,6 +36,7 @@ const WindowContainer: React.FC<IProps> = ({
       left,
       top,
       width,
+      elevation,
     }}
     >
       <CloseButton closeFunction={closeWindow} />

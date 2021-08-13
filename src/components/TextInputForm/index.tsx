@@ -47,7 +47,7 @@ export function TextInputForm({
       top="20%"
       width="100%"
       left="0%"
-      height="40%"
+      height="60%"
       zIndex={20}
     >
       <Container>

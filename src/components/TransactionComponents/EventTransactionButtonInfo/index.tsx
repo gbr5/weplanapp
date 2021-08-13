@@ -26,10 +26,14 @@ import {
 import { NotificationNumber } from '../../NotificationNumber';
 import { useNote } from '../../../hooks/notes';
 import { useEffect } from 'react';
-import { useMyEvent } from '../../../hooks/myEvent';
 
 export function EventTransactionButtonInfo() {
-  const { getEventTransactions } = useMyEvent();
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.menuShadow;
   const { getTransactionNotes, selectedTransactionNotes } = useNote();
   const {
     editTransaction,
@@ -84,7 +88,15 @@ export function EventTransactionButtonInfo() {
   }, []);
 
   return (
-    <Container>
+    <Container
+      style={{
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+        elevation: 15,
+      }}
+    >
       {/* {selectedEventTransaction.transaction.category && ( */}
         <CategoryContainer>
           <FieldButton onPress={handleEditTransactionCategory}>

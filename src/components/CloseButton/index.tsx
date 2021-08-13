@@ -22,6 +22,7 @@ const CloseButton: React.FC<IProps> = ({ closeFunction }) => {
         shadowOffset,
         shadowOpacity,
         shadowRadius,
+        elevation: 5,
       }}
       onPress={closeFunction}
     >

@@ -37,6 +37,7 @@ const MyEventsAsHost: React.FC<IProps> = ({
         shadowOffset,
         shadowOpacity,
         shadowRadius,
+        elevation: 20,
       }}
     >
       {selectedSection === 'host' ? (

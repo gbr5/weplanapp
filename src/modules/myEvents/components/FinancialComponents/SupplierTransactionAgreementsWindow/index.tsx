@@ -42,7 +42,10 @@ export function SupplierTransactionAgreementsWindow() {
     >
       <Container>
         <HeaderContainer>
-          <WindowHeader overTitle={`Fornecedor: ${selectedSupplier.name}`} title="Contratos" />
+          <WindowHeader
+            overTitle={`Fornecedor: ${selectedSupplier.name}`}
+            title="Contratos"
+          />
           <AddButton
             onPress={handleCreateSupplierTransactionAgreementWindow}
             top="20%"
@@ -54,7 +57,8 @@ export function SupplierTransactionAgreementsWindow() {
             data={agreements}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
-              const index = agreements.findIndex(agreement => agreement.id === item.id) + 1;
+              const index = agreements.findIndex(
+                agreement => agreement.id === item.id) + 1;
               return (
                 <SupplierAgreementButton
                   key={item.id}
