@@ -5,12 +5,14 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
-import { Alert } from 'react-native';
-
+import { Alert, Platform } from 'react-native';
+// import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../services/api';
 import IUserDTO from '../dtos/IUserDTO';
+// import appleAuth, { appleAuthAndroid } from '@invertase/react-native-apple-authentication';
+
 
 interface IAuthState {
   token: string;
@@ -62,6 +64,27 @@ const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<IAuthState>({} as IAuthState);
   const [loading, setLoading] = useState(true);
+  // const [initializing, setInitializing] = useState(true);
+  // const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  // function onAuthStateChanged(user: FirebaseAuthTypes.User) {
+  //   console.log(user);
+  //   if (initializing) setInitializing(false);
+  // }
+
+  // useEffect(() => {
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber; // unsubscribe on unmount
+  // }, []);
+
+  // useEffect(() => {
+  //   // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
+  //   if (Platform.OS === 'ios') {
+  //     return appleAuth.onCredentialRevoked(async () => {
+  //       console.warn('If this function executes, User Credentials have been Revoked');
+  //       // useAuth().signOut();
+  //     });
+  //   }
+  // }, []); // passing in an empty array as the second argument ensures this is only ran once when component mounts initially.
 
   async function loadStorageData() {
     const [token, user] = await AsyncStorage.multiGet([

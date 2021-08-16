@@ -67,6 +67,9 @@ export const TransactionContainer = styled(
   margin-top: 8px;
   padding-bottom: 32px;
   margin-bottom: 32px;
+  background-color: #f3f2f2;
+  border-radius: 8px;
+  border: 0.4px solid #e1e0e0;
 `;
 
 export const Menu = styled.ScrollView`

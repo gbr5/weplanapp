@@ -98,7 +98,7 @@ export const InfoIcon = styled(Feather)`
 
 export const Underline = styled.View`
   width: 100%;
-  height: 1px;
+  height: 0.3px;
   background-color: ${({ theme }) => theme.color.text4};
 `;
 

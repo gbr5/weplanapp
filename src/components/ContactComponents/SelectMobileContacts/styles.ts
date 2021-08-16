@@ -30,6 +30,7 @@ export const ContactContainer = styled(
   padding: 8px 4px;
   flex: 1;
   min-height: 400px;
+  border: 0.4px solid #e3e3e3;
 `;
 
 export const InputContainer = styled.View`

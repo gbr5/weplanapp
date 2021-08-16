@@ -139,4 +139,6 @@ export const TransactionsContainer = styled(
   width: 100%;
   height: 240px;
   flex: 1;
+  border-radius: 8px;
+  border: 0.4px solid #e1e0e0;
 `;

@@ -39,6 +39,8 @@ export const GuestsContainer = styled(
   margin: 8px 0;
   padding: 2px;
   padding-bottom: 32px;
+  border-radius: 8px;
+  border: 0.4px solid #e1e0e0;
 `;
 
 export const FilterContainer = styled.View`

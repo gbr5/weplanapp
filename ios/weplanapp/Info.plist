@@ -20,20 +20,21 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.830691338585-h266eats8unmaokro11fh06aduot0rb9</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>216</string>
+	<string>240</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSContactsUsageDescription</key>
-	<string>Este app requer acesso para importar lista de convidados</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Este app requer acesso para importar imagem</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Este app requer acesso para importar imagens</string>
-	<key>NSDocumentsFolderUsageDescription</key>
-	<string>Este app requer acesso para importar arquivos</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Este app requer acesso para importar imagens</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -45,8 +46,18 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Este app requer acesso para importar imagem</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Este app requer acesso para importar lista de convidados</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Este app requer acesso para importar arquivos</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Este app requer acesso para importar imagens</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Este app requer acesso para importar imagens</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>RobotoSlab-Medium.ttf</string>

@@ -29,4 +29,7 @@ export const AgreementsContainer = styled(
   flex: 1;
   max-height: 90%;
   padding: 2px;
+  background-color: #f3f2f2;
+  border-radius: 8px;
+  border: 0.4px solid #e1e0e0;
 `;

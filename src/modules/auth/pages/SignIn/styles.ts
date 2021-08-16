@@ -19,6 +19,22 @@ export const Title = styled.Text`
   margin: 64px auto 24px;
 `;
 
+export const SocialButton = styled.TouchableOpacity`
+  border-radius: 5px;
+  border: 0.5px solid ${({ theme }) => theme.color.text4};
+  width: 100%;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.color.text6};
+`;
+
+export const SocialText = styled.Text`
+  color: ${({ theme }) => theme.color.text1};
+  font-size: ${RFValue(16)}px;
+  font-family: ${({ theme }) => theme.fonts.roboto};
+`;
+
 export const Logo = styled.Image`
   border-radius: 10px;
   /* box-shadow: 0 0 4px 4px rgba(0,0,0,0.3); */

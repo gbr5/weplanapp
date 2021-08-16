@@ -194,7 +194,13 @@ const MyEventProvider: React.FC = ({ children }) => {
     try {
       const transactions = await api.get<IEventTransactionDTO[]>(`/list-event-transactions/${eventId}`);
 
-      setEventTransactions(transactions.data);
+      setEventTransactions(transactions.data
+        .sort((a, b) => {
+          if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return 1;
+          if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return -1;
+          return 0;
+        })
+      );
     } catch (err) {
       throw new Error(err);
     }

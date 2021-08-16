@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
+import { Platform } from 'react-native';
 import theme from '../../../../global/styles/theme';
 
 import { useMyEvent } from '../../../../hooks/myEvent';
@@ -13,7 +14,6 @@ import {
 
 export function MainMenu() {
   const {
-    shadowColor,
     shadowOffset,
     shadowOpacity,
     shadowRadius,
@@ -64,15 +64,18 @@ export function MainMenu() {
     }
   }, [eventTasks]);
 
+  const elevation = 15;
+  const shadowColor = Platform.OS === 'ios' ? theme.color.secondary : 'black';
+
   return (
     <Container horizontal>
       <MenuButton
         style={currentSection !== 'Notes' && {
-          shadowColor: 'black',
+          shadowColor,
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation: 15,
+          elevation,
         }}
         onPress={() => selectEventSection('Notes')}
         isActive={currentSection === 'Notes'}
@@ -90,11 +93,11 @@ export function MainMenu() {
       </MenuButton>
       <MenuButton
         style={currentSection !== 'Tasks' && {
-          shadowColor: 'black',
+          shadowColor,
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation: 50,
+          elevation,
         }}
         onPress={() => selectEventSection('Tasks')}
         isActive={currentSection === 'Tasks'}
@@ -112,11 +115,11 @@ export function MainMenu() {
       </MenuButton>
       <MenuButton
         style={currentSection !== 'Guests' && {
-          shadowColor: 'black',
+          shadowColor,
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation: 15,
+          elevation,
         }}
         onPress={() => selectEventSection('Guests')}
         isActive={currentSection === 'Guests'}
@@ -134,11 +137,11 @@ export function MainMenu() {
       </MenuButton>
       <MenuButton
         style={currentSection !== 'Suppliers' && {
-          shadowColor: 'black',
+          shadowColor,
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation: 15,
+          elevation,
         }}
         onPress={() => selectEventSection('Suppliers')}
         isActive={currentSection === 'Suppliers'}
@@ -156,11 +159,11 @@ export function MainMenu() {
       </MenuButton>
       <MenuButton
         style={currentSection !== 'Financial' && {
-          shadowColor: 'black',
+          shadowColor,
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation: 15,
+          elevation,
         }}
         onPress={() => selectEventSection('Financial')}
         isActive={currentSection === 'Financial'}
@@ -178,11 +181,11 @@ export function MainMenu() {
       </MenuButton>
       <MenuButton
         style={currentSection !== 'Owners' && {
-          shadowColor: 'black',
+          shadowColor,
           shadowOffset,
           shadowOpacity,
           shadowRadius,
-          elevation: 15,
+          elevation,
         }}
         onPress={() => selectEventSection('Owners')}
         isActive={currentSection === 'Owners'}

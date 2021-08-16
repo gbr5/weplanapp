@@ -48,6 +48,7 @@ export const EventContainer = styled(
   margin-top: 16px;
   border-radius: 8px;
   width: 100%;
-  background: ${({ theme }) => theme.color.text5};
   height: 240px;
+  background-color: white;
+  border: 0.4px solid #e3e3e3;
 `;

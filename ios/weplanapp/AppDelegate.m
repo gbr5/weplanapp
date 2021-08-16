@@ -3,6 +3,8 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+  // Line from Firebase
+#import <Firebase.h>
   // Block from Expo
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
@@ -41,6 +43,10 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // Line from Firebase
+  // if ([FIRApp defaultApp] == nil) {
+  //   [FIRApp configure];
+  // }
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif

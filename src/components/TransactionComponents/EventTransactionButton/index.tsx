@@ -41,7 +41,6 @@ export function EventTransactionButton({
   firstOfDay,
 }: IProps) {
   const {
-    shadowColor,
     shadowOffset,
     shadowOpacity,
     shadowRadius,
@@ -113,6 +112,7 @@ export function EventTransactionButton({
           </DayContainer>
         </>
       )}
+
       <Container
         isSelected={
           selectedEventTransaction &&
@@ -164,6 +164,8 @@ export function EventTransactionButton({
           </InfoButton>
         )}
       </Container>
+      <Underline />
+
       {selectedEventTransaction
         && selectedEventTransaction.transaction
         && selectedEventTransaction.transaction.id === eventTransaction.transaction.id

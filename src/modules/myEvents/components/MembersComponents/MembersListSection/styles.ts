@@ -25,4 +25,6 @@ export const MembersContainer = styled(
   border-radius: 8px;
   width: 100%;
   height: 300px;
+  border-radius: 8px;
+  border: 0.4px solid #e1e0e0;
 `;

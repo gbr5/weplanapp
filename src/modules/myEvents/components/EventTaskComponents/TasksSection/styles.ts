@@ -52,4 +52,6 @@ export const TasksContainer = styled(
   width: 100%;
   padding: 2px;
   padding-bottom: 32px;
+  border-radius: 8px;
+  border: 0.4px solid #e1e0e0;
 `;

@@ -137,4 +137,6 @@ export const TransactionsContainer = styled(
 })`
   width: 100%;
   height: 240px;
+  border-radius: 8px;
+  border: 0.4px solid #e1e0e0;
 `;

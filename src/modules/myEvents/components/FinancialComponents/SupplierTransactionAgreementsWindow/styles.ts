@@ -34,4 +34,6 @@ export const AgreementsContainer = styled(
   flex: 1;
   max-height: 90%;
   padding: 2px;
+  border-radius: 8px;
+  border: 0.4px solid #e1e0e0;
 `;

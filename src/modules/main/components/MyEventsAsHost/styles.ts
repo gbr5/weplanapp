@@ -47,4 +47,6 @@ export const EventContainer = styled(
   border-radius: 8px;
   width: 100%;
   height: 240px;
+  background-color: white;
+  border: 0.4px solid #e3e3e3;
 `;

@@ -19,11 +19,13 @@ export const FileContainer = styled(
     paddingBottom: getBottomSpace() + 64,
   },
 })`
-flex: 1;
-max-height: 600px;
-margin: 8px 0;
-padding: 0 4px;
-padding-bottom: 32px;
+  flex: 1;
+  max-height: 600px;
+  margin: 8px 0;
+  padding: 0 4px;
+  padding-bottom: 32px;
+  border-radius: 8px;
+  border: 0.4px solid #e1e0e0;
 `;
 
 export const Image = styled.Image`
