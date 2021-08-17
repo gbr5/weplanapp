@@ -35,9 +35,8 @@ export function TextInputForm({
   const formRef = useRef<FormHandles>(null);
 
   function handleSubmit({ name }: IFormParams) {
-    if (name !== '') {
-      onHandleSubmit(name);
-    }
+    if (name === '') return closeWindow();
+    onHandleSubmit(name);
     closeWindow();
   }
 

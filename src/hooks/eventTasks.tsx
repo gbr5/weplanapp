@@ -57,6 +57,8 @@ const EventTasksProvider: React.FC = ({ children }) => {
     selectedEvent,
     getEventNotes,
     getEventTasks,
+    selectedTask,
+    selectEventTask,
   } = useMyEvent();
   const [editTaskTitleWindow, setEditTaskTitleWindow] = useState(false);
   const [editTaskPriorityWindow, setEditTaskPriorityWindow] = useState(false);
@@ -156,9 +158,11 @@ const EventTasksProvider: React.FC = ({ children }) => {
   async function updateTask(data: IEventTaskDTO) {
     try {
       setLoading(true);
-      await api.put(`/event-tasks/${data.id}`, data);
+      const response = await api.put(`/event-tasks/${data.id}`, data);
+      selectedTask && selectedTask.id && selectEventTask(response.data);
       await getEventTasks(data.event_id);
       await getEventNotes(data.event_id);
+      selectStatus(data.status);
     } catch (err) {
       throw new Error(err);
     } finally {

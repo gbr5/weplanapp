@@ -125,7 +125,6 @@ const SignIn: React.FC = () => {
       imageUrl: '',
       name: user.displayName ?? '',
     });
-
   }
 
   const isAndroid = useMemo(() => {

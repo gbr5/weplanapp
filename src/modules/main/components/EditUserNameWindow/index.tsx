@@ -9,6 +9,7 @@ import { WindowHeader } from '../../../../components/WindowHeader';
 import theme from '../../../../global/styles/theme';
 import { useAuth } from '../../../../hooks/auth';
 import { useProfile } from '../../../../hooks/profile';
+import api from '../../../../services/api';
 import { FormContainer, KeyboardAvoidingVueContainer } from '../../../myEvents/components/SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 
 import {
@@ -27,7 +28,13 @@ export function EditUserNameWindow() {
 
   async function handleSubmit({ name }: IFormParams) {
     if (name === '') return Alert.alert('Defina um nome único!');
-    // if (name === '') return Alert.alert('Este nome já existe!');
+
+    try {
+      await api.get(`/find-user-by-email-or-user-name?name=${name}`);
+    } catch {
+      return Alert.alert(`${name} não está mais disponível`, 'Escolha outro nome de usuário e tente novamente');
+    }
+
     await updateUserProfile({
       email: user.email,
       name,

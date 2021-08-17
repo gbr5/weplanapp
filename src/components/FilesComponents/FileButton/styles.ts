@@ -8,6 +8,7 @@ export const Container = styled.TouchableOpacity`
   border-radius: 5px;
   border: 0.5px solid ${({ theme }) => theme.color.text3};
   background-color: ${({ theme }) => theme.color.text6};
+  z-index: 2;
 `;
 
 export const FileContainer = styled.View`

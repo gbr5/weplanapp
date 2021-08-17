@@ -20,14 +20,13 @@ export const Menu = styled.ScrollView`
 `;
 
 export const MenuButton = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.color.text5};
   margin-bottom: 8px;
   border-radius: 24px;
   align-items: center;
   justify-content: center;
   width: 108px;
   height: 108px;
-  border: 1px solid ${({ theme }) => theme.color.title};
+  /* border: 1px solid ${({ theme }) => theme.color.title}; */
   margin-right: 16px;
 `;
 
@@ -39,7 +38,7 @@ export const MenuText = styled.Text`
 `;
 
 export const MenuTitle = styled.Text`
-  margin-top: 12px;
+  margin-bottom: 8px;
   font-size: ${RFValue(16)}px;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text1};
@@ -78,7 +77,7 @@ export const DateButton = styled.TouchableOpacity`
   justify-content: center;
   background-color: ${({ theme }) => theme.color.text6};
   padding: 4px;
-  border: 1px solid ${({ theme}) => theme.color.title};
+  border: 0.5px solid ${({ theme}) => theme.color.text3};
   border-radius: 5px;
   width: 40%;
 `;
@@ -123,7 +122,7 @@ export const DateHeader = styled.Text`
   top: 2px;
   left: 4px;
 
-  color: ${({ theme }) => theme.color.text5};
+  color: ${({ theme }) => theme.color.text1};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(16)}px;
   letter-spacing: 1px;

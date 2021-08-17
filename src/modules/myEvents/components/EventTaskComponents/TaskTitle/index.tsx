@@ -1,11 +1,11 @@
 import React from 'react';
 import IEventTaskDTO from '../../../../../dtos/IEventTaskDTO';
+import theme from '../../../../../global/styles/theme';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 
 import {
-  ArrowButton,
-  ArrowIcon,
+  TaskLabel,
   TitleContainer,
   Container,
   Title,
@@ -19,40 +19,35 @@ interface IProps {
   taskBody: boolean;
 }
 
-export function TaskTitle({
-  eventTask,
-  handleTaskBody,
-  taskBody,
-}: IProps): JSX.Element {
-  const { selectEventTask, selectedTask } = useMyEvent();
+export function TaskTitle(): JSX.Element {
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
+  const { selectedTask } = useMyEvent();
   const { handleEditTaskTitleWindow } = useEventTasks();
 
   function handleSelectTask() {
-    selectEventTask(eventTask);
     handleEditTaskTitleWindow();
   }
   return (
-    <Container>
+    <Container
+      style={{
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+      }}
+    >
       <TitleContainer>
-        {taskBody && selectedTask.id === eventTask.id ? (
-          <TitleButton onPress={handleSelectTask}>
-            <Title>
-              {eventTask.title}
-            </Title>
-            {/* <ArrowButton onPress={handleTaskBody}>
-              <ArrowIcon name="chevron-up" />
-            </ArrowButton> */}
-          </TitleButton>
-        ) : (
-          <TitleButton onPress={handleTaskBody}>
-            <Title>
-              {eventTask.title}
-            </Title>
-            {/* <ArrowButton onPress={handleTaskBody}>
-              <ArrowIcon name="chevron-down" />
-            </ArrowButton> */}
-          </TitleButton>
-        )}
+        <TitleButton onPress={handleSelectTask}>
+          <TaskLabel>Editar Tarefa:</TaskLabel>
+          <Title>
+            {selectedTask.title}
+          </Title>
+        </TitleButton>
         <UnderlineTitle />
       </TitleContainer>
     </Container>

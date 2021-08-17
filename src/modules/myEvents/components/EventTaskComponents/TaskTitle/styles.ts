@@ -4,10 +4,19 @@ import Feather from 'react-native-vector-icons/Feather';
 
 export const Container = styled.View`
   width: 100%;
-  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: ${({ theme }) => theme.color.text6};
+  border-radius: 4px;
+  border: 0.5px solid ${({ theme }) => theme.color.text3};
+  margin-top: 36px;
 `;
 
 export const TitleContainer = styled.View`
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const TitleButton = styled.TouchableOpacity`
@@ -23,8 +32,9 @@ export const Title = styled.Text`
   font-size: ${RFValue(18)}px;
   letter-spacing: 1px;
   width: 100%;
-  /* text-align: justify; */
+  text-align: center;
   margin-right: 4px;
+  margin-top: 24px;
 `;
 
 export const UnderlineTitle = styled.View`
@@ -62,4 +72,13 @@ export const ArrowButton = styled.TouchableOpacity`
   border-radius: 5px;
   width: 32px;
   height: 32px;
+`;
+
+export const TaskLabel = styled.Text`
+  position: absolute;
+  top: 0;
+  left: 8px;
+  font-size: ${RFValue(14)}px;
+  color: ${({ theme }) => theme.color.secondary};
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;

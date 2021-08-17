@@ -3,6 +3,10 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   width: 100%;
+  background-color: ${({ theme }) => theme.color.text6};
+  border: 0.5px solid ${({ theme }) => theme.color.secondary};
+  padding-top: 8px;
+  top: -24px;
 `;
 
 export const FieldButton = styled.TouchableOpacity`

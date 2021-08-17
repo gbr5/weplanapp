@@ -15,7 +15,7 @@ export const Container = styled.View`
 export const DateTime = styled.Text`
   color: ${({ theme }) => theme.color.secondary};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
   letter-spacing: 1px;
 `;
 
@@ -24,7 +24,7 @@ export const PriorityButtonIcon = styled(Feather)`
   color: ${({ theme }) => theme.color.title};
   font-size: ${RFValue(iconSize)}px;
   border: 1px solid ${({ theme }) => theme.color.primary};
-  /* border-radius: 16px; */
+  border-radius: 2px;
   padding: 2px;
 `;
 

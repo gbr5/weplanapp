@@ -8,9 +8,15 @@ import { TaskTitle } from '../TaskTitle';
 import { EventTaskFooter } from '../EventTaskFooter';
 import { EventTaskBody } from '../EventTaskBody';
 
-import { Container, CloseButton, CloseButtonTitle } from './styles';
-import Button from '../../../../../components/Button';
+  // CloseButton,
+  // CloseButtonTitle,
+import {
+  Container,
+  Title,
+  Underline,
+} from './styles';
 import theme from '../../../../../global/styles/theme';
+import CloseButton from '../../../../../components/CloseButton';
 
 interface IProps {
   eventTask: IEventTaskDTO;
@@ -47,22 +53,26 @@ export function EventTask({
       isActive={selectedTask.id === eventTask.id}
       onPress={handleTaskBody}
     >
-      {selectedTask.id === eventTask.id && (
-        <CloseButton onPress={handleTaskBody}>
-          <CloseButtonTitle>Fechar</CloseButtonTitle>
-        </CloseButton>
+      {selectedTask.id === eventTask.id ? (
+        <>
+          {/* <CloseButton onPress={handleTaskBody}>
+            <CloseButtonTitle>Fechar</CloseButtonTitle>
+          </CloseButton> */}
+          <CloseButton closeFunction={handleTaskBody} />
+          <TaskTitle
+            handleTaskBody={handleTaskBody}
+            taskBody={selectedTask.id === eventTask.id}
+            eventTask={eventTask}
+          />
+          <EventTaskBody />
+        </>
+      ) : (
+        <>
+          <Title>{eventTask.title}</Title>
+          <Underline />
+          <EventTaskFooter eventTask={eventTask} />
+        </>
       )}
-      <TaskTitle
-        handleTaskBody={handleTaskBody}
-        taskBody={selectedTask.id === eventTask.id}
-        eventTask={eventTask}
-      />
-      {selectedTask.id !== eventTask.id
-        && <EventTaskFooter eventTask={eventTask} />
-      }
-      {selectedTask.id === eventTask.id
-        && <EventTaskBody />
-      }
     </Container>
   );
 };

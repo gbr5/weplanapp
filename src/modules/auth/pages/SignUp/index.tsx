@@ -1,12 +1,15 @@
 import React, { useCallback, useRef, useState } from 'react';
 import {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  KeyboardAvoidingView, ScrollView, Platform, View, Alert, TextInput,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  View,
+  Alert,
+  TextInput,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import * as Yup from 'yup';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormHandles } from '@unform/core';
 import api from '../../../../services/api';
 
@@ -80,6 +83,17 @@ const SignUp: React.FC = () => {
         abortEarly: false,
       });
 
+      try {
+        await api.get(`/find-user-by-email-or-user-name?name=${data.name}`);
+      } catch {
+        return Alert.alert(`${data.name} não está mais disponível`, 'Escolha outro nome de usuário e tente novamente');
+      }
+      try {
+        await api.get(`/find-user-by-email-or-user-name?email=${data.email}`);
+      } catch {
+        return Alert.alert(`${data.email} já foi registrado`, 'Se este é o seu e-mail, faça o login ou troque a sua senha!');
+      }
+
       const validatedData = {
         name: data.name,
         email: data.email,
@@ -127,7 +141,7 @@ const SignUp: React.FC = () => {
               autoCapitalize="words"
               placeholderTextColor={theme.color.secondary}
               icon="user"
-              placeholder="Nome"
+              placeholder="Nome de usuário"
               returnKeyType="next"
               onSubmitEditing={() => {
                 emailInputRef.current?.focus();

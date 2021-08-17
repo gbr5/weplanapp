@@ -24,6 +24,12 @@ import {
 } from './styles';
 
 export function EventTaskBody() {
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.buttonShadow;
   const { selectedTask } = useMyEvent();
   const {
     handleEditTaskPriorityWindow,
@@ -78,21 +84,46 @@ export function EventTaskBody() {
   return (
     <Container>
       <Menu horizontal>
-        <MenuButton onPress={handleEditTaskStatusWindow}>
+        <MenuButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
+          onPress={handleEditTaskStatusWindow}
+        >
+          <MenuTitle>Status</MenuTitle>
           <IconContainer color={status.color}>
             <FunctionIcon name={status.icon} />
             <MenuText>{status.title}</MenuText>
           </IconContainer>
-          <MenuTitle>Status</MenuTitle>
         </MenuButton>
-        <MenuButton onPress={handleEditTaskPriorityWindow}>
+        <MenuButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
+          onPress={handleEditTaskPriorityWindow}
+        >
+          <MenuTitle>Prioridade</MenuTitle>
           <IconContainer color={priority.color} >
             <FunctionIcon name="flag" />
             <MenuText>{priority.title}</MenuText>
           </IconContainer>
-          <MenuTitle>Prioridade</MenuTitle>
         </MenuButton>
-        <MenuButton onPress={handleEventTaskNotesWindow}>
+        <MenuButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
+          onPress={handleEventTaskNotesWindow}
+        >
+          <MenuTitle>Notas</MenuTitle>
           <IconContainer color={theme.color.info_light}>
             <Icon name="file-text" />
             {selectedTask.notes.length > 0 && (
@@ -101,23 +132,46 @@ export function EventTaskBody() {
               </NumberOfNotesContainer>
             )}
           </IconContainer>
-          <MenuTitle>Notas</MenuTitle>
         </MenuButton>
-        <MenuButton onPress={handleDeleteTaskConfirmationWindow}>
+        <MenuButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
+          onPress={handleDeleteTaskConfirmationWindow}
+        >
+          <MenuTitle>Deletar</MenuTitle>
           <IconContainer color={theme.color.atention}>
             <Icon name="trash-2" />
           </IconContainer>
-          <MenuTitle>Deletar</MenuTitle>
         </MenuButton>
       </Menu>
       <DateContainer>
         <DateHeader>Data Prevista</DateHeader>
-        <DateButton onPress={handleEditTaskTimeWindow}>
+        <DateButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
+          onPress={handleEditTaskTimeWindow}
+        >
           <DateText>
             {formatOnlyTime(String(selectedTask.due_date))}
           </DateText>
         </DateButton>
-        <DateButton onPress={handleEditTaskDateWindow}>
+        <DateButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
+          onPress={handleEditTaskDateWindow}
+        >
           <DateText>
           {formatOnlyDateShort(String(selectedTask.due_date))}
           </DateText>
