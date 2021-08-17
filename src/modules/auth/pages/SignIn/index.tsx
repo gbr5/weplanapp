@@ -103,18 +103,13 @@ const SignIn: React.FC = () => {
   async function onGoogleButtonPress() {
     // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
-    console.log({ idToken });
-
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    console.log({ googleCredential });
-
     // Sign-in the user with the credential
     const {
       user,
       additionalUserInfo
     } = await auth().signInWithCredential(googleCredential);
-    console.log(user, additionalUserInfo);
     if (!user) return Alert.alert('Perfil não encontrado!');
     if (!additionalUserInfo?.profile) return Alert.alert('Perfil não encontrado!');
     if (user.email === null)

@@ -1,9 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Alert,
-  Linking,
-  Platform,
-} from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Alert, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import { useTransaction } from '../../../hooks/transactions';
@@ -11,7 +7,8 @@ import { useTransaction } from '../../../hooks/transactions';
 import { WindowHeader } from '../../WindowHeader';
 import { MenuBooleanButton } from '../../MenuBooleanButton';
 import WindowContainer from '../../WindowContainer';
-import Button from '../../Button';
+import IFileDTO from '../../../dtos/IFileDTO';
+import { FileButton } from '../../FilesComponents/FileButton';
 
 import {
   Container,
@@ -19,7 +16,6 @@ import {
   IconContainer,
   Icon,
 } from './styles';
-import theme from '../../../global/styles/theme';
 
 export function TransactionFilesWindow() {
   const {
@@ -52,24 +48,33 @@ export function TransactionFilesWindow() {
     })();
   }, []);
 
-  const handlePress = useCallback(async (url: string) => {
-    // Checking if the link is supported for links with custom URL scheme.
-    const supported = await Linking.canOpenURL(url);
-
-    if (supported) {
-      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-      // by some browser in the mobile
-      await Linking.openURL(url);
-    } else {
-      Alert.alert(`Don't know how to open this URL: ${url}`);
-    }
-  }, []);
-
+  const files: IFileDTO[] = useMemo(() => {
+    return selectedEventTransaction.transaction.files.map(file => {
+      const {
+        id,
+        name,
+        url,
+        transaction_id,
+        created_at,
+        updated_at,
+      } = file;
+      return {
+        id,
+        name,
+        url,
+        type: '',
+        file_origin: 'transaction',
+        origin_id: transaction_id,
+        created_at,
+        updated_at,
+      };
+    })
+  }, [selectedEventTransaction]);
 
   return (
     <WindowContainer
       closeWindow={handleTransactionFilesWindow}
-      zIndex={56}
+      zIndex={18}
       top="5%"
       left="0%"
       height="90%"
@@ -90,20 +95,13 @@ export function TransactionFilesWindow() {
             secondLabel="+ Arquivo"
           />
         )}
-        {selectedEventTransaction.transaction.files.length > 0 && (
+        {files.length > 0 && (
           <FileContainer
-            data={selectedEventTransaction.transaction.files}
+            data={files}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
               return (
-                <Button
-                  key={item.id}
-                  onPress={() => handlePress(item.url)}
-                >
-                {/* <Link to={item.url}> */}
-                  {item.name}
-                {/* </Link> */}
-                </Button>
+                <FileButton key={item.id} file={item} />
               );
             }}
           />

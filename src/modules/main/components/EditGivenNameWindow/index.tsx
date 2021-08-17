@@ -34,15 +34,12 @@ export function EditGivenNameWindow() {
     if (first_name === '') return Alert.alert('Insira seu nome!');
     // if (first_name === '') return Alert.alert('Este nome já existe!');
     if (user.personInfo) {
-      console.log('1')
       await updateUserPersonInfo({
         first_name,
         last_name: user.personInfo.last_name,
         person_id: user.personInfo.person_id,
       });
     } else {
-      console.log('2')
-
       await createUserPersonInfo({
         first_name,
         last_name: '-',

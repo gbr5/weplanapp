@@ -1,6 +1,6 @@
 import { FlatList } from 'react-native';
 import styled from 'styled-components/native';
-import ITransactionFileDTO from '../../../dtos/ITransactionFileDTO';
+import IFileDTO from '../../../dtos/IFileDTO';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
@@ -12,7 +12,7 @@ export const Container = styled.View`
 `;
 
 export const FileContainer = styled(
-  FlatList as new () => FlatList<ITransactionFileDTO>
+  FlatList as new () => FlatList<IFileDTO>
 ).attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: {

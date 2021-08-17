@@ -154,11 +154,6 @@ const ProfileProvider: React.FC = ({ children }) => {
     last_name,
     person_id,
   }: IUserPersonInfo) {
-    console.log({
-      first_name,
-      last_name,
-      person_id,
-    });
     try {
       setLoading(true);
       await api.post(`/person-info/${user.id}`, {

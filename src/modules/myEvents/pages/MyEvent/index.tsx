@@ -70,6 +70,8 @@ import { EventSupplierBudgetsWindow } from '../../components/SuppliersComponents
 import { EventSupplierBudgetForm } from '../../components/SuppliersComponents/EventSupplierBudgetForm';
 import { EditSupplierBudgetAmount } from '../../components/SuppliersComponents/EditSupplierBudgetAmount';
 import { EditSupplierBudgetDescription } from '../../components/SuppliersComponents/EditSupplierBudgetDescription';
+import { useFiles } from '../../../../hooks/files';
+import { EditFileNameWindow } from '../../../../components/FilesComponents/EditFileNameWindow';
 
 const MyEvent: React.FC = () => {
   const {
@@ -146,6 +148,9 @@ const MyEvent: React.FC = () => {
     handleEditNoteWindow,
     createEventNoteWindow,
   } = useNote();
+  const {
+    editFileWindow,
+  } = useFiles();
   const {
     cancelEventTransaction,
     cancelEventTransactionConfirmationWindow,
@@ -228,6 +233,7 @@ const MyEvent: React.FC = () => {
   return (
     <>
       {budgetWindow && <BudgetWindow />}
+      {editFileWindow && <EditFileNameWindow />}
       {createEventNoteWindow && <EventNoteForm />}
       {supplierNotesWindow && <SupplierNotesSection />}
       {supplierFilesWindow && <EventSupplierFilesWindow />}

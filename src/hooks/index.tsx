@@ -14,6 +14,7 @@ import { TransactionProvider } from './transactions';
 import { UnsetEventVariablesProvider } from './unsetEventVariables';
 import { UserContactsProvider } from './userContacts';
 import { ProfileProvider } from './profile';
+import { FilesProvider } from './files';
 
 const AppProvider: React.FC = ({ children }) => (
   <AuthProvider>
@@ -21,25 +22,27 @@ const AppProvider: React.FC = ({ children }) => (
       <EventProvider>
         <MyEventProvider>
           <NoteProvider>
-            <EventGuestsProvider>
-              <EventTasksProvider>
-                <EventSuppliersProvider>
-                  <EventOwnersProvider>
-                    <EventMembersProvider>
-                      <EventInfoProvider>
-                        <TransactionProvider>
-                          <UserContactsProvider>
-                            <UnsetEventVariablesProvider>
-                              {children}
-                            </UnsetEventVariablesProvider>
-                          </UserContactsProvider>
-                        </TransactionProvider>
-                      </EventInfoProvider>
-                    </EventMembersProvider>
-                  </EventOwnersProvider>
-                </EventSuppliersProvider>
-              </EventTasksProvider>
-            </EventGuestsProvider>
+            <FilesProvider>
+              <EventGuestsProvider>
+                <EventTasksProvider>
+                  <EventSuppliersProvider>
+                    <EventOwnersProvider>
+                      <EventMembersProvider>
+                        <EventInfoProvider>
+                          <TransactionProvider>
+                            <UserContactsProvider>
+                              <UnsetEventVariablesProvider>
+                                {children}
+                              </UnsetEventVariablesProvider>
+                            </UserContactsProvider>
+                          </TransactionProvider>
+                        </EventInfoProvider>
+                      </EventMembersProvider>
+                    </EventOwnersProvider>
+                  </EventSuppliersProvider>
+                </EventTasksProvider>
+              </EventGuestsProvider>
+            </FilesProvider>
           </NoteProvider>
         </MyEventProvider>
       </EventProvider>

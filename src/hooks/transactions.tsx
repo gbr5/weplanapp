@@ -19,6 +19,8 @@ import ITransactionDTO from '../dtos/ITransactionDTO';
 import IUpdateEventSupplierTransactionAgreementDTO from '../dtos/IUpdateEventSupplierTransactionAgreementDTO';
 import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
+import ITransactionFileDTO from '../dtos/ITransactionFileDTO';
+import { useFiles } from './files';
 
 interface  IPayerTransactionResponseDTO {
   transactions: ITransactionDTO[];
@@ -32,6 +34,11 @@ interface  IPayerTransactionResponseDTO {
 interface INewAgreementDTO {
   amount: number;
   installments: number;
+}
+
+interface IEditTransactionFileDTO {
+  id: string;
+  name: string;
 }
 
 interface ICreateEventSupplierTransactionAgreementWithTransactionsDTO extends ICreateEventSupplierTransactionAgreementDTO {
@@ -68,6 +75,7 @@ interface TransactionContextType {
   handleFilterTransactionOption: (data: string) => void;
   cancelEventTransaction: () => Promise<void>;
   importTransactionFile: (transaction_id: string) => Promise<void>;
+  editTransactionFile: (data: IEditTransactionFileDTO) => Promise<void>;
   importTransactionImage: (transaction_id: string) => Promise<void>;
   handleTransactionFilesWindow: () => void;
   createSupplierTransactionAgreementWithTransactions: (data: ICreateEventSupplierTransactionAgreementWithTransactionsDTO) => Promise<void>;
@@ -121,6 +129,7 @@ const TransactionProvider: React.FC = ({ children }) => {
     updateEventSupplier,
     selectedSupplierTransactionAgreement,
   } = useEventSuppliers();
+  const { handleSelectedFile, selectedFile } = useFiles();
 
   const [loading, setLoading] = useState(false);
   const [transactionNotesWindow, setTransactionNotesWindow] = useState(false);
@@ -511,6 +520,27 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
+  async function editTransactionFile({
+    id,
+    name,
+  }: IEditTransactionFileDTO) {
+    try {
+      setLoading(true);
+      const response = await api.put(`/transaction-files/${id}`, {
+        name,
+      });
+
+      handleSelectedFile({
+        ...selectedFile,
+        name: response.data.name,
+      });
+      await getEventTransactions(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
   async function importTransactionFile(transaction_id: string) {
     try {
       setLoading(true);
@@ -615,6 +645,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         handleTransactionFilesWindow,
         transactionFilesWindow,
         importTransactionFile,
+        editTransactionFile,
         importTransactionImage,
       }}
     >
