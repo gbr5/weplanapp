@@ -17,6 +17,7 @@ import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComp
 import {
   Container,
 } from './styles'
+import { useFriends } from '../../../../../hooks/friends';
 
 interface IFormParams {
   description: string;
@@ -25,7 +26,7 @@ interface IFormParams {
 export function CreateOwnerForm() {
   const formRef = useRef<FormHandles>(null);
 
-  const { selectedFriend } = useMyEvent();
+  const { selectedFriend } = useFriends();
   const { createEventOwner } = useEventOwners();
 
   const [loading, setLoading] = useState(false);

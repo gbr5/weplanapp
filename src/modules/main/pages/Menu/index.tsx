@@ -17,12 +17,14 @@ import CreateEvent from '../../../myEvents/components/CreateEvent';
 import BackButton from '../../../../components/BackButton';
 import { useNavigation } from '@react-navigation/native';
 import { useUnsetEventVariables } from '../../../../hooks/unsetEventVariables';
+import { useFriends } from '../../../../hooks/friends';
 
 const Menu: React.FC = () => {
   const navigation = useNavigation();
 
   const { signOut } = useAuth();
   const { unsetVariables } = useUnsetEventVariables();
+  const { resetFriendsVariables } = useFriends();
 
   const [confirmationWindow, setConfirmationWindow] = useState(false);
   const [createEventWindow, setCreateEventWindow] = useState(false);
@@ -35,8 +37,14 @@ const Menu: React.FC = () => {
     setCreateEventWindow(e);
   }, []);
 
-  function navigateToFriendsSection() {
-    navigation.navigate('FriendsSection')
+  function navigateToFriendsPage() {
+    navigation.navigate('FriendsPage')
+  }
+
+  function handleSignOut() {
+    unsetVariables();
+    resetFriendsVariables();
+    signOut();
   }
 
   return (
@@ -45,7 +53,7 @@ const Menu: React.FC = () => {
         <ShortConfirmationWindow
           closeWindow={() => handleConfirmSignOut(false)}
           firstButtonLabel="Sair"
-          firstFunction={signOut}
+          firstFunction={handleSignOut}
           question="Deseja desconectar sua conta?"
           secondButtonLabel="Não Sair"
           secondFunction={() => handleConfirmSignOut(false)}
@@ -67,7 +75,7 @@ const Menu: React.FC = () => {
           <ButtonText>Configurações</ButtonText>
           <Icon size={30} name="settings" />
         </MenuOption>
-        <MenuOption onPress={navigateToFriendsSection}>
+        <MenuOption onPress={navigateToFriendsPage}>
           <ButtonText>Contatos</ButtonText>
           <Icon size={30} name="users" />
         </MenuOption>

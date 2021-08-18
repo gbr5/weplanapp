@@ -35,7 +35,6 @@ const BackButton: React.FC<IProps> = ({
         shadowOffset,
         shadowOpacity,
         shadowRadius,
-        elevation: 5,
       }}
       onPress={goBack}
     >

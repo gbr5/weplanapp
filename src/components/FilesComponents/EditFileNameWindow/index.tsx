@@ -81,7 +81,6 @@ export function EditFileNameWindow() {
         <FormButton
           handleSubmit={() => formRef.current?.submitForm()}
           text="Salvar"
-          elevation={15}
           loading={loading}
         />
       </KeyboardAvoidingVueContainer>

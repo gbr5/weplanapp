@@ -40,9 +40,9 @@ const EventProvider: React.FC = ({ children }) => {
   const [eventsAsMember, setEventsAsMember] = useState<IEventMemberDTO[]>([]);
   const [eventsAsGuest, setEventsAsGuest] = useState<IEventGuestDTO[]>([]);
   async function loadStorageData() {
-    const events_as_owner = await AsyncStorage.getItem('@WePlan-Party:events-as-owner');
-    const events_as_member = await AsyncStorage.getItem('@WePlan-Party:events-as-member');
-    const events_as_guest = await AsyncStorage.getItem('@WePlan-Party:events-as-guest');
+    const events_as_owner = await AsyncStorage.getItem('@WP-App:events-as-owner');
+    const events_as_member = await AsyncStorage.getItem('@WP-App:events-as-member');
+    const events_as_guest = await AsyncStorage.getItem('@WP-App:events-as-guest');
 
     if (events_as_owner && events_as_member && events_as_guest) {
       setEventsAsOwner(JSON.parse(events_as_owner));
@@ -60,7 +60,7 @@ const EventProvider: React.FC = ({ children }) => {
         '/list/events/user-as-owner/',
       );
       await AsyncStorage.setItem(
-        '@WePlan-Party:events-as-owner',
+        '@WP-App:events-as-owner',
         JSON.stringify(response.data),
       );
       return setEventsAsOwner(response.data);
@@ -74,7 +74,7 @@ const EventProvider: React.FC = ({ children }) => {
         '/list/events/user-as-member/',
       );
       await AsyncStorage.setItem(
-        '@WePlan-Party:events-as-member',
+        '@WP-App:events-as-member',
         JSON.stringify(response.data),
       );
       setEventsAsMember(response.data);
@@ -88,7 +88,7 @@ const EventProvider: React.FC = ({ children }) => {
         '/event/weplan-guests/list/user',
       );
       await AsyncStorage.setItem(
-        '@WePlan-Party:events-as-guest',
+        '@WP-App:events-as-guest',
         JSON.stringify(response.data),
       );
       setEventsAsGuest(response.data);

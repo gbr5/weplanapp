@@ -10,4 +10,5 @@ export const Container = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   padding-right: 2px;
+  z-index: 8;
 `;

@@ -17,12 +17,8 @@ import IEventSupplierDTO from '../dtos/IEventSupplierDTO';
 import IEventDTO from '../dtos/IEventDTO';
 import IEventTaskDTO from '../dtos/IEventTaskDTO';
 import IEventBudgetDTO from '../dtos/IEventBudgetDTO';
-import { useMemo } from 'react';
-import { formatBrlCurrency } from '../utils/formatBrlCurrency';
-import IFriendDTO from '../dtos/IFriendDTO';
 import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
 import IEventNoteDTO from '../dtos/IEventNoteDTO';
-import ITransactionDTO from '../dtos/ITransactionDTO';
 import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 
 interface MyEventContextType {
@@ -44,7 +40,6 @@ interface MyEventContextType {
   hiredSuppliers: IEventSupplierDTO[];
   dischargedSuppliers: IEventSupplierDTO[];
   notHiredSuppliers: IEventSupplierDTO[];
-  selectedFriend: IFriendDTO;
   supplierAgreements: IEventSupplierTransactionAgreementDTO[];
   selectedSupplier: IEventSupplierDTO;
   selectedTask: IEventTaskDTO;
@@ -81,7 +76,6 @@ interface MyEventContextType {
   getEventTasks: (eventId: string) => Promise<void>;
   getEventBudget: (eventId: string) => Promise<void>;
   getEventTransactions: (eventId: string) => Promise<void>;
-  handleSelectedFriend: (data: IFriendDTO) => void;
   createEventBudget: (budget: number) => Promise<void>;
   updateEventBudget: (data: IEventBudgetDTO) => Promise<void>;
   unsetEventVariables: () => void;
@@ -122,7 +116,6 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [currentSection, setCurrentSection] = useState('Notes');
   const [selectedTask, setSelectedTask] = useState({} as IEventTaskDTO);
   const [selectedSupplier, setSelectedSupplier] = useState({} as IEventSupplierDTO);
-  const [selectedFriend, setSelectedFriend] = useState({} as IFriendDTO);
   const [supplierAgreements, setSupplierAgreements] = useState<IEventSupplierTransactionAgreementDTO[]>([]);
   const [eventTransactions, setEventTransactions] = useState<IEventTransactionDTO[]>([]);
 
@@ -141,10 +134,6 @@ const MyEventProvider: React.FC = ({ children }) => {
       .reduce((a, b) => a + b, 0);
     setTotalEventCost(totalCost);
   }, [hiredSuppliers]);
-
-  function handleSelectedFriend(data: IFriendDTO) {
-    setSelectedFriend(data);
-  }
 
   function handleEventFinancialSubSection(data: string) {
     setEventFinancialSubSection(data);
@@ -406,7 +395,6 @@ const MyEventProvider: React.FC = ({ children }) => {
         updateEventBudget,
         getEventSuppliers,
         getEventGuests,
-        handleSelectedFriend,
         selectedEvent,
         selectedGuest,
         eventInfo,
@@ -433,7 +421,6 @@ const MyEventProvider: React.FC = ({ children }) => {
         selectEvent,
         selectGuest,
         calculateTotalEventCost,
-        selectedFriend,
         selectedMember,
         selectedOwner,
         selectMember,

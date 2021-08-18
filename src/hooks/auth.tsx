@@ -111,6 +111,8 @@ const AuthProvider: React.FC = ({ children }) => {
       '@WP-App:events-as-member',
       '@WP-App:events-as-guest',
       '@WP-App:mobile-contacts',
+      '@WP-App:friends',
+      '@WP-App:friend-requests',
     ]);
 
     setData({} as IAuthState);
