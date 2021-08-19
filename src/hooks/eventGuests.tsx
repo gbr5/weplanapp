@@ -14,6 +14,7 @@ import ICreateGuestContactDTO from '../dtos/ICreateGuestContactDTO';
 import IGuestContactDTO from '../dtos/IGuestContactDTO';
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
+import IFriendDTO from '../dtos/IFriendDTO';
 
 interface EventGuestsContextType {
   allGuestsFilter: boolean;
@@ -22,10 +23,12 @@ interface EventGuestsContextType {
   loading: boolean;
   newGuestForm: boolean;
   newGuestWindow: boolean;
+  selectWePlanGuestsWindow: boolean;
   notConfirmedGuestsFilter: boolean;
   onlyMyGuestsFilter: boolean;
   selectedGuestContact: IGuestContactDTO;
   addNewGuest: (data: IAddNewEventGuestDTO) => Promise<void>;
+  createMultipleWePlanGuests: (data: IFriendDTO[]) => Promise<void>;
   createMultipleMobileGuests: (data: Contact[]) => Promise<void>;
   createGuestContact: (data: ICreateGuestContactDTO) => Promise<void>;
   deleteGuestContact: (data: IGuestContactDTO) => Promise<void>;
@@ -36,6 +39,7 @@ interface EventGuestsContextType {
   handleNewGuestForm: () => void;
   handleNewGuestWindow: () => void;
   handleNotConfirmedGuestsFilter: () => void;
+  handleSelectWePlanGuestsWindow: () => void;
   handleOnlyMyGuestsFilter: () => void;
   selectGuestContact: (data: IGuestContactDTO) => void;
   updateGuestContact: (data: IGuestContactDTO) => Promise<void>;
@@ -56,9 +60,14 @@ const EventGuestsProvider: React.FC = ({ children }) => {
   const [onlyMyGuestsFilter, setOnlyMyGuestsFilter] = useState(false);
   const [newGuestForm, setNewGuestForm] = useState(false);
   const [newGuestWindow, setNewGuestWindow] = useState(false);
+  const [selectWePlanGuestsWindow, setSelectWePlanGuestsWindow] = useState(false);
 
   function handleAllGuestsFilter() {
     setAllGuestsFilter(!allGuestsFilter);
+  }
+
+  function handleSelectWePlanGuestsWindow() {
+    setSelectWePlanGuestsWindow(!selectWePlanGuestsWindow);
   }
 
   function handleNewGuestForm() {
@@ -119,6 +128,22 @@ const EventGuestsProvider: React.FC = ({ children }) => {
     }
   }
 
+  async function createMultipleWePlanGuests(data: IFriendDTO[]) {
+    try {
+      setLoading(true);
+      const users = data.map(({ friend }) => friend);
+      await api.post(`/create-multiple-weplan-guests/${selectedEvent.id}`, {
+        users,
+      });
+      await getEventGuests(selectedEvent.id);
+      handleNewGuestWindow();
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function createMultipleMobileGuests(data: Contact[]) {
     try {
       setLoading(true);
@@ -151,7 +176,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
           }),
         };
       })
-      await api.post(`/create-multiple-guests/${selectedEvent.id}`, {
+      await api.post(`/create-multiple-mobile-guests/${selectedEvent.id}`, {
         contacts,
       });
       await getEventGuests(selectedEvent.id);
@@ -253,6 +278,9 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         newGuestWindow,
         notConfirmedGuestsFilter,
         onlyMyGuestsFilter,
+        createMultipleWePlanGuests,
+        handleSelectWePlanGuestsWindow,
+        selectWePlanGuestsWindow,
       }}
     >
       {children}

@@ -12,6 +12,7 @@ import {
 import { WindowHeader } from '../../../../../components/WindowHeader';
 import theme from '../../../../../global/styles/theme';
 import { useUserContacts } from '../../../../../hooks/userContacts';
+import { useFriends } from '../../../../../hooks/friends';
 
 export function NewGuestWindow() {
   const {
@@ -20,15 +21,25 @@ export function NewGuestWindow() {
     shadowOpacity,
     shadowRadius,
   } = theme.buttonShadow;
-  const { handleNewGuestForm, handleNewGuestWindow } = useEventGuests();
+  const {
+    handleNewGuestForm,
+    handleNewGuestWindow,
+    handleSelectWePlanGuestsWindow,
+  } = useEventGuests();
   const {
     getUserMobileContacts,
     handleSelectMobileContactsWindow,
   } = useUserContacts();
+  const { getFriends } = useFriends();
 
   async function handleNewMobileGuest() {
     await getUserMobileContacts();
     handleSelectMobileContactsWindow(true);
+  }
+
+  async function handleNewWePlanGuest() {
+    await getFriends();
+    handleSelectWePlanGuestsWindow();
   }
 
   return (
@@ -52,6 +63,17 @@ export function NewGuestWindow() {
           onPress={handleNewMobileGuest}
         >
           <ButtonTitle>Selecionar do celular</ButtonTitle>
+        </Button>
+        <Button
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+          }}
+          onPress={handleNewWePlanGuest}
+        >
+          <ButtonTitle>Selecionar Contatos WePlan</ButtonTitle>
         </Button>
         <Button
           style={{

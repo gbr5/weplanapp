@@ -145,6 +145,9 @@ const MyEvent: React.FC = () => {
     guestFilterWindow,
     newGuestForm,
     newGuestWindow,
+    selectWePlanGuestsWindow,
+    handleSelectWePlanGuestsWindow,
+    createMultipleWePlanGuests,
   } = useEventGuests();
   const {
     editNoteWindow,
@@ -253,6 +256,12 @@ const MyEvent: React.FC = () => {
       {supplierBudgetForm && <EventSupplierBudgetForm />}
       {transactionNotesWindow && <TransactionNotesWindow />}
       {transactionFilesWindow && <TransactionFilesWindow />}
+      {selectWePlanGuestsWindow &&
+        <SelectFromFriends
+          closeWindow={handleSelectWePlanGuestsWindow}
+          handleAddFriends={createMultipleWePlanGuests}
+        />
+      }
       {addOwnerWindow &&
         <SelectFromFriends
           closeWindow={handleAddOwnerWindow}
