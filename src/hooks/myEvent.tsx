@@ -285,12 +285,12 @@ const MyEventProvider: React.FC = ({ children }) => {
   async function getEventOwners(eventId: string) {
     try {
       const response = await api
-        .get<IEventOwnerDTO[]>(`event-owners/${eventId}`);
+        .get<IEventOwnerDTO[]>(`/event-owners/${eventId}`);
+      setOwners(response.data);
       response.data.map((xOwner) => {
         xOwner.userEventOwner.id === user.id && setIsOwner(true);
         return xOwner;
       });
-      setOwners(response.data);
     } catch (err) {
       throw new Error(err);
     }

@@ -16,6 +16,7 @@ import {
 import { RFValue } from 'react-native-responsive-fontsize';
 import IFriendDTO from '../../../dtos/IFriendDTO';
 import ShortConfirmationWindow from '../../ShortConfirmationWindow';
+import { UserButtonInfo } from '../UserButtonInfo';
 
 interface IProps {
   user: IUserDTO;
@@ -34,24 +35,20 @@ export function SearchUserButton({ user }: IProps) {
     deleteFriend,
     handleDeleteFriendWindow,
     handleSelectedFriend,
+    selectedFriend,
   } = useFriends();
 
   const [loading, setLoading] = useState(false);
-  const [confirmDeleteFriendWindow, setConfirmDeleteFriendWindow] = useState(false);
 
   function handleConfirmDeleteFriendWindow(data: IFriendDTO) {
     handleSelectedFriend(data);
     handleDeleteFriendWindow();
   }
 
-  async function handleDeleteFriend() {
-    if (friend) {
-      await deleteFriend(friend.id);
-    }
-  }
 
   const friend = useMemo(() => {
-    return friends.find(friend => friend.friend_id === user.id);
+    const selectedFriend = friends.find(friend => friend.friend_id === user.id);
+    return selectedFriend;
   }, [friends]);
 
   const isFriend = useMemo(() => {
@@ -89,42 +86,52 @@ export function SearchUserButton({ user }: IProps) {
     }
   }
 
+  function handleUserInfo() {
+    if (!friend) return;
+    if (selectedFriend.id === friend.id)
+      return handleSelectedFriend({} as IFriendDTO);
+    handleSelectedFriend(friend);
+  }
+
   return (
-    <Container
-      friendshipRequested={friendshipRequested}
-      isFriend={isFriend}
-      style={{
-        shadowColor,
-        shadowOffset,
-        shadowOpacity,
-        shadowRadius,
-      }}
-      onPress={handleRequest}
-    >
-      <Avatar
-        source={!user.avatar_url
-          ? profilePlaceholder
-          : { uri: user.avatar_url }
-        }
-      />
-      <Name>{user.name}</Name>
-      {loading ? (
-        <Feather name="loader" size={RFValue(20)} />
-      ) : (
-        <FriendButton
-          onPress={handleRequest}
-          friendshipRequested={friendshipRequested}
-          isFriend={isFriend}
-          style={{
-            shadowColor,
-            shadowOffset,
-            shadowOpacity,
-            shadowRadius,
-          }}
-        >
-          <FriendButtonText>{friendText}</FriendButtonText>
-        </FriendButton>
-      )}
-    </Container>
+    <>
+      <Container
+        friendshipRequested={friendshipRequested}
+        isFriend={isFriend}
+        style={{
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
+        onPress={() => handleUserInfo()}
+      >
+        <Avatar
+          source={!user.avatar_url
+            ? profilePlaceholder
+            : { uri: user.avatar_url }
+          }
+        />
+        <Name>{user.name}</Name>
+        {loading ? (
+          <Feather name="loader" size={RFValue(20)} />
+        ) : (
+          <FriendButton
+            onPress={handleRequest}
+            friendshipRequested={friendshipRequested}
+            isFriend={isFriend}
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+            }}
+          >
+            <FriendButtonText>{friendText}</FriendButtonText>
+          </FriendButton>
+        )}
+      </Container>
+      {friend && friend.isConfirmed && selectedFriend.id === friend.id && <UserButtonInfo />}
+    </>
   );
 }

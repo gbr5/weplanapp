@@ -72,6 +72,10 @@ import { EditSupplierBudgetAmount } from '../../components/SuppliersComponents/E
 import { EditSupplierBudgetDescription } from '../../components/SuppliersComponents/EditSupplierBudgetDescription';
 import { useFiles } from '../../../../hooks/files';
 import { EditFileNameWindow } from '../../../../components/FilesComponents/EditFileNameWindow';
+import { useFriends } from '../../../../hooks/friends';
+import { SelectFromFriends } from '../../../../components/FriendsComponents/SelectFromFriends';
+import { useEventOwners } from '../../../../hooks/eventOwners';
+import { useEventMembers } from '../../../../hooks/eventMembers';
 
 const MyEvent: React.FC = () => {
   const {
@@ -148,9 +152,17 @@ const MyEvent: React.FC = () => {
     handleEditNoteWindow,
     createEventNoteWindow,
   } = useNote();
+  const { editFileWindow } = useFiles();
   const {
-    editFileWindow,
-  } = useFiles();
+    handleAddOwnerWindow,
+    addOwnerWindow,
+    addMultipleOwners,
+  } = useEventOwners();
+  const {
+    handleAddMemberWindow,
+    addMemberWindow,
+    addMultipleMembers,
+  } = useEventMembers();
   const {
     cancelEventTransaction,
     cancelEventTransactionConfirmationWindow,
@@ -241,6 +253,18 @@ const MyEvent: React.FC = () => {
       {supplierBudgetForm && <EventSupplierBudgetForm />}
       {transactionNotesWindow && <TransactionNotesWindow />}
       {transactionFilesWindow && <TransactionFilesWindow />}
+      {addOwnerWindow &&
+        <SelectFromFriends
+          closeWindow={handleAddOwnerWindow}
+          handleAddFriends={addMultipleOwners}
+        />
+      }
+      {addMemberWindow &&
+        <SelectFromFriends
+          closeWindow={handleAddMemberWindow}
+          handleAddFriends={addMultipleMembers}
+        />
+      }
       {editSupplierBudgetDescriptionWindow
         && selectedSupplierBudget
         && selectedSupplierBudget.id

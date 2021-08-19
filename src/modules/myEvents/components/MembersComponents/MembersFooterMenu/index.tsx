@@ -19,18 +19,18 @@ export function MembersFooterMenu({
   return (
     <Container horizontal>
       <MenuButton
-        isActive={section === 'Main'}
-        onPress={() => handleSection('Main')}
-      >
-        <MenuText isActive={section === 'Main'}>Principal</MenuText>
-        <MenuIcon isActive={section === 'Main'} name="home" />
-      </MenuButton>
-      <MenuButton
         isActive={section === 'Members'}
         onPress={() => handleSection('Members')}
       >
         <MenuText isActive={section === 'Members'}>Membros</MenuText>
         <MenuIcon isActive={section === 'Members'} name="users" />
+      </MenuButton>
+      <MenuButton
+        isActive={section === 'Main'}
+        onPress={() => handleSection('Main')}
+      >
+        <MenuText isActive={section === 'Main'}>Principal</MenuText>
+        <MenuIcon isActive={section === 'Main'} name="home" />
       </MenuButton>
       <MenuButton
         isActive={section === 'Financial'}

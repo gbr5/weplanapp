@@ -10,10 +10,16 @@ export const Container = styled.TouchableOpacity<IProps>`
   width: 100%;
   background-color: ${({ theme }) => theme.color.text6};
   border: 0.5px solid ${({ friendshipRequested, theme }) => friendshipRequested
-    ? theme.color.primary_light
+    ? theme.color.title
     : theme.color.text3};
   ${({ isFriend }) => isFriend && css`
-    border: ${({ theme }) => theme.color.primary};
+    border: 0.5px solid ${({ theme }) => theme.color.primary};
+  `}
+  background-color: ${({ friendshipRequested, theme }) => friendshipRequested
+    ? theme.color.text5
+    : theme.color.primary};
+  ${({ isFriend }) => isFriend && css`
+    background-color: ${({ theme }) => theme.color.text6};
   `}
   align-items: center;
   justify-content: space-between;
@@ -21,6 +27,7 @@ export const Container = styled.TouchableOpacity<IProps>`
   border-radius: 5px;
   margin: 4px 0;
   flex-direction: row;
+  z-index: 2;
 `;
 
 export const Name = styled.Text`

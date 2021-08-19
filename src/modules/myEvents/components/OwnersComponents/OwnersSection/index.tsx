@@ -12,17 +12,22 @@ import {
   Container,
   Body,
 } from './styles';
+import { useFriends } from '../../../../../hooks/friends';
+import { useEventOwners } from '../../../../../hooks/eventOwners';
 
 export function OwnersSection() {
   const { selectedEvent, handleSectionDescriptionWindow } = useMyEvent();
+  const { handleAddOwnerWindow } = useEventOwners();
+  const { getFriends } = useFriends();
 
-  const [section, setSection] = useState(selectedEvent.event_type === 'Prom' ? 'Main' : 'Owners');
+  const [section, setSection] = useState('Owners');
 
   function handleSection(data: string) {
     setSection(data);
   }
-  function handleAddOwnerForm() {
-
+  async function handleAddOwnerForm() {
+    await getFriends();
+    handleAddOwnerWindow();
   }
   return (
     <Container>

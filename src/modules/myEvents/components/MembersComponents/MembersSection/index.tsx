@@ -12,17 +12,22 @@ import {
   Container,
   Body,
 } from './styles';
+import { useEventMembers } from '../../../../../hooks/eventMembers';
+import { useFriends } from '../../../../../hooks/friends';
 
 export function MembersSection() {
-  const { handleSectionDescriptionWindow } = useMyEvent();
+  const { selectedEvent, handleSectionDescriptionWindow } = useMyEvent();
+  const { handleAddMemberWindow } = useEventMembers();
+  const { getFriends } = useFriends();
 
-  const [section, setSection] = useState('Main');
+  const [section, setSection] = useState('Members');
 
   function handleSection(data: string) {
     setSection(data);
   }
-  function handleAddMemberForm() {
-
+  async function handleAddMemberForm() {
+    await getFriends();
+    handleAddMemberWindow();
   }
   return (
     <Container>
@@ -32,8 +37,8 @@ export function MembersSection() {
         title="Membros"
       />
       <Body>
-        {section === 'Main' && <MembersMainSection />}
         {section === 'Members' && <MembersListSection />}
+        {section === 'Main' && <MembersMainSection />}
         {section === 'Financial' && <MembersFinancialSection />}
       </Body>
       <MembersFooterMenu

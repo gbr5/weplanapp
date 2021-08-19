@@ -8,6 +8,7 @@ import { useAuth } from './auth';
 interface FriendsContextType {
   friends: IFriendDTO[];
   friendRequests: IFriendDTO[];
+  selectedFriends: IFriendDTO[];
   loading: boolean;
   selectUserWindow: boolean;
   friendRequestsWindow: boolean;
@@ -23,6 +24,7 @@ interface FriendsContextType {
   updateFriend: (id: string) => Promise<void>;
   deleteFriend: (id: string) => Promise<void>;
   handleSelectedFriend: (data: IFriendDTO) => void;
+  handleSelectedFriends: (data: IFriendDTO[]) => void;
   resetFriendsVariables: () => void;
 }
 
@@ -33,20 +35,22 @@ const FriendsProvider: React.FC = ({ children }) => {
 
   const [deleteFriendWindow, setDeleteFriendWindow] = useState(false); //1
   const [friendRequests, setFriendRequests] = useState<IFriendDTO[]>([]); //2
-  const [friendRequestsWindow, setFriendRequestsWindow] = useState(false); //3
-  const [friends, setFriends] = useState<IFriendDTO[]>([]); //4
-  const [loading, setLoading] = useState(false); //5
-  const [selectUserWindow, setSelectUserWindow] = useState(false); //6
+  const [selectedFriends, setSelectedFriends] = useState<IFriendDTO[]>([]); //3
+  const [friendRequestsWindow, setFriendRequestsWindow] = useState(false); //4
+  const [friends, setFriends] = useState<IFriendDTO[]>([]); //5
+  const [loading, setLoading] = useState(false); //6
   const [selectedFriend, setSelectedFriend] = useState({} as IFriendDTO); //7
+  const [selectUserWindow, setSelectUserWindow] = useState(false); //9
 
   function resetFriendsVariables() {
     setDeleteFriendWindow(false); //1
     setFriendRequests([]); //2
-    setFriendRequestsWindow(false); //3
-    setFriends([]); //4
-    setLoading(false); //5
-    setSelectedFriend({} as IFriendDTO); //6
-    setSelectUserWindow(false); //7
+    setSelectedFriends([]); //3
+    setFriendRequestsWindow(false); //4
+    setFriends([]); //5
+    setLoading(false); //6
+    setSelectedFriend({} as IFriendDTO); //7
+    setSelectUserWindow(false); //9
   }
 
   async function loadStorageData() {
@@ -80,6 +84,10 @@ const FriendsProvider: React.FC = ({ children }) => {
 
   function handleSelectedFriend(data: IFriendDTO) {
     setSelectedFriend(data);
+  }
+
+  function handleSelectedFriends(data: IFriendDTO[]) {
+    setSelectedFriends(data);
   }
 
   async function getFriends() {
@@ -199,6 +207,8 @@ const FriendsProvider: React.FC = ({ children }) => {
         friendRequestsWindow,
         handleFriendRequestsWindow,
         resetFriendsVariables,
+        handleSelectedFriends,
+        selectedFriends,
       }}
     >
       {children}
