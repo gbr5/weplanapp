@@ -38,15 +38,6 @@ export const SupplierName = styled.Text`
   color: ${({ theme }) => theme.color.text1};
 `;
 
-export const SupplierConfirmationButton = styled.TouchableOpacity<ISupplierProps>`
-  width: 10%;
-  color: ${({ theme }) => theme.color.atention};
-
-  ${({ isHired }) => isHired && css`
-    color: ${({ theme }) => theme.color.success};
-  `};
-`;
-
 export const Icon = styled(Feather)`
   font-size: ${RFValue(30)}px;
   color: ${({ theme }) => theme.color.text1};

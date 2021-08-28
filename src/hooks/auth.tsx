@@ -34,12 +34,6 @@ interface IGoogleSignInCredentials {
   googleId: string;
 }
 
-interface ICreateUserDTO {
-  name: string;
-  email: string;
-  password: string;
-}
-
 interface ICreatePersonInfoDTO {
   userId: string;
   first_name: string;
@@ -47,16 +41,16 @@ interface ICreatePersonInfoDTO {
 }
 
 interface IAuthContextData {
-  user: IUserDTO;
-  loading: boolean;
-  signIn(credentials: ISignInCredentials): Promise<void>;
-  signInWithGoogle(credentials: IGoogleSignInCredentials): Promise<void>;
-  signOut(): void;
-  createdefaultContactInfo(id: string): void;
-  refreshUser(user: IUserDTO): void;
-  createPersonInfo(personInfo: ICreatePersonInfoDTO): void;
-  resetPassword(email: string): Promise<void>;
-  getUser(id: string): Promise<IUserDTO | undefined>;
+  user: IUserDTO; // 1
+  loading: boolean; // 2
+  signIn(credentials: ISignInCredentials): Promise<void>; // 3
+  signInWithGoogle(credentials: IGoogleSignInCredentials): Promise<void>; // 4
+  signOut(): void; // 5
+  createdefaultContactInfo(id: string): void; // 6
+  refreshUser(user: IUserDTO): void; // 7
+  createPersonInfo(personInfo: ICreatePersonInfoDTO): void; // 8
+  resetPassword(email: string): Promise<void>; // 9
+  getUser(id: string): Promise<IUserDTO | undefined>; // 10
 }
 
 const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
@@ -64,27 +58,6 @@ const AuthContext = createContext<IAuthContextData>({} as IAuthContextData);
 const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<IAuthState>({} as IAuthState);
   const [loading, setLoading] = useState(true);
-  // const [initializing, setInitializing] = useState(true);
-  // const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  // function onAuthStateChanged(user: FirebaseAuthTypes.User) {
-  //   console.log(user);
-  //   if (initializing) setInitializing(false);
-  // }
-
-  // useEffect(() => {
-  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber; // unsubscribe on unmount
-  // }, []);
-
-  // useEffect(() => {
-  //   // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
-  //   if (Platform.OS === 'ios') {
-  //     return appleAuth.onCredentialRevoked(async () => {
-  //       console.warn('If this function executes, User Credentials have been Revoked');
-  //       // useAuth().signOut();
-  //     });
-  //   }
-  // }, []); // passing in an empty array as the second argument ensures this is only ran once when component mounts initially.
 
   async function loadStorageData() {
     const [token, user] = await AsyncStorage.multiGet([
@@ -134,7 +107,7 @@ const AuthProvider: React.FC = ({ children }) => {
     api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, user });
-  };
+  }
 
   async function signInWithGoogle({
       email,
@@ -165,7 +138,7 @@ const AuthProvider: React.FC = ({ children }) => {
     api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, user });
-  };
+  }
 
   async function createPersonInfo(personData: ICreatePersonInfoDTO) {
     try {
@@ -189,7 +162,7 @@ const AuthProvider: React.FC = ({ children }) => {
         'Ocorreu um erro ao fazer o cadastro, tente novamente.',
       );
     }
-  };
+  }
 
   function createdefaultContactInfo(id: string) {
     Promise.all([
@@ -226,7 +199,7 @@ const AuthProvider: React.FC = ({ children }) => {
         contact_type: 'Website',
       }),
     ]);
-  };
+  }
 
   async function refreshUser(updatedUser: IUserDTO) {
     await AsyncStorage.setItem(
@@ -238,7 +211,7 @@ const AuthProvider: React.FC = ({ children }) => {
       token: data.token,
       user: updatedUser,
     });
-  };
+  }
 
   async function resetPassword(email: string) {
     try {
@@ -248,7 +221,7 @@ const AuthProvider: React.FC = ({ children }) => {
     } catch (err) {
       throw new Error(err);
     }
-  };
+  }
 
   async function getUser(id: string) {
     const response = await api.get(`/users/${id}`);

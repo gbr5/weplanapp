@@ -17,10 +17,18 @@
 		D11C11E993844A5801C9FBEA /* libPods-weplanapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB7594982D71F1840CB2BBD8 /* libPods-weplanapp.a */; };
 		D56E3651028280706CEE2D48 /* libPods-weplanapp-weplanappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1261ABC23F601F5CBC02BE5 /* libPods-weplanapp-weplanappTests.a */; };
 		EE8ECDFD26C754C6008F782D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE8ECDFC26C754C6008F782D /* GoogleService-Info.plist */; };
+		EE99A98526CEFBC900EA1873 /* weplanappUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE99A98426CEFBC900EA1873 /* weplanappUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		00E356F41AD99517003FC87E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = weplanapp;
+		};
+		EE99A98726CEFBC900EA1873 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
@@ -49,6 +57,9 @@
 		E1261ABC23F601F5CBC02BE5 /* libPods-weplanapp-weplanappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-weplanapp-weplanappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE8ECDFC26C754C6008F782D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EE99A98226CEFBC900EA1873 /* weplanappUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = weplanappUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE99A98426CEFBC900EA1873 /* weplanappUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = weplanappUITests.swift; sourceTree = "<group>"; };
+		EE99A98626CEFBC900EA1873 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB7594982D71F1840CB2BBD8 /* libPods-weplanapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-weplanapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -66,6 +77,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D11C11E993844A5801C9FBEA /* libPods-weplanapp.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE99A97F26CEFBC900EA1873 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +153,7 @@
 				13B07FAE1A68108700A75B9A /* weplanapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* weplanappTests */,
+				EE99A98326CEFBC900EA1873 /* weplanappUITests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				524E7F54CA8148A181D08E4B /* Resources */,
@@ -150,6 +169,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* weplanapp.app */,
 				00E356EE1AD99517003FC87E /* weplanappTests.xctest */,
+				EE99A98226CEFBC900EA1873 /* weplanappUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -163,6 +183,15 @@
 				CB8295547921282AC105A438 /* Pods-weplanapp-weplanappTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		EE99A98326CEFBC900EA1873 /* weplanappUITests */ = {
+			isa = PBXGroup;
+			children = (
+				EE99A98426CEFBC900EA1873 /* weplanappUITests.swift */,
+				EE99A98626CEFBC900EA1873 /* Info.plist */,
+			);
+			path = weplanappUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,12 +240,31 @@
 			productReference = 13B07F961A680F5B00A75B9A /* weplanapp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		EE99A98126CEFBC900EA1873 /* weplanappUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE99A98B26CEFBC900EA1873 /* Build configuration list for PBXNativeTarget "weplanappUITests" */;
+			buildPhases = (
+				EE99A97E26CEFBC900EA1873 /* Sources */,
+				EE99A97F26CEFBC900EA1873 /* Frameworks */,
+				EE99A98026CEFBC900EA1873 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EE99A98826CEFBC900EA1873 /* PBXTargetDependency */,
+			);
+			name = weplanappUITests;
+			productName = weplanappUITests;
+			productReference = EE99A98226CEFBC900EA1873 /* weplanappUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = WePlan;
 				TargetAttributes = {
@@ -226,6 +274,10 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					EE99A98126CEFBC900EA1873 = {
+						CreatedOnToolsVersion = 12.5.1;
+						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 				};
 			};
@@ -244,6 +296,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* weplanapp */,
 				00E356ED1AD99517003FC87E /* weplanappTests */,
+				EE99A98126CEFBC900EA1873 /* weplanappUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -265,6 +318,13 @@
 				EE8ECDFD26C754C6008F782D /* GoogleService-Info.plist in Resources */,
 				C2CA4E07D6C04882A1777667 /* RobotoSlab-Medium.ttf in Resources */,
 				6741417F94E247F6A4CE3F0B /* RobotoSlab-Regular.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE99A98026CEFBC900EA1873 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +489,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EE99A97E26CEFBC900EA1873 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE99A98526CEFBC900EA1873 /* weplanappUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -436,6 +504,11 @@
 			isa = PBXTargetDependency;
 			target = 13B07F861A680F5B00A75B9A /* weplanapp */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
+		};
+		EE99A98826CEFBC900EA1873 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 13B07F861A680F5B00A75B9A /* weplanapp */;
+			targetProxy = EE99A98726CEFBC900EA1873 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -515,7 +588,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 263;
+				CURRENT_PROJECT_VERSION = 265;
 				DEVELOPMENT_TEAM = 8GHG8T4LCM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = weplanapp/Info.plist;
@@ -548,7 +621,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 263;
+				CURRENT_PROJECT_VERSION = 265;
 				DEVELOPMENT_TEAM = 8GHG8T4LCM;
 				INFOPLIST_FILE = weplanapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -701,6 +774,73 @@
 			};
 			name = Release;
 		};
+		EE99A98926CEFBC900EA1873 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 8GHG8T4LCM;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = weplanappUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "we-plan.weplanappUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = weplanapp;
+			};
+			name = Debug;
+		};
+		EE99A98A26CEFBC900EA1873 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 8GHG8T4LCM;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = weplanappUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "we-plan.weplanappUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "a0717eb6-c49c-46d9-a62f-12cc4835d8e0";
+				PROVISIONING_PROFILE_SPECIFIER = weplanprofile;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = weplanapp;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -727,6 +867,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EE99A98B26CEFBC900EA1873 /* Build configuration list for PBXNativeTarget "weplanappUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE99A98926CEFBC900EA1873 /* Debug */,
+				EE99A98A26CEFBC900EA1873 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

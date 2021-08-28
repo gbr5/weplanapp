@@ -451,11 +451,11 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         await getEventSuppliers(selectedEvent.id);
       }
     } catch(err) {
-      if (DocumentPicker.isCancel(err)) {
-        return;
-      } else {
-        throw new Error(err);
-      }
+      // if (DocumentPicker.isCancel(err)) {
+      //   return;
+      // } else {
+      throw new Error(err);
+      // }
     } finally {
       setLoading(false);
     }

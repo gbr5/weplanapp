@@ -10,8 +10,10 @@ export const Container = styled.View`
   width: 100%;
   align-items: center;
   justify-content: space-around;
-  margin-top: 8px;
-
+  background-color: ${({ theme }) => theme.color.text6};
+  border-radius: 5px;
+  padding: 0 16px 16px;
+  top: -16px;
 `;
 
 export const Menu = styled.ScrollView`

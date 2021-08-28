@@ -14,6 +14,7 @@ interface IBackgroundColor {
   color: string;
 }
 
+ // 1
 export const Container = styled.View`
   top: -8px;
   z-index: -1;
@@ -25,12 +26,7 @@ export const Container = styled.View`
   border: 0.5px solid ${({ theme }) => theme.color.title};
 `;
 
-export const GoToSupplierButton = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-`;
-
+ // 2
 export const SupplierName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(18)}px;
@@ -38,6 +34,7 @@ export const SupplierName = styled.Text`
   text-align: center;
 `;
 
+ // 3
 export const SupplierLabel = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   font-size: ${RFValue(16)}px;
@@ -47,12 +44,14 @@ export const SupplierLabel = styled.Text`
   left: 4px;
 `;
 
+ // 4
 export const FieldContainer = styled.View`
   height: 84px;
   width: 100%;
   justify-content: flex-end;
 `;
 
+ // 5
 export const SupplierNameButton = styled.TouchableOpacity`
   border-radius: 8px;
   padding: 8px;
@@ -63,6 +62,7 @@ export const SupplierNameButton = styled.TouchableOpacity`
   margin: 8px;
 `;
 
+ // 6
 export const SupplierConfirmationButton = styled.TouchableOpacity<ISupplierProps>`
   flex-direction: row;
   border-radius: 8px;
@@ -74,11 +74,13 @@ export const SupplierConfirmationButton = styled.TouchableOpacity<ISupplierProps
   border: 1px solid ${({ theme }) => theme.color.text4};
 `;
 
+ // 7
 export const Icon = styled(Feather)`
   font-size: ${RFValue(30)}px;
   color: ${({ theme }) => theme.color.text1};
 `;
 
+ // 8
 export const RowContainer = styled.View`
   width: 100%;
   padding: 8px;
@@ -87,22 +89,14 @@ export const RowContainer = styled.View`
   justify-content: space-between;
 `;
 
+ // 9
 export const RowTitle = styled.Text`
   font-size: ${RFValue(20)}px;
   font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.text1};
 `;
 
-export const RedIcon = styled(Feather)`
-  font-size: ${RFValue(30)}px;
-  color: ${({ theme }) => theme.color.atention};
-`;
-
-export const GreenIcon = styled(Feather)`
-  font-size: ${RFValue(30)}px;
-  color: ${({ theme }) => theme.color.success};
-`;
-
+ // 10
 export const DateText = styled.Text`
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
@@ -110,6 +104,7 @@ export const DateText = styled.Text`
   letter-spacing: 1.5px;
 `;
 
+ // 11
 export const IconContainer = styled.View<IBackgroundColor>`
   padding: 8px;
   background-color: ${({ color }) => color};
@@ -117,10 +112,12 @@ export const IconContainer = styled.View<IBackgroundColor>`
   border: 2px solid black;
 `;
 
+ // 12
 export const NextTransactionContainer = styled.View`
   padding: 8px;
 `;
 
+ // 13
 export const FooterContainer = styled.View`
   flex-direction: row;
   align-items: center;
@@ -128,6 +125,7 @@ export const FooterContainer = styled.View`
   padding: 8px 16px 0;
 `;
 
+ // 14
 export const TransactionRow = styled.View`
   flex-direction: row;
   align-items: center;
@@ -135,10 +133,12 @@ export const TransactionRow = styled.View`
   padding: 8px;
 `;
 
+ // 15
 export const MenuButtonSection = styled.ScrollView`
   margin: 7px 4px 0;
 `;
 
+ // 16
 export const MenuButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.text6};
   margin-bottom: 8px;
@@ -151,6 +151,7 @@ export const MenuButton = styled.TouchableOpacity`
   margin-right: 16px;
 `;
 
+ // 17
 export const SectionTitle = styled.Text`
   margin-bottom: 4px;
   font-size: ${RFValue(18)}px;
@@ -158,6 +159,7 @@ export const SectionTitle = styled.Text`
   color: ${({ theme }) => theme.color.text1};
 `;
 
+ // 18
 export const TransactionText = styled.Text<IsLate>`
   margin-bottom: 4px;
   font-size: ${RFValue(18)}px;
@@ -166,6 +168,7 @@ export const TransactionText = styled.Text<IsLate>`
   text-align: center;
 `;
 
+ // 19
 export const MenuText = styled.Text`
   margin-bottom: 12px;
   font-size: ${RFValue(16)}px;
@@ -173,6 +176,7 @@ export const MenuText = styled.Text`
   color: ${({ theme }) => theme.color.text1};
 `;
 
+ // 20
 export const SectionBorder = styled.View`
   width: 100%;
   min-height: 1px;
@@ -180,30 +184,10 @@ export const SectionBorder = styled.View`
   /* margin: 8px 0; */
 `;
 
+ // 21
 export const SectionTitleLine = styled.View`
   width: 80%;
   min-height: 1.2px;
   background-color: ${({ theme }) => theme.color.primary};
   /* margin: 8px 0; */
-`;
-
-const iconSize = 32;
-
-export const NotificationContainer = styled.View`
-  position: absolute;
-  top: -16px;
-  left: -16px;
-  border-radius: ${iconSize/2}px;
-  height: ${iconSize}px;
-  width: ${iconSize}px;
-  padding: 4px;
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.color.atention};
-`;
-
-export const NotificationNumber = styled.Text`
-  color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(iconSize/2)}px;
-  font-family: ${({ theme }) => theme.fonts.roboto};
 `;

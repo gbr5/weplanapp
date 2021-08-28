@@ -2,7 +2,6 @@ import React, {
   useContext,
   createContext,
   useState,
-  useCallback,
   useEffect,
 } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -19,17 +18,7 @@ import ITransactionDTO from '../dtos/ITransactionDTO';
 import IUpdateEventSupplierTransactionAgreementDTO from '../dtos/IUpdateEventSupplierTransactionAgreementDTO';
 import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
-import ITransactionFileDTO from '../dtos/ITransactionFileDTO';
 import { useFiles } from './files';
-
-interface  IPayerTransactionResponseDTO {
-  transactions: ITransactionDTO[];
-  paidTransactions: ITransactionDTO[];
-  notPaidTransactions: ITransactionDTO[];
-  totalTransactions: number;
-  totalPaid: number;
-  totalNotPaid: number;
-}
 
 interface INewAgreementDTO {
   amount: number;
@@ -296,7 +285,7 @@ const TransactionProvider: React.FC = ({ children }) => {
     category,
     due_date,
     isPaid,
-  }: ITransactionDTO) {
+  }: ITransactionDTO): Promise<ITransactionDTO> {
     try {
       setLoading(true);
       const response = await api.put('/transactions', {
@@ -369,7 +358,7 @@ const TransactionProvider: React.FC = ({ children }) => {
       && await getEventSuppliers(selectedEventTransaction.event_id);
     setSelectedEventTransaction({
       ...oldTransaction,
-      transaction: response.data,
+      transaction: response,
     });
   }
   async function deleteTransaction(id: string) {
@@ -511,11 +500,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         await getEventTransactions(selectedEvent.id);
       }
     } catch(err) {
-      if (DocumentPicker.isCancel(err)) {
-        return;
-      } else {
-        throw new Error(err);
-      }
+      throw new Error(err);
     } finally {
       setLoading(false);
     }

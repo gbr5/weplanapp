@@ -1,39 +1,38 @@
 import React, { useState, useMemo } from 'react';
 import { differenceInMilliseconds } from 'date-fns/esm';
-import theme from '../../../../../global/styles/theme';
 
+import theme from '../../../../../global/styles/theme';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useMyEvent } from '../../../../../hooks/myEvent';
-import { useTransaction } from '../../../../../hooks/transactions';
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
-
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
-import {
-  Container,
-  SupplierConfirmationButton,
-  RowContainer,
-  RowTitle,
-  SupplierName,
-  DateText,
-  Icon,
-  IconContainer,
-  MenuButtonSection,
-  MenuButton,
-  MenuText,
-  FooterContainer,
-  NextTransactionContainer,
-  TransactionRow,
-  SectionBorder,
-  SectionTitleLine,
-  SectionTitle,
-  TransactionText,
-  SupplierNameButton,
-  SupplierLabel,
-  FieldContainer,
-} from './styles';
 import { NotificationNumber } from '../../../../../components/NotificationNumber';
+
+import {
+  Container, // 1
+  SupplierConfirmationButton, // 2
+  RowContainer, // 3
+  RowTitle, // 4
+  SupplierName, // 5
+  DateText, // 6
+  Icon, // 7
+  IconContainer, // 8
+  MenuButtonSection, // 9
+  MenuButton, // 10
+  MenuText, // 11
+  FooterContainer, // 12
+  NextTransactionContainer, // 13
+  TransactionRow, // 14
+  SectionBorder, // 15
+  SectionTitleLine, // 16
+  SectionTitle, // 17
+  TransactionText, // 18
+  SupplierNameButton, // 19
+  SupplierLabel, // 20
+  FieldContainer, // 21
+} from './styles';
 
 export function SupplierButtonInfo() {
   const {

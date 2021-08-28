@@ -38,6 +38,16 @@
                ReferencedContainer = "container:weplanapp.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EE99A98126CEFBC900EA1873"
+               BuildableName = "weplanappUITests.xctest"
+               BlueprintName = "weplanappUITests"
+               ReferencedContainer = "container:weplanapp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

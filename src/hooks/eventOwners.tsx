@@ -29,7 +29,7 @@ const EventOwnersProvider: React.FC = ({ children }) => {
     try {
       Promise.all([
         data.map(({ friend }) => {
-          api.post(`/event-owners/${selectedEvent.id}`, {
+          return api.post(`/event-owners/${selectedEvent.id}`, {
             owner_id: friend.id,
             number_of_guests: 0,
             description: ' ',

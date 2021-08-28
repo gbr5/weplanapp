@@ -1,10 +1,12 @@
 import React from 'react';
 import { useMemo } from 'react';
+import CloseButton from '../../../../../components/CloseButton';
 import theme from '../../../../../global/styles/theme';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 import formatOnlyTime from '../../../../../utils/formatOnlyTime';
+import { TaskTitle } from '../TaskTitle';
 
 import {
   Container,
@@ -82,7 +84,15 @@ export function EventTaskBody() {
   }, [selectedTask]);
 
   return (
-    <Container>
+    <Container
+      style={{
+        shadowColor: theme.objectButtonShadow.shadowColor,
+        shadowOffset: theme.objectButtonShadow.shadowOffset,
+        shadowOpacity: theme.objectButtonShadow.shadowOpacity,
+        shadowRadius: theme.objectButtonShadow.shadowRadius,
+      }}
+    >
+      <TaskTitle />
       <Menu horizontal>
         <MenuButton
           style={{

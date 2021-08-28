@@ -7,6 +7,7 @@ interface IButtonProps {
 
 export const Container = styled.TouchableOpacity<IButtonProps>`
   width: 100%;
+  z-index: 2;
   padding: 8px;
   background-color: ${({ theme, isActive }) => isActive ? theme.color.text6 : theme.color.text6};
   border-radius: 5px;

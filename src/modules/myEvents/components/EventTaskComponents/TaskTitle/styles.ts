@@ -37,43 +37,6 @@ export const Title = styled.Text`
   margin-top: 24px;
 `;
 
-export const UnderlineTitle = styled.View`
-  height: 2px;
-  width: 100%;
-  margin-top: 4px;
-  background-color: ${({ theme }) => theme.color.primary_light};
-`;
-
-export const EditTitleIcon = styled(Feather)`
-  color: ${({ theme }) => theme.color.primary};
-  font-size: ${RFValue(20)}px;
-`;
-
-export const IconContainer = styled.View`
-  background-color: ${({ theme }) => theme.color.text2};
-  padding: 4px;
-  border-radius: 5px;
-  align-items: center;
-  justify-content: center;
-`;
-
-
-export const ArrowIcon = styled(Feather)`
-  color: ${({ theme }) => theme.color.title};
-  font-size: ${RFValue(20)}px;
-`;
-
-export const ArrowButton = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.color.text3};
-  padding: 4px;
-  border: 1px solid ${({ theme}) => theme.color.title};
-  border-radius: 5px;
-  width: 32px;
-  height: 32px;
-`;
-
 export const TaskLabel = styled.Text`
   position: absolute;
   top: 0;

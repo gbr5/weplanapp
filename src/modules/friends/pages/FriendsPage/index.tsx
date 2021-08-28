@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { AddButton } from '../../../../components/AddButton';
 import BackButton from '../../../../components/BackButton';
 import { NotificationNumber } from '../../../../components/NotificationNumber';
-import { SectionHeader } from '../../../../components/SectionHeader';
 import ShortConfirmationWindow from '../../../../components/ShortConfirmationWindow';
 import { SearchUserButton } from '../../../../components/UserComponents/SearchUserButton';
 import { WindowHeader } from '../../../../components/WindowHeader';

@@ -43,36 +43,28 @@ export function EventTask({
   }
 
   return (
-    <Container
-      style={{
-        shadowColor,
-        shadowOffset,
-        shadowOpacity,
-        shadowRadius,
-      }}
-      isActive={selectedTask.id === eventTask.id}
-      onPress={handleTaskBody}
-    >
-      {selectedTask.id === eventTask.id ? (
-        <>
-          {/* <CloseButton onPress={handleTaskBody}>
-            <CloseButtonTitle>Fechar</CloseButtonTitle>
-          </CloseButton> */}
-          <CloseButton closeFunction={handleTaskBody} />
-          <TaskTitle
-            handleTaskBody={handleTaskBody}
-            taskBody={selectedTask.id === eventTask.id}
-            eventTask={eventTask}
-          />
-          <EventTaskBody />
-        </>
-      ) : (
-        <>
-          <Title>{eventTask.title}</Title>
-          <Underline />
+    <>
+      <Container
+        style={{
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+        }}
+        isActive={selectedTask.id === eventTask.id}
+        onPress={handleTaskBody}
+      >
+        <Title>{eventTask.title}</Title>
+        <Underline />
+        {selectedTask.id !== eventTask.id ? (
           <EventTaskFooter eventTask={eventTask} />
-        </>
+        ) : (
+          <CloseButton closeFunction={handleTaskBody} />
+        )}
+      </Container>
+      {selectedTask.id === eventTask.id && (
+        <EventTaskBody />
       )}
-    </Container>
+    </>
   );
 };

@@ -12,7 +12,6 @@ import IEventTaskDTO from '../dtos/IEventTaskDTO';
 import ICreateEventTaskDTO from '../dtos/ICreateEventTaskDTO';
 import { useMyEvent } from './myEvent';
 import ICreateEventTaskNoteDTO from '../dtos/ICreateEventTaskNoteDTO';
-import { useAuth } from './auth';
 import IEventTaskNoteDTO from '../dtos/IEventTaskNoteDTO';
 
 interface EventTasksContextType {

@@ -1,23 +1,15 @@
 import React from 'react';
-import IEventTaskDTO from '../../../../../dtos/IEventTaskDTO';
 import theme from '../../../../../global/styles/theme';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 
 import {
+  Container,
   TaskLabel,
   TitleContainer,
-  Container,
   Title,
   TitleButton,
-  UnderlineTitle,
 } from './styles';
-
-interface IProps {
-  eventTask: IEventTaskDTO;
-  handleTaskBody: () => void;
-  taskBody: boolean;
-}
 
 export function TaskTitle(): JSX.Element {
   const {
@@ -48,7 +40,6 @@ export function TaskTitle(): JSX.Element {
             {selectedTask.title}
           </Title>
         </TitleButton>
-        <UnderlineTitle />
       </TitleContainer>
     </Container>
   );

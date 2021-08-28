@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 import { FlatList } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import IFriendDTO from '../../../dtos/IFriendDTO';
-import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface IProps {
@@ -41,11 +40,6 @@ export const FriendButton = styled.TouchableOpacity<IProps>`
   align-items: center;
   padding: 8px;
   margin-top: 4px;
-`;
-
-export const Icon = styled(Feather)`
-  color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(24)}px;
 `;
 
 const imageSize = 40;

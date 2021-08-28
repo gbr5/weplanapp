@@ -43,7 +43,7 @@ export function SupplierAgreementButton({
 
   const supplier = useMemo(() => {
     return eventSuppliers.find(item => item.id === agreement.supplier_id);
-  }, []);
+  }, [eventSuppliers, agreement]);
 
   const { isOverdue, numberOfPaidTransactions } = useMemo(() => {
     const numberOfPaidTransactions = agreement.transactions

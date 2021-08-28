@@ -1,0 +1,1 @@
+Aplicativo para gestão de eventos, como casamentos, formaturas e demais festas sociais.
