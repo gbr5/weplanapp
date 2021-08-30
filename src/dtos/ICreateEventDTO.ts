@@ -3,4 +3,4 @@ export default interface ICeateEventDTO {
   date: Date;
   event_type: string;
   isDateDefined: boolean;
-};
+}

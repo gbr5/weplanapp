@@ -1,5 +1,4 @@
 import INoteDTO from './INoteDTO';
-import IUserDTO from './IUserDTO';
 
 export default interface IEventNoteDTO {
   id: string;

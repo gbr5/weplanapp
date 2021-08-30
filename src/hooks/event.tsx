@@ -15,7 +15,6 @@ import IEventOwnerDTO from '../dtos/IEventOwnerDTO';
 import IShowEventDTO from '../dtos/IShowEventDTO';
 import ICreateEventDTO from '../dtos/ICreateEventDTO';
 import api from '../services/api';
-import ICeateEventDTO from '../dtos/ICreateEventDTO';
 
 interface IEventContextData {
   loading: boolean;
@@ -27,7 +26,7 @@ interface IEventContextData {
   getEventsAsMember(): void;
   getEventsAsGuest(): void;
   getNextEvent(): void;
-  createEvent(data: ICeateEventDTO): Promise<IEventDTO>;
+  createEvent(data: ICreateEventDTO): Promise<IEventDTO>;
 }
 
 const EventContext = createContext({} as IEventContextData);
