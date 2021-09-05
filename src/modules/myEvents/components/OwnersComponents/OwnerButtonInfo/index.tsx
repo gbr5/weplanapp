@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import theme from '../../../../../global/styles/theme';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
@@ -7,8 +7,6 @@ import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
 import {
   Container,
-  NotificationContainer,
-  NotificationNumber,
   Name,
   DateText,
   Icon,
@@ -21,6 +19,12 @@ import {
 } from './styles';
 
 export function OwnerButtonInfo() {
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
   const { selectedOwner, selectedEvent } = useMyEvent();
   // const { } = useEventOwners();
   // const { eventDebitTransactions } = useTransaction();
@@ -28,7 +32,15 @@ export function OwnerButtonInfo() {
   // const [loading, setLoading] = useState(false);
 
   return (
-    <Container>
+    <Container
+      style={{
+        elevation: 5,
+        shadowColor,
+        shadowOffset,
+        shadowOpacity,
+        shadowRadius,
+      }}
+    >
       {selectedOwner.description !== '' && (
         <Name>{selectedOwner.description}</Name>
       )}
@@ -37,9 +49,24 @@ export function OwnerButtonInfo() {
 
       <MenuButtonSection horizontal >
         {selectedEvent.event_type === 'Prom' && (
-          <MenuButton>
+          <MenuButton
+            style={{
+              elevation: 5,
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+            }}
+          >
             <MenuText>Transações</MenuText>
             <IconContainer
+              style={{
+                elevation: 5,
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+              }}
               color={theme.color.title}
             >
               <Icon name="dollar-sign" />

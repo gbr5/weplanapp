@@ -16,25 +16,25 @@ export const Container = styled.View`
 export const MenuButton = styled.TouchableOpacity<IButtonProps>`
   height: ${({ isActive }) => (isActive ? `${RFValue(56)}px` : `${RFValue(56)}px`)};
   background-color: ${({ theme }) => theme.color.text6};
+  border-radius: 1px;
   ${({ isActive }) => !isActive && css`
-    border: 0.5px solid ${({ theme }) => theme.color.text3};
+    border: 0.19px solid ${({ theme }) => theme.color.text3};
   `};
   align-items: center;
   ${({ stage, isActive }) => stage === 'not started' && isActive && css`
     background-color: ${({ theme }) => theme.color.info};
-    border: 0.5px solid ${({ theme }) => theme.color.info};
+    border: 0.19px solid ${({ theme }) => theme.color.info};
   `}
   ${({ stage, isActive }) => stage === 'running' && isActive && css`
     background-color: ${({ theme }) => theme.color.atention};
-    border: 0.5px solid ${({ theme }) => theme.color.atention};
+    border: 0.19px solid ${({ theme }) => theme.color.atention};
   `}
   ${({ stage, isActive }) => stage === 'finnished' && isActive && css`
     background-color: ${({ theme }) => theme.color.success};
-    border: 0.5px solid ${({ theme }) => theme.color.success};
+    border: 0.19px solid ${({ theme }) => theme.color.success};
   `}
   justify-content: center;
   width: 30%;
-  border-radius: 16px;
 `;
 
 export const MenuButtonText = styled.Text<IButtonProps>`

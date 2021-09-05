@@ -37,8 +37,6 @@ interface TransactionContextType {
   createTransactionWindow: boolean;
   transactionFilesWindow: boolean;
   cancelEventTransactionConfirmationWindow: boolean;
-  editTransactionName: boolean;
-  editTransactionCategory: boolean;
   editNewTransactionValueWindow: boolean;
   editEventTransactionValueWindow: boolean;
   editNewTransactionDueDateWindow: boolean;
@@ -74,8 +72,6 @@ interface TransactionContextType {
   editTransaction: (data: ITransactionDTO) => Promise<ITransactionDTO>;
   handleCreateTransactionWindow: () => void;
   handleCancelEventTransactionConfirmationWindow: () => void;
-  handleEditTransactionName: () => void;
-  handleEditTransactionCategory: () => void;
   handleEditNewTransactionValueWindow: () => void;
   handleEditNewTransactionDueDateWindow: () => void;
   handleEditTransactionDueDateWindow: () => void;
@@ -124,8 +120,6 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [transactionNotesWindow, setTransactionNotesWindow] = useState(false);
   const [createTransactionWindow, setCreateTransactionWindow] = useState(false);
   const [cancelEventTransactionConfirmationWindow, setCancelEventTransactionConfirmationWindow] = useState(false);
-  const [editTransactionName, setEditTransactionName] = useState(false);
-  const [editTransactionCategory, setEditTransactionCategory] = useState(false);
   const [editNewTransactionValueWindow, setEditNewTransactionValueWindow] = useState(false);
   const [editEventTransactionValueWindow, setEditEventTransactionValueWindow] = useState(false);
   const [editNewTransactionDueDateWindow, setEditNewTransactionDueDateWindow] = useState(false);
@@ -177,12 +171,6 @@ const TransactionProvider: React.FC = ({ children }) => {
   }
   function handleSelectedEventTransaction(data: IEventTransactionDTO) {
     setSelectedEventTransaction(data);
-  }
-  function handleEditTransactionName() {
-    setEditTransactionName(!editTransactionName);
-  }
-  function handleEditTransactionCategory() {
-    setEditTransactionCategory(!editTransactionCategory);
   }
   function handleEditTransactionDueDateWindow() {
     setEditTransactionDueDateWindow(!editTransactionDueDateWindow);
@@ -538,9 +526,9 @@ const TransactionProvider: React.FC = ({ children }) => {
       data.append(
         'file',
         {
-          uri: response.uri,
-          type: response.type,
-          name: response.name
+          uri: response[0].uri,
+          type: response[0].type,
+          name: response[0].name
         },
       );
       await api.post(`/transaction-files/${transaction_id}`, data);
@@ -621,10 +609,6 @@ const TransactionProvider: React.FC = ({ children }) => {
         toDateTransactionFilter,
         handleFilterTransactionOption,
         filterTransactionOption,
-        editTransactionName,
-        handleEditTransactionName,
-        editTransactionCategory,
-        handleEditTransactionCategory,
         handleTransactionNotesWindow,
         transactionNotesWindow,
         handleTransactionFilesWindow,

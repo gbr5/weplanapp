@@ -31,6 +31,7 @@ export function TasksMenu(): JSX.Element {
           shadowOffset,
           shadowOpacity,
           shadowRadius,
+          elevation: 5,
         }}
         isActive={status === 'not started'}
         stage="not started"
@@ -55,6 +56,7 @@ export function TasksMenu(): JSX.Element {
           shadowOffset,
           shadowOpacity,
           shadowRadius,
+          elevation: 5,
         }}
         isActive={status === 'running'}
         stage="running"
@@ -79,6 +81,7 @@ export function TasksMenu(): JSX.Element {
           shadowOffset,
           shadowOpacity,
           shadowRadius,
+          elevation: 5,
         }}
         isActive={status === 'finnished'}
         stage="finnished"

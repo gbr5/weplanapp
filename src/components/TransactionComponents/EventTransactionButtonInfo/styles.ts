@@ -9,7 +9,7 @@ interface IsPaidParams {
 export const Container = styled.View`
   width: 100%;
   padding: 8px;
-  background-color: ${({ theme }) => theme.color.text5};
+  background-color: ${({ theme }) => theme.color.text6};
   border: 0.5px solid ${({ theme }) => theme.color.text3};
 `;
 
@@ -58,7 +58,7 @@ export const FieldButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.text6};
   padding: 8px;
   border-radius: 8px;
-  border: 0.5px solid ${({ theme }) => theme.color.secondary};
+  border: none;
   align-items: center;
   justify-content: center;
   min-width: 48%;
@@ -69,7 +69,7 @@ export const PaidButton = styled.TouchableOpacity<IsPaidParams>`
   min-width: 36%;
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid black;
+  border: none;
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -85,7 +85,7 @@ export const DeleteButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.atention_light};
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid black;
+  border: none;
   align-items: center;
   justify-content: center;
 `;
@@ -99,7 +99,7 @@ export const ReceiptButton = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.color.info_light};
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid black;
+  border: none;
   align-items: center;
   justify-content: center;
 `;

@@ -26,6 +26,7 @@ import {
   FilterContainer,
 } from './styles';
 import { useEffect } from 'react';
+import { EventGuestButton } from '../EventGuestButton';
 
 const GuestsSection: React.FC = () => {
   const {
@@ -196,11 +197,7 @@ const GuestsSection: React.FC = () => {
               const index = filteredGuests.findIndex((thisGuest) => thisGuest.id === item.id) + 1;
 
               return (
-                <GuestSectionButton
-                  index={index}
-                  guest={item}
-                  key={item.id}
-                />
+                <EventGuestButton guest={item} index={index} key={item.id} />
               );
             }}
           />

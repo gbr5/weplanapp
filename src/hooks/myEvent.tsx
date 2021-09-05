@@ -246,6 +246,10 @@ const MyEventProvider: React.FC = ({ children }) => {
   async function getEventTasks(eventId: string) {
     try {
       const response = await api.get<IEventTaskDTO[]>(`/event-tasks/${eventId}`);
+      if (selectedTask && selectedTask.id) {
+        const findTask = response.data.find(task => task.id === selectedTask.id);
+        findTask && setSelectedTask(findTask);
+      }
       setEventTasks(response.data);
     } catch (err) {
       throw new Error(err);
@@ -254,7 +258,7 @@ const MyEventProvider: React.FC = ({ children }) => {
 
   async function getEventGuests(eventId: string) {
     try {
-      const response = await api.get<IEventGuestDTO[]>(`/events/${eventId}/guests`);
+      const response = await api.get<IEventGuestDTO[]>(`/event-guests/list/${eventId}`);
       if (response.data && response.data.length > 0) {
         setGuests(response.data);
         setConfirmedGuests(response.data.filter((guest) => guest.confirmed).length);
@@ -323,10 +327,6 @@ const MyEventProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get<IEventDTO>(`/events/${eventId}`);
       selectEvent(response.data);
-      if (selectedTask && selectedTask.id) {
-        const findTask = response.data.eventTasks.find(task => task.id === selectedTask.id);
-        findTask && setSelectedTask(findTask);
-      }
     } catch (err) {
       throw new Error(err);
     }

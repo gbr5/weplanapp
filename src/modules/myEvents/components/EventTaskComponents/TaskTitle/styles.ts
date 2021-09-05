@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import Feather from 'react-native-vector-icons/Feather';
 
 export const Container = styled.View`
   width: 100%;
@@ -8,8 +7,7 @@ export const Container = styled.View`
   justify-content: center;
   padding: 8px;
   background-color: ${({ theme }) => theme.color.text6};
-  border-radius: 4px;
-  border: 0.5px solid ${({ theme }) => theme.color.text3};
+  border: 0.19px solid ${({ theme }) => theme.color.text3};
   margin-top: 36px;
 `;
 

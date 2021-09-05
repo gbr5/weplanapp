@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { useFriends } from '../../../hooks/friends';
 import theme from '../../../global/styles/theme';

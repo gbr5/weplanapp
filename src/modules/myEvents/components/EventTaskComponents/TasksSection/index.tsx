@@ -18,23 +18,23 @@ export function TasksSection(): JSX.Element {
 
   const sortedTasks = useMemo(() => {
     return eventTasks.length > 0
-        ? eventTasks
-          .filter(task => task.status === status)
-          .sort((a, b) => {
-            if (a.priority === 'low' && b.priority === 'neutral'
-              || a.priority === 'low' && b.priority === 'high'
-              || a.priority === 'neutral' && b.priority === 'high') return 1;
-            if (a.priority === 'high' && b.priority === 'neutral'
-              || a.priority === 'high' && b.priority === 'low'
-              || a.priority === 'neutral' && b.priority === 'low') return -1;
-            return 0;
-          })
-          .sort((a, b) => {
-            if (new Date(a.due_date) > new Date(b.due_date)) return 1;
-            if (new Date(a.due_date) < new Date(b.due_date)) return -1;
-            return 0;
-          })
-        : [];
+      ? eventTasks
+        .filter(task => task.status === status)
+        .sort((a, b) => {
+          if (a.priority === 'low' && b.priority === 'neutral'
+            || a.priority === 'low' && b.priority === 'high'
+            || a.priority === 'neutral' && b.priority === 'high') return 1;
+          if (a.priority === 'high' && b.priority === 'neutral'
+            || a.priority === 'high' && b.priority === 'low'
+            || a.priority === 'neutral' && b.priority === 'low') return -1;
+          return 0;
+        })
+        .sort((a, b) => {
+          if (new Date(a.due_date) > new Date(b.due_date)) return 1;
+          if (new Date(a.due_date) < new Date(b.due_date)) return -1;
+          return 0;
+        })
+      : [];
   }, [eventTasks, status]);
   return (
     <Container>

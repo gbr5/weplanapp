@@ -12,13 +12,12 @@ import IEventDTO from '../dtos/IEventDTO';
 import IEventGuestDTO from '../dtos/IEventGuestDTO';
 import IEventMemberDTO from '../dtos/IEventMemberDTO';
 import IEventOwnerDTO from '../dtos/IEventOwnerDTO';
-import IShowEventDTO from '../dtos/IShowEventDTO';
 import ICreateEventDTO from '../dtos/ICreateEventDTO';
 import api from '../services/api';
 
 interface IEventContextData {
   loading: boolean;
-  nextEvent: IShowEventDTO;
+  nextEvent: IEventDTO;
   eventsAsOwner: IEventOwnerDTO[];
   eventsAsMember: IEventMemberDTO[];
   eventsAsGuest: IEventGuestDTO[];
@@ -34,7 +33,7 @@ const EventContext = createContext({} as IEventContextData);
 // eslint-disable-next-line react/prop-types
 const EventProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const [nextEvent, setNextEvent] = useState({} as IShowEventDTO);
+  const [nextEvent, setNextEvent] = useState({} as IEventDTO);
   const [eventsAsOwner, setEventsAsOwner] = useState<IEventOwnerDTO[]>([]);
   const [eventsAsMember, setEventsAsMember] = useState<IEventMemberDTO[]>([]);
   const [eventsAsGuest, setEventsAsGuest] = useState<IEventGuestDTO[]>([]);
@@ -97,7 +96,7 @@ const EventProvider: React.FC = ({ children }) => {
   }, []);
   const getNextEvent = useCallback(async () => {
     try {
-      const response = await api.get<IShowEventDTO>('/my-next-event/');
+      const response = await api.get<IEventDTO>('/my-next-event/');
       setNextEvent(response.data);
     } catch (err) {
       throw new Error(err);

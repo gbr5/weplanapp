@@ -5,11 +5,12 @@ export const Container = styled.TouchableOpacity`
   top: 8px;
   right: 8px;
   background-color: ${({ theme }) => theme.color.text6};
-  border-radius: 16px;
-  height: 32px;
-  width: 32px;
+  border-radius: 32px;
   align-items: center;
   justify-content: center;
   z-index: 2;
   transform: rotateZ(45deg);
+  padding: 4px;
+  align-items: center;
+  justify-content: center;
 `;

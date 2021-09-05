@@ -60,6 +60,7 @@ export function OwnerButton({
           shadowOffset,
           shadowOpacity,
           shadowRadius,
+          elevation: 8,
         }}
         onPress={handleOwnerBody}
         isActive={selectedOwner.id === owner.id}

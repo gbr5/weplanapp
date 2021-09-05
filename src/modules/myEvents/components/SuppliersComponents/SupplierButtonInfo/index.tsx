@@ -33,6 +33,7 @@ import {
   SupplierLabel, // 20
   FieldContainer, // 21
 } from './styles';
+import InlineFormField from '../../../../../components/InlineFormField';
 
 export function SupplierButtonInfo() {
   const {
@@ -46,7 +47,7 @@ export function SupplierButtonInfo() {
     handleCreateSupplierTransactionAgreementWindow,
     handleDischargingWindow,
     handleSupplierTransactionsWindow,
-    handleEditSupplierNameWindow,
+    updateEventSupplier,
     handleEditSupplierCategoryWindow,
     selectSupplierCategory,
     handleSupplierTransactionAgreementsWindow,
@@ -56,6 +57,11 @@ export function SupplierButtonInfo() {
   } = useEventSuppliers();
 
   const [loading, setLoading] = useState(false);
+  const [editName, setEditName] = useState(false);
+
+  function handleEditName() {
+    setEditName(!editName);
+  }
 
   async function updateSupplierIsHired() {
     try {
@@ -144,6 +150,13 @@ export function SupplierButtonInfo() {
   const top = '-50%';
   const left = '-20%';
 
+  async function handleUpdateSupplierName(name: string) {
+    await updateEventSupplier({
+      ...selectedSupplier,
+      name,
+    });
+  }
+
   return (
     <Container
       style={{
@@ -151,6 +164,7 @@ export function SupplierButtonInfo() {
         shadowOffset,
         shadowOpacity,
         shadowRadius,
+        elevation: 5,
       }}
     >
       <FieldContainer>
@@ -162,26 +176,37 @@ export function SupplierButtonInfo() {
             shadowOffset,
             shadowOpacity,
             shadowRadius,
+            elevation: 5,
           }}
         >
           <SupplierName>{selectedSupplier.supplier_sub_category}</SupplierName>
         </SupplierNameButton>
       </FieldContainer>
       <SectionBorder />
-      <FieldContainer>
-        <SupplierLabel>Nome</SupplierLabel>
-        <SupplierNameButton
-          onPress={handleEditSupplierNameWindow}
-          style={{
-            shadowColor,
-            shadowOffset,
-            shadowOpacity,
-            shadowRadius,
-          }}
-        >
-          <SupplierName>{selectedSupplier.name}</SupplierName>
-        </SupplierNameButton>
-      </FieldContainer>
+        <FieldContainer>
+          <SupplierLabel>Nome</SupplierLabel>
+          {editName ? (
+            <InlineFormField
+              defaultValue={selectedSupplier.name}
+              placeholder={selectedSupplier.name}
+              handleOnSubmit={handleUpdateSupplierName}
+              closeComponent={handleEditName}
+              />
+          ) : (
+            <SupplierNameButton
+              onPress={handleEditName}
+              style={{
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+                elevation: 5,
+              }}
+            >
+              <SupplierName>{selectedSupplier.name}</SupplierName>
+            </SupplierNameButton>
+          )}
+        </FieldContainer>
 
       <SectionBorder />
 
@@ -206,10 +231,14 @@ export function SupplierButtonInfo() {
               shadowOffset: theme.menuShadow.shadowOffset,
               shadowOpacity: theme.menuShadow.shadowOpacity,
               shadowRadius: theme.menuShadow.shadowRadius,
+              elevation: 5,
             }}
             onPress={handleSupplierTransactionsWindow}>
             <MenuText>Transações</MenuText>
             <IconContainer
+              style={{
+                elevation: 5,
+              }}
               color={theme.color.title}
             >
               <NotificationNumber
@@ -228,10 +257,14 @@ export function SupplierButtonInfo() {
               shadowOffset: theme.menuShadow.shadowOffset,
               shadowOpacity: theme.menuShadow.shadowOpacity,
               shadowRadius: theme.menuShadow.shadowRadius,
+              elevation: 5,
             }}
         >
           <MenuText>Notas</MenuText>
           <IconContainer
+            style={{
+              elevation: 5,
+            }}
             color={theme.color.info_light}
           >
             <NotificationNumber
@@ -251,10 +284,14 @@ export function SupplierButtonInfo() {
               shadowOffset: theme.menuShadow.shadowOffset,
               shadowOpacity: theme.menuShadow.shadowOpacity,
               shadowRadius: theme.menuShadow.shadowRadius,
+              elevation: 5,
             }}
           >
             <MenuText>Contratos</MenuText>
             <IconContainer
+              style={{
+                elevation: 5,
+              }}
               color={theme.color.success_light}
             >
               <NotificationNumber
@@ -275,10 +312,14 @@ export function SupplierButtonInfo() {
               shadowOffset: theme.menuShadow.shadowOffset,
               shadowOpacity: theme.menuShadow.shadowOpacity,
               shadowRadius: theme.menuShadow.shadowRadius,
+              elevation: 5,
             }}
           >
             <MenuText>Orçamentos</MenuText>
             <IconContainer
+              style={{
+                elevation: 5,
+              }}
               color={theme.color.success_light}
             >
               <NotificationNumber
@@ -298,11 +339,15 @@ export function SupplierButtonInfo() {
             shadowOffset: theme.menuShadow.shadowOffset,
             shadowOpacity: theme.menuShadow.shadowOpacity,
             shadowRadius: theme.menuShadow.shadowRadius,
+            elevation: 5,
           }}
         >
           <MenuText>Arquivos</MenuText>
           <IconContainer
             color={theme.color.text4}
+            style={{
+              elevation: 5,
+            }}
           >
             <NotificationNumber
               top={top}
@@ -320,10 +365,14 @@ export function SupplierButtonInfo() {
               shadowOffset: theme.menuShadow.shadowOffset,
               shadowOpacity: theme.menuShadow.shadowOpacity,
               shadowRadius: theme.menuShadow.shadowRadius,
+              elevation: 5,
             }}
           >
             <MenuText>Mais</MenuText>
             <IconContainer
+              style={{
+                elevation: 5,
+              }}
               color={theme.color.primary_light}
             >
               <Icon name="plus" />
@@ -398,6 +447,7 @@ export function SupplierButtonInfo() {
             shadowOffset,
             shadowOpacity,
             shadowRadius,
+            elevation: 5,
           }}
           isHired={selectedSupplier.isHired}
           onPress={updateSupplierIsHired}

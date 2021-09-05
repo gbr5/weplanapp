@@ -11,7 +11,7 @@ export const Container = styled.View<ContainerProps>`
   width: 100%;
   height: 60px;
   padding: 0 16px;
-  background: ${({ theme }) => theme.color.text5};
+  background: ${({ theme }) => theme.color.text6};
   margin: 8px auto;
   border-radius: 10px;
   flex-direction: row;
@@ -21,7 +21,7 @@ export const Container = styled.View<ContainerProps>`
   ${(props) => props.isFocused
     && css`
       border: 2px solid ${({ theme }) => theme.color.primary};
-      background: ${({ theme }) => theme.color.background};
+      /* background: ${({ theme }) => theme.color.text5}; */
     `}
   ${(props) => props.isErrored
     && css`
@@ -35,10 +35,16 @@ export const TextInput = styled.TextInput<ContainerProps>`
   color: ${({ theme }) => theme.color.text1};
   font-family: 'RobotoSlab-Regular';
   font-size: ${RFValue(16)}px;
+  background: ${({ theme }) => theme.color.text6};
 
   ${(props) => props.isFocused
     && css`
       color: ${({ theme }) => theme.color.text1};
+      /* background: ${({ theme }) => theme.color.text5}; */
+    `}
+  ${(props) => props.isErrored
+    && css`
+      background: ${({ theme }) => theme.color.atention_light};
     `}
 `;
 

@@ -27,19 +27,3 @@ export const BudgetContainer = styled(
   border-radius: 8px;
   border: 0.4px solid #e1e0e0;
 `;
-
-export const Image = styled.Image`
-  border-radius: 5px;
-  height: 64px;
-  width: 64px;
-`;
-
-export const IconContainer = styled.View`
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-`;
-export const Icon = styled(Feather)`
-  color: ${({ theme }) => theme.color.secondary};
-  font-size: ${RFValue(60)}px;
-`;

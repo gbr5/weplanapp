@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Note } from '../../../../../components/Note';
 import { NoteForm } from '../../../../../components/NoteForm';
 import WindowContainer from '../../../../../components/WindowContainer';

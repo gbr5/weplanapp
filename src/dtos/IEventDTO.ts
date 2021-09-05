@@ -1,14 +1,3 @@
-import IEventBudgetDTO from './IEventBudgetDTO';
-import IEventFileDTO from './IEventFileDTO';
-import IEventInfoDTO from './IEventInfoDTO';
-import IEventNoteDTO from './IEventNoteDTO';
-import IEventTaskDTO from './IEventTaskDTO';
-
-interface IEventDateDTO {
-  id: string;
-  date: Date;
-}
-
 export default interface IEventDTO {
   id: string;
   name: string;
@@ -22,13 +11,7 @@ export default interface IEventDTO {
   isOwner?: boolean;
   isPublished: boolean;
   isDateDefined: boolean;
-  eventInfo: IEventInfoDTO;
   avatar_url?: string;
-  eventDates: IEventDateDTO[];
-  eventTasks: IEventTaskDTO[];
-  eventFiles: IEventFileDTO[];
-  eventBudget: IEventBudgetDTO;
   created_at: Date;
   updated_at: Date;
-  notes: IEventNoteDTO[];
 }

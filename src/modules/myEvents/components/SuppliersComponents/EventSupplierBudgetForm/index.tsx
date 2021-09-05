@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import { TouchableWithoutFeedback, Keyboard, Platform, TextInput } from 'react-native';
@@ -9,7 +9,6 @@ import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
-import formatOnlyTime from '../../../../../utils/formatOnlyTime';
 
 import WindowContainer from '../../../../../components/WindowContainer';
 import Input from '../../../../../components/Input';
@@ -23,7 +22,6 @@ import {
   DateContainer,
   DateText,
   DateButton,
-  TimeText,
 } from './styles';
 import { useTransaction } from '../../../../../hooks/transactions';
 

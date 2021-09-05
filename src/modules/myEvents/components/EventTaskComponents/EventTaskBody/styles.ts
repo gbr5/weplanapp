@@ -79,8 +79,8 @@ export const DateButton = styled.TouchableOpacity`
   justify-content: center;
   background-color: ${({ theme }) => theme.color.text6};
   padding: 4px;
-  border: 0.5px solid ${({ theme}) => theme.color.text3};
-  border-radius: 5px;
+  border: 0.19px solid ${({ theme}) => theme.color.text3};
+  /* border-radius: px; */
   width: 40%;
 `;
 

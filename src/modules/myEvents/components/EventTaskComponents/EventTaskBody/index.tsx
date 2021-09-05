@@ -1,6 +1,5 @@
 import React from 'react';
 import { useMemo } from 'react';
-import CloseButton from '../../../../../components/CloseButton';
 import theme from '../../../../../global/styles/theme';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useMyEvent } from '../../../../../hooks/myEvent';
@@ -25,7 +24,7 @@ import {
   NumberOfNotes,
 } from './styles';
 
-export function EventTaskBody() {
+export function EventTaskBody(): JSX.Element {
   const {
     shadowColor,
     shadowOffset,
@@ -41,7 +40,6 @@ export function EventTaskBody() {
     handleEventTaskNotesWindow,
     handleDeleteTaskConfirmationWindow,
   } = useEventTasks();
-
 
   const status = useMemo(() => {
     const title = selectedTask.status === 'not started'
@@ -90,6 +88,7 @@ export function EventTaskBody() {
         shadowOffset: theme.objectButtonShadow.shadowOffset,
         shadowOpacity: theme.objectButtonShadow.shadowOpacity,
         shadowRadius: theme.objectButtonShadow.shadowRadius,
+        elevation: 5,
       }}
     >
       <TaskTitle />
@@ -104,7 +103,12 @@ export function EventTaskBody() {
           onPress={handleEditTaskStatusWindow}
         >
           <MenuTitle>Status</MenuTitle>
-          <IconContainer color={status.color}>
+          <IconContainer
+            style={{
+              elevation: 5,
+            }}
+            color={status.color}
+          >
             <FunctionIcon name={status.icon} />
             <MenuText>{status.title}</MenuText>
           </IconContainer>
@@ -119,7 +123,12 @@ export function EventTaskBody() {
           onPress={handleEditTaskPriorityWindow}
         >
           <MenuTitle>Prioridade</MenuTitle>
-          <IconContainer color={priority.color} >
+          <IconContainer
+            style={{
+              elevation: 5,
+            }}
+            color={priority.color}
+          >
             <FunctionIcon name="flag" />
             <MenuText>{priority.title}</MenuText>
           </IconContainer>
@@ -134,7 +143,12 @@ export function EventTaskBody() {
           onPress={handleEventTaskNotesWindow}
         >
           <MenuTitle>Notas</MenuTitle>
-          <IconContainer color={theme.color.info_light}>
+          <IconContainer
+            style={{
+              elevation: 5,
+            }}
+            color={theme.color.info_light}
+          >
             <Icon name="file-text" />
             {selectedTask.notes.length > 0 && (
               <NumberOfNotesContainer>
@@ -153,7 +167,12 @@ export function EventTaskBody() {
           onPress={handleDeleteTaskConfirmationWindow}
         >
           <MenuTitle>Deletar</MenuTitle>
-          <IconContainer color={theme.color.atention}>
+          <IconContainer
+            style={{
+              elevation: 5,
+            }}
+            color={theme.color.atention}
+          >
             <Icon name="trash-2" />
           </IconContainer>
         </MenuButton>
@@ -166,6 +185,7 @@ export function EventTaskBody() {
             shadowOffset,
             shadowOpacity,
             shadowRadius,
+            elevation: 5,
           }}
           onPress={handleEditTaskTimeWindow}
         >
@@ -179,6 +199,7 @@ export function EventTaskBody() {
             shadowOffset,
             shadowOpacity,
             shadowRadius,
+            elevation: 5,
           }}
           onPress={handleEditTaskDateWindow}
         >

@@ -15,16 +15,11 @@ interface IFormData {
   contact_info: string;
 }
 
-interface IProps {
-  closeWindow: () => void;
-}
 
-const CreateGuestContactWindow: React.FC<IProps> = ({
-  closeWindow,
-}) => {
+export function CreateGuestContactWindow(): JSX.Element {
   const formRef = useRef<FormHandles>(null);
   const { selectedGuest } = useMyEvent();
-  const { createGuestContact, loading } = useEventGuests();
+  const { createGuestContact, loading, handleCreateGuestContactWindow } = useEventGuests();
   const [contactTypeWindow, setContactTypeWindow] = useState(true);
   const [contact_type, setContactType] = useState('Whatsapp');
 
@@ -42,8 +37,8 @@ const CreateGuestContactWindow: React.FC<IProps> = ({
       contact_type,
       guest_id: selectedGuest.id,
     });
-    closeWindow();
-  }, [createGuestContact, closeWindow, contact_type, selectedGuest]);
+    handleCreateGuestContactWindow();
+  }, [createGuestContact, handleCreateGuestContactWindow, contact_type, selectedGuest]);
 
   return (
     <>
@@ -55,7 +50,7 @@ const CreateGuestContactWindow: React.FC<IProps> = ({
         />
       )}
       <WindowContainer
-        closeWindow={closeWindow}
+        closeWindow={handleCreateGuestContactWindow}
         height="70%"
         left="2%"
         top="10%"
@@ -85,6 +80,4 @@ const CreateGuestContactWindow: React.FC<IProps> = ({
       </WindowContainer>
     </>
   );
-};
-
-export default CreateGuestContactWindow;
+}

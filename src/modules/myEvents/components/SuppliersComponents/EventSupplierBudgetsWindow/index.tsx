@@ -1,16 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import {
-  Alert,
-  Linking,
-  Platform,
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import React, { useState } from 'react';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import WindowContainer from '../../../../../components/WindowContainer';
-import Button from '../../../../../components/Button';
 import { SectionHeader } from '../../../../../components/SectionHeader';
 
 import {

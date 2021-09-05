@@ -14,6 +14,7 @@ interface FriendsContextType {
   friendRequestsWindow: boolean;
   deleteFriendWindow: boolean;
   selectedFriend: IFriendDTO;
+  unselectedFriends: IFriendDTO[];
   handleFriendRequestsWindow: () => void;
   handleSelectUserWindow: () => void;
   handleDeleteFriendWindow: () => void;
@@ -25,6 +26,7 @@ interface FriendsContextType {
   deleteFriend: (id: string) => Promise<void>;
   handleSelectedFriend: (data: IFriendDTO) => void;
   handleSelectedFriends: (data: IFriendDTO[]) => void;
+  handleUnselectedFriends: (data: IUserDTO[]) => void;
   resetFriendsVariables: () => void;
 }
 
@@ -41,6 +43,7 @@ const FriendsProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false); //6
   const [selectedFriend, setSelectedFriend] = useState({} as IFriendDTO); //7
   const [selectUserWindow, setSelectUserWindow] = useState(false); //9
+  const [unselectedFriends, setUnselectedFriends] = useState<IFriendDTO[]>([]); // 9
 
   function resetFriendsVariables() {
     setDeleteFriendWindow(false); //1
@@ -88,6 +91,16 @@ const FriendsProvider: React.FC = ({ children }) => {
 
   function handleSelectedFriends(data: IFriendDTO[]) {
     setSelectedFriends(data);
+  }
+
+  function handleUnselectedFriends(data: IUserDTO[]): void {
+    const userFriends: IFriendDTO[] = [];
+    friends.map(item => {
+      const findFriend = data.find(friend => friend.id === item.friend_id);
+      findFriend && userFriends.push(item);
+      return item;
+    });
+    userFriends.length > 0 && setUnselectedFriends(userFriends);
   }
 
   async function getFriends() {
@@ -209,6 +222,8 @@ const FriendsProvider: React.FC = ({ children }) => {
         resetFriendsVariables,
         handleSelectedFriends,
         selectedFriends,
+        handleUnselectedFriends,
+        unselectedFriends,
       }}
     >
       {children}

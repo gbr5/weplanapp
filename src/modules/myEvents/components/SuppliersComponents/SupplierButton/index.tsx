@@ -58,6 +58,7 @@ export function SupplierButton({
           shadowOffset,
           shadowOpacity,
           shadowRadius,
+          elevation: 8,
         }}
         isActive={selectedSupplier.id === supplier.id}
         onPress={handleSupplierBody}

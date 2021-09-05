@@ -23,7 +23,7 @@ export function NoteForm({
   handleNote,
 }: IProps) {
   const textAreaRef = useRef<TextInput>(null);
-  const [textValue, setTextValue] = useState('');
+  const [textValue, setTextValue] = useState(placeholder);
   const [numberOfLines, setNumberOfLines] = useState(1);
 
   function submitNote() {
@@ -46,7 +46,7 @@ export function NoteForm({
             multiline={true}
             numberOfLines={numberOfLines}
             underlineColorAndroid="transparent"
-            placeholder={placeholder}
+            defaultValue={placeholder}
             onChangeText={setTextValue}
             autoCorrect={false}
             autoCapitalize="sentences"

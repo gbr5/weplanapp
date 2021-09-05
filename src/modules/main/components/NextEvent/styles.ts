@@ -34,12 +34,3 @@ export const Name = styled.Text`
   margin: 8px 0;
   letter-spacing: 1.5px;
 `;
-
-export const Date = styled.Text`
-  width: 100%;
-  color: ${({ theme }) => theme.color.text3};
-  font-family: ${({ theme }) => theme.fonts.roboto};
-  font-size: ${RFValue(18)}px;
-  text-align: right;
-  letter-spacing: 1px;
-`;

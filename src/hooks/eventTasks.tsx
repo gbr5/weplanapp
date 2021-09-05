@@ -17,7 +17,6 @@ import IEventTaskNoteDTO from '../dtos/IEventTaskNoteDTO';
 interface EventTasksContextType {
   loading: boolean;
   status: 'not started' | 'running' | 'finnished';
-  editTaskTitleWindow: boolean;
   editTaskPriorityWindow: boolean;
   editTaskStatusWindow: boolean;
   editTaskDateWindow: boolean;
@@ -33,7 +32,6 @@ interface EventTasksContextType {
   deleteTask: (data: IEventTaskDTO) => Promise<void>;
   createTaskNote: (data: ICreateEventTaskNoteDTO) => Promise<void>;
   deleteTaskNote: (data: IEventTaskNoteDTO) => Promise<void>;
-  handleEditTaskTitleWindow: () => void;
   handleEditTaskPriorityWindow: () => void;
   handleEditTaskStatusWindow: () => void;
   handleEditTaskDateWindow: () => void;
@@ -59,7 +57,6 @@ const EventTasksProvider: React.FC = ({ children }) => {
     selectedTask,
     selectEventTask,
   } = useMyEvent();
-  const [editTaskTitleWindow, setEditTaskTitleWindow] = useState(false);
   const [editTaskPriorityWindow, setEditTaskPriorityWindow] = useState(false);
   const [editTaskStatusWindow, setEditTaskStatusWindow] = useState(false);
   const [editTaskDateWindow, setEditTaskDateWindow] = useState(false);
@@ -74,7 +71,6 @@ const EventTasksProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
   function unsetEventTasksVariables() {
-    setEditTaskTitleWindow(false);
     setEditTaskPriorityWindow(false);
     setEditTaskStatusWindow(false);
     setEditTaskDateWindow(false);
@@ -87,10 +83,6 @@ const EventTasksProvider: React.FC = ({ children }) => {
     setCreateTaskWindow(false);
     setTaskDate(addDays(new Date(), 3));
     setLoading(false);
-  }
-
-  function handleEditTaskTitleWindow() {
-    setEditTaskTitleWindow(!editTaskTitleWindow);
   }
 
   function handleEditTaskPriorityWindow() {
@@ -218,7 +210,6 @@ const EventTasksProvider: React.FC = ({ children }) => {
       value={{
         loading,
         status,
-        editTaskTitleWindow,
         editTaskPriorityWindow,
         editTaskStatusWindow,
         editTaskDateWindow,
@@ -234,7 +225,6 @@ const EventTasksProvider: React.FC = ({ children }) => {
         deleteTask,
         createTaskNote,
         deleteTaskNote,
-        handleEditTaskTitleWindow,
         handleEditTaskPriorityWindow,
         handleEditTaskStatusWindow,
         handleEditTaskDateWindow,

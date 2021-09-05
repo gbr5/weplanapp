@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -23,7 +23,7 @@ export const Container = styled.View`
   margin: 0 auto 8px;
   border-radius: 8px;
   padding: 8px;
-  border: 0.5px solid ${({ theme }) => theme.color.title};
+  border: none;
 `;
 
  // 2
@@ -46,7 +46,7 @@ export const SupplierLabel = styled.Text`
 
  // 4
 export const FieldContainer = styled.View`
-  height: 84px;
+  min-height: 84px;
   width: 100%;
   justify-content: flex-end;
 `;
@@ -57,8 +57,8 @@ export const SupplierNameButton = styled.TouchableOpacity`
   padding: 8px;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.color.text5};
-  border: 1px solid ${({ theme }) => theme.color.text4};
+  background-color: ${({ theme }) => theme.color.text6};
+  border: none;
   margin: 8px;
 `;
 
@@ -70,8 +70,8 @@ export const SupplierConfirmationButton = styled.TouchableOpacity<ISupplierProps
   padding: 8px;
   align-items: center;
   justify-content: space-evenly;
-  background-color: ${({ theme }) => theme.color.text5};
-  border: 1px solid ${({ theme }) => theme.color.text4};
+  background-color: ${({ theme }) => theme.color.text6};
+  border: none;
 `;
 
  // 7
@@ -109,7 +109,7 @@ export const IconContainer = styled.View<IBackgroundColor>`
   padding: 8px;
   background-color: ${({ color }) => color};
   border-radius: 8px;
-  border: 2px solid black;
+  border: none;
 `;
 
  // 12
@@ -147,7 +147,7 @@ export const MenuButton = styled.TouchableOpacity`
   justify-content: center;
   width: 112px;
   height: 112px;
-  border: 1px solid ${({ theme }) => theme.color.text4};
+  border: none;
   margin-right: 16px;
 `;
 

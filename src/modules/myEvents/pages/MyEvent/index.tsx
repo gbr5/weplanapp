@@ -21,7 +21,6 @@ import NewGuestForm from '../../components/EventGuestComponents/NewGuestForm';
 import PageHeader from '../../../../components/PageHeader';
 import GuestsSection from '../../components/EventGuestComponents/GuestsSection';
 import { TasksSection } from '../../components/EventTaskComponents/TasksSection';
-import { TextInputForm } from '../../../../components/TextInputForm';
 import { EditTaskPriorityWindow } from '../../components/EventTaskComponents/EditTaskPriorityWindow';
 import { EditTaskStatusWindow } from '../../components/EventTaskComponents/EditTaskStatusWindow';
 import { DatePickerWindow } from '../../../../components/DatePickerWindow';
@@ -45,18 +44,8 @@ import { useUnsetEventVariables } from '../../../../hooks/unsetEventVariables';
 import { useUserContacts } from '../../../../hooks/userContacts';
 import { NewGuestWindow } from '../../components/EventGuestComponents/NewGuestWindow';
 import { SelectMobileContacts } from '../../../../components/ContactComponents/SelectMobileContacts';
-import { EditTransactionName } from '../../../../components/TransactionComponents/EditTransactionName';
 import { CreateEventTransaction } from '../../../../components/TransactionComponents/CreateEventTransaction';
 import { EditTransactionAmount } from '../../components/FinancialComponents/EditTransactionAmount';
-import { EditTransactionCategory } from '../../../../components/TransactionComponents/EditTransactionCategory';
-
-import {
-  Container,
-  EventName,
-  Body,
-  DashboardButton,
-  BodyContainer,
-} from './styles';
 import { EditSupplierName } from '../../components/SuppliersComponents/EditSupplierName';
 import { EditSupplierCategory } from '../../components/SuppliersComponents/EditSupplierCategory';
 import { SupplierTransactionAgreementsWindow } from '../../components/FinancialComponents/SupplierTransactionAgreementsWindow';
@@ -72,10 +61,19 @@ import { EditSupplierBudgetAmount } from '../../components/SuppliersComponents/E
 import { EditSupplierBudgetDescription } from '../../components/SuppliersComponents/EditSupplierBudgetDescription';
 import { useFiles } from '../../../../hooks/files';
 import { EditFileNameWindow } from '../../../../components/FilesComponents/EditFileNameWindow';
-import { useFriends } from '../../../../hooks/friends';
 import { SelectFromFriends } from '../../../../components/FriendsComponents/SelectFromFriends';
 import { useEventOwners } from '../../../../hooks/eventOwners';
 import { useEventMembers } from '../../../../hooks/eventMembers';
+import { SelectOneFromFriends } from '../../../../components/FriendsComponents/SelectOneFromFriends';
+import { CreateGuestContactWindow } from '../../components/EventGuestComponents/CreateGuestContactWindow';
+
+import {
+  Container,
+  EventName,
+  Body,
+  DashboardButton,
+  BodyContainer,
+} from './styles';
 
 const MyEvent: React.FC = () => {
   const {
@@ -89,10 +87,10 @@ const MyEvent: React.FC = () => {
     budgetWindow,
     calculateTotalEventCost,
     sectionDescriptionWindow,
+    selectedGuest,
   } = useMyEvent();
   const {
     loading,
-    editTaskTitleWindow,
     editTaskPriorityWindow,
     editTaskStatusWindow,
     editTaskDateWindow,
@@ -104,7 +102,6 @@ const MyEvent: React.FC = () => {
     createTaskWindow,
     taskDate,
     selectTaskDate,
-    handleEditTaskTitleWindow,
     handleEditTaskDateWindow,
     handleEditTaskTimeWindow,
     handleSelectTaskDateWindow,
@@ -148,6 +145,13 @@ const MyEvent: React.FC = () => {
     selectWePlanGuestsWindow,
     handleSelectWePlanGuestsWindow,
     createMultipleWePlanGuests,
+    handleSelectWePlanGuestWindow,
+    selectWePlanGuestWindow,
+    dissociateUserFromGuestConfirmation,
+    deleteWePlanGuest,
+    handleDissociateUserFromGuestConfirmation,
+    associateUserToEventGuest,
+    createGuestContactWindow,
   } = useEventGuests();
   const {
     editNoteWindow,
@@ -169,8 +173,6 @@ const MyEvent: React.FC = () => {
   const {
     cancelEventTransaction,
     cancelEventTransactionConfirmationWindow,
-    editTransactionName,
-    editTransactionCategory,
     filterTransactionWindow,
     handleCancelEventTransactionConfirmationWindow,
     handleSelectedDateWindow,
@@ -187,11 +189,6 @@ const MyEvent: React.FC = () => {
   } = useTransaction();
   const { selectMobileContactsWindow } = useUserContacts();
   const { unsetVariables } = useUnsetEventVariables();
-
-  function handleCloseEditTaskTitleWindow() {
-    selectEventTask({} as IEventTaskDTO);
-    handleEditTaskTitleWindow();
-  }
 
   function handleCloseEditTaskDateWindow() {
     selectEventTask({} as IEventTaskDTO);
@@ -211,13 +208,6 @@ const MyEvent: React.FC = () => {
   function handleCloseEditTaskNoteWindow() {
     handleEditNoteWindow();
     selectNote({} as INoteDTO);
-  }
-
-  async function handleUpdateTaskTitle(title: string) {
-    await updateTask({
-      ...selectedTask,
-      title,
-    });
   }
 
   async function handleUpdateTaskDate(date: Date) {
@@ -274,6 +264,25 @@ const MyEvent: React.FC = () => {
           handleAddFriends={addMultipleMembers}
         />
       }
+      {createGuestContactWindow && (
+        <CreateGuestContactWindow />
+      )}
+      {selectWePlanGuestWindow && selectedGuest && (
+        <SelectOneFromFriends
+          closeWindow={handleSelectWePlanGuestWindow}
+          handleAddFriend={associateUserToEventGuest}
+        />
+      )}
+      {dissociateUserFromGuestConfirmation && (
+        <ShortConfirmationWindow
+          closeWindow={handleDissociateUserFromGuestConfirmation}
+          firstButtonLabel="Deletar"
+          firstFunction={deleteWePlanGuest}
+          question="Deseja mesmo dissociar o usuário do convidado?"
+          secondButtonLabel="Não deletar"
+          secondFunction={handleDissociateUserFromGuestConfirmation}
+        />
+      )}
       {editSupplierBudgetDescriptionWindow
         && selectedSupplierBudget
         && selectedSupplierBudget.id
@@ -292,10 +301,6 @@ const MyEvent: React.FC = () => {
             selectedDate={new Date(supplierSelectedDate)}
           />
         )}
-      {selectedEventTransaction
-        && selectedEventTransaction.transaction
-        && editTransactionName
-        && <EditTransactionName />}
       {selectedSupplier
         && selectedSupplier.id
         && editSupplierNameWindow
@@ -304,10 +309,6 @@ const MyEvent: React.FC = () => {
         && selectedSupplier.id
         && editSupplierCategoryWindow
         && <EditSupplierCategory />}
-      {selectedEventTransaction
-        && selectedEventTransaction.transaction
-        && editTransactionCategory
-        && <EditTransactionCategory />}
       {supplierTransactionAgreementsWindow && <SupplierTransactionAgreementsWindow />}
       {selectMobileContactsWindow && <SelectMobileContacts />}
       {createTransactionWindow && <CreateEventTransaction />}
@@ -348,29 +349,16 @@ const MyEvent: React.FC = () => {
       {dischargingWindow && <DischargeSupplierWindow />}
       {newGuestForm && <NewGuestForm />}
       {newGuestWindow && <NewGuestWindow />}
-
-      {editTaskTitleWindow
-        && selectedTask
-        && selectedTask.id && (
-          <TextInputForm
-            closeWindow={handleCloseEditTaskTitleWindow}
-            onHandleSubmit={(title: string) => handleUpdateTaskTitle(title)}
-            title="Defina a tarefa"
-            placeholder={selectedTask.title}
-          />
-      )}
       {editTaskPriorityWindow
         && selectedTask
         && selectedTask.id && (
           <EditTaskPriorityWindow />
       )}
-
       {editTaskStatusWindow
         && selectedTask
         && selectedTask.id && (
           <EditTaskStatusWindow />
       )}
-
       {editTaskDateWindow
         && selectedTask
         && selectedTask.id && (
@@ -381,7 +369,6 @@ const MyEvent: React.FC = () => {
             selectedDate={new Date(selectedTask.due_date)}
           />
       )}
-
       {editTaskTimeWindow
         && selectedTask
         && selectedTask.id && (
@@ -392,7 +379,6 @@ const MyEvent: React.FC = () => {
             selectedDate={new Date(selectedTask.due_date)}
           />
       )}
-
       {selectTaskDateWindow && (
         <DatePickerWindow
           loading={loading}
@@ -401,7 +387,6 @@ const MyEvent: React.FC = () => {
           selectedDate={taskDate}
         />
       )}
-
       {selectTaskTimeWindow && (
         <TimePickerWindow
           loading={loading}
@@ -410,13 +395,11 @@ const MyEvent: React.FC = () => {
           selectedDate={taskDate}
         />
       )}
-
       {editTaskStatusWindow
         && selectedTask
         && selectedTask.id && (
           <EditTaskStatusWindow />
       )}
-
       {eventTaskNotesWindow
         && selectedTask
         && selectedTask.id && (
@@ -424,9 +407,7 @@ const MyEvent: React.FC = () => {
             closeWindow={handleCloseEventTaskNotesWindow}
           />
       )}
-
       {createTaskWindow && <NewTaskForm closeWindow={handleCreateTaskWindow} />}
-
       {deleteTaskConfirmationWindow && (
         <ShortConfirmationWindow
           closeWindow={handleDeleteTaskConfirmationWindow}
@@ -437,25 +418,19 @@ const MyEvent: React.FC = () => {
           secondFunction={handleDeleteTask}
         />
       )}
-
       {editNoteWindow && (
         <EditNoteWindow closeWindow={handleCloseEditTaskNoteWindow} />
       )}
-
       {addSupplierWindow && (
         <NewSupplierForm closeWindow={handleAddSupplierWindow} />
       )}
-
       {supplierCategoryWindow && <SelectSupplierCategory />}
-
       {supplierSubCategoryWindow && <SelectSupplierSubCategory />}
-
       {createSupplierTransactionAgreementWindow &&
         selectedSupplier &&
         selectedSupplier.id && (
           <CreateSupplierTransactionAgreement />
         )}
-
       {editEventTransactionValueWindow && (
         <EditTransactionAmount />
       )}

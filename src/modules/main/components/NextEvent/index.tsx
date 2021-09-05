@@ -1,12 +1,11 @@
 import React from 'react';
+
 import theme from '../../../../global/styles/theme';
 import { useEvent } from '../../../../hooks/event';
-import formatDateToString from '../../../../utils/formatDateToString';
 import { EventButton } from '../EventButton';
 
 import {
   Container,
-  Date,
   Label,
   Name,
   LabelUnderline,
@@ -34,29 +33,11 @@ const NextEvent: React.FC = () => {
     >
       <Label>Próximo Evento</Label>
       <LabelUnderline />
-      {/* <Name>
-        {
-          nextEvent
-          && nextEvent.event
-          && nextEvent.event.name
-            ? nextEvent.event.name
-            : '-'
-        }
-      </Name>
-      <Date>
-        {
-          nextEvent
-          && nextEvent.event
-          && nextEvent.event.date
-            ? formatDateToString(String(nextEvent.event.date))
-            : '-'
-        }
-      </Date> */}
       {
-        nextEvent && nextEvent.event ? (
+        nextEvent && nextEvent.id ? (
           <EventButton
-            key={nextEvent.event.id}
-            event={nextEvent.event}
+            key={nextEvent.id}
+            event={nextEvent}
           />
         ) : (
           <Name>-</Name>

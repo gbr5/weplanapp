@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import INoteDTO from '../../dtos/INoteDTO';
-import IUserDTO from '../../dtos/IUserDTO';
 import theme from '../../global/styles/theme';
 import { useAuth } from '../../hooks/auth';
+import { useMyEvent } from '../../hooks/myEvent';
 import { useNote } from '../../hooks/notes';
 import formatDateToString from '../../utils/formatDateToString';
+import CloseButton from '../CloseButton';
+import { NoteForm } from '../NoteForm';
 
 import {
   Container,
@@ -18,10 +20,12 @@ import {
 
 interface IProps {
   selectedNote: INoteDTO;
+  updateNotes?: () => Promise<void>;
 }
 
 export function Note({
   selectedNote,
+  updateNotes,
 }: IProps) {
   const {
     shadowColor,
@@ -29,25 +33,62 @@ export function Note({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { getUser, user } = useAuth();
-  const { handleEditNoteWindow, selectNote } = useNote();
+  const { user } = useAuth();
+  const { selectedEvent, owners, getEventNotes, members } = useMyEvent();
+  const { selectNote, editNote } = useNote();
 
-  const [author, setAuthor] = useState({} as IUserDTO);
+  const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleEditNote() {
-    selectNote(selectedNote);
-    handleEditNoteWindow();
+  function handleEdit() {
+    setEdit(!edit);
   }
 
-  async function getAuthor() {
-    user.id === selectedNote.author_id && setAuthor(user);
-    const findAuthor = await getUser(selectedNote.author_id);
-    if (findAuthor) return findAuthor;
-  }
+  const author = useMemo(() => {
+    if (selectedEvent.id === selectedNote.author_id) return 'WePlan';
+    if (user.id === selectedNote.author_id) {
+      const { personInfo } = user;
+      return personInfo
+        ? `${personInfo.first_name}  ${personInfo.last_name}`
+        : user.name;
+    }
+    const findOwner = owners.find(
+      owner => owner.userEventOwner.id === selectedNote.author_id,
+    );
+    if (findOwner) {
+      const owner = findOwner.userEventOwner.personInfo;
+      return owner
+        ? `${owner.first_name}  ${owner.last_name}`
+        : findOwner.userEventOwner.name;
+    }
+    const findMember = members.find(
+      owner => owner.userEventMember.id === selectedNote.author_id,
+    );
+    if (findMember) {
+      const member = findMember.userEventMember.personInfo;
+      return member
+        ? `${member.first_name}  ${member.last_name}`
+        : findMember.userEventMember.name;
+    }
+    return '';
+  }, [owners, members, user, selectedEvent, selectedNote]);
 
-  useEffect(() => {
-    getAuthor();
-  }, []);
+  async function handleEditNote(note: string) {
+    try {
+      setLoading(true);
+      await editNote({
+        ...selectedNote,
+        note,
+      });
+      setEdit(false);
+      await getEventNotes(selectedEvent.id);
+      updateNotes && await updateNotes();
+    } catch {
+      throw new Error();
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Container
@@ -56,25 +97,40 @@ export function Note({
         shadowOffset,
         shadowOpacity,
         shadowRadius,
+        elevation: 5,
       }}
+      onPress={handleEdit}
     >
-      <TextNote>{selectedNote.note}</TextNote>
-      <EditNoteButton
-        onPress={handleEditNote}
-        style={{
-          shadowColor,
-          shadowOffset,
-          shadowOpacity,
-          shadowRadius,
-        }}
-      >
-        <EditNoteIcon name="edit-2" />
-      </EditNoteButton>
-      <NoteFooter>
-        {author &&
-          author.id && (
-            <NoteAuthor>{author.name}</NoteAuthor>
+      {edit ? (
+        <>
+          <CloseButton closeFunction={handleEdit}/>
+          <NoteForm placeholder={selectedNote.note} handleNote={handleEditNote} />
+        </>
+      ) : (
+        <>
+          <TextNote>{selectedNote.note}</TextNote>
+          {loading ? (
+            <EditNoteButton>
+              <EditNoteIcon name="loader" size={32} />
+            </EditNoteButton>
+          ) : (
+            <EditNoteButton
+              onPress={handleEdit}
+              style={{
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+                elevation: 5,
+              }}
+            >
+              <EditNoteIcon name="edit-2" />
+            </EditNoteButton>
           )}
+        </>
+      )}
+      <NoteFooter>
+        <NoteAuthor>{author}</NoteAuthor>
         <NoteDate>
           {
             selectedNote.updated_at === selectedNote.created_at

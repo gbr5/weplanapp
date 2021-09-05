@@ -50,6 +50,7 @@ export function EventTask({
           shadowOffset,
           shadowOpacity,
           shadowRadius,
+          elevation: 8,
         }}
         isActive={selectedTask.id === eventTask.id}
         onPress={handleTaskBody}

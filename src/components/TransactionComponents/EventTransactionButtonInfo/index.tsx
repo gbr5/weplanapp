@@ -26,6 +26,7 @@ import {
 import { NotificationNumber } from '../../NotificationNumber';
 import { useNote } from '../../../hooks/notes';
 import { useEffect } from 'react';
+import InlineFormField from '../../InlineFormField';
 
 export function EventTransactionButtonInfo() {
   const {
@@ -42,14 +43,22 @@ export function EventTransactionButtonInfo() {
     handleSelectedDateWindow,
     handleSelectedDate,
     selectedEventTransaction,
-    handleEditTransactionName,
-    handleEditTransactionCategory,
     handleEditEventTransactionValueWindow,
     handleTransactionNotesWindow,
     handleTransactionFilesWindow,
   } = useTransaction();
 
   const [loading, setLoading] = useState(false);
+  const [editName, setEditName] = useState(false);
+  const [editCategory, setEditCategory] = useState(false);
+
+  function handleEditName() {
+    setEditName(!editName);
+  }
+
+  function handleEditCategory() {
+    setEditCategory(!editCategory);
+  }
 
   const color = useMemo(() => {
     const today = new Date();
@@ -78,6 +87,41 @@ export function EventTransactionButtonInfo() {
     }
   }
 
+  async function updateTransactionName(name: string) {
+    try {
+      setLoading(true);
+      const response = await editTransaction({
+        ...selectedEventTransaction.transaction,
+        name,
+      });
+      handleSelectedEventTransaction({
+        ...selectedEventTransaction,
+        transaction: response,
+      });
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function updateTransactionCategory(category: string) {
+    try {
+      setLoading(true);
+      const response = await editTransaction({
+        ...selectedEventTransaction.transaction,
+        category,
+      });
+      handleSelectedEventTransaction({
+        ...selectedEventTransaction,
+        transaction: response,
+      });
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function handleOpenUpdateTransactionDueDateWindow() {
     handleSelectedDate(new Date(selectedEventTransaction.transaction.due_date));
     handleSelectedDateWindow();
@@ -94,28 +138,95 @@ export function EventTransactionButtonInfo() {
         shadowOffset,
         shadowOpacity,
         shadowRadius,
-        elevation: 15,
+        elevation: 5,
       }}
     >
       {/* {selectedEventTransaction.transaction.category && ( */}
         <CategoryContainer>
-          <FieldButton onPress={handleEditTransactionCategory}>
-            <FieldLabel>Categoria</FieldLabel>
-            <Label>
-              {selectedEventTransaction.transaction.category
-                && selectedEventTransaction.transaction.category}
-            </Label>
-          </FieldButton>
+          {editCategory ? (
+            <FieldButton
+              style={{
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+                elevation: 5,
+              }}
+            >
+              <FieldLabel>Categoria</FieldLabel>
+              <InlineFormField
+                defaultValue={selectedEventTransaction.transaction.category}
+                placeholder={selectedEventTransaction.transaction.category}
+                handleOnSubmit={updateTransactionCategory}
+                closeComponent={handleEditCategory}
+              />
+            </FieldButton>
+          ) : (
+            <FieldButton
+              style={{
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+                elevation: 5,
+              }}
+              onPress={handleEditCategory}
+            >
+              <FieldLabel>Categoria</FieldLabel>
+              <Label>
+                {selectedEventTransaction.transaction.category
+                  && selectedEventTransaction.transaction.category}
+              </Label>
+            </FieldButton>
+          )}
         </CategoryContainer>
       {/* )} */}
-      <FieldButton onPress={handleEditTransactionName}>
-        <FieldLabel>Nome</FieldLabel>
-        <Label>
-          {selectedEventTransaction.transaction.name}
-        </Label>
-      </FieldButton>
+        <CategoryContainer>
+        {editName ? (
+            <FieldButton
+              style={{
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+                elevation: 5,
+              }}
+            >
+              <FieldLabel>Nome</FieldLabel>
+              <InlineFormField
+                defaultValue={selectedEventTransaction.transaction.name}
+                placeholder={selectedEventTransaction.transaction.name}
+                handleOnSubmit={updateTransactionName}
+                closeComponent={handleEditName}
+              />
+            </FieldButton>
+          ) : (
+            <FieldButton
+              style={{
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+                elevation: 5,
+              }}
+              onPress={handleEditName}
+            >
+              <FieldLabel>Nome</FieldLabel>
+              <Label>
+                {selectedEventTransaction.transaction.name}
+              </Label>
+            </FieldButton>
+          )}
+        </CategoryContainer>
       <FieldContainer>
         <FieldButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
           onPress={handleEditEventTransactionValueWindow}
         >
           <FieldButtonText>
@@ -123,6 +234,14 @@ export function EventTransactionButtonInfo() {
           </FieldButtonText>
         </FieldButton>
         <FieldButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+            elevation: 5,
+          }}
+
           onPress={handleOpenUpdateTransactionDueDateWindow}
         >
           <FieldButtonText>
@@ -132,6 +251,13 @@ export function EventTransactionButtonInfo() {
       </FieldContainer>
       <FieldContainer>
         <PaidButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+            elevation: 5,
+          }}
           color={color}
           onPress={updateTransactionIsPaid}
         >
@@ -150,8 +276,17 @@ export function EventTransactionButtonInfo() {
               </>
             )
           )}
-          </PaidButton>
-        <ReceiptButton onPress={handleTransactionNotesWindow}>
+        </PaidButton>
+        <ReceiptButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+            elevation: 5,
+          }}
+          onPress={handleTransactionNotesWindow}
+        >
           <NotificationNumber
             number={selectedTransactionNotes.length}
             left="-55%"
@@ -159,7 +294,16 @@ export function EventTransactionButtonInfo() {
           />
           <ReceiptIcon name="file-text" />
         </ReceiptButton>
-        <ReceiptButton onPress={handleTransactionFilesWindow}>
+        <ReceiptButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+            elevation: 5,
+          }}
+          onPress={handleTransactionFilesWindow}
+        >
           <NotificationNumber
             number={selectedEventTransaction.transaction.files.length}
             left="-55%"
@@ -168,6 +312,13 @@ export function EventTransactionButtonInfo() {
           <ReceiptIcon name="file" />
         </ReceiptButton>
         <DeleteButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+            elevation: 5,
+          }}
           onPress={handleCancelEventTransactionConfirmationWindow}
         >
           <DeleteIcon name="trash-2" />

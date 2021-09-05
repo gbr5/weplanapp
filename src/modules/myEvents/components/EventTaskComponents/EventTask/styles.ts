@@ -12,7 +12,8 @@ export const Container = styled.TouchableOpacity<IButtonProps>`
   background-color: ${({ theme, isActive }) => isActive ? theme.color.text6 : theme.color.text6};
   border-radius: 5px;
   margin-top: 8px;
-  border: .5px solid ${({ theme }) => theme.color.text3};
+  /* border: .5px solid ${({ theme }) => theme.color.text3}; */
+  border: none;
 `;
 
 export const CloseButton = styled.TouchableOpacity`

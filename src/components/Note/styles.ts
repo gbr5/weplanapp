@@ -2,14 +2,13 @@ import styled from 'styled-components/native';
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-export const Container = styled.View`
+export const Container = styled.TouchableOpacity`
   width: 100%;
   background-color: ${({ theme }) => theme.color.text6};
   border-radius: 5px;
   padding-top: 5px;
   justify-content: space-between;
   margin: 8px 0;
-  border: 0.5px solid ${({ theme }) => theme.color.text4};
 `;
 
 export const TextNote = styled.Text`
@@ -47,11 +46,10 @@ export const EditNoteButton = styled.TouchableOpacity`
   top: 8px;
   right: 8px;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.color.text5};
+  background-color: ${({ theme }) => theme.color.text6};
   padding: 5px;
   align-items: center;
   justify-content: center;
-  border: 0.5px solid ${({ theme }) => theme.color.text3};
 `;
 
 export const EditNoteIcon = styled(Feather)`

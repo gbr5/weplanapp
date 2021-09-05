@@ -91,7 +91,7 @@ export const IconContainer = styled.View<IBackgroundColor>`
   padding: 8px;
   background-color: ${({ color }) => color};
   border-radius: 8px;
-  border: 2px solid black;
+  border: none;
 `;
 
 export const NextTransactionContainer = styled.View`
@@ -124,7 +124,7 @@ export const MenuButton = styled.TouchableOpacity`
   justify-content: center;
   width: 112px;
   height: 112px;
-  border: 0.5px solid ${({ theme }) => theme.color.text4};
+  border: none;
   margin-right: 16px;
 `;
 

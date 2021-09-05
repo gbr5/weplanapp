@@ -8,7 +8,6 @@ import { useEventGuests } from '../../../../../hooks/eventGuests';
 import theme from '../../../../../global/styles/theme';
 
 import Input from '../../../../../components/Input';
-import Button from '../../../../../components/Button';
 import WindowContainer from '../../../../../components/WindowContainer';
 
 import {
@@ -38,6 +37,16 @@ const NewGuestForm: React.FC = () => {
     first_name,
     last_name,
   }: IFormData) => {
+    const findGuest = guests.find(
+      guest =>
+        guest.first_name === first_name && guest.last_name === last_name,
+    );
+
+    if (findGuest)
+      return Alert.alert(
+        `Convidado duplicado!`,
+        `Já existe um convidado ${first_name} ${last_name}.`,
+      );
     await addNewGuest({
       first_name,
       last_name,
