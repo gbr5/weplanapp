@@ -1,8 +1,9 @@
 #import "AppDelegate.h"
-
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+  // Line from Sentry
+// #import <Sentry.h>
   // Line from Firebase
 #import <Firebase.h>
   // Block from Expo
@@ -43,9 +44,14 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  // Block from Sentry
+  // [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
+  //   options.dsn = @"___PUBLIC_DSN___";
+  //   options.debug = @YES; // Helpful to see what's going on
+  // }];
   // Line from Firebase
   // if ([FIRApp defaultApp] == nil) {
-  //   [FIRApp configure];
+  [FIRApp configure];
   // }
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);

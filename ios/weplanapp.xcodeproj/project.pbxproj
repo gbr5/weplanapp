@@ -56,6 +56,7 @@
 		CB8295547921282AC105A438 /* Pods-weplanapp-weplanappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-weplanapp-weplanappTests.release.xcconfig"; path = "Target Support Files/Pods-weplanapp-weplanappTests/Pods-weplanapp-weplanappTests.release.xcconfig"; sourceTree = "<group>"; };
 		E1261ABC23F601F5CBC02BE5 /* libPods-weplanapp-weplanappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-weplanapp-weplanappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		EE1B2ABB26E583BA00FB22D4 /* weplanapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = weplanapp.entitlements; path = weplanapp/weplanapp.entitlements; sourceTree = "<group>"; };
 		EE8ECDFC26C754C6008F782D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EE99A98226CEFBC900EA1873 /* weplanappUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = weplanappUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE99A98426CEFBC900EA1873 /* weplanappUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = weplanappUITests.swift; sourceTree = "<group>"; };
@@ -110,6 +111,7 @@
 		13B07FAE1A68108700A75B9A /* weplanapp */ = {
 			isa = PBXGroup;
 			children = (
+				EE1B2ABB26E583BA00FB22D4 /* weplanapp.entitlements */,
 				EE8ECDFC26C754C6008F782D /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -586,9 +588,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 273;
+				CODE_SIGN_ENTITLEMENTS = weplanapp/weplanapp.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 276;
 				DEVELOPMENT_TEAM = 8GHG8T4LCM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = weplanapp/Info.plist;
@@ -605,7 +608,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.weplanapp-";
 				PRODUCT_NAME = weplanapp;
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = weplanprofile;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -619,9 +622,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 273;
+				CODE_SIGN_ENTITLEMENTS = weplanapp/weplanapp.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 276;
 				DEVELOPMENT_TEAM = 8GHG8T4LCM;
 				INFOPLIST_FILE = weplanapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
