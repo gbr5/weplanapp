@@ -43,7 +43,7 @@ export default {
     shadowRadius: 6,
   },
   objectButtonShadow: {
-    shadowColor: '#757575',
+    shadowColor: '#757579',
     shadowOffset: { width: 0, height: 4},
     shadowOpacity: 0.7,
     shadowRadius: 4,

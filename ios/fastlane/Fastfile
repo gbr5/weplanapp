@@ -32,12 +32,15 @@ platform :ios do
       output_path: "./builds",  # Download provisioning profile in the build folder
       filename: "provisioning.mobileprovision" # Rename the local provisioning profile
     )
-    update_project_provisioning( # Set the project provisioning profile (related in Xcode to the General > Signing Release section)
-      xcodeproj: "weplanapp.xcodeproj",
-      target_filter: "weplanapp", # Name of your project
-      profile: "./builds/provisioning.mobileprovision",
-      build_configuration: "Release"
-    )
+    # Next Block was removed because with Apple Signin
+    # the provisioning profile is set to automatic
+    # update_project_provisioning( # Set the project provisioning profile (related in Xcode to the General > Signing Release section)
+    #   xcodeproj: "weplanapp.xcodeproj",
+    #   target_filter: "weplanapp", # Name of your project
+    #   profile: "./builds/provisioning.mobileprovision",
+    #   build_configuration: "Release"
+    # )
+    # enable_automatic_code_signing
     update_project_team( # Set the right team on your project
       teamid: CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
     )
@@ -48,7 +51,7 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-            CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) => CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) + " AppStore" # Value of this parameter is the name of the Provisioning Profile. By default, it will be "{bundleId} AppStore"
+          CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) => CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) + " AppStore" # Value of this parameter is the name of the Provisioning Profile. By default, it will be "{bundleId} AppStore"
         }
       },
       build_path: "./builds",

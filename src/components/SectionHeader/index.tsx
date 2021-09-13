@@ -9,12 +9,14 @@ interface IProps {
   title: string;
   handleInfoButton: () => void;
   handleAddButton: () => void;
+  firstIcon?: string;
 }
 
 export function SectionHeader({
   title,
   handleAddButton,
   handleInfoButton,
+  firstIcon,
 }: IProps) {
   return (
     <Container>
@@ -22,6 +24,7 @@ export function SectionHeader({
         onPress={handleInfoButton}
         top="0%"
         left="2%"
+        icon={firstIcon}
       />
       <WindowHeader title={title} />
       <AddButton

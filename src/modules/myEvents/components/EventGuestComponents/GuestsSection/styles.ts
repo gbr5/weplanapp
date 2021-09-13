@@ -11,7 +11,6 @@ interface IFilterProps {
 
 export const Container = styled.View`
   flex: 1;
-  padding-bottom: 40px;
 `;
 
 export const AddGuestButton = styled.TouchableOpacity`

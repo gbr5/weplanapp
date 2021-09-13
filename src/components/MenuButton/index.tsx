@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { Container } from './styles';

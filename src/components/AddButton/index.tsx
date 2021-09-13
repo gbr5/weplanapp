@@ -22,7 +22,7 @@ export function AddButton({
     shadowOffset,
     shadowOpacity,
     shadowRadius,
-  } = theme.iconButtonShadow;
+  } = theme.objectButtonShadow;
   return (
     <Container
       style={{
@@ -32,6 +32,7 @@ export function AddButton({
         shadowRadius,
         top: `${top}`,
         right: `${right}`,
+        elevation: 5,
       }}
       onPress={onPress}
 

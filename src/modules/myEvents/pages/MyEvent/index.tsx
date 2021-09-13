@@ -239,7 +239,6 @@ const MyEvent: React.FC = () => {
     <>
       {budgetWindow && <BudgetWindow />}
       {editFileWindow && <EditFileNameWindow />}
-      {createEventNoteWindow && <EventNoteForm />}
       {supplierNotesWindow && <SupplierNotesSection />}
       {supplierFilesWindow && <EventSupplierFilesWindow />}
       {supplierBudgetsWindow && <EventSupplierBudgetsWindow />}
@@ -463,7 +462,6 @@ const MyEvent: React.FC = () => {
           </DashboardButton>
         </PageHeader>
         <Body>
-          <MainMenu />
           <BodyContainer>
             {currentSection === 'Notes' && <EventNotesSection />}
             {currentSection === 'Guests' && <GuestsSection />}
@@ -473,6 +471,7 @@ const MyEvent: React.FC = () => {
             {currentSection === 'Members' && <MembersSection />}
             {currentSection === 'Owners' && <OwnersSection />}
           </BodyContainer>
+          <MainMenu />
         </Body>
       </Container>
     </>

@@ -4,16 +4,25 @@ import 'react-native-get-random-values';
 import { ThemeProvider } from 'styled-components';
 import React, { useEffect } from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import { View, StatusBar, Platform } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
 import AppProvider from './hooks';
 import Routes from './routes';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { appleAuth } from '@invertase/react-native-apple-authentication';
 
 import theme from './global/styles/theme';
 import { useAuth } from './hooks/auth';
+
+// Sentry.init({
+//   dsn: "__DSN__"
+// });
+
+// Sentry.setTag("myTag", "tag-value");
+// Sentry.setExtra("myExtra", "extra-value");
+// Sentry.addBreadcrumb({ message: "test" });
+
+// Sentry.captureMessage("Hello Sentry!");
 
 GoogleSignin.configure({
   webClientId: '830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6.apps.googleusercontent.com',
@@ -43,4 +52,5 @@ const App: React.FC = () => {
   );
 };
 
+// export default Sentry.wrap(App);
 export default App;

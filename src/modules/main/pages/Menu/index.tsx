@@ -18,6 +18,7 @@ import {
   Logo,
   Body,
 } from './styles';
+import BackButton from '../../../../components/BackButton';
 
 const Menu: React.FC = () => {
   const navigation = useNavigation();
@@ -67,20 +68,21 @@ const Menu: React.FC = () => {
         <CreateEvent handleCloseWindow={() => handleCreateEventWindow(false)} />
       )}
       <Header>
+        <BackButton />
         <Logo source={logoImg} />
       </Header>
       <Body>
         <MenuOptionButton
           color={theme.color.text1}
-          icon="plus"
-          onPress={() => handleCreateEventWindow(true)}
-          text="Criar Evento"
+          icon="home"
+          onPress={navigateToEventsPage}
+          text="Dashboard"
         />
         <MenuOptionButton
           color={theme.color.text1}
-          icon="music"
-          onPress={navigateToEventsPage}
-          text="Eventos"
+          icon="plus"
+          onPress={() => handleCreateEventWindow(true)}
+          text="Criar Evento"
         />
         <MenuOptionButton
           color={theme.color.text1}

@@ -10,19 +10,21 @@ interface IProps {
   top: string;
   left: string;
   onPress: () => void;
+  icon?: string;
 }
 
 export function InfoButton({
   top,
   left,
   onPress,
+  icon,
 }: IProps) {
   const {
     shadowColor,
     shadowOffset,
     shadowOpacity,
     shadowRadius,
-  } = theme.iconButtonShadow;
+  } = theme.objectButtonShadow;
   return (
     <Container
       onPress={onPress}
@@ -33,9 +35,10 @@ export function InfoButton({
         shadowRadius,
         top: `${top}`,
         left: `${left}`,
+        elevation: 5,
       }}
     >
-      <Icon name="info" />
+      {icon ? <Icon name={icon} /> : <Icon name="info" />}
     </Container>
   );
 }

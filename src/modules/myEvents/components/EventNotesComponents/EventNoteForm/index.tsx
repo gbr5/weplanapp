@@ -1,10 +1,10 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import CloseButton from '../../../../../components/CloseButton';
 import { NoteForm } from '../../../../../components/NoteForm';
-import WindowContainer from '../../../../../components/WindowContainer';
-import { WindowHeader } from '../../../../../components/WindowHeader';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useNote } from '../../../../../hooks/notes';
+
+import { Container } from './styles';
 
 export function EventNoteForm() {
   const { selectedEvent } = useMyEvent();
@@ -20,22 +20,13 @@ export function EventNoteForm() {
     });
     handleCreateEventNoteWindow();
   }
-  const height = Platform.OS === 'ios' ? '40%' : '60%';
   return (
-    <WindowContainer
-      closeWindow={handleCreateEventNoteWindow}
-      zIndex={15}
-      top="5%"
-      left="0%"
-      height={height}
-      width="100%"
-    >
-      <WindowHeader title="Nova Nota do Evento" />
-
+    <Container>
+      <CloseButton closeFunction={handleCreateEventNoteWindow} />
       <NoteForm
         handleNote={(data: string) => handleNewNote(data)}
         placeholder="Nova Nota"
       />
-    </WindowContainer>
+    </Container>
   );
 }

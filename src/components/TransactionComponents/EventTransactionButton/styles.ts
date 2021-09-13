@@ -124,10 +124,11 @@ export const MonthContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.color.text6};
+  background-color: ${({ theme }) => theme.color.text1};
   border: 0.5px solid ${({ theme }) => theme.color.text4};
   opacity: 0.5;
   z-index: 3;
+  letter-spacing: 1px;
   padding: 4px 8px;
   position: absolute;
   top: 0;

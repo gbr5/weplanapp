@@ -1,8 +1,11 @@
+import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+
 import { useAuth } from '../../hooks/auth';
+
 import logoImg from '../../assets/headerLogo.png';
 import profilePlaceholder from '../../assets/profilePlaceholder.jpeg';
+import MenuButton from '../MenuButton';
 
 import {
   Container,
@@ -10,17 +13,8 @@ import {
   ProfileButton,
   UserAvatar,
 } from './styles';
-import MenuButton from '../MenuButton';
-import theme from '../../global/styles/theme';
 
 const Header: React.FC = () => {
-  const {
-    shadowColor,
-    shadowOffset,
-    shadowOpacity,
-    shadowRadius,
-  } = theme.menuShadow;
-
   const { user } = useAuth();
   const navigation = useNavigation();
 
@@ -29,14 +23,7 @@ const Header: React.FC = () => {
   }, [navigation]);
 
   return (
-    <Container
-      // style={{
-      //   shadowColor,
-      //   shadowOffset,
-      //   shadowOpacity,
-      //   shadowRadius,
-      // }}
-    >
+    <Container>
       <MenuButton />
       <Logo source={logoImg} />
       <ProfileButton onPress={navigateToProfile}>

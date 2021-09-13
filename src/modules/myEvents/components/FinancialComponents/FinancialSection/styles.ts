@@ -93,9 +93,9 @@ export const ResumeValue = styled.Text`
 
 export const SectionButton = styled.View`
   width: 100%;
-  padding: 8px;
+  padding: 4px 0 8px;
   padding-right: 18px;
-  margin-top: 4px;
+  margin: 0 8px 24px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

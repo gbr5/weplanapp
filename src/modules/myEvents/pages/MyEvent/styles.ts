@@ -5,12 +5,6 @@ export const Container = styled.View`
   flex: 1;
 `;
 
-export const Header = styled.View`
-  height: 120px;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const DashboardButton = styled.TouchableOpacity`
   margin-top: 16px;
   align-items: center;
@@ -30,6 +24,6 @@ export const Body = styled.View`
 `;
 
 export const BodyContainer = styled.View`
-  height: 86%;
+  height: 72%;
   padding: 0 16px;
 `;

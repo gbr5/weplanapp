@@ -8,7 +8,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 export const Container = styled.View`
   position: relative;
   flex: 1;
-  padding-bottom: ${Platform.OS === 'android' ? '56px' : `${getBottomSpace() + 8}px`};
+  padding-bottom: ${Platform.OS === 'android' ? '0px' : `${getBottomSpace()}px`};
 `;
 
 export const TitleContainer = styled.View`

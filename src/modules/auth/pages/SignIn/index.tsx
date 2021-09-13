@@ -11,8 +11,8 @@ import { useNavigation } from '@react-navigation/native';
 import * as Yup from 'yup';
 import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-// import uuid from 'react-native-uuid'
-// import { AppleButton, appleAuthAndroid, appleAuth } from '@invertase/react-native-apple-authentication';
+import uuid from 'react-native-uuid'
+import { AppleButton, appleAuthAndroid, appleAuth } from '@invertase/react-native-apple-authentication';
 
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
@@ -48,7 +48,7 @@ interface ISignInFormProps {
 }
 
 const SignIn: React.FC = () => {
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle, signInWithApple } = useAuth();
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
@@ -130,59 +130,72 @@ const SignIn: React.FC = () => {
   const isAndroid = useMemo(() => {
     return Platform.OS === 'android';
   }, []);
-  // const isIosSupported = useMemo(() => {
-  //   return Platform.OS === 'ios' && appleAuth.isSupported;
-  // }, []);
-  // const isAndroidSupported = useMemo(() => {
-  //   return Platform.OS === 'android' && appleAuthAndroid.isSupported;
-  // }, []);
-  // async function onAppleButtonPress() {
-  //   if (Platform.OS === 'ios') {
-  //     // performs login request
-  //     const appleAuthRequestResponse = await appleAuth.performRequest({
-  //       requestedOperation: appleAuth.Operation.LOGIN,
-  //       requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-  //     });
-  //     Alert.alert(`1) e-mail: ${appleAuth.Scope.EMAIL}; name: ${appleAuth.Scope.FULL_NAME}`);
-  //     // get current authentication state for user
-  //     // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-  //     const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
-  //     // use credentialState response to ensure the user is authenticated
-  //     if (credentialState === appleAuth.State.AUTHORIZED) {
-  //       // user is authenticated
-  //       Alert.alert(`2) e-mail: ${appleAuth.Scope.EMAIL}; name: ${appleAuth.Scope.FULL_NAME}`);
-  //     }
-  //   } else {
-  //     console.log('0 ===>');
-  //   // Generate secure, random values for state and nonce
-  //     const rawNonce = String(uuid.v4());
-  //     console.log({rawNonce})
-  //     const state = String(uuid.v4());
-  //     console.log('1 ===>');
-  //     // Configure the request
-  //     appleAuthAndroid.configure({
-  //       // The Service ID you registered with Apple
-  //       clientId: '8GHG8T4LCM.com.weplanapp-',
-  //       // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
-  //       // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
-  //       // redirectUri: '830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6.apps.googleusercontent.com',
-  //       redirectUri: 'com.googleusercontent.apps.830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6',
-  //       // The type of response requested - code, id_token, or both.
-  //       responseType: appleAuthAndroid.ResponseType.ALL,
-  //       // The amount of user information requested from Apple.
-  //       scope: appleAuthAndroid.Scope.ALL,
-  //       // Random nonce value that will be SHA256 hashed before sending to Apple.
-  //       nonce: rawNonce,
-  //       // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
-  //       state,
-  //     });
-  //     console.log({appleAuthAndroid});
-  //     // Open the browser window for user sign in
-  //     const response = await appleAuthAndroid.signIn();
-  //     console.log(response);
-  //     // Send the authorization code to your backend for verification
-  //   }
-  // }
+  const isIosSupported = useMemo(() => {
+    return Platform.OS === 'ios' && appleAuth.isSupported;
+  }, []);
+  const isAndroidSupported = useMemo(() => {
+    return Platform.OS === 'android' && appleAuthAndroid.isSupported;
+  }, []);
+  async function onAppleButtonPress() {
+    if (Platform.OS === 'ios') {
+      // performs login request
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+      // get current authentication state for user
+      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+      const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+      // use credentialState response to ensure the user is authenticated
+      if (credentialState === appleAuth.State.AUTHORIZED
+          && appleAuthRequestResponse.authorizationCode
+          && appleAuthRequestResponse.identityToken) {
+        // user is authenticated
+        const { authorizationCode, fullName, user, identityToken } = appleAuthRequestResponse;
+        await signInWithApple({
+          appleResponse: {
+            authorizationCode,
+            identityToken,
+            user,
+            fullName: {
+              familyName: fullName?.familyName || null,
+              givenName: fullName?.givenName || null,
+            },
+          },
+          provider: 'apple',
+        });
+      }
+    } else {
+      console.log('0 ===>');
+    // Generate secure, random values for state and nonce
+      const rawNonce = String(uuid.v4());
+      console.log({rawNonce})
+      const state = String(uuid.v4());
+      console.log('1 ===>');
+      // Configure the request
+      appleAuthAndroid.configure({
+        // The Service ID you registered with Apple
+        clientId: '8GHG8T4LCM.com.weplanapp-',
+        // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
+        // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
+        // redirectUri: '830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6.apps.googleusercontent.com',
+        redirectUri: 'com.googleusercontent.apps.830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6',
+        // The type of response requested - code, id_token, or both.
+        responseType: appleAuthAndroid.ResponseType.ALL,
+        // The amount of user information requested from Apple.
+        scope: appleAuthAndroid.Scope.ALL,
+        // Random nonce value that will be SHA256 hashed before sending to Apple.
+        nonce: rawNonce,
+        // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
+        state,
+      });
+      console.log({appleAuthAndroid});
+      // Open the browser window for user sign in
+      const response = await appleAuthAndroid.signIn();
+      console.log(response);
+      // Send the authorization code to your backend for verification
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -205,7 +218,7 @@ const SignIn: React.FC = () => {
               </SocialText>
             </SocialButton>
           )}
-          {/* {isIosSupported && (
+          {isIosSupported && (
             <AppleButton
               buttonStyle={AppleButton.Style.WHITE}
               buttonType={AppleButton.Type.SIGN_IN}
@@ -215,14 +228,14 @@ const SignIn: React.FC = () => {
               }}
               onPress={() => onAppleButtonPress()}
             />
-          )} */}
-          {/* {isAndroidSupported && (
+          )}
+          {isAndroidSupported && (
             <AppleButton
               buttonStyle={AppleButton.Style.WHITE}
               buttonType={AppleButton.Type.SIGN_IN}
               onPress={() => onAppleButtonPress()}
             />
-          )} */}
+          )}
           <View>
             <Title>Faça seu login</Title>
           </View>

@@ -33,7 +33,7 @@ export function FinancialSection() {
     shadowOffset,
     shadowOpacity,
     shadowRadius,
-  } = theme.iconButtonShadow;
+  } = theme.menuShadow;
   const {
     eventBudget,
     handleBudgetWindow,
@@ -76,6 +76,56 @@ export function FinancialSection() {
         >
           <Title>Financeiro</Title>
         </TitleButton>
+        <SectionButton>
+          <MenuButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
+            onPress={() => handleEventFinancialSubSection('Main')}
+            isActive={eventFinancialSubSection === 'Main'}
+          >
+            <MenuIcon
+              name="home"
+              isActive={eventFinancialSubSection === 'Main'}
+            />
+          </MenuButton>
+          <MenuButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
+            onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
+            isActive={eventFinancialSubSection === 'TransactionAgreements'}
+          >
+            <MenuIcon
+              name="file-text"
+              isActive={eventFinancialSubSection === 'TransactionAgreements'}
+            />
+          </MenuButton>
+          <MenuButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
+            onPress={() => handleEventFinancialSubSection('Transactions')}
+            isActive={eventFinancialSubSection === 'Transactions'}
+          >
+            <MenuIcon
+              name="dollar-sign"
+              isActive={eventFinancialSubSection === 'Transactions'}
+            />
+          </MenuButton>
+        </SectionButton>
         {eventFinancialSubSection === 'TransactionAgreements' && (
           <EventSupplierTransactionAgreementsSection />
         )}
@@ -90,6 +140,7 @@ export function FinancialSection() {
                 shadowOffset,
                 shadowOpacity,
                 shadowRadius,
+                elevation: 5,
               }}
               onPress={handleBudgetWindow}
             >
@@ -112,53 +163,6 @@ export function FinancialSection() {
 
           </FirstSection>
         )}
-        <SectionButton>
-          <MenuButton
-            style={{
-              shadowColor,
-              shadowOffset,
-              shadowOpacity,
-              shadowRadius,
-            }}
-            onPress={() => handleEventFinancialSubSection('Main')}
-            isActive={eventFinancialSubSection === 'Main'}
-          >
-            <MenuIcon
-              name="home"
-              isActive={eventFinancialSubSection === 'Main'}
-            />
-          </MenuButton>
-          <MenuButton
-            style={{
-              shadowColor,
-              shadowOffset,
-              shadowOpacity,
-              shadowRadius,
-            }}
-            onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
-            isActive={eventFinancialSubSection === 'TransactionAgreements'}
-          >
-            <MenuIcon
-              name="file-text"
-              isActive={eventFinancialSubSection === 'TransactionAgreements'}
-            />
-          </MenuButton>
-          <MenuButton
-            style={{
-              shadowColor,
-              shadowOffset,
-              shadowOpacity,
-              shadowRadius,
-            }}
-            onPress={() => handleEventFinancialSubSection('Transactions')}
-            isActive={eventFinancialSubSection === 'Transactions'}
-          >
-            <MenuIcon
-              name="dollar-sign"
-              isActive={eventFinancialSubSection === 'Transactions'}
-            />
-          </MenuButton>
-        </SectionButton>
       </Container>
     </>
   );

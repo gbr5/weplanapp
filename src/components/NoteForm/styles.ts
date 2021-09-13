@@ -15,7 +15,7 @@ export const TextAreaContainer = styled.View`
   border-radius: 10px;
   flex-direction: row;
   align-items: center;
-  border: 2px solid ${({ theme }) => theme.color.text2};
+  border: none;
 `;
 
 export const TextAreaInput = styled.TextInput`

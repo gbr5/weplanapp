@@ -212,7 +212,6 @@ export function EventGuestButtonInfo(): JSX.Element {
                 defaultValue={selectedGuest.last_name}
                 handleOnSubmit={handleEditGuestLastName}
                 placeholder={selectedGuest.last_name}
-                closeComponent={handleEditGuestName}
               />
             </FieldContainer>
           </>

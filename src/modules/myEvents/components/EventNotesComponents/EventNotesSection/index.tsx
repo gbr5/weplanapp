@@ -4,6 +4,7 @@ import { SectionHeader } from '../../../../../components/SectionHeader';
 import INoteDTO from '../../../../../dtos/INoteDTO';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useNote } from '../../../../../hooks/notes';
+import { EventNoteForm } from '../EventNoteForm';
 import { SearchNotes } from '../SearchNotes';
 
 import {
@@ -12,10 +13,21 @@ import {
 } from './styles';
 
 export function EventNotesSection() {
-  const { eventNotes, handleSectionDescriptionWindow } = useMyEvent();
-  const { handleCreateEventNoteWindow } = useNote();
+  const { eventNotes } = useMyEvent();
+  const { handleCreateEventNoteWindow, createEventNoteWindow } = useNote();
 
   const [filteredNotes, setFilteredNotes] = useState<INoteDTO[]>([]);
+  const [search, setSearch] = useState(false);
+
+  function handleSearch(): void {
+    !search && createEventNoteWindow && handleCreateEventNoteWindow();
+    setSearch(!search);
+  }
+
+  function handleNewNote(): void {
+    setSearch(false);
+    handleCreateEventNoteWindow();
+  }
 
   function handleFilteredNotes(data: INoteDTO[]) {
     setFilteredNotes(data);
@@ -36,14 +48,18 @@ export function EventNotesSection() {
   return (
     <Container>
       <SectionHeader
-        handleAddButton={handleCreateEventNoteWindow}
-        handleInfoButton={handleSectionDescriptionWindow}
+        handleAddButton={handleNewNote}
+        handleInfoButton={handleSearch}
         title="Notas"
+        firstIcon="search"
       />
-      <SearchNotes
-        handleNotes={(data: INoteDTO[]) => handleFilteredNotes(data)}
-        notes={notes}
-      />
+      {createEventNoteWindow && <EventNoteForm />}
+      {search && (
+        <SearchNotes
+          handleNotes={(data: INoteDTO[]) => handleFilteredNotes(data)}
+          notes={notes}
+        />
+      )}
 
       {filteredNotes.length > 0 && (
         <NotesContainer

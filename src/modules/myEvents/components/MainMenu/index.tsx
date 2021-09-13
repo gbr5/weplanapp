@@ -208,6 +208,7 @@ export function MainMenu() {
             shadowOffset,
             shadowOpacity,
             shadowRadius,
+            elevation,
           }}
           onPress={() => selectEventSection('Members')}
           isActive={currentSection === 'Members'}

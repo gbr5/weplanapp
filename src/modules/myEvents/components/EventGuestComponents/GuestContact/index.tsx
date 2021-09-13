@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Linking } from 'react-native';
 import InlineFormField from '../../../../../components/InlineFormField';
 import { ContactLink } from '../../../../../components/ContactLink';
 import IGuestContactDTO from '../../../../../dtos/IGuestContactDTO';

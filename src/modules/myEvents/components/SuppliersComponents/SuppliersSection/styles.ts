@@ -6,7 +6,7 @@ import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 
 export const Container = styled.View`
   flex: 1;
-  padding-bottom: ${Platform.OS === 'android' ? '56px' : `${getBottomSpace() + 8}px`};
+  padding-bottom: ${Platform.OS === 'android' ? '0px' : `${getBottomSpace()}px`};
 `;
 
 export const SuppliersContainer = styled(

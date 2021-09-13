@@ -34,6 +34,19 @@ interface IGoogleSignInCredentials {
   googleId: string;
 }
 
+interface IAppleSignInCredentials {
+  provider: string;
+  appleResponse: {
+    identityToken: string;
+    user: string;
+    authorizationCode: string;
+    fullName?: {
+      givenName: string | null;
+      familyName: string | null;
+    };
+  };
+}
+
 interface ICreatePersonInfoDTO {
   userId: string;
   first_name: string;
@@ -45,6 +58,7 @@ interface IAuthContextData {
   loading: boolean; // 2
   signIn(credentials: ISignInCredentials): Promise<void>; // 3
   signInWithGoogle(credentials: IGoogleSignInCredentials): Promise<void>; // 4
+  signInWithApple(credentials: IAppleSignInCredentials): Promise<void>; // 4
   signOut(): void; // 5
   createdefaultContactInfo(id: string): void; // 6
   refreshUser(user: IUserDTO): void; // 7
@@ -126,6 +140,27 @@ const AuthProvider: React.FC = ({ children }) => {
       familyName,
       givenName,
       imageUrl,
+    });
+
+    const { token, user } = response.data;
+
+    await AsyncStorage.multiSet([
+      ['@WP-App:token', token],
+      ['@WP-App:user', JSON.stringify(user)],
+    ]);
+
+    api.defaults.headers.authorization = `Bearer ${token}`;
+
+    setData({ token, user });
+  }
+
+  async function signInWithApple({
+    appleResponse,
+    provider,
+  }: IAppleSignInCredentials) {
+    const response = await api.post('apple-sessions', {
+      provider,
+      appleResponse,
     });
 
     const { token, user } = response.data;
@@ -242,6 +277,7 @@ const AuthProvider: React.FC = ({ children }) => {
         refreshUser,
         createPersonInfo,
         getUser,
+        signInWithApple,
       }}
     >
       {children}
