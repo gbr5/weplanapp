@@ -139,8 +139,8 @@ android {
         applicationId "com.weplanapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 24
-        versionName "WP-24"
+        versionCode 27
+        versionName "WP-27"
     }
     splits {
         abi {
@@ -158,7 +158,7 @@ android {
             keyPassword 'android'
         }
         release {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+          if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
                 storeFile file(MYAPP_UPLOAD_STORE_FILE)
                 storePassword MYAPP_UPLOAD_STORE_PASSWORD
                 keyAlias MYAPP_UPLOAD_KEY_ALIAS
@@ -200,8 +200,10 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation project(path: ':@sentry_react-native')
+  // implementation project(path: ':@sentry_react-native')
 
-      // Next line from Expo
+  // Next line from Expo
     addUnimodulesDependencies()
 
       // Next block from Firebase

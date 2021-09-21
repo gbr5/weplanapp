@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "830691338585-h266eats8unmaokro11fh06aduot0rb9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.weplanapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "830691338585-tmdaholsjcp5t3e04fid3l8bvicqpd6j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.weplanapp",
+            "certificate_hash": "38c96b36c1d55fe74d3c91d1b0606d749ce331f6"
+          }
+        },
+        {
           "client_id": "830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -34,7 +50,8 @@
               "client_id": "830691338585-h4a8f4rkv3k3rkjqp7npsb4grh00ch5m.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.weplanapp-"
+                "bundle_id": "com.weplanapp-",
+                "app_store_id": "1569515408"
               }
             }
           ]

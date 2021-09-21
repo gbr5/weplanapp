@@ -67,6 +67,20 @@ const SignUp: React.FC = () => {
       formRef.current?.setErrors({});
       setLoading(true);
 
+      try {
+        await api.get(`/find-user-by-email-or-user-name?name=${data.name}`);
+      } catch {
+        return Alert.alert(`${data.name} não está mais disponível`, 'Escolha outro nome de usuário e tente novamente');
+      }
+      try {
+        await api.get(`/find-user-by-email-or-user-name?email=${data.email}`);
+      } catch {
+        return Alert.alert(`${data.email} já foi registrado`, 'Se este é o seu e-mail, faça o login ou troque a sua senha!');
+      }
+
+      if (data.password.length > 8)
+        return Alert.alert('A senha tem que ter pelo menos 8 caracteres');
+
       const schema = Yup.object().shape({
         name: Yup.string().required('Nome é obrigatório'),
         email: Yup.string()
@@ -83,17 +97,6 @@ const SignUp: React.FC = () => {
         abortEarly: false,
       });
 
-      try {
-        await api.get(`/find-user-by-email-or-user-name?name=${data.name}`);
-      } catch {
-        return Alert.alert(`${data.name} não está mais disponível`, 'Escolha outro nome de usuário e tente novamente');
-      }
-      try {
-        await api.get(`/find-user-by-email-or-user-name?email=${data.email}`);
-      } catch {
-        return Alert.alert(`${data.email} já foi registrado`, 'Se este é o seu e-mail, faça o login ou troque a sua senha!');
-      }
-
       const validatedData = {
         name: data.name,
         email: data.email,
@@ -102,6 +105,10 @@ const SignUp: React.FC = () => {
       };
 
       await api.post('/users', validatedData);
+
+      await api.post('user/activation', {
+        email: data.email,
+      });
 
       Alert.alert('Ative a sua conta!', 'Eviamos o link para o seu e-mail.');
       navigation.navigate('SignIn');

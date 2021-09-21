@@ -133,9 +133,9 @@ const SignIn: React.FC = () => {
   const isIosSupported = useMemo(() => {
     return Platform.OS === 'ios' && appleAuth.isSupported;
   }, []);
-  const isAndroidSupported = useMemo(() => {
-    return Platform.OS === 'android' && appleAuthAndroid.isSupported;
-  }, []);
+  // const isAndroidSupported = useMemo(() => {
+  //   return Platform.OS === 'android' && appleAuthAndroid.isSupported;
+  // }, []);
   async function onAppleButtonPress() {
     if (Platform.OS === 'ios') {
       // performs login request
@@ -165,35 +165,35 @@ const SignIn: React.FC = () => {
           provider: 'apple',
         });
       }
-    } else {
-      console.log('0 ===>');
-    // Generate secure, random values for state and nonce
-      const rawNonce = String(uuid.v4());
-      console.log({rawNonce})
-      const state = String(uuid.v4());
-      console.log('1 ===>');
-      // Configure the request
-      appleAuthAndroid.configure({
-        // The Service ID you registered with Apple
-        clientId: '8GHG8T4LCM.com.weplanapp-',
-        // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
-        // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
-        // redirectUri: '830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6.apps.googleusercontent.com',
-        redirectUri: 'com.googleusercontent.apps.830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6',
-        // The type of response requested - code, id_token, or both.
-        responseType: appleAuthAndroid.ResponseType.ALL,
-        // The amount of user information requested from Apple.
-        scope: appleAuthAndroid.Scope.ALL,
-        // Random nonce value that will be SHA256 hashed before sending to Apple.
-        nonce: rawNonce,
-        // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
-        state,
-      });
-      console.log({appleAuthAndroid});
-      // Open the browser window for user sign in
-      const response = await appleAuthAndroid.signIn();
-      console.log(response);
-      // Send the authorization code to your backend for verification
+    // } else {
+    //   console.log('0 ===>');
+    // // Generate secure, random values for state and nonce
+    //   const rawNonce = String(uuid.v4());
+    //   console.log({rawNonce})
+    //   const state = String(uuid.v4());
+    //   console.log('1 ===>');
+    //   // Configure the request
+    //   appleAuthAndroid.configure({
+    //     // The Service ID you registered with Apple
+    //     clientId: '8GHG8T4LCM.com.weplanapp-',
+    //     // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
+    //     // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
+    //     // redirectUri: '830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6.apps.googleusercontent.com',
+    //     redirectUri: 'com.googleusercontent.apps.830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6',
+    //     // The type of response requested - code, id_token, or both.
+    //     responseType: appleAuthAndroid.ResponseType.ALL,
+    //     // The amount of user information requested from Apple.
+    //     scope: appleAuthAndroid.Scope.ALL,
+    //     // Random nonce value that will be SHA256 hashed before sending to Apple.
+    //     nonce: rawNonce,
+    //     // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
+    //     state,
+    //   });
+    //   console.log({appleAuthAndroid});
+    //   // Open the browser window for user sign in
+    //   const response = await appleAuthAndroid.signIn();
+    //   console.log(response);
+    //   // Send the authorization code to your backend for verification
     }
   }
 
@@ -229,13 +229,13 @@ const SignIn: React.FC = () => {
               onPress={() => onAppleButtonPress()}
             />
           )}
-          {isAndroidSupported && (
+          {/* {isAndroidSupported && (
             <AppleButton
               buttonStyle={AppleButton.Style.WHITE}
               buttonType={AppleButton.Type.SIGN_IN}
               onPress={() => onAppleButtonPress()}
             />
-          )}
+          )} */}
           <View>
             <Title>Faça seu login</Title>
           </View>

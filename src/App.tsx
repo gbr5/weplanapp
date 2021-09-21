@@ -25,6 +25,7 @@ import { useAuth } from './hooks/auth';
 // Sentry.captureMessage("Hello Sentry!");
 
 GoogleSignin.configure({
+  // webClientId: '830691338585-tmdaholsjcp5t3e04fid3l8bvicqpd6j.apps.googleusercontent.com',
   webClientId: '830691338585-ke1h9fjn2r15lk7kqmhe4f7pbv7vq4l6.apps.googleusercontent.com',
 });
 // This line below was the last line added it comes from  https://developers.google.com/identity/sign-in/ios/sign-in#objective-c
