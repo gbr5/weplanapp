@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
+import { DeleteButton } from '../../../../components/DeleteButton';
 
 import IEventDTO from '../../../../dtos/IEventDTO';
 import theme from '../../../../global/styles/theme';
@@ -27,7 +28,7 @@ export function EventButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectEvent } = useMyEvent();
+  const { selectEvent, handleDeleteEventConfirmationWindow } = useMyEvent();
 
   const navigateToMyEvent = useCallback(() => {
     navigation.navigate('MyEvent');
@@ -37,6 +38,11 @@ export function EventButton({
     selectEvent(event);
     navigateToMyEvent();
   }, [selectEvent, navigateToMyEvent, event]);
+
+  function handleDeleteEvent(): void {
+    selectEvent(event);
+    handleDeleteEventConfirmationWindow();
+  }
 
   return (
     <Container
@@ -49,11 +55,20 @@ export function EventButton({
       }}
       onPress={() => selectMyEvent()}
     >
-      <EventDate>{formatOnlyTime(String(event.date))} - {formatOnlyDateShort(String(event.date))}</EventDate>
+      <DeleteButton handleDelete={handleDeleteEvent} top="4%" right="1%" />
+      <EventDate>
+        {formatOnlyTime(String(event.date))}
+        {" "}-{" "}
+        {formatOnlyDateShort(String(event.date))}
+      </EventDate>
       <Name>
         {event.name}
       </Name>
-      <DateText>Criado em: {formatOnlyTime(String(event.created_at))} -  {formatOnlyDateShort(String(event.created_at))}</DateText>
+      <DateText>
+        Criado em: {formatOnlyTime(String(event.created_at))}
+        {" "}-{" "}
+        {formatOnlyDateShort(String(event.created_at))}
+      </DateText>
     </Container>
   );
 }

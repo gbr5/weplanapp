@@ -11,7 +11,6 @@ import { useMyEvent } from '../../../../../hooks/myEvent';
 import Backdrop from '../../../../../components/Backdrop';
 import { MenuBooleanButton } from '../../../../../components/MenuBooleanButton';
 import { SectionHeader } from '../../../../../components/SectionHeader';
-import GuestSectionButton from '../GuestSectionButton';
 
 import {
   Container,
@@ -27,6 +26,7 @@ import {
 } from './styles';
 import { useEffect } from 'react';
 import { EventGuestButton } from '../EventGuestButton';
+import { useUserContacts } from '../../../../../hooks/userContacts';
 
 const GuestsSection: React.FC = () => {
   const {
@@ -51,6 +51,10 @@ const GuestsSection: React.FC = () => {
     notConfirmedGuestsFilter,
     onlyMyGuestsFilter,
   } = useEventGuests();
+  const {
+    getUserMobileContacts,
+    handleSelectMobileContactsWindow,
+  } = useUserContacts();
 
   const [allGuestsSection, setAllGuestsSection] = useState(true);
   const [backdrop, setBackdrop] = useState(false);
@@ -136,6 +140,15 @@ const GuestsSection: React.FC = () => {
     notConfirmedGuestsFilter,
     onlyMyGuestsFilter,
   ]);
+
+  async function handleNewMobileGuest() {
+    await getUserMobileContacts();
+    handleSelectMobileContactsWindow(true);
+  }
+
+  useEffect(() => {
+    if (guests.length <= 0) handleNewMobileGuest();
+  }, []);
 
   return (
     <>

@@ -23,6 +23,7 @@ interface EventGuestsContextType {
   confirmedGuestsFilter: boolean;
   dissociateUserFromGuestConfirmation: boolean;
   guestFilterWindow: boolean;
+  deleteGuestConfirmationWindow: boolean;
   loading: boolean;
   newGuestForm: boolean;
   newGuestWindow: boolean;
@@ -33,6 +34,7 @@ interface EventGuestsContextType {
   selectedGuestContact: IGuestContactDTO;
   createGuestContactWindow: boolean;
   handleCreateGuestContactWindow: () => void;
+  handleDeleteGuestConfirmationWindow: () => void;
   addNewGuest: (data: IAddNewEventGuestDTO) => Promise<void>;
   associateUserToEventGuest: (data: IFriendDTO) => Promise<void>;
   createMultipleWePlanGuests: (data: IFriendDTO[]) => Promise<void>;
@@ -89,9 +91,14 @@ const EventGuestsProvider: React.FC = ({ children }) => {
     setDissociateUserFromGuestConfirmation,
   ] = useState(false);
   const [createGuestContactWindow, setCreateGuestContactWindow] = useState(false);
+  const [deleteGuestConfirmationWindow, setDeleteGuestConfirmationWindow] = useState(false);
 
   function handleCreateGuestContactWindow(): void {
     setCreateGuestContactWindow(!createGuestContactWindow);
+  }
+
+  function handleDeleteGuestConfirmationWindow(): void {
+    setDeleteGuestConfirmationWindow(!deleteGuestConfirmationWindow);
   }
   function handleAllGuestsFilter() {
     setAllGuestsFilter(!allGuestsFilter);
@@ -244,10 +251,11 @@ const EventGuestsProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       await api.delete(`event-guests/${data.id}`);
-      await getEventGuests(data.event_id);
+      await getEventGuests(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
+      selectGuest({} as IEventGuestDTO);
       setLoading(false);
     }
   }
@@ -394,6 +402,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         deleteGuestContact,
         editGuest,
         guestFilterWindow,
+        deleteGuestConfirmationWindow,
         handleGuestFilterWindow,
         loading,
         selectGuestContact,
@@ -424,6 +433,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         sendMassEmailInvitations,
         createGuestContactWindow,
         handleCreateGuestContactWindow,
+        handleDeleteGuestConfirmationWindow,
       }}
     >
       {children}

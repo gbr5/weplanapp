@@ -20,6 +20,8 @@ import IEventBudgetDTO from '../dtos/IEventBudgetDTO';
 import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
 import IEventNoteDTO from '../dtos/IEventNoteDTO';
 import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
+import { Alert } from 'react-native';
+import { useEvent } from './event';
 
 interface MyEventContextType {
   eventFinancialSubSection: string;
@@ -55,8 +57,10 @@ interface MyEventContextType {
   isOwner: boolean;
   currentSection: string;
   sectionDescriptionWindow: boolean;
+  deleteEventConfirmationWindow: boolean;
   handleEventFinancialSubSection: (data: string) => void;
   handleBudgetWindow: () => void;
+  handleDeleteEventConfirmationWindow: () => void;
   handleSectionDescriptionWindow: () => void;
   handleBackdropSearch: () => void;
   selectEvent: (event: IEventDTO) => void;
@@ -79,14 +83,18 @@ interface MyEventContextType {
   createEventBudget: (budget: number) => Promise<void>;
   updateEventBudget: (data: IEventBudgetDTO) => Promise<void>;
   unsetEventVariables: () => void;
+  handleDeleteEvent: () => void;
 }
 
 const MyEventContext = createContext({} as MyEventContextType);
 
 const MyEventProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
+  const { getEventsAsGuest, getEventsAsMember, getEventsAsOwner, getNextEvent, nextEvent } = useEvent();
+
   const [eventFinancialSubSection, setEventFinancialSubSection] = useState('Main');
   const [loading, setLoading] = useState(false);
+  const [deleteEventConfirmationWindow, setDeleteEventConfirmationWindow] = useState(false);
   const [backdropSearch, setBackdropSearch] = useState(false);
   const [budgetWindow, setBudgetWindow] = useState(false);
   const [sectionDescriptionWindow, setSectionDescriptionWindow] = useState(false);
@@ -137,6 +145,11 @@ const MyEventProvider: React.FC = ({ children }) => {
 
   function handleEventFinancialSubSection(data: string) {
     setEventFinancialSubSection(data);
+  }
+
+  function handleDeleteEventConfirmationWindow() {
+    if (deleteEventConfirmationWindow === true) selectEvent({} as IEventDTO);
+    setDeleteEventConfirmationWindow(!deleteEventConfirmationWindow);
   }
 
   function unsetEventVariables() {
@@ -260,7 +273,13 @@ const MyEventProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get<IEventGuestDTO[]>(`/event-guests/list/${eventId}`);
       if (response.data && response.data.length > 0) {
-        setGuests(response.data);
+        setGuests(response.data.sort((a, b) => {
+          if (a.first_name.toLowerCase() > b.first_name.toLowerCase()) return 1;
+          if (a.first_name.toLowerCase() < b.first_name.toLowerCase()) return -1;
+          if (a.last_name.toLowerCase() > b.last_name.toLowerCase()) return 1;
+          if (a.last_name.toLowerCase() < b.last_name.toLowerCase()) return -1;
+          return 0;
+        }));
         setConfirmedGuests(response.data.filter((guest) => guest.confirmed).length);
         const guestsMine = response.data.filter((guest) => guest.host_id === user.id);
         setMyGuests(guestsMine);
@@ -381,6 +400,53 @@ const MyEventProvider: React.FC = ({ children }) => {
     setSelectedMember(member);
   }
 
+
+  async function handleDeleteEvent(): Promise<void> {
+    try {
+      if (selectedEvent.user_id === user.id) {
+        await api.delete(`/events/${selectedEvent.id}`);
+        getEventsAsOwner();
+      }
+      const findOwner = owners.find(
+        owner => owner.userEventOwner.id === user.id,
+      );
+      if (findOwner) {
+        await api.delete(`/event-owners/${findOwner.id}`);
+        getEventsAsOwner();
+      }
+      const findMember = members.find(
+        member => member.userEventMember.id === user.id,
+      );
+      if (findMember) {
+        await api.delete(`/event-members/${findMember.id}`);
+        getEventsAsMember();
+      }
+      const findGuest = guests.find(
+        guest => guest.weplanGuest.weplanUserGuest.id === user.id,
+      );
+      if (findGuest) {
+        await api.delete(`/event-guests/${findGuest.id}`);
+        getEventsAsGuest();
+      }
+      if (selectedEvent.id === nextEvent.id) {
+        getNextEvent();
+      }
+
+      setDeleteEventConfirmationWindow(false);
+      Alert.alert(
+        'Evento Deletado com sucesso',
+        'Você já pode visualizar as alterações no seu dashboard.',
+      );
+    } catch (err) {
+      Alert.alert(
+        'Não foi possível deletar seu evento',
+        'Tente novamente.',
+      );
+      setDeleteEventConfirmationWindow(false);
+      throw new Error(err);
+    }
+  }
+
   return (
     <MyEventContext.Provider
       value={{
@@ -418,6 +484,8 @@ const MyEventProvider: React.FC = ({ children }) => {
         currentSection,
         handleEventFinancialSubSection,
         handleBudgetWindow,
+        handleDeleteEventConfirmationWindow,
+        deleteEventConfirmationWindow,
         selectEvent,
         selectGuest,
         calculateTotalEventCost,
@@ -441,6 +509,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         getEventBudget,
         getEventTransactions,
         eventTransactions,
+        handleDeleteEvent,
       }}
     >
       {children}

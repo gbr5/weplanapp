@@ -33,7 +33,6 @@ const InlineFormField: React.FC<IProps> = ({
   const formRef = useRef<FormHandles>(null);
 
   function handleSubmit({ name }: IFormParams) {
-    console.log({name});
     if (name !== '' && name !== defaultValue) {
       handleOnSubmit(name);
     }

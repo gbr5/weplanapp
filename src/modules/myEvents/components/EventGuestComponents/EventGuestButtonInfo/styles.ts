@@ -73,6 +73,13 @@ export const MenuText = styled.Text`
   color: ${({ theme }) => theme.color.text1};
 `;
 
+export const DeleteText = styled.Text`
+  margin-bottom: 12px;
+  font-size: ${RFValue(16)}px;
+  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+  color: ${({ theme }) => theme.color.text6};
+`;
+
 export const SectionBorder = styled.View`
   width: 100%;
   min-height: 1px;
@@ -118,13 +125,34 @@ export const FieldButton = styled.TouchableOpacity`
   min-height: 60px;
 `;
 
+export const DeleteButton = styled.TouchableOpacity`
+  position: relative;
+  flex-direction: row;
+  width: 99%;
+  align-items: center;
+  justify-content: space-around;
+  margin: 8px 0;
+  padding: 0 8px;
+  padding-top: 16px;
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.atention};
+  margin: 4px;
+  border: none;
+  min-height: 60px;
+`;
+
 export const ConfirmGuestButton = styled.TouchableOpacity`
   border: none;
-  margin-left: 8px;
+  /* margin-left: 8px; */
   align-items: center;
   justify-content: center;
 `;
 
 export const Icon = styled(Feather)`
   font-size: ${RFValue(24)}px;
+`;
+
+export const DeleteIcon = styled(Feather)`
+  font-size: ${RFValue(24)}px;
+  color: ${({ theme }) => theme.color.text6};
 `;

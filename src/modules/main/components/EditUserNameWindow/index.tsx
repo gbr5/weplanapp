@@ -32,7 +32,7 @@ export function EditUserNameWindow() {
     try {
       await api.get(`/find-user-by-email-or-user-name?name=${name}`);
     } catch {
-      return Alert.alert(`${name} não está mais disponível`, 'Escolha outro nome de usuário e tente novamente');
+      return Alert.alert(`O nome "${name}" não está mais disponível`, 'Escolha outro nome de usuário e tente novamente');
     }
 
     await updateUserProfile({

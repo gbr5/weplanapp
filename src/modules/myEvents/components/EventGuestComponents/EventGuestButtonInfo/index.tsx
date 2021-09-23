@@ -19,11 +19,14 @@ import {
   MenuText, // 7
   SectionBorder, // 8
   FieldButton,
+  DeleteButton,
   FieldContainer,
   FieldLabel,
   ConfirmGuestButton,
   Icon,
   Name,
+  DeleteText,
+  DeleteIcon,
 } from './styles';
 import GuestContact from '../GuestContact';
 
@@ -48,6 +51,7 @@ export function EventGuestButtonInfo(): JSX.Element {
     handleSelectWePlanGuestWindow,
     handleDissociateUserFromGuestConfirmation,
     handleCreateGuestContactWindow,
+    handleDeleteGuestConfirmationWindow,
   } = useEventGuests();
 
   const [editGuestName, setEditGuestName] = useState(false);
@@ -133,7 +137,6 @@ export function EventGuestButtonInfo(): JSX.Element {
   async function handleWePlanGuest(): Promise<void> {
     if (isMine) {
       if (!weplanGuest) {
-        console.log(isMine, weplanGuest);
         const findWePlanGuests = guests
           .filter(
             guest =>
@@ -147,7 +150,6 @@ export function EventGuestButtonInfo(): JSX.Element {
         await getFriends();
         handleSelectWePlanGuestWindow();
       } else {
-        console.log(isMine, weplanGuest);
         handleDissociateUserFromGuestConfirmation();
       }
     }
@@ -279,24 +281,43 @@ export function EventGuestButtonInfo(): JSX.Element {
           )}
         </MenuButtonSection>
       )}
+      {isMine && (
+        <>
+          <SectionBorder />
 
-      <SectionBorder />
+          <FieldButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
+            onPress={handleWePlanGuest}
+          >
+            <MenuText>Usuário WePlan</MenuText>
+            <ConfirmGuestButton>
+              {weplanGuest ? <Icon name="check-square" /> : <Icon name="square" />}
+            </ConfirmGuestButton>
+          </FieldButton>
 
-      <FieldButton
-        style={{
-          shadowColor,
-          shadowOffset,
-          shadowOpacity,
-          shadowRadius,
-          elevation: 5,
-        }}
-        onPress={handleWePlanGuest}
-      >
-        <MenuText>Usuário WePlan</MenuText>
-        <ConfirmGuestButton>
-          {weplanGuest ? <Icon name="check-square" /> : <Icon name="square" />}
-        </ConfirmGuestButton>
-      </FieldButton>
+          <SectionBorder />
+
+          <DeleteButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
+            onPress={handleDeleteGuestConfirmationWindow}
+          >
+            <DeleteText>Deletar convidado</DeleteText>
+            <DeleteIcon name="trash-2" />
+          </DeleteButton>
+        </>
+      )}
 
       <SectionBorder />
 

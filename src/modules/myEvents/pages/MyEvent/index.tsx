@@ -5,6 +5,7 @@ import { useEventTasks } from '../../../../hooks/eventTasks';
 import { useEventSuppliers } from '../../../../hooks/eventSuppliers';
 import { useNote } from '../../../../hooks/notes';
 import { useTransaction } from '../../../../hooks/transactions';
+import { useFiles } from '../../../../hooks/files';
 
 import IEventTaskDTO from '../../../../dtos/IEventTaskDTO';
 import INoteDTO from '../../../../dtos/INoteDTO';
@@ -50,7 +51,6 @@ import { EditSupplierName } from '../../components/SuppliersComponents/EditSuppl
 import { EditSupplierCategory } from '../../components/SuppliersComponents/EditSupplierCategory';
 import { SupplierTransactionAgreementsWindow } from '../../components/FinancialComponents/SupplierTransactionAgreementsWindow';
 import { EventNotesSection } from '../../components/EventNotesComponents/EventNotesSection';
-import { EventNoteForm } from '../../components/EventNotesComponents/EventNoteForm';
 import { SupplierNotesSection } from '../../components/SuppliersComponents/SupplierNotesWindow';
 import { TransactionNotesWindow } from '../../../../components/TransactionComponents/TransactionNotesWindow';
 import { TransactionFilesWindow } from '../../../../components/TransactionComponents/TransactionFilesWindow';
@@ -59,7 +59,6 @@ import { EventSupplierBudgetsWindow } from '../../components/SuppliersComponents
 import { EventSupplierBudgetForm } from '../../components/SuppliersComponents/EventSupplierBudgetForm';
 import { EditSupplierBudgetAmount } from '../../components/SuppliersComponents/EditSupplierBudgetAmount';
 import { EditSupplierBudgetDescription } from '../../components/SuppliersComponents/EditSupplierBudgetDescription';
-import { useFiles } from '../../../../hooks/files';
 import { EditFileNameWindow } from '../../../../components/FilesComponents/EditFileNameWindow';
 import { SelectFromFriends } from '../../../../components/FriendsComponents/SelectFromFriends';
 import { useEventOwners } from '../../../../hooks/eventOwners';
@@ -152,6 +151,9 @@ const MyEvent: React.FC = () => {
     handleDissociateUserFromGuestConfirmation,
     associateUserToEventGuest,
     createGuestContactWindow,
+    deleteGuestConfirmationWindow,
+    handleDeleteGuestConfirmationWindow,
+    deleteGuest,
   } = useEventGuests();
   const {
     editNoteWindow,
@@ -187,7 +189,7 @@ const MyEvent: React.FC = () => {
     transactionNotesWindow,
     transactionFilesWindow,
   } = useTransaction();
-  const { selectMobileContactsWindow } = useUserContacts();
+  const { selectMobileContactsWindow, mobileContacts } = useUserContacts();
   const { unsetVariables } = useUnsetEventVariables();
 
   function handleCloseEditTaskDateWindow() {
@@ -229,6 +231,16 @@ const MyEvent: React.FC = () => {
   async function handleDeleteTask() {
     await deleteTask(selectedTask);
     handleDeleteTaskConfirmationWindow();
+  }
+
+  async function handleDeleteGuest() {
+    try {
+      await deleteGuest(selectedGuest);
+    } catch {
+      throw new Error();
+    } finally {
+      handleDeleteGuestConfirmationWindow();
+    }
   }
 
   useEffect(() => {
@@ -308,8 +320,12 @@ const MyEvent: React.FC = () => {
         && selectedSupplier.id
         && editSupplierCategoryWindow
         && <EditSupplierCategory />}
-      {supplierTransactionAgreementsWindow && <SupplierTransactionAgreementsWindow />}
-      {selectMobileContactsWindow && <SelectMobileContacts />}
+      {supplierTransactionAgreementsWindow && (
+        <SupplierTransactionAgreementsWindow />
+      )}
+      {selectMobileContactsWindow && mobileContacts.length > 0 && (
+        <SelectMobileContacts />
+      )}
       {createTransactionWindow && <CreateEventTransaction />}
       {sectionDescriptionWindow && <SectionDescriptionWindow />}
       {guestFilterWindow && <GuestFilterWindow />}
@@ -415,6 +431,16 @@ const MyEvent: React.FC = () => {
           firstFunction={handleDeleteTaskConfirmationWindow}
           secondButtonLabel="Deletar"
           secondFunction={handleDeleteTask}
+        />
+      )}
+      {deleteGuestConfirmationWindow && (
+        <ShortConfirmationWindow
+          closeWindow={handleDeleteGuestConfirmationWindow}
+          question="Deseja mesmo deletar o convidado?"
+          firstButtonLabel="Não deletar"
+          firstFunction={handleDeleteGuestConfirmationWindow}
+          secondButtonLabel="Deletar"
+          secondFunction={handleDeleteGuest}
         />
       )}
       {editNoteWindow && (

@@ -70,16 +70,16 @@ const SignUp: React.FC = () => {
       try {
         await api.get(`/find-user-by-email-or-user-name?name=${data.name}`);
       } catch {
-        return Alert.alert(`${data.name} não está mais disponível`, 'Escolha outro nome de usuário e tente novamente');
+        return Alert.alert(`O nome "${data.name}" não está mais disponível`, 'Escolha outro nome de usuário e tente novamente');
       }
       try {
         await api.get(`/find-user-by-email-or-user-name?email=${data.email}`);
       } catch {
-        return Alert.alert(`${data.email} já foi registrado`, 'Se este é o seu e-mail, faça o login ou troque a sua senha!');
+        return Alert.alert(`O e-mail "${data.email}" já foi registrado`, 'Se este é o seu e-mail, faça o login ou troque a sua senha!');
       }
 
       if (data.password.length > 8)
-        return Alert.alert('A senha tem que ter pelo menos 8 caracteres');
+        return Alert.alert('A senha deve ter pelo menos 8 caracteres');
 
       const schema = Yup.object().shape({
         name: Yup.string().required('Nome é obrigatório'),

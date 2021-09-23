@@ -35,7 +35,7 @@ export function Note({
   } = theme.objectButtonShadow;
   const { user } = useAuth();
   const { selectedEvent, owners, getEventNotes, members } = useMyEvent();
-  const { selectNote, editNote } = useNote();
+  const { editNote } = useNote();
 
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -90,6 +90,11 @@ export function Note({
     }
   }
 
+  const canEdit = useMemo(() => {
+    if (selectedEvent.id === selectedNote.author_id) return false;
+    return selectedEvent.user_id === user.id || selectedNote.author_id === user.id;
+  }, [selectedNote, selectedEvent, user]);
+
   return (
     <Container
       style={{
@@ -109,11 +114,12 @@ export function Note({
       ) : (
         <>
           <TextNote>{selectedNote.note}</TextNote>
-          {loading ? (
+          {loading && (
             <EditNoteButton>
               <EditNoteIcon name="loader" size={32} />
             </EditNoteButton>
-          ) : (
+          )}
+          {!loading && canEdit && (
             <EditNoteButton
               onPress={handleEdit}
               style={{
