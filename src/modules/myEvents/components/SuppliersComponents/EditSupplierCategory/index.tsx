@@ -3,7 +3,7 @@ import WindowContainer from '../../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../../components/WindowHeader';
 import theme from '../../../../../global/styles/theme';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import {
   Container,
@@ -18,7 +18,7 @@ export function EditSupplierCategory() {
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedSupplier } = useMyEvent();
+  const { selectedEventSupplier } = useEventVariables();
   const {
     selectSupplierCategory,
     selectedSupplierCategory,
@@ -29,7 +29,7 @@ export function EditSupplierCategory() {
   async function handleSelectSupplierCategory(category: string) {
     selectSupplierCategory(category);
     await updateEventSupplier({
-      ...selectedSupplier,
+      ...selectedEventSupplier,
       supplier_sub_category: category,
     });
     handleEditSupplierCategoryWindow();

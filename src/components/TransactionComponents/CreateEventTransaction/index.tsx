@@ -6,7 +6,6 @@ import { FormHandles } from '@unform/core';
 
 import theme from '../../../global/styles/theme';
 import formatOnlyDateShort from '../../../utils/formatOnlyDateShort';
-import { useMyEvent } from '../../../hooks/myEvent';
 import { useTransaction } from '../../../hooks/transactions';
 
 import WindowContainer from '../../WindowContainer';
@@ -18,6 +17,7 @@ import { MenuBooleanButton } from '../../MenuBooleanButton';
 import Button from '../../Button';
 
 import { Container, Title } from './styles';
+import { useEventVariables } from '../../../hooks/eventVariables';
 
 interface IFormParams {
   name: string;
@@ -28,7 +28,7 @@ interface IFormParams {
 export function CreateEventTransaction() {
   const noUserMemberUUID = '89890569-ed93-4bf3-b123-91813838aade';
 
-  const { selectedEvent } = useMyEvent();
+  const { selectedEvent } = useEventVariables();
   const {
     loading,
     handleCreateTransactionWindow,

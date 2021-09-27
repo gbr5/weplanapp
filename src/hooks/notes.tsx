@@ -9,6 +9,7 @@ import api from '../services/api';
 import INoteDTO from '../dtos/INoteDTO';
 import { useMyEvent } from './myEvent';
 import ITransactionNoteDTO from '../dtos/ITransactionNoteDTO';
+import { useEventVariables } from './eventVariables';
 
 interface ICreateEventSupplierNoteDTO {
   note: string;
@@ -54,8 +55,10 @@ const NoteContext = createContext({} as NoteContextType);
 const NoteProvider: React.FC = ({ children }) => {
   const {
     selectedEvent,
-    selectedSupplier,
-    selectedTask,
+    selectedEventSupplier,
+    selectedEventTask,
+  } = useEventVariables();
+  const {
     getEvent,
     getEventSuppliers,
   } = useMyEvent();
@@ -207,7 +210,7 @@ const NoteProvider: React.FC = ({ children }) => {
       await api.post('/create-event-supplier-and-transaction-note', {
         transaction_id,
         note,
-        supplier_id: selectedSupplier.id,
+        supplier_id: selectedEventSupplier.id,
       });
       await getEventSuppliers(selectedEvent.id);
       await getTransactionNotes(transaction_id);
@@ -250,12 +253,14 @@ const NoteProvider: React.FC = ({ children }) => {
 
   async function updateNotes() {
     Promise.all([
-      selectedTask.notes.filter(taskNote => taskNote.note.isNew).map(taskNote => {
-        return api.put('/notes', {
-          id: taskNote.note.id,
-          note: taskNote.note.note,
-        });
-      }),
+      selectedEventTask.notes
+        .filter(taskNote => taskNote.note.isNew)
+        .map(taskNote => {
+          return api.put('/notes', {
+            id: taskNote.note.id,
+            note: taskNote.note.note,
+          });
+        }),
     ]);
   }
 

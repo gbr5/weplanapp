@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Feather from 'react-native-vector-icons/Feather';
-import InlineFormField from '../../../../../components/InlineFormField';
+
 import theme from '../../../../../global/styles/theme';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
+
+import InlineFormField from '../../../../../components/InlineFormField';
 
 import {
   Container,
@@ -20,7 +22,7 @@ export function TaskTitle(): JSX.Element {
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedTask } = useMyEvent();
+  const { selectedEventTask } = useEventVariables();
   const { updateTask } = useEventTasks();
 
   const [loading, setLoading] = useState(false);
@@ -34,7 +36,7 @@ export function TaskTitle(): JSX.Element {
     try {
       setLoading(true);
       await updateTask({
-        ...selectedTask,
+        ...selectedEventTask,
         title,
       });
     } catch {
@@ -60,8 +62,8 @@ export function TaskTitle(): JSX.Element {
             <TitleButton onPress={handleEditTask}>
               <TaskLabel>Editar Tarefa:</TaskLabel>
                 <InlineFormField
-                  defaultValue={selectedTask.title}
-                  placeholder={selectedTask.title}
+                  defaultValue={selectedEventTask.title}
+                  placeholder={selectedEventTask.title}
                   handleOnSubmit={handleUpdateTask}
                   closeComponent={handleEditTask}
                 />
@@ -70,7 +72,7 @@ export function TaskTitle(): JSX.Element {
             <TitleButton onPress={handleEditTask}>
               <TaskLabel>Editar Tarefa:</TaskLabel>
                 <Title>
-                  {selectedTask.title}
+                  {selectedEventTask.title}
                 </Title>
             </TitleButton>
           )}

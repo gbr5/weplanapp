@@ -1,17 +1,16 @@
+import React, { useRef, useCallback } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
-import React from 'react';
-import { useRef } from 'react';
-import { useCallback } from 'react';
-import Button from '../../../../components/Button';
-import Input from '../../../../components/Input';
 
-import WindowContainer from '../../../../components/WindowContainer';
 import ICreateEventInfoDTO from '../../../../dtos/ICreateEventInfoDTO';
 import theme from '../../../../global/styles/theme';
 import { useEventInfo } from '../../../../hooks/eventInfo';
 import { useMyEvent } from '../../../../hooks/myEvent';
-import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
+import { useEventVariables } from '../../../../hooks/eventVariables';
+
+import Button from '../../../../components/Button';
+import Input from '../../../../components/Input';
+import WindowContainer from '../../../../components/WindowContainer';
 
 import { Container, Title } from './styles';
 
@@ -21,7 +20,8 @@ interface IProps {
 
 const CreateEventInfoWindow: React.FC<IProps> = ({ closeWindow }) => {
   const formRef = useRef<FormHandles>(null);
-  const { getEvent, selectedEvent, eventInfo } = useMyEvent();
+  const { getEvent } = useMyEvent();
+  const { selectedEvent } = useEventVariables();
   const { createEventInfo, loading } = useEventInfo();
 
   const handleSubmit = useCallback(async (data: ICreateEventInfoDTO) => {

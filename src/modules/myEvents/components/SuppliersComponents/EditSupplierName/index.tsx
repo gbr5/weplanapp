@@ -9,7 +9,6 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 
 import theme from '../../../../../global/styles/theme';
-import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import WindowContainer from '../../../../../components/WindowContainer';
@@ -19,15 +18,14 @@ import { FormButton } from '../../../../../components/FormButton';
 
 import { FormContainer, KeyboardAvoidingVueContainer } from '../CreateSupplierTransactionAgreement/styles';
 import { Container, Title } from './styles';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 interface IFormParams {
   name: string;
 }
 
 export function EditSupplierName() {
-  const {
-    selectedSupplier,
-  } = useMyEvent();
+  const { selectedEventSupplier } = useEventVariables();
   const {
     updateEventSupplier,
     handleEditSupplierNameWindow,
@@ -38,7 +36,7 @@ export function EditSupplierName() {
   async function handleSubmit({ name }: IFormParams) {
     if (name === '') return Alert.alert('Digite o nome do fornecedor!');
     await updateEventSupplier({
-      ...selectedSupplier,
+      ...selectedEventSupplier,
       name,
     });
     handleEditSupplierNameWindow();
@@ -58,7 +56,10 @@ export function EditSupplierName() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
       >
-        <WindowHeader overTitle={`Editar Fornecedor`} title={`${selectedSupplier.name}`} />
+        <WindowHeader
+          overTitle={`Editar Fornecedor`}
+          title={`${selectedEventSupplier.name}`}
+        />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <FormContainer>
             <Container>
@@ -71,7 +72,7 @@ export function EditSupplierName() {
                   autoCapitalize="words"
                   icon="info"
                   returnKeyType="next"
-                  placeholder={selectedSupplier.name}
+                  placeholder={selectedEventSupplier.name}
                   onSubmitEditing={() => {
                     formRef.current?.submitForm();
                   }}

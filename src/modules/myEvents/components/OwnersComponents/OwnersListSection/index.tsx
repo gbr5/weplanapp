@@ -1,11 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
-import { AddButton } from '../../../../../components/AddButton';
-import { InfoButton } from '../../../../../components/InfoButton';
-import { WindowHeader } from '../../../../../components/WindowHeader';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { OwnerButton } from '../OwnerButton';
-import { OwnersFooterMenu } from '../OwnersFooterMenu';
 
 import {
   Container,
@@ -14,17 +9,17 @@ import {
 } from './styles';
 
 export function OwnersListSection() {
-  const { owners } = useMyEvent();
+  const { eventOwners } = useEventVariables();
 
   return (
     <Container>
       <Body>
-        {owners.length > 0 && (
+        {eventOwners.length > 0 && (
           <OwnersContainer
-            data={owners}
+            data={eventOwners}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
-              const index = String(owners.findIndex(owner => owner.id === item.id) + 1);
+              const index = String(eventOwners.findIndex(owner => owner.id === item.id) + 1);
               return (
                 <OwnerButton
                   key={item.id}

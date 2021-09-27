@@ -19,6 +19,7 @@ import IUpdateEventSupplierTransactionAgreementDTO from '../dtos/IUpdateEventSup
 import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
 import { useFiles } from './files';
+import { useEventVariables } from './eventVariables';
 
 interface INewAgreementDTO {
   amount: number;
@@ -100,13 +101,15 @@ const TransactionContext = createContext({} as TransactionContextType);
 
 const TransactionProvider: React.FC = ({ children }) => {
   const {
-    getEventSuppliers,
-    selectedSupplier,
+    selectedEventSupplier,
     selectedEvent,
     eventSuppliers,
+    eventTransactions,
+  } = useEventVariables();
+  const {
+    getEventSuppliers,
     getEventNotes,
     getEventTransactions,
-    eventTransactions,
   } = useMyEvent();
   const {
     selectSupplierTransactionAgreement,
@@ -369,7 +372,7 @@ const TransactionProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       const updatedTransactions = transactions.map(transaction => {
-        const name = `${selectedSupplier.name} ${transactions.length > 1 ? `${transactions.findIndex(item => item === transaction) + 1} / ${transactions.length}` : ''}`;
+        const name = `${selectedEventSupplier.name} ${transactions.length > 1 ? `${transactions.findIndex(item => item === transaction) + 1} / ${transactions.length}` : ''}`;
         return {
           ...transaction,
           name,
@@ -381,9 +384,9 @@ const TransactionProvider: React.FC = ({ children }) => {
         supplier_id,
         transactions: updatedTransactions,
       });
-      if (!selectedSupplier.isHired) {
+      if (!selectedEventSupplier.isHired) {
         await updateEventSupplier({
-          ...selectedSupplier,
+          ...selectedEventSupplier,
           isHired: true
         });
       }
@@ -424,7 +427,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   }
   async function deleteAllSupplierAgreements() {
     try {
-      await api.delete(`/delete-event-supplier-transaction-agreements/${selectedSupplier.id}`);
+      await api.delete(`/delete-event-supplier-transaction-agreements/${selectedEventSupplier.id}`);
       await getEventSuppliers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);

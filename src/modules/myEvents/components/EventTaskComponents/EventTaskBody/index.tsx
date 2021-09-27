@@ -1,10 +1,11 @@
-import React from 'react';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
+
 import theme from '../../../../../global/styles/theme';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 import formatOnlyTime from '../../../../../utils/formatOnlyTime';
+
 import { TaskTitle } from '../TaskTitle';
 
 import {
@@ -31,7 +32,7 @@ export function EventTaskBody(): JSX.Element {
     shadowOpacity,
     shadowRadius,
   } = theme.buttonShadow;
-  const { selectedTask } = useMyEvent();
+  const { selectedEventTask } = useEventVariables();
   const {
     handleEditTaskPriorityWindow,
     handleEditTaskStatusWindow,
@@ -42,19 +43,19 @@ export function EventTaskBody(): JSX.Element {
   } = useEventTasks();
 
   const status = useMemo(() => {
-    const title = selectedTask.status === 'not started'
+    const title = selectedEventTask.status === 'not started'
       ? 'Início'
-      : (selectedTask.status === 'running'
+      : (selectedEventTask.status === 'running'
         ? 'Execução'
         : 'Fim');
-    const icon = selectedTask.status === 'not started'
+    const icon = selectedEventTask.status === 'not started'
       ? 'cloud'
-      : (selectedTask.status === 'running'
+      : (selectedEventTask.status === 'running'
         ? 'zap'
         : 'award');
-    const color = selectedTask.status === 'not started'
+    const color = selectedEventTask.status === 'not started'
       ? theme.color.info
-      : (selectedTask.status === 'running'
+      : (selectedEventTask.status === 'running'
         ? theme.color.atention
         : theme.color.success);
     return {
@@ -62,24 +63,24 @@ export function EventTaskBody(): JSX.Element {
       icon,
       color,
     };
-  }, [selectedTask]);
+  }, [selectedEventTask]);
 
   const priority = useMemo(() => {
-    const title = selectedTask.priority === 'low'
+    const title = selectedEventTask.priority === 'low'
       ? 'Baixa'
-      : (selectedTask.priority === 'neutral'
+      : (selectedEventTask.priority === 'neutral'
         ? 'Neutra'
         : 'Alta');
-    const color = selectedTask.priority === 'low'
+    const color = selectedEventTask.priority === 'low'
       ? theme.color.success
-      : (selectedTask.priority === 'neutral'
+      : (selectedEventTask.priority === 'neutral'
         ? theme.color.info
         : theme.color.atention);
     return {
       title,
       color,
     };
-  }, [selectedTask]);
+  }, [selectedEventTask]);
 
   return (
     <Container
@@ -150,9 +151,9 @@ export function EventTaskBody(): JSX.Element {
             color={theme.color.info_light}
           >
             <Icon name="file-text" />
-            {selectedTask.notes.length > 0 && (
+            {selectedEventTask.notes.length > 0 && (
               <NumberOfNotesContainer>
-                <NumberOfNotes>{selectedTask.notes.length}</NumberOfNotes>
+                <NumberOfNotes>{selectedEventTask.notes.length}</NumberOfNotes>
               </NumberOfNotesContainer>
             )}
           </IconContainer>
@@ -190,7 +191,7 @@ export function EventTaskBody(): JSX.Element {
           onPress={handleEditTaskTimeWindow}
         >
           <DateText>
-            {formatOnlyTime(String(selectedTask.due_date))}
+            {formatOnlyTime(String(selectedEventTask.due_date))}
           </DateText>
         </DateButton>
         <DateButton
@@ -204,7 +205,7 @@ export function EventTaskBody(): JSX.Element {
           onPress={handleEditTaskDateWindow}
         >
           <DateText>
-          {formatOnlyDateShort(String(selectedTask.due_date))}
+          {formatOnlyDateShort(String(selectedEventTask.due_date))}
           </DateText>
         </DateButton>
       </DateContainer>

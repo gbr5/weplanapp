@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useFriends } from '../../../../../hooks/friends';
+import { useEventOwners } from '../../../../../hooks/eventOwners';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import { SectionHeader } from '../../../../../components/SectionHeader';
 import { OwnersFinancialSection } from '../OwnersFinancialSection';
@@ -12,11 +15,10 @@ import {
   Container,
   Body,
 } from './styles';
-import { useFriends } from '../../../../../hooks/friends';
-import { useEventOwners } from '../../../../../hooks/eventOwners';
 
 export function OwnersSection() {
-  const { selectedEvent, handleSectionDescriptionWindow } = useMyEvent();
+  const { handleSectionDescriptionWindow } = useMyEvent();
+  const { selectedEvent } = useEventVariables();
   const { handleAddOwnerWindow } = useEventOwners();
   const { getFriends } = useFriends();
 

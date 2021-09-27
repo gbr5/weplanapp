@@ -27,6 +27,7 @@ import {
 import { useEffect } from 'react';
 import { EventGuestButton } from '../EventGuestButton';
 import { useUserContacts } from '../../../../../hooks/userContacts';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 const GuestsSection: React.FC = () => {
   const {
@@ -37,12 +38,14 @@ const GuestsSection: React.FC = () => {
   } = theme.iconButtonShadow;
   const inputRef = useRef<TextInput>(null);
   const { user } = useAuth();
+  const { handleSectionDescriptionWindow } = useMyEvent();
   const {
-    guests,
-    owners,
-    members,
-    handleSectionDescriptionWindow,
-  } = useMyEvent();
+    eventGuests,
+    eventOwners,
+    eventMembers,
+    filteredGuests,
+    handleFilteredGuests,
+  } = useEventVariables();
   const {
     allGuestsFilter,
     confirmedGuestsFilter,
@@ -58,7 +61,6 @@ const GuestsSection: React.FC = () => {
 
   const [allGuestsSection, setAllGuestsSection] = useState(true);
   const [backdrop, setBackdrop] = useState(false);
-  const [filteredGuests, setFilteredGuests] = useState(guests);
   const [filterString, setFilterString] = useState<string | undefined>(undefined);
 
   const openMyGuests = useCallback(() => {
@@ -70,28 +72,28 @@ const GuestsSection: React.FC = () => {
   }, []);
 
   const myGuestSection = useMemo(() => {
-    if (owners.length <= 1 && members.length <= 0) return false;
-    const findOthersGuests = guests.find(guest => guest.host_id !== user.id);
+    if (eventOwners.length <= 1 && eventMembers.length <= 0) return false;
+    const findOthersGuests = eventGuests.find(guest => guest.host_id !== user.id);
     return !!findOthersGuests;
   }, []);
 
   const handleLookForGuest = useCallback((data: string) => {
     setFilterString(data);
-    if (data === '') return setFilteredGuests(guests);
+    if (data === '') return handleFilteredGuests(eventGuests);
     setBackdrop(true);
-    const findGuests = guests.filter(guest =>
+    const findGuests = eventGuests.filter(guest =>
       guest.first_name.toLowerCase().includes(data.toLowerCase())
       || guest.last_name.toLowerCase().includes(data.toLowerCase())
     );
-    setFilteredGuests(findGuests);
-  }, [guests])
+    handleFilteredGuests(findGuests);
+  }, [eventGuests])
 
   function handleResetSearch() {
     setFilterString(undefined);
     inputRef.current && inputRef.current.clear();
     Keyboard.dismiss();
     setBackdrop(false);
-    setFilteredGuests(guests);
+    handleFilteredGuests(eventGuests);
   }
 
   function handleOffSearch() {
@@ -104,36 +106,36 @@ const GuestsSection: React.FC = () => {
       && confirmedGuestsFilter
       && notConfirmedGuestsFilter
       && !onlyMyGuestsFilter)
-        return setFilteredGuests(guests);
+        return handleFilteredGuests(eventGuests);
     if (!allGuestsFilter
       && confirmedGuestsFilter
       && notConfirmedGuestsFilter
       && onlyMyGuestsFilter)
-        return setFilteredGuests(guests.filter(guest => guest.host_id === user.id));
+        return handleFilteredGuests(eventGuests.filter(guest => guest.host_id === user.id));
     if (!allGuestsFilter
       && confirmedGuestsFilter
       && !notConfirmedGuestsFilter
       && onlyMyGuestsFilter)
-        return setFilteredGuests(
-          guests.filter(guest => guest.confirmed && guest.host_id === user.id));
+        return handleFilteredGuests(
+          eventGuests.filter(guest => guest.confirmed && guest.host_id === user.id));
     if (!allGuestsFilter
       && !confirmedGuestsFilter
       && notConfirmedGuestsFilter
       && onlyMyGuestsFilter)
-        return setFilteredGuests(
-          guests.filter(guest => !guest.confirmed && guest.host_id === user.id));
+        return handleFilteredGuests(
+          eventGuests.filter(guest => !guest.confirmed && guest.host_id === user.id));
     if (!allGuestsFilter
       && confirmedGuestsFilter
       && !notConfirmedGuestsFilter
       && !onlyMyGuestsFilter)
-        return setFilteredGuests(
-          guests.filter(guest => guest.confirmed));
+        return handleFilteredGuests(
+          eventGuests.filter(guest => guest.confirmed));
     if (!allGuestsFilter
       && !confirmedGuestsFilter
       && notConfirmedGuestsFilter
       && !onlyMyGuestsFilter)
-        return setFilteredGuests(
-          guests.filter(guest => !guest.confirmed));
+        return handleFilteredGuests(
+          eventGuests.filter(guest => !guest.confirmed));
   }, [
     allGuestsFilter,
     confirmedGuestsFilter,
@@ -147,7 +149,7 @@ const GuestsSection: React.FC = () => {
   }
 
   useEffect(() => {
-    if (guests.length <= 0) handleNewMobileGuest();
+    if (eventGuests.length <= 0) handleNewMobileGuest();
   }, []);
 
   return (

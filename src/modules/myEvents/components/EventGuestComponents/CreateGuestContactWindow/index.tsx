@@ -1,12 +1,12 @@
+import React, { useCallback, useState, useRef } from 'react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
-import React, { useCallback, useState, useRef } from 'react';
 import Button from '../../../../../components/Button';
 import Input from '../../../../../components/Input';
 
 import WindowContainer from '../../../../../components/WindowContainer';
 import { useEventGuests } from '../../../../../hooks/eventGuests';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import SelectContactType from '../../SelectContactType';
 
 import { Container, Title } from './styles';
@@ -18,8 +18,12 @@ interface IFormData {
 
 export function CreateGuestContactWindow(): JSX.Element {
   const formRef = useRef<FormHandles>(null);
-  const { selectedGuest } = useMyEvent();
-  const { createGuestContact, loading, handleCreateGuestContactWindow } = useEventGuests();
+  const { selectedEventGuest } = useEventVariables();
+  const {
+    createGuestContact,
+    loading,
+    handleCreateGuestContactWindow,
+  } = useEventGuests();
   const [contactTypeWindow, setContactTypeWindow] = useState(true);
   const [contact_type, setContactType] = useState('Whatsapp');
 
@@ -35,10 +39,15 @@ export function CreateGuestContactWindow(): JSX.Element {
     await createGuestContact({
       contact_info,
       contact_type,
-      guest_id: selectedGuest.id,
+      guest_id: selectedEventGuest.id,
     });
     handleCreateGuestContactWindow();
-  }, [createGuestContact, handleCreateGuestContactWindow, contact_type, selectedGuest]);
+  }, [
+    createGuestContact,
+    handleCreateGuestContactWindow,
+    contact_type,
+    selectedEventGuest,
+  ]);
 
   return (
     <>

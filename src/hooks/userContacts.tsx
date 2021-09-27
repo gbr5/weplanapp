@@ -75,7 +75,7 @@ const UserContactsProvider: React.FC = ({ children }) => {
         const access = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
           {
             title: 'Importar Lista Convidados!',
-            message: 'A WePlan está requisitando acesso a sua lista de contatos.',
+            message: "Visando uma melhor experiência, solicitamos acesso à lista de contatos do seu celular. Desta forma você poderà mais facilmente fazer o upload dos seus convidados, junto de seus contatos telefônicos e e-mail's",
             buttonPositive: 'Importar Convidados',
           });
         if (access === 'granted') {

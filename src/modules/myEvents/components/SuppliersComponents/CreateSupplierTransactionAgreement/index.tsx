@@ -5,7 +5,6 @@ import { Form } from '@unform/mobile';
 import { Alert, Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 import { addDays, addMonths } from 'date-fns';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
@@ -29,6 +28,7 @@ import {
 } from './styles';
 import ICreateTransactionDTO from '../../../../../dtos/ICreateTransactionDTO';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 interface IFormData {
   amount: string;
@@ -39,11 +39,10 @@ export function CreateSupplierTransactionAgreement() {
   const formRef = useRef<FormHandles>(null);
   const numberRef = useRef<InputRefProps>(null);
   const {
-    selectedSupplier,
-    loading,
-    selectSupplier,
+    selectedEventSupplier,
+    selectEventSupplier,
     selectedEvent,
-  } = useMyEvent();
+  } = useEventVariables();
   const {
     handleCreateSupplierTransactionAgreementWindow,
   } = useEventSuppliers();
@@ -62,7 +61,7 @@ export function CreateSupplierTransactionAgreement() {
       installments: 1,
     });
     selectNewTransactions([]);
-    selectSupplier({} as IEventSupplierDTO);
+    selectEventSupplier({} as IEventSupplierDTO);
     handleCreateSupplierTransactionAgreementWindow();
     handleSelectedDate(addDays(new Date(), 3));
   }
@@ -82,7 +81,7 @@ export function CreateSupplierTransactionAgreement() {
         return Alert.alert('Número de Parcelas', 'Apenas números são aceitos!');
       }
 
-      if (!selectedSupplier || !selectedSupplier.id) {
+      if (!selectedEventSupplier || !selectedEventSupplier.id) {
         return Alert.alert('Escolha um fornecedor!');
       }
 
@@ -109,10 +108,10 @@ export function CreateSupplierTransactionAgreement() {
         transactions.push({
           name: '',
           amount: data.amount/data.number_of_installments,
-          category: selectedSupplier.supplier_sub_category,
+          category: selectedEventSupplier.supplier_sub_category,
           due_date: addMonths(new Date(selectedDate.setHours(10)), i),
           isPaid: false,
-          payee_id: selectedSupplier.id,
+          payee_id: selectedEventSupplier.id,
           payer_id: selectedEvent.id,
         });
       }
@@ -153,7 +152,7 @@ export function CreateSupplierTransactionAgreement() {
             <Container>
               <SupplierContainer>
                 <SupplierText>Fornecedor: </SupplierText>
-                <SupplierName>{selectedSupplier.name}</SupplierName>
+                <SupplierName>{selectedEventSupplier.name}</SupplierName>
               </SupplierContainer>
 
               <Form ref={formRef} onSubmit={handleSubmit}>
@@ -197,7 +196,7 @@ export function CreateSupplierTransactionAgreement() {
           </FormContainer>
         </TouchableWithoutFeedback>
         <Button
-          loading={loading}
+          loading={false}
           onPress={() => formRef.current?.submitForm()}
         >
           Próximo

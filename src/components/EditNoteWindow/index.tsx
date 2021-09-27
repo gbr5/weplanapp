@@ -1,5 +1,5 @@
 import React from 'react';
-import INoteDTO from '../../dtos/INoteDTO';
+import { useEventVariables } from '../../hooks/eventVariables';
 import { useMyEvent } from '../../hooks/myEvent';
 import { useNote } from '../../hooks/notes';
 import { NoteForm } from '../NoteForm';
@@ -17,7 +17,8 @@ interface IProps {
 export function EditNoteWindow({
   closeWindow,
 }: IProps) {
-  const { getEvent, selectedEvent } = useMyEvent();
+  const { getEvent } = useMyEvent();
+  const { selectedEvent } = useEventVariables();
   const { editNote, selectedNote, handleEditNoteWindow } = useNote();
 
   async function handleEditNote(note: string) {

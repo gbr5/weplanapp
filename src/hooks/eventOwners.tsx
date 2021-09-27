@@ -3,6 +3,7 @@ import ICreateEventOwnerDTO from '../dtos/ICreateEventOwnerDTO';
 import IEventOwnerDTO from '../dtos/IEventOwnerDTO';
 import IFriendDTO from '../dtos/IFriendDTO';
 import api from '../services/api';
+import { useEventVariables } from './eventVariables';
 import { useMyEvent } from './myEvent';
 
 interface EventOwnersContextType {
@@ -17,7 +18,8 @@ interface EventOwnersContextType {
 const EventOwnersContext = createContext({} as EventOwnersContextType);
 
 const EventOwnersProvider: React.FC = ({ children }) => {
-  const { selectedEvent, getEventOwners } = useMyEvent();
+  const { getEventOwners } = useMyEvent();
+  const { selectedEvent } = useEventVariables();
 
   const [addOwnerWindow, setAddOwnerWindow] = useState(false);
 

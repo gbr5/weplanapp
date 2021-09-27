@@ -1,15 +1,10 @@
 import React from 'react';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
-
 import IEventTaskDTO from '../../../../../dtos/IEventTaskDTO';
 
-import { TaskTitle } from '../TaskTitle';
 import { EventTaskFooter } from '../EventTaskFooter';
 import { EventTaskBody } from '../EventTaskBody';
 
-  // CloseButton,
-  // CloseButtonTitle,
 import {
   Container,
   Title,
@@ -17,6 +12,7 @@ import {
 } from './styles';
 import theme from '../../../../../global/styles/theme';
 import CloseButton from '../../../../../components/CloseButton';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 interface IProps {
   eventTask: IEventTaskDTO;
@@ -32,12 +28,12 @@ export function EventTask({
     shadowRadius,
   } = theme.objectButtonShadow;
 
-  const { selectEventTask, selectedTask } = useMyEvent();
+  const { selectEventTask, selectedEventTask } = useEventVariables();
 
   function handleTaskBody() {
-    !selectedTask
-      || !selectedTask.id
-      || selectedTask.id !== eventTask.id
+    !selectedEventTask
+      || !selectedEventTask.id
+      || selectedEventTask.id !== eventTask.id
         ? selectEventTask(eventTask)
         : selectEventTask({} as IEventTaskDTO);
   }
@@ -52,18 +48,18 @@ export function EventTask({
           shadowRadius,
           elevation: 8,
         }}
-        isActive={selectedTask.id === eventTask.id}
+        isActive={selectedEventTask.id === eventTask.id}
         onPress={handleTaskBody}
       >
         <Title>{eventTask.title}</Title>
         <Underline />
-        {selectedTask.id !== eventTask.id ? (
+        {selectedEventTask.id !== eventTask.id ? (
           <EventTaskFooter eventTask={eventTask} />
         ) : (
           <CloseButton closeFunction={handleTaskBody} />
         )}
       </Container>
-      {selectedTask.id === eventTask.id && (
+      {selectedEventTask.id === eventTask.id && (
         <EventTaskBody />
       )}
     </>

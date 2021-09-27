@@ -1,16 +1,19 @@
 import React, { useRef } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
-import WindowContainer from '../../../../components/WindowContainer';
+
 import { useMyEvent } from '../../../../hooks/myEvent';
-import { Container, Title } from './styles';
-import Input from '../../../../components/Input';
+import { useEventVariables } from '../../../../hooks/eventVariables';
 import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
-import Button from '../../../../components/Button';
 import theme from '../../../../global/styles/theme';
+
+import WindowContainer from '../../../../components/WindowContainer';
+import Input from '../../../../components/Input';
+import Button from '../../../../components/Button';
 import { WindowHeader } from '../../../../components/WindowHeader';
 
+import { Container } from './styles';
 interface IFormData {
   budget: number;
 }
@@ -23,8 +26,8 @@ export function BudgetWindow() {
     shadowRadius,
   } = theme.buttonShadow;
   const formRef = useRef<FormHandles>(null);
+  const { eventBudget } = useEventVariables();
   const {
-    eventBudget,
     loading,
     createEventBudget,
     updateEventBudget,

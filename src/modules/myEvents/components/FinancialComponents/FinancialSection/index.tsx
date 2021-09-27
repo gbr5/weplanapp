@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import theme from '../../../../../global/styles/theme';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import { useMyEvent } from '../../../../../hooks/myEvent';
-import { useTransaction } from '../../../../../hooks/transactions';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 
@@ -36,11 +36,13 @@ export function FinancialSection() {
   } = theme.menuShadow;
   const {
     eventBudget,
+    eventTransactions,
+    selectedEvent
+  } = useEventVariables();
+  const {
     handleBudgetWindow,
     eventFinancialSubSection,
     handleEventFinancialSubSection,
-    eventTransactions,
-    selectedEvent
   } = useMyEvent();
 
   const budget = useMemo(() => {

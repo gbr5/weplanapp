@@ -15,8 +15,8 @@ import {
   GuestName,
 } from './styles';
 import theme from '../../../../../global/styles/theme';
-import api from '../../../../../services/api';
 import { useEventGuests } from '../../../../../hooks/eventGuests';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 interface IProps {
   index?: number;
@@ -35,16 +35,17 @@ const GuestSectionButton: React.FC<IProps> = ({
   } = theme.objectButtonShadow;
   const { user } = useAuth();
   const navigation = useNavigation();
-  const { selectGuest, getEventGuests } = useMyEvent();
+  const { selectEventGuest } = useEventVariables();
+  const { getEventGuests } = useMyEvent();
   const { editGuest } = useEventGuests();
 
   const [loading, setLoading] = useState(false);
   const [updatedGuest, setUpdatedGuest] = useState(guest);
 
   const navigateToGuest = useCallback(() => {
-    selectGuest(guest);
+    selectEventGuest(guest);
     navigation.navigate('EventGuest');
-  }, [navigation, selectGuest, guest]);
+  }, [navigation, selectEventGuest, guest]);
 
   const handleEditGuestConfirmation = useCallback(async () => {
     if (user.id !== guest.host_id) return;

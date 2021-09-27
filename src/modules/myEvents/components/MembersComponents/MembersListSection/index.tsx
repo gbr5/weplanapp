@@ -1,9 +1,5 @@
-import React from 'react';
-import { useState } from 'react';
-import { AddButton } from '../../../../../components/AddButton';
-import { InfoButton } from '../../../../../components/InfoButton';
-import { WindowHeader } from '../../../../../components/WindowHeader';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import React, { useState } from 'react';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { MemberButton } from '../MemberButton';
 
 import {
@@ -13,9 +9,7 @@ import {
 } from './styles';
 
 export function MembersListSection() {
-  const {
-    members,
-  } = useMyEvent();
+  const { eventMembers } = useEventVariables();
   const [section, setSection] = useState('Main');
 
   function handleSection(data: string) {
@@ -27,12 +21,12 @@ export function MembersListSection() {
   return (
     <Container>
       <Body>
-        {members.length > 0 && (
+        {eventMembers.length > 0 && (
           <MembersContainer
-            data={members}
+            data={eventMembers}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
-              const index = String(members.findIndex(member => member.id === item.id) + 1);
+              const index = String(eventMembers.findIndex(member => member.id === item.id) + 1);
               return (
                 <MemberButton
                   index={index}

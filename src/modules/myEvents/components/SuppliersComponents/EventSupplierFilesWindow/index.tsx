@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import WindowContainer from '../../../../../components/WindowContainer';
@@ -20,11 +19,10 @@ import {
   IconContainer,
   Icon,
 } from './styles';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 export function EventSupplierFilesWindow() {
-  const {
-    selectedSupplier,
-  } = useMyEvent();
+  const { selectedEventSupplier } = useEventVariables();
   const {
     handleSupplierFilesWindow,
     importSupplierFile,
@@ -36,12 +34,12 @@ export function EventSupplierFilesWindow() {
 
   async function handleFile() {
     setImageButton(false);
-    await importSupplierFile(selectedSupplier.id);
+    await importSupplierFile(selectedEventSupplier.id);
   }
 
   async function handleImages() {
     setImageButton(true);
-    await importSupplierImage(selectedSupplier.id);
+    await importSupplierImage(selectedEventSupplier.id);
   }
   useEffect(() => {
     (async () => {
@@ -78,7 +76,7 @@ export function EventSupplierFilesWindow() {
       width="100%"
     >
       <Container>
-        <WindowHeader overTitle={`Fornecedor(a): ${selectedSupplier.name}`} title="Arquivos" />
+        <WindowHeader overTitle={`Fornecedor(a): ${selectedEventSupplier.name}`} title="Arquivos" />
         {loading ? (
           <IconContainer>
             <Icon name="loader" />
@@ -92,9 +90,9 @@ export function EventSupplierFilesWindow() {
             secondLabel="+ Arquivo"
           />
         )}
-        {selectedSupplier.files.length > 0 && (
+        {selectedEventSupplier.files.length > 0 && (
           <FileContainer
-            data={selectedSupplier.files}
+            data={selectedEventSupplier.files}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
               return (

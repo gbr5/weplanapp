@@ -13,6 +13,7 @@ import ICreateEventTaskDTO from '../dtos/ICreateEventTaskDTO';
 import { useMyEvent } from './myEvent';
 import ICreateEventTaskNoteDTO from '../dtos/ICreateEventTaskNoteDTO';
 import IEventTaskNoteDTO from '../dtos/IEventTaskNoteDTO';
+import { useEventVariables } from './eventVariables';
 
 interface EventTasksContextType {
   loading: boolean;
@@ -50,12 +51,14 @@ const EventTasksContext = createContext({} as EventTasksContextType);
 
 const EventTasksProvider: React.FC = ({ children }) => {
   const {
-    getEvent,
     selectedEvent,
+    selectedEventTask,
+    selectEventTask,
+  } = useEventVariables();
+  const {
+    getEvent,
     getEventNotes,
     getEventTasks,
-    selectedTask,
-    selectEventTask,
   } = useMyEvent();
   const [editTaskPriorityWindow, setEditTaskPriorityWindow] = useState(false);
   const [editTaskStatusWindow, setEditTaskStatusWindow] = useState(false);
@@ -150,7 +153,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       const response = await api.put(`/event-tasks/${data.id}`, data);
-      selectedTask && selectedTask.id && selectEventTask(response.data);
+      selectedEventTask && selectedEventTask.id && selectEventTask(response.data);
       await getEventTasks(data.event_id);
       await getEventNotes(data.event_id);
       selectStatus(data.status);

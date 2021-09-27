@@ -3,11 +3,12 @@ import { differenceInMilliseconds } from 'date-fns/esm';
 
 import theme from '../../../../../global/styles/theme';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
+import InlineFormField from '../../../../../components/InlineFormField';
 import { NotificationNumber } from '../../../../../components/NotificationNumber';
 
 import {
@@ -33,7 +34,6 @@ import {
   SupplierLabel, // 20
   FieldContainer, // 21
 } from './styles';
-import InlineFormField from '../../../../../components/InlineFormField';
 
 export function SupplierButtonInfo() {
   const {
@@ -42,7 +42,7 @@ export function SupplierButtonInfo() {
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedSupplier, eventTransactions } = useMyEvent();
+  const { selectedEventSupplier, eventTransactions } = useEventVariables();
   const {
     handleCreateSupplierTransactionAgreementWindow,
     handleDischargingWindow,
@@ -66,8 +66,8 @@ export function SupplierButtonInfo() {
   async function updateSupplierIsHired() {
     try {
       setLoading(true);
-      selectedSupplier.isHired && handleDischargingWindow();
-      !selectedSupplier.isHired && handleCreateSupplierTransactionAgreementWindow();
+      selectedEventSupplier.isHired && handleDischargingWindow();
+      !selectedEventSupplier.isHired && handleCreateSupplierTransactionAgreementWindow();
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -76,23 +76,23 @@ export function SupplierButtonInfo() {
   }
 
   function openSelectCategoryWindow() {
-    selectSupplierCategory(selectedSupplier.supplier_sub_category);
+    selectSupplierCategory(selectedEventSupplier.supplier_sub_category);
     handleEditSupplierCategoryWindow();
   }
 
   const totalCost = useMemo(() => {
-    return selectedSupplier.transactionAgreements
+    return selectedEventSupplier.transactionAgreements
       .filter(agreement => !agreement.isCancelled)
       .map(agreement => Number(agreement.amount))
       .reduce((acc, cv) => acc + cv, 0);
-  }, [selectedSupplier]);
+  }, [selectedEventSupplier]);
 
   const nextPayment = useMemo(() => {
     const today = new Date();
 
     return eventTransactions
       .filter(({ transaction }) => !transaction.isPaid)
-      .filter(({ transaction }) => transaction.payee_id === selectedSupplier.id)
+      .filter(({ transaction }) => transaction.payee_id === selectedEventSupplier.id)
       .sort((a, b) => {
         if (
           differenceInMilliseconds(
@@ -112,25 +112,25 @@ export function SupplierButtonInfo() {
         };
         return 0;
       })[0];
-  }, [selectedSupplier]);
+  }, [selectedEventSupplier]);
 
   const nextPaymentLate = useMemo(() => {
     return !nextPayment ?? new Date(nextPayment.transaction.due_date) < new Date();
   }, [nextPayment])
 
   const numberOfNotes = useMemo(() => {
-    return selectedSupplier.notes.length;
-  }, [selectedSupplier.notes]);
+    return selectedEventSupplier.notes.length;
+  }, [selectedEventSupplier.notes]);
 
   const numberOfBudgets = useMemo(() => {
-    return selectedSupplier.budgets.length;
-  }, [selectedSupplier.notes]);
+    return selectedEventSupplier.budgets.length;
+  }, [selectedEventSupplier.notes]);
   const numberOfFiles = useMemo(() => {
-    return selectedSupplier.files.length;
-  }, [selectedSupplier.notes]);
+    return selectedEventSupplier.files.length;
+  }, [selectedEventSupplier.notes]);
   const numberOfTransactions = useMemo(() => {
     let transactions = 0;
-    selectedSupplier.transactionAgreements
+    selectedEventSupplier.transactionAgreements
       .filter(agreement => !agreement.isCancelled)
       .map(agreement => {
         return agreement.transactions.map(({ transaction }) => {
@@ -141,18 +141,18 @@ export function SupplierButtonInfo() {
         });
       });
     return transactions;
-  }, [selectedSupplier.notes]);
+  }, [selectedEventSupplier.notes]);
   const numberOfTransactionAgreements = useMemo(() => {
-    return selectedSupplier.transactionAgreements
+    return selectedEventSupplier.transactionAgreements
       .filter(agreement => !agreement.isCancelled).length;
-  }, [selectedSupplier.notes]);
+  }, [selectedEventSupplier.notes]);
 
   const top = '-50%';
   const left = '-20%';
 
   async function handleUpdateSupplierName(name: string) {
     await updateEventSupplier({
-      ...selectedSupplier,
+      ...selectedEventSupplier,
       name,
     });
   }
@@ -179,7 +179,7 @@ export function SupplierButtonInfo() {
             elevation: 5,
           }}
         >
-          <SupplierName>{selectedSupplier.supplier_sub_category}</SupplierName>
+          <SupplierName>{selectedEventSupplier.supplier_sub_category}</SupplierName>
         </SupplierNameButton>
       </FieldContainer>
       <SectionBorder />
@@ -187,8 +187,8 @@ export function SupplierButtonInfo() {
           <SupplierLabel>Nome</SupplierLabel>
           {editName ? (
             <InlineFormField
-              defaultValue={selectedSupplier.name}
-              placeholder={selectedSupplier.name}
+              defaultValue={selectedEventSupplier.name}
+              placeholder={selectedEventSupplier.name}
               handleOnSubmit={handleUpdateSupplierName}
               closeComponent={handleEditName}
               />
@@ -203,7 +203,7 @@ export function SupplierButtonInfo() {
                 elevation: 5,
               }}
             >
-              <SupplierName>{selectedSupplier.name}</SupplierName>
+              <SupplierName>{selectedEventSupplier.name}</SupplierName>
             </SupplierNameButton>
           )}
         </FieldContainer>
@@ -224,7 +224,7 @@ export function SupplierButtonInfo() {
           </IconContainer>
         </MenuButton> */}
 
-        {selectedSupplier.isHired && (
+        {selectedEventSupplier.isHired && (
           <MenuButton
             style={{
               shadowColor: theme.menuShadow.shadowColor,
@@ -276,7 +276,7 @@ export function SupplierButtonInfo() {
           </IconContainer>
         </MenuButton>
 
-        {selectedSupplier.isHired && (
+        {selectedEventSupplier.isHired && (
           <MenuButton
             onPress={handleSupplierTransactionAgreementsWindow}
             style={{
@@ -304,7 +304,7 @@ export function SupplierButtonInfo() {
           </MenuButton>
         )}
 
-        {!selectedSupplier.isHired && (
+        {!selectedEventSupplier.isHired && (
           <MenuButton
             onPress={handleSupplierBudgetsWindow}
             style={{
@@ -358,7 +358,7 @@ export function SupplierButtonInfo() {
           </IconContainer>
         </MenuButton>
 
-        {selectedSupplier.weplanUser && (
+        {selectedEventSupplier.weplanUser && (
           <MenuButton
             style={{
               shadowColor: theme.menuShadow.shadowColor,
@@ -408,7 +408,7 @@ export function SupplierButtonInfo() {
           <SectionBorder />
         </>
       )}
-      {selectedSupplier.isHired ? (
+      {selectedEventSupplier.isHired ? (
         <>
           <NextTransactionContainer>
             <SectionTitle>Total Contratado</SectionTitle>
@@ -449,10 +449,10 @@ export function SupplierButtonInfo() {
             shadowRadius,
             elevation: 5,
           }}
-          isHired={selectedSupplier.isHired}
+          isHired={selectedEventSupplier.isHired}
           onPress={updateSupplierIsHired}
         >
-          {selectedSupplier.isHired ? (
+          {selectedEventSupplier.isHired ? (
             <>
               <RowTitle>Contratado</RowTitle>
               {loading ? (
@@ -481,7 +481,7 @@ export function SupplierButtonInfo() {
         <DateText>Criado dia: </DateText>
         <DateText>
           {
-            formatOnlyDate(String(selectedSupplier.created_at))
+            formatOnlyDate(String(selectedEventSupplier.created_at))
           }
         </DateText>
       </FooterContainer>

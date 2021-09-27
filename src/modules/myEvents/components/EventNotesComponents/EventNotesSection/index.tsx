@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Note } from '../../../../../components/Note';
 import { SectionHeader } from '../../../../../components/SectionHeader';
 import INoteDTO from '../../../../../dtos/INoteDTO';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useNote } from '../../../../../hooks/notes';
 import { EventNoteForm } from '../EventNoteForm';
 import { SearchNotes } from '../SearchNotes';
@@ -13,7 +13,7 @@ import {
 } from './styles';
 
 export function EventNotesSection() {
-  const { eventNotes } = useMyEvent();
+  const { eventNotes } = useEventVariables();
   const { handleCreateEventNoteWindow, createEventNoteWindow } = useNote();
 
   const [filteredNotes, setFilteredNotes] = useState<INoteDTO[]>([]);

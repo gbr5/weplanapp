@@ -28,19 +28,22 @@ export function EventButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectEvent, handleDeleteEventConfirmationWindow } = useMyEvent();
+  const {
+    handleSelectedEvent,
+    handleDeleteEventConfirmationWindow,
+  } = useMyEvent();
 
   const navigateToMyEvent = useCallback(() => {
     navigation.navigate('MyEvent');
   }, [navigation]);
 
-  const selectMyEvent = useCallback(() => {
-    selectEvent(event);
+  const selectMyEvent = useCallback(async () => {
+    await handleSelectedEvent(event);
     navigateToMyEvent();
-  }, [selectEvent, navigateToMyEvent, event]);
+  }, [handleSelectedEvent, navigateToMyEvent, event]);
 
-  function handleDeleteEvent(): void {
-    selectEvent(event);
+  async function handleDeleteEvent(): Promise<void> {
+    await handleSelectedEvent(event);
     handleDeleteEventConfirmationWindow();
   }
 

@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
+
 import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
 import theme from '../../../../../global/styles/theme';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
@@ -35,7 +36,7 @@ export function SupplierAgreementButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { eventSuppliers } = useMyEvent();
+  const { eventSuppliers } = useEventVariables();
   const {
     handleEventSupplierAgreementTransactionsWindow,
     selectSupplierTransactionAgreement,

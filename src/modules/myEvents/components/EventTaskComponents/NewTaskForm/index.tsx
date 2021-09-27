@@ -6,7 +6,7 @@ import { TouchableWithoutFeedback, Keyboard, Platform } from 'react-native';
 import theme from '../../../../../global/styles/theme';
 
 import { useEventTasks } from '../../../../../hooks/eventTasks';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
 import formatOnlyTime from '../../../../../utils/formatOnlyTime';
@@ -38,7 +38,7 @@ interface IProps {
 const NewTaskForm: React.FC<IProps> = ({
   closeWindow,
 }) => {
-  const { selectedEvent } = useMyEvent();
+  const { selectedEvent } = useEventVariables();
   const {
     createTask,
     loading,

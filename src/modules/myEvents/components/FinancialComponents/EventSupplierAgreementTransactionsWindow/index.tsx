@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Alert } from 'react-native';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useTransaction } from '../../../../../hooks/transactions';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
 import ITransactionDTO from '../../../../../dtos/ITransactionDTO';
@@ -15,17 +15,16 @@ import ShortConfirmationWindow from '../../../../../components/ShortConfirmation
 import WindowContainer from '../../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../../components/WindowHeader';
 import { EventTransactionButton } from '../../../../../components/TransactionComponents/EventTransactionButton';
+import Button from '../../../../../components/Button';
 
 import {
   Container,
   Title,
   TransactionsContainer,
 } from './styles';
-import { useMemo } from 'react';
-import Button from '../../../../../components/Button';
 
 export function EventSupplierAgreementTransactionsWindow() {
-  const { eventSuppliers } = useMyEvent();
+  const { eventSuppliers } = useEventVariables();
   const {
     selectSupplierTransaction,
     selectSupplierTransactionAgreement,

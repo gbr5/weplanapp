@@ -4,9 +4,11 @@ import { FormHandles } from '@unform/core';
 import { Alert, Keyboard, Platform, TextInput, TouchableWithoutFeedback } from 'react-native';
 
 import { useEventGuests } from '../../../../../hooks/eventGuests';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import theme from '../../../../../global/styles/theme';
 
+import { FormButton } from '../../../../../components/FormButton';
 import Input from '../../../../../components/Input';
 import WindowContainer from '../../../../../components/WindowContainer';
 
@@ -19,8 +21,6 @@ import {
   Title,
   FormQuestion,
 } from './styles';
-import { FormButton } from '../../../../../components/FormButton';
-import { useMyEvent } from '../../../../../hooks/myEvent';
 
 interface IFormData {
   first_name: string;
@@ -28,7 +28,7 @@ interface IFormData {
 }
 
 const NewGuestForm: React.FC = () => {
-  const { guests } = useMyEvent();
+  const { eventGuests } = useEventVariables();
   const { addNewGuest, loading, handleNewGuestForm } = useEventGuests();
   const formRef = useRef<FormHandles>(null);
   const inputRef = useRef<TextInput>(null);
@@ -37,7 +37,7 @@ const NewGuestForm: React.FC = () => {
     first_name,
     last_name,
   }: IFormData) => {
-    const findGuest = guests.find(
+    const findGuest = eventGuests.find(
       guest =>
         guest.first_name === first_name && guest.last_name === last_name,
     );

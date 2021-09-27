@@ -17,6 +17,7 @@ import { Alert } from 'react-native';
 import IFriendDTO from '../dtos/IFriendDTO';
 import { useAuth } from './auth';
 import { useFriends } from './friends';
+import { useEventVariables } from './eventVariables';
 
 interface EventGuestsContextType {
   allGuestsFilter: boolean;
@@ -65,15 +66,15 @@ const EventGuestsContext = createContext({} as EventGuestsContextType);
 const EventGuestsProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
   const { handleUnselectedFriends } = useFriends();
+  const { getEventGuests } = useMyEvent();
   const {
     selectedEvent,
-    getEventGuests,
-    selectGuest,
-    guests,
-    selectedGuest,
-    owners,
-    members,
-  } = useMyEvent();
+    selectEventGuest,
+    eventGuests,
+    selectedEventGuest,
+    eventOwners,
+    eventMembers,
+  } = useEventVariables();
 
   const [loading, setLoading] = useState(false);
   const [guestFilterWindow, setGuestFilterWindow] = useState(false);
@@ -145,7 +146,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
   async function addNewGuest({ first_name, last_name }: IAddNewEventGuestDTO) {
     try {
       setLoading(true);
-      const findGuest = guests.find(
+      const findGuest = eventGuests.find(
         guest => guest.last_name === last_name && guest.first_name === first_name,
       );
       if (findGuest)
@@ -194,7 +195,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         phoneNumbers,
         emailAddresses,
       }) => {
-        const findGuest = guests.find(
+        const findGuest = eventGuests.find(
           guest => guest.last_name === familyName && guest.first_name === givenName,
         );
         if (findGuest)
@@ -237,7 +238,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         description: data.description,
         confirmed: data.confirmed,
       });
-      selectGuest(response.data);
+      selectEventGuest(response.data);
       await getEventGuests(data.event_id);
       return response.data;
     } catch (err) {
@@ -255,7 +256,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
     } catch (err) {
       throw new Error(err);
     } finally {
-      selectGuest({} as IEventGuestDTO);
+      selectEventGuest({} as IEventGuestDTO);
       setLoading(false);
     }
   }
@@ -304,7 +305,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       await api.delete(
-        `/event/weplan-guests/${selectedGuest.weplanGuest.id}`,
+        `/event/weplan-guests/${selectedEventGuest.weplanGuest.id}`,
       );
       await getEventGuests(selectedEvent.id);
       setDissociateUserFromGuestConfirmation(false);
@@ -320,7 +321,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       setLoading(true);
       const { personInfo } = data.friend;
       if (personInfo) {
-        const findGuest = guests.find(
+        const findGuest = eventGuests.find(
           guest =>
             guest.first_name === personInfo.first_name &&
             guest.last_name === personInfo.last_name,
@@ -335,7 +336,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       }
 
       await api.post(`/associate-user-to-event-guest/`, {
-        guest_id: selectedGuest.id,
+        guest_id: selectedEventGuest.id,
         user_id: data.friend_id,
       });
 
@@ -349,7 +350,7 @@ const EventGuestsProvider: React.FC = ({ children }) => {
 
   async function sendMassEmailInvitations(): Promise<void> {
     try {
-      const findGuests = guests
+      const findGuests = eventGuests
         .map(guest => {
           const email =
             (!!guest.contacts &&
@@ -358,11 +359,11 @@ const EventGuestsProvider: React.FC = ({ children }) => {
                 ?.contact_info) ||
             '';
           let host = user;
-          const findOwner = owners.find(
+          const findOwner = eventOwners.find(
             owner => owner.userEventOwner.id === guest.host_id,
           );
           if (findOwner) host = findOwner.userEventOwner;
-          const findMember = members.find(
+          const findMember = eventMembers.find(
             member => member.userEventMember.id === guest.host_id,
           );
           if (findMember) host = findMember.userEventMember;

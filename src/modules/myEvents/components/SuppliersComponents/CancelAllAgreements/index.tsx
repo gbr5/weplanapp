@@ -4,8 +4,8 @@ import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
-import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import ITransactionDTO from '../../../../../dtos/ITransactionDTO';
 import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
@@ -35,7 +35,7 @@ import {
 } from './styles';
 
 export function CancelAllAgreements() {
-  const { selectedSupplier } = useMyEvent();
+  const { selectedEventSupplier } = useEventVariables();
   const {
     dischargeOption,
     supplierTransactions,
@@ -100,7 +100,7 @@ export function CancelAllAgreements() {
 
   async function handleDeleteSelectedTransactios() {
     const agreements: IUpdateEventSupplierTransactionAgreementDTO[] = [];
-    selectedSupplier.transactionAgreements.map(agreement => {
+    selectedEventSupplier.transactionAgreements.map(agreement => {
       const updatedAgreement = cancelAgreementSelectedTransactions(agreement);
       agreements.push(updatedAgreement);
       return updatedAgreement;
@@ -111,7 +111,7 @@ export function CancelAllAgreements() {
       }),
     ]);
     await updateEventSupplier({
-      ...selectedSupplier,
+      ...selectedEventSupplier,
       isDischarged: true,
       isHired: false,
     });
@@ -162,7 +162,7 @@ export function CancelAllAgreements() {
   async function handleDeleteAll() {
     if (supplierTransactions && selectedTransactions.length < supplierTransactions.length)
       return handleDeleteSelectedTransactios();
-    if (!selectedSupplier.isDischarged) {
+    if (!selectedEventSupplier.isDischarged) {
       await deleteAllSupplierAgreements();
     }
 
@@ -201,9 +201,9 @@ export function CancelAllAgreements() {
             <AgreementsContainer
               horizontal
             >
-              {selectedSupplier.transactionAgreements.length > 0 &&
-                selectedSupplier.transactionAgreements.map(agreement => {
-                  const index = selectedSupplier.transactionAgreements.findIndex(tAgreement => tAgreement.id === agreement.id) + 1;
+              {selectedEventSupplier.transactionAgreements.length > 0 &&
+                selectedEventSupplier.transactionAgreements.map(agreement => {
+                  const index = selectedEventSupplier.transactionAgreements.findIndex(tAgreement => tAgreement.id === agreement.id) + 1;
                   return (
                     <AgreementContainer
                       isActive={selectedSupplierTransactionAgreement.id === agreement.id}
@@ -265,9 +265,9 @@ export function CancelAllAgreements() {
             <AgreementsContainer
               horizontal
             >
-              {selectedSupplier.transactionAgreements.length > 0 &&
-                selectedSupplier.transactionAgreements.map(agreement => {
-                  const index = selectedSupplier.transactionAgreements.findIndex(tAgreement => tAgreement.id === agreement.id) + 1;
+              {selectedEventSupplier.transactionAgreements.length > 0 &&
+                selectedEventSupplier.transactionAgreements.map(agreement => {
+                  const index = selectedEventSupplier.transactionAgreements.findIndex(tAgreement => tAgreement.id === agreement.id) + 1;
                   return (
                     <AgreementContainer
                       isActive={selectedSupplierTransactionAgreement.id === agreement.id}

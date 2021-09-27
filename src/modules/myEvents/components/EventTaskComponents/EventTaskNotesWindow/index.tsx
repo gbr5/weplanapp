@@ -3,6 +3,7 @@ import { Note } from '../../../../../components/Note';
 import { NoteForm } from '../../../../../components/NoteForm';
 import WindowContainer from '../../../../../components/WindowContainer';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useNote } from '../../../../../hooks/notes';
 
@@ -21,14 +22,15 @@ interface IProps {
 export function EventTaskNotesWindow({
   closeWindow,
 }: IProps) {
-  const { selectedTask, getEvent, selectedEvent } = useMyEvent();
+  const { selectedEventTask, selectedEvent } = useEventVariables();
+  const { getEvent } = useMyEvent();
   const { createTaskNote } = useEventTasks();
   const { updateNotes } = useNote();
 
   async function handleCreateTaskNote(note: string) {
     await createTaskNote({
       note,
-      task_id: selectedTask.id,
+      task_id: selectedEventTask.id,
     });
     await getEvent(selectedEvent.id);
   }
@@ -49,7 +51,7 @@ export function EventTaskNotesWindow({
       <Container>
         <Title>Notas</Title>
         <Underline />
-        <TaskTitle>Tarefa: {selectedTask.title}</TaskTitle>
+        <TaskTitle>Tarefa: {selectedEventTask.title}</TaskTitle>
 
         <NoteForm
           handleNote={(data: string) => handleCreateTaskNote(data)}
@@ -57,7 +59,7 @@ export function EventTaskNotesWindow({
         />
 
         <NotesContainer
-          data={selectedTask.notes.map(taskNotes => taskNotes.note)}
+          data={selectedEventTask.notes.map(taskNotes => taskNotes.note)}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Note key={item.id} selectedNote={item} />

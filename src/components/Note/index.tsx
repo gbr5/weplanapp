@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import INoteDTO from '../../dtos/INoteDTO';
 import theme from '../../global/styles/theme';
 import { useAuth } from '../../hooks/auth';
+import { useEventVariables } from '../../hooks/eventVariables';
 import { useMyEvent } from '../../hooks/myEvent';
 import { useNote } from '../../hooks/notes';
 import formatDateToString from '../../utils/formatDateToString';
@@ -34,7 +35,8 @@ export function Note({
     shadowRadius,
   } = theme.objectButtonShadow;
   const { user } = useAuth();
-  const { selectedEvent, owners, getEventNotes, members } = useMyEvent();
+  const { getEventNotes } = useMyEvent();
+  const { selectedEvent, eventOwners, eventMembers } = useEventVariables();
   const { editNote } = useNote();
 
   const [edit, setEdit] = useState(false);
@@ -52,7 +54,7 @@ export function Note({
         ? `${personInfo.first_name}  ${personInfo.last_name}`
         : user.name;
     }
-    const findOwner = owners.find(
+    const findOwner = eventOwners.find(
       owner => owner.userEventOwner.id === selectedNote.author_id,
     );
     if (findOwner) {
@@ -61,7 +63,7 @@ export function Note({
         ? `${owner.first_name}  ${owner.last_name}`
         : findOwner.userEventOwner.name;
     }
-    const findMember = members.find(
+    const findMember = eventMembers.find(
       owner => owner.userEventMember.id === selectedNote.author_id,
     );
     if (findMember) {
@@ -71,7 +73,7 @@ export function Note({
         : findMember.userEventMember.name;
     }
     return '';
-  }, [owners, members, user, selectedEvent, selectedNote]);
+  }, [eventOwners, eventMembers, user, selectedEvent, selectedNote]);
 
   async function handleEditNote(note: string) {
     try {

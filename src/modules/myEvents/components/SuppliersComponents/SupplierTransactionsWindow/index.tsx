@@ -2,7 +2,6 @@ import React from 'react';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useTransaction } from '../../../../../hooks/transactions';
 
@@ -19,13 +18,14 @@ import {
 } from './styles';
 import { useMemo } from 'react';
 import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 export function SupplierTransactionsWindow() {
   const {
-    selectedSupplier,
+    selectedEventSupplier,
     selectedEvent,
     eventTransactions,
-  } = useMyEvent();
+  } = useEventVariables();
   const {
     selectSupplierTransaction,
     selectSupplierTransactionAgreement,
@@ -47,10 +47,10 @@ export function SupplierTransactionsWindow() {
   const transactions = useMemo(() => {
     const sortedTransactions = eventTransactions.filter(
       ({ transaction }) =>
-        transaction.payee_id === selectedSupplier.id
-        || transaction.payer_id === selectedSupplier.id);
+        transaction.payee_id === selectedEventSupplier.id
+        || transaction.payer_id === selectedEventSupplier.id);
     return sortedTransactions;
-  }, [eventTransactions, selectedSupplier]);
+  }, [eventTransactions, selectedEventSupplier]);
 
   const transactionsSum = useMemo(() => {
     const debit = transactions
@@ -75,7 +75,7 @@ export function SupplierTransactionsWindow() {
     >
       <Container>
         <WindowHeader
-          overTitle={`Fornecedor: ${selectedSupplier.name}`}
+          overTitle={`Fornecedor: ${selectedEventSupplier.name}`}
           title="Transações"
         />
 

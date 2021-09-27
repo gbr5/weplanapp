@@ -4,6 +4,7 @@ import IEventGuestDTO from '../../../../../dtos/IEventGuestDTO';
 import theme from '../../../../../global/styles/theme';
 import { useAuth } from '../../../../../hooks/auth';
 import { useEventGuests } from '../../../../../hooks/eventGuests';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { EventGuestButtonInfo } from '../EventGuestButtonInfo';
 
@@ -30,24 +31,24 @@ export function EventGuestButton({ guest, index }: IProps): JSX.Element {
     shadowRadius,
   } = theme.objectButtonShadow;
   const { user } = useAuth();
-  const { selectedGuest, selectGuest } = useMyEvent();
+  const { selectedEventGuest, selectEventGuest } = useEventVariables();
   const { editGuest } = useEventGuests();
 
   const [loading, setLoading] = useState(false);
 
   const isMine = useMemo(() => guest.host_id === user.id, [guest, user]);
-  const isActive = useMemo(() => guest.id === selectedGuest.id, [
+  const isActive = useMemo(() => guest.id === selectedEventGuest.id, [
     guest,
-    selectedGuest,
+    selectedEventGuest,
   ]);
 
   function handleSelectGuest(): void {
     if (
-      (selectedGuest && !selectedGuest.id) ||
-      selectedGuest.id !== guest.id
+      (selectedEventGuest && !selectedEventGuest.id) ||
+      selectedEventGuest.id !== guest.id
     )
-      return selectGuest(guest);
-    return selectGuest({} as IEventGuestDTO);
+      return selectEventGuest(guest);
+    return selectEventGuest({} as IEventGuestDTO);
   }
 
   async function handleEditGuestConfirmation(): Promise<void> {

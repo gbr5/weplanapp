@@ -3,6 +3,7 @@ import ICreateEventMemberDTO from '../dtos/ICreateEventMember';
 import IEventMemberDTO from '../dtos/IEventMemberDTO';
 import IFriendDTO from '../dtos/IFriendDTO';
 import api from '../services/api';
+import { useEventVariables } from './eventVariables';
 import { useMyEvent } from './myEvent';
 
 interface EventMembersContextType {
@@ -17,7 +18,8 @@ interface EventMembersContextType {
 const EventMembersContext = createContext({} as EventMembersContextType);
 
 const EventMembersProvider: React.FC = ({ children }) => {
-  const { getEventMembers, selectedEvent } = useMyEvent();
+  const { getEventMembers } = useMyEvent();
+  const { selectedEvent } = useEventVariables();
 
   const [addMemberWindow, setAddMemberWindow] = useState(false);
 

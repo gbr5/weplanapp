@@ -4,7 +4,6 @@ import { Alert } from 'react-native';
 
 import { Form } from '@unform/mobile';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
 
 import Input from '../../../../../components/Input';
@@ -21,6 +20,7 @@ import {
 import Button from '../../../../../components/Button';
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
 import theme from '../../../../../global/styles/theme';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 interface IFormData {
   amount: string;
@@ -29,7 +29,7 @@ interface IFormData {
 export function EventSupplierTransactionForm() {
   const formRef = useRef<FormHandles>(null);
 
-  const { selectedEvent, selectedSupplier } = useMyEvent();
+  const { selectedEvent, selectedEventSupplier } = useEventVariables();
   const {
     handleSelectedDateWindow,
     selectedDate,
@@ -54,7 +54,7 @@ export function EventSupplierTransactionForm() {
         amount: Number(amount),
         due_date: new Date(selectedDate.setHours(10)),
         isPaid,
-        payee_id: selectedSupplier.id,
+        payee_id: selectedEventSupplier.id,
         payer_id: selectedEvent.id,
         index: String(newTransactions.length) + 1,
       },

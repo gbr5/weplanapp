@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
-
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import IEventMemberDTO from '../../../../../dtos/IEventMemberDTO';
 
 import { MemberButtonInfo } from '../MemberButtonInfo';
@@ -22,31 +21,31 @@ export function MemberButton({
   member,
   index,
 }: IProps) {
-  const { selectedMember, selectMember} = useMyEvent();
+  const { selectedEventMember, selectEventMember} = useEventVariables();
 
   const [memberBody, setMemberBody] = useState(false);
 
   function handleMemberBody() {
     memberBody
-      ? selectMember({} as IEventMemberDTO)
-      : selectMember(member);
+      ? selectEventMember({} as IEventMemberDTO)
+      : selectEventMember(member);
     setMemberBody(!memberBody);
   }
 
   useEffect(() => {
-    selectedMember
-      && selectedMember.id
-      && selectedMember.id === member.id
+    selectedEventMember
+      && selectedEventMember.id
+      && selectedEventMember.id === member.id
         ? (
           setMemberBody(true)
         ) : (
           setMemberBody(false)
         )
-  }, [selectedMember]);
+  }, [selectedEventMember]);
 
   return (
     <>
-      <Container isActive={selectedMember.id === member.id} onPress={handleMemberBody}>
+      <Container isActive={selectedEventMember.id === member.id} onPress={handleMemberBody}>
         <Index>{index}</Index>
         <Name>{member.userEventMember.name}</Name>
         {memberBody ? (
@@ -56,9 +55,9 @@ export function MemberButton({
         )}
       </Container>
       {memberBody
-        && selectedMember
-        && selectedMember.id
-        && selectedMember.id === member.id && (
+        && selectedEventMember
+        && selectedEventMember.id
+        && selectedEventMember.id === member.id && (
           <MemberButtonInfo />
         )}
     </>

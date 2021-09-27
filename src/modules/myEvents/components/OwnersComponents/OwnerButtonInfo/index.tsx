@@ -1,7 +1,6 @@
 import React from 'react';
 import theme from '../../../../../global/styles/theme';
-
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
@@ -25,7 +24,7 @@ export function OwnerButtonInfo() {
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedOwner, selectedEvent } = useMyEvent();
+  const { selectedEventOwner, selectedEvent } = useEventVariables();
   // const { } = useEventOwners();
   // const { eventDebitTransactions } = useTransaction();
 
@@ -41,8 +40,8 @@ export function OwnerButtonInfo() {
         shadowRadius,
       }}
     >
-      {selectedOwner.description !== '' && (
-        <Name>{selectedOwner.description}</Name>
+      {selectedEventOwner.description !== '' && (
+        <Name>{selectedEventOwner.description}</Name>
       )}
 
       <SectionBorder />
@@ -117,7 +116,7 @@ export function OwnerButtonInfo() {
       <FooterContainer>
         <DateText>Criado dia: </DateText>
         <DateText>
-          {formatOnlyDateShort(String(selectedOwner.created_at))}
+          {formatOnlyDateShort(String(selectedEventOwner.created_at))}
         </DateText>
       </FooterContainer>
     </Container>

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import theme from '../../../../../global/styles/theme';
+import React from 'react';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
-import { useTransaction } from '../../../../../hooks/transactions';
+import theme from '../../../../../global/styles/theme';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
@@ -10,10 +9,6 @@ import {
   Container,
   NotificationContainer,
   NotificationNumber,
-  ConfirmationButton,
-  RowContainer,
-  RowTitle,
-  Name,
   DateText,
   Icon,
   IconContainer,
@@ -21,20 +16,11 @@ import {
   MenuButton,
   MenuText,
   FooterContainer,
-  NextTransactionContainer,
-  TransactionRow,
   SectionBorder,
-  SectionTitleLine,
-  SectionTitle,
-  TransactionText,
 } from './styles';
 
 export function MemberButtonInfo() {
-  const { selectedMember } = useMyEvent();
-  // const { } = useEventMembers();
-  // const { eventDebitTransactions } = useTransaction();
-
-  // const [loading, setLoading] = useState(false);
+  const { selectedEventMember } = useEventVariables();
 
   return (
     <Container>
@@ -101,13 +87,11 @@ export function MemberButtonInfo() {
       </MenuButtonSection>
 
       <SectionBorder />
-{/*
-      <SectionBorder /> */}
 
       <FooterContainer>
         <DateText>Criado dia: </DateText>
         <DateText>
-          {formatOnlyDateShort(String(selectedMember.created_at))}
+          {formatOnlyDateShort(String(selectedEventMember.created_at))}
         </DateText>
       </FooterContainer>
     </Container>

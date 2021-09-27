@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useRef, useMemo } from 'react';
 import { Keyboard, TextInput } from 'react-native';
+import { Contact } from 'react-native-contacts';
 import Icon from 'react-native-vector-icons/Feather';
 
 import theme from '../../../global/styles/theme';
@@ -10,7 +11,7 @@ import Backdrop from '../../Backdrop';
 import WindowContainer from '../../WindowContainer';
 import { WindowHeader } from '../../WindowHeader';
 import { MobileContact } from '../MobileContact';
-import { Contact } from 'react-native-contacts';
+import { FormButton } from '../../FormButton';
 
 import {
   Container,
@@ -22,7 +23,6 @@ import {
   InputContainer,
   SearchButton,
 } from './styles';
-import { FormButton } from '../../FormButton';
 
 export function SelectMobileContacts() {
   const {

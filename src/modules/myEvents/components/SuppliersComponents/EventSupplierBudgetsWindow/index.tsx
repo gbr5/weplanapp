@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import WindowContainer from '../../../../../components/WindowContainer';
@@ -13,11 +12,12 @@ import {
 import { useTransaction } from '../../../../../hooks/transactions';
 import { addMonths } from 'date-fns';
 import { EventSupplierBudgetButton } from '../EventSupplierBudgetButton';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 export function EventSupplierBudgetsWindow() {
   const {
-    selectedSupplier,
-  } = useMyEvent();
+    selectedEventSupplier,
+  } = useEventVariables();
   const {
     handleSupplierBudgetsWindow,
     handleSupplierBudgetForm,
@@ -51,12 +51,12 @@ export function EventSupplierBudgetsWindow() {
           handleInfoButton={handleBudgetDescriptionWindow}
           title="Orçamentos"
         />
-        {selectedSupplier.budgets.length > 0 && (
+        {selectedEventSupplier.budgets.length > 0 && (
           <BudgetContainer
-            data={selectedSupplier.budgets}
+            data={selectedEventSupplier.budgets}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
-              const index = String(selectedSupplier.budgets
+              const index = String(selectedEventSupplier.budgets
                 .findIndex(budget => budget.id === item.id) + 1);
               return (
                 <EventSupplierBudgetButton

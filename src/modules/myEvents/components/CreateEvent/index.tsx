@@ -42,7 +42,7 @@ const CreateEvent: React.FC<IProps> = ({
   const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
   const { createEvent } = useEvent();
-  const { selectEvent } = useMyEvent();
+  const { handleSelectedEvent } = useMyEvent();
   const [selectEventTypeWindow, setSelectEventTypeWindow] = useState(true);
   const [event_type, setEventType] = useState('');
   const [loading, setLoading] = useState(false);
@@ -59,7 +59,7 @@ const CreateEvent: React.FC<IProps> = ({
   const handleCreateEvent = useCallback(async ({ name }: IFormProps) => {
     try {
       setLoading(true);
-      selectEvent({} as IEventDTO);
+      await handleSelectedEvent({} as IEventDTO);
       const now = new Date();
       const event = await createEvent({
         date: new Date(addMonths(now, 1)),
@@ -67,7 +67,7 @@ const CreateEvent: React.FC<IProps> = ({
         isDateDefined: false,
         name,
       });
-      selectEvent(event);
+      await handleSelectedEvent(event);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -75,7 +75,13 @@ const CreateEvent: React.FC<IProps> = ({
       handleCloseWindow();
       navigation.navigate('MyEvent');
     }
-  }, [createEvent, navigation, handleCloseWindow, event_type, selectEvent]);
+  }, [
+    createEvent,
+    navigation,
+    handleCloseWindow,
+    event_type,
+    handleSelectedEvent,
+  ]);
 
   const eventType = useMemo(() => {
     if (event_type === 'Wedding') return 'Casamento';

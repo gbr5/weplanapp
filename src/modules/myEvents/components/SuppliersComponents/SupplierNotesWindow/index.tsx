@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from 'react';
-import { Note } from '../../../../../components/Note';
-import { NoteForm } from '../../../../../components/NoteForm';
-import { SectionHeader } from '../../../../../components/SectionHeader';
-import WindowContainer from '../../../../../components/WindowContainer';
-import { WindowHeader } from '../../../../../components/WindowHeader';
+
 import INoteDTO from '../../../../../dtos/INoteDTO';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useNote } from '../../../../../hooks/notes';
+
+import { Note } from '../../../../../components/Note';
+import { NoteForm } from '../../../../../components/NoteForm';
+import WindowContainer from '../../../../../components/WindowContainer';
+import { WindowHeader } from '../../../../../components/WindowHeader';
 import { SearchNotes } from '../../EventNotesComponents/SearchNotes';
 
 import {
@@ -16,7 +17,7 @@ import {
 } from './styles';
 
 export function SupplierNotesSection() {
-  const { selectedSupplier } = useMyEvent();
+  const { selectedEventSupplier } = useEventVariables();
   const { handleSupplierNotesWindow } = useEventSuppliers();
   const { createEventSupplierNote } = useNote();
 
@@ -27,7 +28,7 @@ export function SupplierNotesSection() {
   }
 
   const notes = useMemo(() => {
-    const onlyNotes = selectedSupplier.notes
+    const onlyNotes = selectedEventSupplier.notes
       .map(({ note }) => note)
       .sort((a, b) => {
         if (new Date(a.updated_at) < new Date(b.updated_at)) return 1;
@@ -36,12 +37,12 @@ export function SupplierNotesSection() {
       });
     setFilteredNotes(onlyNotes);
     return onlyNotes;
-  }, [selectedSupplier.notes]);
+  }, [selectedEventSupplier.notes]);
 
   async function handleNewSupplierNote(note: string) {
     await createEventSupplierNote({
       note,
-      supplier_id: selectedSupplier.id,
+      supplier_id: selectedEventSupplier.id,
     });
   }
 
@@ -56,7 +57,7 @@ export function SupplierNotesSection() {
     >
       <Container>
         <WindowHeader
-          overTitle={`Fornecedor: ${selectedSupplier.name}`}
+          overTitle={`Fornecedor: ${selectedEventSupplier.name}`}
           title="Notas"
         />
         <SearchNotes

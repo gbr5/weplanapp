@@ -1,7 +1,5 @@
 import React from 'react';
-import { useMemo } from 'react';
-import IEventSupplierTransactionAgreementDTO from '../../../../../dtos/IEventSupplierTransactionAgreementDTO';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { SupplierAgreementButton } from '../SupplierAgreementButton';
 
 import {
@@ -11,20 +9,18 @@ import {
 } from './styles';
 
 export function EventSupplierTransactionAgreementsSection() {
-  const {
-    supplierAgreements,
-  } = useMyEvent();
+  const { eventSupplierTransactionAgreements } = useEventVariables();
 
   return (
     <Container>
       <Title>Contratos</Title>
 
-      {supplierAgreements.length > 0 && (
+      {eventSupplierTransactionAgreements.length > 0 && (
         <AgreementsContainer
-          data={supplierAgreements}
+          data={eventSupplierTransactionAgreements}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
-            const index = supplierAgreements.findIndex(agreement => agreement.id === item.id) + 1;
+            const index = eventSupplierTransactionAgreements.findIndex(agreement => agreement.id === item.id) + 1;
             return (
               <SupplierAgreementButton
                 key={item.id}

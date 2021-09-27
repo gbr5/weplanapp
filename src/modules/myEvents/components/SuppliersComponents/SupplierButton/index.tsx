@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import theme from '../../../../../global/styles/theme';
 import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
-import { useMyEvent } from '../../../../../hooks/myEvent';
 
 import { SupplierButtonInfo } from '../SupplierButtonInfo';
 
@@ -12,6 +11,7 @@ import {
   SupplierName,
   Icon,
 } from './styles';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 interface IProps {
   supplier: IEventSupplierDTO;
@@ -28,27 +28,27 @@ export function SupplierButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedSupplier, selectSupplier} = useMyEvent();
+  const { selectedEventSupplier, selectEventSupplier} = useEventVariables();
 
   const [supplierBody, setSupplierBody] = useState(false);
 
   function handleSupplierBody() {
     supplierBody
-      ? selectSupplier({} as IEventSupplierDTO)
-      : selectSupplier(supplier);
+      ? selectEventSupplier({} as IEventSupplierDTO)
+      : selectEventSupplier(supplier);
     setSupplierBody(!supplierBody);
   }
 
   useEffect(() => {
-    selectedSupplier
-      && selectedSupplier.id
-      && selectedSupplier.id === supplier.id
+    selectedEventSupplier
+      && selectedEventSupplier.id
+      && selectedEventSupplier.id === supplier.id
         ? (
           setSupplierBody(true)
         ) : (
           setSupplierBody(false)
         )
-  }, [selectedSupplier]);
+  }, [selectedEventSupplier]);
 
   return (
     <>
@@ -60,7 +60,7 @@ export function SupplierButton({
           shadowRadius,
           elevation: 8,
         }}
-        isActive={selectedSupplier.id === supplier.id}
+        isActive={selectedEventSupplier.id === supplier.id}
         onPress={handleSupplierBody}
       >
         <SupplierIndex>{index}</SupplierIndex>
@@ -72,9 +72,9 @@ export function SupplierButton({
         )}
       </Container>
       {supplierBody
-        && selectedSupplier
-        && selectedSupplier.id
-        && selectedSupplier.id === supplier.id && (
+        && selectedEventSupplier
+        && selectedEventSupplier.id
+        && selectedEventSupplier.id === supplier.id && (
           <SupplierButtonInfo />
         )}
     </>

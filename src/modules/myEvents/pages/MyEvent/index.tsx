@@ -73,21 +73,24 @@ import {
   DashboardButton,
   BodyContainer,
 } from './styles';
+import { useEventVariables } from '../../../../hooks/eventVariables';
 
 const MyEvent: React.FC = () => {
   const {
     currentSection,
-    eventSuppliers,
-    selectedEvent,
-    selectedSupplier,
     selectEventSection,
-    selectedTask,
-    selectEventTask,
     budgetWindow,
     calculateTotalEventCost,
     sectionDescriptionWindow,
-    selectedGuest,
   } = useMyEvent();
+  const {
+    eventSuppliers,
+    selectedEvent,
+    selectedEventSupplier,
+    selectedEventTask,
+    selectEventTask,
+    selectedEventGuest,
+  } = useEventVariables();
   const {
     loading,
     editTaskPriorityWindow,
@@ -159,7 +162,6 @@ const MyEvent: React.FC = () => {
     editNoteWindow,
     selectNote,
     handleEditNoteWindow,
-    createEventNoteWindow,
   } = useNote();
   const { editFileWindow } = useFiles();
   const {
@@ -214,7 +216,7 @@ const MyEvent: React.FC = () => {
 
   async function handleUpdateTaskDate(date: Date) {
     await updateTask({
-      ...selectedTask,
+      ...selectedEventTask,
       due_date: date,
     });
     handleCloseEditTaskDateWindow();
@@ -222,20 +224,20 @@ const MyEvent: React.FC = () => {
 
   async function handleUpdateTaskTime(date: Date) {
     await updateTask({
-      ...selectedTask,
+      ...selectedEventTask,
       due_date: date,
     });
     handleCloseEditTaskTimeWindow();
   }
 
   async function handleDeleteTask() {
-    await deleteTask(selectedTask);
+    await deleteTask(selectedEventTask);
     handleDeleteTaskConfirmationWindow();
   }
 
   async function handleDeleteGuest() {
     try {
-      await deleteGuest(selectedGuest);
+      await deleteGuest(selectedEventGuest);
     } catch {
       throw new Error();
     } finally {
@@ -278,7 +280,7 @@ const MyEvent: React.FC = () => {
       {createGuestContactWindow && (
         <CreateGuestContactWindow />
       )}
-      {selectWePlanGuestWindow && selectedGuest && (
+      {selectWePlanGuestWindow && selectedEventGuest && (
         <SelectOneFromFriends
           closeWindow={handleSelectWePlanGuestWindow}
           handleAddFriend={associateUserToEventGuest}
@@ -312,12 +314,12 @@ const MyEvent: React.FC = () => {
             selectedDate={new Date(supplierSelectedDate)}
           />
         )}
-      {selectedSupplier
-        && selectedSupplier.id
+      {selectedEventSupplier
+        && selectedEventSupplier.id
         && editSupplierNameWindow
         && <EditSupplierName />}
-      {selectedSupplier
-        && selectedSupplier.id
+      {selectedEventSupplier
+        && selectedEventSupplier.id
         && editSupplierCategoryWindow
         && <EditSupplierCategory />}
       {supplierTransactionAgreementsWindow && (
@@ -349,14 +351,14 @@ const MyEvent: React.FC = () => {
         && eventSupplierAgreementTransactionsWindow && (
           <EventSupplierAgreementTransactionsWindow />
         )}
-      {selectedSupplier
-        && selectedSupplier.id
+      {selectedEventSupplier
+        && selectedEventSupplier.id
         && supplierTransactionsWindow && (
           <SupplierTransactionsWindow />
         )
       }
-      {selectedSupplier
-        && selectedSupplier.id
+      {selectedEventSupplier
+        && selectedEventSupplier.id
         && cancelAgreementsWindow && (
           <CancelAllAgreements />
         )
@@ -365,33 +367,33 @@ const MyEvent: React.FC = () => {
       {newGuestForm && <NewGuestForm />}
       {newGuestWindow && <NewGuestWindow />}
       {editTaskPriorityWindow
-        && selectedTask
-        && selectedTask.id && (
+        && selectedEventTask
+        && selectedEventTask.id && (
           <EditTaskPriorityWindow />
       )}
       {editTaskStatusWindow
-        && selectedTask
-        && selectedTask.id && (
+        && selectedEventTask
+        && selectedEventTask.id && (
           <EditTaskStatusWindow />
       )}
       {editTaskDateWindow
-        && selectedTask
-        && selectedTask.id && (
+        && selectedEventTask
+        && selectedEventTask.id && (
           <DatePickerWindow
             loading={loading}
             closeWindow={handleCloseEditTaskDateWindow}
             selectDate={handleUpdateTaskDate}
-            selectedDate={new Date(selectedTask.due_date)}
+            selectedDate={new Date(selectedEventTask.due_date)}
           />
       )}
       {editTaskTimeWindow
-        && selectedTask
-        && selectedTask.id && (
+        && selectedEventTask
+        && selectedEventTask.id && (
           <TimePickerWindow
             loading={loading}
             closeWindow={handleCloseEditTaskTimeWindow}
             selectDate={handleUpdateTaskTime}
-            selectedDate={new Date(selectedTask.due_date)}
+            selectedDate={new Date(selectedEventTask.due_date)}
           />
       )}
       {selectTaskDateWindow && (
@@ -411,13 +413,13 @@ const MyEvent: React.FC = () => {
         />
       )}
       {editTaskStatusWindow
-        && selectedTask
-        && selectedTask.id && (
+        && selectedEventTask
+        && selectedEventTask.id && (
           <EditTaskStatusWindow />
       )}
       {eventTaskNotesWindow
-        && selectedTask
-        && selectedTask.id && (
+        && selectedEventTask
+        && selectedEventTask.id && (
           <EventTaskNotesWindow
             closeWindow={handleCloseEventTaskNotesWindow}
           />
@@ -452,8 +454,8 @@ const MyEvent: React.FC = () => {
       {supplierCategoryWindow && <SelectSupplierCategory />}
       {supplierSubCategoryWindow && <SelectSupplierSubCategory />}
       {createSupplierTransactionAgreementWindow &&
-        selectedSupplier &&
-        selectedSupplier.id && (
+        selectedEventSupplier &&
+        selectedEventSupplier.id && (
           <CreateSupplierTransactionAgreement />
         )}
       {editEventTransactionValueWindow && (

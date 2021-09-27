@@ -2,7 +2,7 @@ import React from 'react';
 import WindowContainer from '../../../../../components/WindowContainer';
 import IPriorityButton from '../../../../../dtos/IPriorityButtonDTO';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import {
   Container,
@@ -14,12 +14,12 @@ import {
 } from './styles';
 
 export function EditTaskPriorityWindow() {
-  const { selectedTask } = useMyEvent();
+  const { selectedEventTask } = useEventVariables();
   const { updateTask, handleEditTaskPriorityWindow } = useEventTasks();
 
   async function handleUpdateTaskPriority({ priority }: IPriorityButton) {
     await updateTask({
-      ...selectedTask,
+      ...selectedEventTask,
       priority,
     });
     handleEditTaskPriorityWindow();
@@ -39,7 +39,7 @@ export function EditTaskPriorityWindow() {
         <Underline />
         <IconContainer>
           <IconButton
-            isActive={selectedTask.priority === 'low'}
+            isActive={selectedEventTask.priority === 'low'}
             onPress={() => handleUpdateTaskPriority({
               priority: 'low',
             })}
@@ -50,7 +50,7 @@ export function EditTaskPriorityWindow() {
             />
           </IconButton>
           <IconButton
-            isActive={selectedTask.priority === 'neutral'}
+            isActive={selectedEventTask.priority === 'neutral'}
             onPress={() => handleUpdateTaskPriority({
               priority: 'neutral',
             })}
@@ -61,7 +61,7 @@ export function EditTaskPriorityWindow() {
             />
           </IconButton>
           <IconButton
-            isActive={selectedTask.priority === 'high'}
+            isActive={selectedEventTask.priority === 'high'}
             onPress={() => handleUpdateTaskPriority({
               priority: 'high',
             })}

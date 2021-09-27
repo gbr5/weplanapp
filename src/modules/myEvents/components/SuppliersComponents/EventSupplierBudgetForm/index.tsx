@@ -6,7 +6,8 @@ import { TouchableWithoutFeedback, Keyboard, Platform, TextInput } from 'react-n
 import theme from '../../../../../global/styles/theme';
 
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useTransaction } from '../../../../../hooks/transactions';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import formatOnlyDate from '../../../../../utils/formatOnlyDate';
 
@@ -23,7 +24,6 @@ import {
   DateText,
   DateButton,
 } from './styles';
-import { useTransaction } from '../../../../../hooks/transactions';
 
 interface IFormData {
   amount: string;
@@ -37,7 +37,7 @@ export function EventSupplierBudgetForm() {
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedSupplier } = useMyEvent();
+  const { selectedEventSupplier } = useEventVariables();
   const {
     handleSupplierBudgetForm,
     createSupplierBudget,
@@ -59,7 +59,7 @@ export function EventSupplierBudgetForm() {
       description,
       due_date: selectedDate,
       isActive: true,
-      supplier_id: selectedSupplier.id,
+      supplier_id: selectedEventSupplier.id,
     });
     formRef.current?.clearField;
     handleSupplierBudgetForm();

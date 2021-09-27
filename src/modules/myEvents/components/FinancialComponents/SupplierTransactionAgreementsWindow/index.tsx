@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
-
 import WindowContainer from '../../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../../components/WindowHeader';
 import { SupplierAgreementButton } from '../SupplierAgreementButton';
@@ -14,22 +12,23 @@ import {
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import Button from '../../../../../components/Button';
 import { AddButton } from '../../../../../components/AddButton';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 export function SupplierTransactionAgreementsWindow() {
-  const { selectedSupplier } = useMyEvent();
+  const { selectedEventSupplier } = useEventVariables();
   const {
     handleSupplierTransactionAgreementsWindow,
     handleCreateSupplierTransactionAgreementWindow,
   } = useEventSuppliers();
 
   const agreements = useMemo(() => {
-    return selectedSupplier
-      && selectedSupplier.id
-      && selectedSupplier.transactionAgreements
-        ? selectedSupplier.transactionAgreements
+    return selectedEventSupplier
+      && selectedEventSupplier.id
+      && selectedEventSupplier.transactionAgreements
+        ? selectedEventSupplier.transactionAgreements
           .filter(agreement => !agreement.isCancelled)
         : null;
-  }, [selectedSupplier]);
+  }, [selectedEventSupplier]);
 
   return (
     <WindowContainer
@@ -43,7 +42,7 @@ export function SupplierTransactionAgreementsWindow() {
       <Container>
         <HeaderContainer>
           <WindowHeader
-            overTitle={`Fornecedor: ${selectedSupplier.name}`}
+            overTitle={`Fornecedor: ${selectedEventSupplier.name}`}
             title="Contratos"
           />
           <AddButton

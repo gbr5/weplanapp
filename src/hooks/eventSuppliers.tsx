@@ -20,6 +20,7 @@ import ITransactionDTO from '../dtos/ITransactionDTO';
 import IUpdateEventSupplierTransactionAgreementDTO from '../dtos/IUpdateEventSupplierTransactionAgreementDTO';
 import ICreateEventSupplierBudgetDTO from '../dtos/ICreateEventSupplierBudgetDTO';
 import IEventSupplierBudgetDTO from '../dtos/IEventSupplierBudgetDTO';
+import { useEventVariables } from './eventVariables';
 
 interface IUpdateAgreementAndTransactionsDTO {
   id: string;
@@ -102,10 +103,12 @@ const EventSuppliersContext = createContext({} as EventSuppliersContextType);
 const EventSuppliersProvider: React.FC = ({ children }) => {
   const {
     eventSuppliers,
-    getEventSuppliers,
     selectedEvent,
-    selectedSupplier,
-    selectSupplier,
+    selectedEventSupplier,
+    selectEventSupplier,
+  } = useEventVariables();
+  const {
+    getEventSuppliers,
     getEventNotes,
   } = useMyEvent();
 
@@ -277,7 +280,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
 
       await getEventSuppliers(selectedEvent.id);
       if (isHired) {
-        selectSupplier(response.data);
+        selectEventSupplier(response.data);
         handleCreateSupplierTransactionAgreementWindow();
       }
     } catch (err) {
@@ -303,7 +306,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         supplier_sub_category,
         weplanUser,
       });
-      selectSupplier(response.data);
+      selectEventSupplier(response.data);
       await getEventSuppliers(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
@@ -496,9 +499,9 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
     });
   }
   const supplierTransactions = useMemo(() => {
-    if (selectedSupplier && selectedSupplier.id) {
+    if (selectedEventSupplier && selectedEventSupplier.id) {
       const transactions: ITransactionDTO[] = [];
-      selectedSupplier.transactionAgreements.map(agreement =>
+      selectedEventSupplier.transactionAgreements.map(agreement =>
         agreement.transactions
           .filter(transaction => !transaction.transaction.isCancelled)
           .map(transaction => transactions.push(transaction.transaction)),
@@ -510,11 +513,11 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       });
       return transactions;
     }
-  }, [selectedSupplier]);
+  }, [selectedEventSupplier]);
   useEffect(() => {
-    if (selectedSupplier && selectedSupplier.id) {
+    if (selectedEventSupplier && selectedEventSupplier.id) {
       const transactions: IEventSupplierTransactionDTO[] = [];
-      selectedSupplier.transactionAgreements
+      selectedEventSupplier.transactionAgreements
         .filter(agreement => !agreement.isCancelled)
         .map(agreement => {
           agreement.transactions
@@ -531,7 +534,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
           return 0
         }));
     }
-  }, [selectedSupplier]);
+  }, [selectedEventSupplier]);
   return (
     <EventSuppliersContext.Provider
       value={{

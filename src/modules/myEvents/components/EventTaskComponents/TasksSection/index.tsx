@@ -11,9 +11,11 @@ import {
   Container,
   TasksContainer,
 } from './styles';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 export function TasksSection(): JSX.Element {
-  const { eventTasks, handleSectionDescriptionWindow } = useMyEvent();
+  const { eventTasks } = useEventVariables();
+  const { handleSectionDescriptionWindow } = useMyEvent();
   const { status, handleCreateTaskWindow } = useEventTasks();
 
   const sortedTasks = useMemo(() => {

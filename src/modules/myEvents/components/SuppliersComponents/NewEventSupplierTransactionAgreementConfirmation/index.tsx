@@ -7,9 +7,6 @@ import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
 
-import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
-
-
 import { EditNewTransactionAmount } from '../../../../../components/TransactionComponents/EditNewTransactionAmount';
 import { NewTransaction } from '../../../../../components/NewTransaction';
 import WindowContainer from '../../../../../components/WindowContainer';
@@ -29,9 +26,11 @@ import {
   CancelButton,
   ButtonContainer,
 } from './styles';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 export function NewEventSupplierTransactionAgreementConfirmation() {
-  const { selectedSupplier, selectSupplier, calculateTotalEventCost } = useMyEvent();
+  const { calculateTotalEventCost } = useMyEvent();
+  const { selectedEventSupplier } = useEventVariables();
   const {
     handleCreateSupplierTransactionAgreementWindow,
   } = useEventSuppliers();
@@ -66,7 +65,7 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
       await createSupplierTransactionAgreementWithTransactions({
         amount: newAgreementAmount,
         number_of_installments: newAgreementInstallments,
-        supplier_id: selectedSupplier.id,
+        supplier_id: selectedEventSupplier.id,
         transactions: newTransactions,
       });
     } catch (err) {
@@ -111,7 +110,7 @@ export function NewEventSupplierTransactionAgreementConfirmation() {
             <EditText>Editar</EditText>
             <EditIcon name="edit" />
           </EditButton>
-          <Title>Contrato com {selectedSupplier.name}</Title>
+          <Title>Contrato com {selectedEventSupplier.name}</Title>
           <Underline />
           <Value>Total: {formatBrlCurrency(newAgreementAmount)}</Value>
 

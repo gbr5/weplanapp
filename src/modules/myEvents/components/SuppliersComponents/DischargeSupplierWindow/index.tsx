@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 import ITransactionDTO from '../../../../../dtos/ITransactionDTO';
@@ -23,7 +23,7 @@ import {
 } from './styles';
 
 export function DischargeSupplierWindow() {
-  const { selectedSupplier } = useMyEvent();
+  const { selectedEventSupplier } = useEventVariables();
   const {
     handleDischargingWindow,
     handleCancelAllAgreementsWindow,
@@ -31,11 +31,11 @@ export function DischargeSupplierWindow() {
     dischargeOption,
   } = useEventSuppliers();
 
-  const selectedSupplierTransactions = useMemo(() => {
+  const selectedEventSupplierTransactions = useMemo(() => {
 
     const transactions: ITransactionDTO[] = [];
-    selectedSupplier.transactionAgreements.length > 0 &&
-      selectedSupplier.transactionAgreements
+    selectedEventSupplier.transactionAgreements.length > 0 &&
+      selectedEventSupplier.transactionAgreements
         .filter(agreement => !agreement.isCancelled)
         .map(agreement => {
           agreement.transactions.length > 0 &&
@@ -46,7 +46,7 @@ export function DischargeSupplierWindow() {
                   transactions.push(agreementTransaction.transaction));
         });
     const debitTransactions = transactions.filter(
-      transaction => transaction.payee_id === selectedSupplier.id
+      transaction => transaction.payee_id === selectedEventSupplier.id
     );
 
     const debitValue = debitTransactions
@@ -59,7 +59,7 @@ export function DischargeSupplierWindow() {
       .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
     const creditTransactions = transactions
-      .filter(transaction => transaction.payer_id === selectedSupplier.id);
+      .filter(transaction => transaction.payer_id === selectedEventSupplier.id);
 
     const creditValue = creditTransactions
       .map(transaction => Number(transaction.amount))
@@ -86,14 +86,14 @@ export function DischargeSupplierWindow() {
       toReceive,
       toPay,
     };
-  }, [selectedSupplier]);
+  }, [selectedEventSupplier]);
 
   const totalAgreements = useMemo(() => {
-    const agreementsTotal = selectedSupplier.transactionAgreements
+    const agreementsTotal = selectedEventSupplier.transactionAgreements
       .map(agreement => Number(agreement.amount))
       .reduce((acc, cv) => acc + cv, 0);
     return formatBrlCurrency(agreementsTotal);
-  }, [selectedSupplier]);
+  }, [selectedEventSupplier]);
 
   function handleDischargeOption(data: string) {
     handleCancelAllAgreementsWindow();
@@ -110,7 +110,7 @@ export function DischargeSupplierWindow() {
       width="100%"
     >
       <Container>
-        <WindowHeader title={selectedSupplier.name} overTitle="Distrato de Fornecedor" />
+        <WindowHeader title={selectedEventSupplier.name} overTitle="Distrato de Fornecedor" />
 
         <OptionsContainer>
           <OptionButton
@@ -139,7 +139,7 @@ export function DischargeSupplierWindow() {
           </OptionButton>
         </OptionsContainer>
 
-        <SupplierTitle>Contratos ({selectedSupplier.transactionAgreements.length})</SupplierTitle>
+        <SupplierTitle>Contratos ({selectedEventSupplier.transactionAgreements.length})</SupplierTitle>
         <SupplierTitleUnderline />
 
         <SupplierContainer>
@@ -148,25 +148,25 @@ export function DischargeSupplierWindow() {
         </SupplierContainer>
 
         <SupplierTitle>
-          Transações ({selectedSupplierTransactions.transactions.length})
+          Transações ({selectedEventSupplierTransactions.transactions.length})
         </SupplierTitle>
         <SupplierTitleUnderline />
 
         <SupplierContainer>
           <SupplierQuestion>Pago</SupplierQuestion>
-          <SupplierResponse>{selectedSupplierTransactions.paidValue}</SupplierResponse>
+          <SupplierResponse>{selectedEventSupplierTransactions.paidValue}</SupplierResponse>
         </SupplierContainer>
         <SupplierContainer>
           <SupplierQuestion>Recebido</SupplierQuestion>
-          <SupplierResponse>{selectedSupplierTransactions.toReceive}</SupplierResponse>
+          <SupplierResponse>{selectedEventSupplierTransactions.toReceive}</SupplierResponse>
         </SupplierContainer>
         <SupplierContainer>
           <SupplierQuestion>A Pagar</SupplierQuestion>
-          <SupplierResponse>{selectedSupplierTransactions.toPay}</SupplierResponse>
+          <SupplierResponse>{selectedEventSupplierTransactions.toPay}</SupplierResponse>
         </SupplierContainer>
         <SupplierContainer>
           <SupplierQuestion>A Receber</SupplierQuestion>
-          <SupplierResponse>{selectedSupplierTransactions.toReceive}</SupplierResponse>
+          <SupplierResponse>{selectedEventSupplierTransactions.toReceive}</SupplierResponse>
         </SupplierContainer>
 
       </Container>

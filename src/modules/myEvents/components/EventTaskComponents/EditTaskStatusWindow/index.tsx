@@ -1,7 +1,7 @@
 import React from 'react';
 import WindowContainer from '../../../../../components/WindowContainer';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
-import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import {
   Container,
@@ -13,12 +13,12 @@ import {
 } from './styles';
 
 export function EditTaskStatusWindow() {
-  const { selectedTask } = useMyEvent();
+  const { selectedEventTask } = useEventVariables();
   const { updateTask, handleEditTaskStatusWindow } = useEventTasks();
 
   async function handleUpdateTaskStatus(status: 'not started' | 'running' | 'finnished') {
     await updateTask({
-      ...selectedTask,
+      ...selectedEventTask,
       status,
     });
     handleEditTaskStatusWindow();
@@ -38,7 +38,7 @@ export function EditTaskStatusWindow() {
         <Underline />
         <IconContainer>
           <IconButton
-            isActive={selectedTask.status === 'not started'}
+            isActive={selectedEventTask.status === 'not started'}
             onPress={() => handleUpdateTaskStatus('not started')}
           >
             <Icon
@@ -47,7 +47,7 @@ export function EditTaskStatusWindow() {
             />
           </IconButton>
           <IconButton
-            isActive={selectedTask.status === 'running'}
+            isActive={selectedEventTask.status === 'running'}
             onPress={() => handleUpdateTaskStatus('running')}
           >
             <Icon
@@ -56,7 +56,7 @@ export function EditTaskStatusWindow() {
             />
           </IconButton>
           <IconButton
-            isActive={selectedTask.status === 'finnished'}
+            isActive={selectedEventTask.status === 'finnished'}
             onPress={() => handleUpdateTaskStatus('finnished')}
           >
             <Icon

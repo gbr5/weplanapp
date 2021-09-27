@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Platform } from 'react-native';
 import theme from '../../../../global/styles/theme';
+import { useEventVariables } from '../../../../hooks/eventVariables';
 
 import { useMyEvent } from '../../../../hooks/myEvent';
 import { useTransaction } from '../../../../hooks/transactions';
@@ -19,20 +20,22 @@ export function MainMenu() {
     shadowRadius,
   } = theme.menuShadow;
   const {
-    guests,
     confirmedGuests,
     hiredSuppliers,
     notHiredSuppliers,
     currentSection,
     selectEventSection,
+  } = useMyEvent();
+  const {
+    eventGuests,
     selectedEvent,
-    members,
-    owners,
+    eventMembers,
+    eventOwners,
     eventNotes,
     eventTasks,
     eventBudget,
     eventTransactions,
-  } = useMyEvent();
+  } = useEventVariables();
 
   const [suppliersInfo, setSuppliersInfo] = useState('');
 
@@ -41,9 +44,9 @@ export function MainMenu() {
   }, [hiredSuppliers.length, notHiredSuppliers.length]);
 
   const notesInfo = useMemo(() => `${eventNotes.length}`, [eventNotes]);
-  const guestsInfo = useMemo(() => `${confirmedGuests} / ${guests.length}`, [confirmedGuests, guests]);
-  const membersInfo = useMemo(() => `${members.length}`, [members]);
-  const ownersInfo = useMemo(() => `${owners.length}`, [owners]);
+  const guestsInfo = useMemo(() => `${confirmedGuests} / ${eventGuests.length}`, [confirmedGuests, eventGuests]);
+  const membersInfo = useMemo(() => `${eventMembers.length}`, [eventMembers]);
+  const ownersInfo = useMemo(() => `${eventOwners.length}`, [eventOwners]);
 
   const financialInfo = useMemo(() => {
     if (eventBudget && eventBudget.budget) {

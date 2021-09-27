@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
-
 import IEventOwnerDTO from '../../../../../dtos/IEventOwnerDTO';
+import theme from '../../../../../global/styles/theme';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import { OwnerButtonInfo } from '../OwnerButtonInfo';
 
@@ -12,7 +12,6 @@ import {
   Name,
   Icon,
 } from './styles';
-import theme from '../../../../../global/styles/theme';
 
 interface IProps {
   owner: IEventOwnerDTO;
@@ -30,27 +29,27 @@ export function OwnerButton({
     shadowRadius,
   } = theme.objectButtonShadow;
 
-  const { selectedOwner, selectOwner} = useMyEvent();
+  const { selectedEventOwner, selectEventOwner} = useEventVariables();
 
   const [ownerBody, setOwnerBody] = useState(false);
 
   function handleOwnerBody() {
     ownerBody
-      ? selectOwner({} as IEventOwnerDTO)
-      : selectOwner(owner);
+      ? selectEventOwner({} as IEventOwnerDTO)
+      : selectEventOwner(owner);
     setOwnerBody(!ownerBody);
   }
 
   useEffect(() => {
-    selectedOwner
-      && selectedOwner.id
-      && selectedOwner.id === owner.id
+    selectedEventOwner
+      && selectedEventOwner.id
+      && selectedEventOwner.id === owner.id
         ? (
           setOwnerBody(true)
         ) : (
           setOwnerBody(false)
         )
-  }, [selectedOwner]);
+  }, [selectedEventOwner]);
 
   return (
     <>
@@ -63,7 +62,7 @@ export function OwnerButton({
           elevation: 8,
         }}
         onPress={handleOwnerBody}
-        isActive={selectedOwner.id === owner.id}
+        isActive={selectedEventOwner.id === owner.id}
       >
         <Index>{index}</Index>
         <Name>{owner.userEventOwner.name}</Name>
@@ -74,9 +73,9 @@ export function OwnerButton({
         )}
       </Container>
       {ownerBody
-        && selectedOwner
-        && selectedOwner.id
-        && selectedOwner.id === owner.id && (
+        && selectedEventOwner
+        && selectedEventOwner.id
+        && selectedEventOwner.id === owner.id && (
           <OwnerButtonInfo />
         )}
     </>

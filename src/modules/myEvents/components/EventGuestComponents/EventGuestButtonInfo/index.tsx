@@ -29,6 +29,7 @@ import {
   DeleteIcon,
 } from './styles';
 import GuestContact from '../GuestContact';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 export function EventGuestButtonInfo(): JSX.Element {
   const {
@@ -39,10 +40,12 @@ export function EventGuestButtonInfo(): JSX.Element {
   } = theme.objectButtonShadow;
   const { user } = useAuth();
   const {
-    selectedGuest,
-    guests,
-    owners,
-    members,
+    selectedEventGuest,
+    eventGuests,
+    eventOwners,
+    eventMembers,
+  } = useEventVariables();
+  const {
     isOwner,
   } = useMyEvent();
   const { getFriends, handleUnselectedFriends } = useFriends();
@@ -60,51 +63,51 @@ export function EventGuestButtonInfo(): JSX.Element {
     setEditGuestDescriptionComponent,
   ] = useState(false);
 
-  const isMine = useMemo(() => selectedGuest.host_id === user.id, [
-    selectedGuest,
+  const isMine = useMemo(() => selectedEventGuest.host_id === user.id, [
+    selectedEventGuest,
     user,
   ]);
   const guestName = useMemo(
-    () => `${selectedGuest.first_name}  ${selectedGuest.last_name}`,
-    [selectedGuest],
+    () => `${selectedEventGuest.first_name}  ${selectedEventGuest.last_name}`,
+    [selectedEventGuest],
   );
   const weplanGuest = useMemo(
     () =>
-      selectedGuest.weplanUser &&
-      !!selectedGuest.weplanGuest &&
-      !!selectedGuest.weplanGuest.weplanUserGuest,
-    [selectedGuest],
+      selectedEventGuest.weplanUser &&
+      !!selectedEventGuest.weplanGuest &&
+      !!selectedEventGuest.weplanGuest.weplanUserGuest,
+    [selectedEventGuest],
   );
   const weplanGuestName = useMemo(() => {
     if (weplanGuest) {
-      const { personInfo } = selectedGuest.weplanGuest.weplanUserGuest;
+      const { personInfo } = selectedEventGuest.weplanGuest.weplanUserGuest;
       return personInfo
         ? `${personInfo.first_name}  ${personInfo.last_name}`
-        : selectedGuest.weplanGuest.weplanUserGuest.name;
+        : selectedEventGuest.weplanGuest.weplanUserGuest.name;
     }
     return undefined;
-  }, [selectedGuest, weplanGuest]);
+  }, [selectedEventGuest, weplanGuest]);
   const host = useMemo(() => {
-    if (selectedGuest.host_id === user.id) {
+    if (selectedEventGuest.host_id === user.id) {
       let { personInfo } = user;
       return personInfo ? `${personInfo.first_name}  ${personInfo.last_name}` : user.name;
     }
-    const findOwner = owners.find(
-      owner => owner.userEventOwner.id === selectedGuest.host_id,
+    const findOwner = eventOwners.find(
+      owner => owner.userEventOwner.id === selectedEventGuest.host_id,
     );
     if (findOwner) {
       let { personInfo } = findOwner.userEventOwner;
       return personInfo ? `${personInfo.first_name}  ${personInfo.last_name}` : user.name;
     }
-    const findMember = members.find(
-      member => member.userEventMember.id === selectedGuest.host_id,
+    const findMember = eventMembers.find(
+      member => member.userEventMember.id === selectedEventGuest.host_id,
     );
     if (findMember) {
       let { personInfo } = findMember.userEventMember;
       return personInfo ? `${personInfo.first_name}  ${personInfo.last_name}` : user.name;
     }
     return '';
-  }, [user, owners, members, selectedGuest]);
+  }, [user, eventOwners, eventMembers, selectedEventGuest]);
 
   function handleEditGuestName(): void {
     isMine && setEditGuestName(!editGuestName);
@@ -115,13 +118,13 @@ export function EventGuestButtonInfo(): JSX.Element {
 
   async function handleEditGuestFirstName(first_name: string): Promise<void> {
     await editGuest({
-      ...selectedGuest,
+      ...selectedEventGuest,
       first_name,
     });
   }
   async function handleEditGuestLastName(last_name: string): Promise<void> {
     await editGuest({
-      ...selectedGuest,
+      ...selectedEventGuest,
       last_name,
     });
   }
@@ -129,7 +132,7 @@ export function EventGuestButtonInfo(): JSX.Element {
     description: string,
   ): Promise<void> {
     await editGuest({
-      ...selectedGuest,
+      ...selectedEventGuest,
       description,
     });
   }
@@ -137,7 +140,7 @@ export function EventGuestButtonInfo(): JSX.Element {
   async function handleWePlanGuest(): Promise<void> {
     if (isMine) {
       if (!weplanGuest) {
-        const findWePlanGuests = guests
+        const findWePlanGuests = eventGuests
           .filter(
             guest =>
               guest.weplanUser &&
@@ -202,18 +205,18 @@ export function EventGuestButtonInfo(): JSX.Element {
             <FieldContainer>
               <FieldLabel>Nome: </FieldLabel>
               <InlineFormField
-                defaultValue={selectedGuest.first_name}
+                defaultValue={selectedEventGuest.first_name}
                 handleOnSubmit={handleEditGuestFirstName}
-                placeholder={selectedGuest.first_name}
+                placeholder={selectedEventGuest.first_name}
                 closeComponent={handleEditGuestName}
               />
             </FieldContainer>
             <FieldContainer>
               <FieldLabel>Sobrenome: </FieldLabel>
               <InlineFormField
-                defaultValue={selectedGuest.last_name}
+                defaultValue={selectedEventGuest.last_name}
                 handleOnSubmit={handleEditGuestLastName}
-                placeholder={selectedGuest.last_name}
+                placeholder={selectedEventGuest.last_name}
               />
             </FieldContainer>
           </>
@@ -237,9 +240,9 @@ export function EventGuestButtonInfo(): JSX.Element {
         <FieldContainer>
           <FieldLabel>Descrição: </FieldLabel>
           <InlineFormField
-            defaultValue={selectedGuest.description}
+            defaultValue={selectedEventGuest.description}
             handleOnSubmit={handleEditGuestDescription}
-            placeholder={selectedGuest.description}
+            placeholder={selectedEventGuest.description}
             closeComponent={handleEditGuestDescriptionComponent}
           />
         </FieldContainer>
@@ -255,7 +258,7 @@ export function EventGuestButtonInfo(): JSX.Element {
           onPress={handleEditGuestDescriptionComponent}
         >
           <FieldLabel>Descrição</FieldLabel>
-          <Name>{selectedGuest.description}</Name>
+          <Name>{selectedEventGuest.description}</Name>
         </FieldButton>
       )}
       <SectionBorder />
@@ -276,8 +279,8 @@ export function EventGuestButtonInfo(): JSX.Element {
               <Icon name="plus" />
             </IconContainer>
           </MenuButton>
-          {selectedGuest.contacts.map(contact =>
-            <GuestContact guestContact={contact}/>
+          {selectedEventGuest.contacts.map(contact =>
+            <GuestContact key={contact.id} guestContact={contact}/>
           )}
         </MenuButtonSection>
       )}
@@ -324,7 +327,7 @@ export function EventGuestButtonInfo(): JSX.Element {
       <FooterContainer>
         <DateText>Criado dia: </DateText>
         <DateText>
-          {formatOnlyDateShort(String(selectedGuest.created_at))}
+          {formatOnlyDateShort(String(selectedEventGuest.created_at))}
         </DateText>
       </FooterContainer>
     </Container>

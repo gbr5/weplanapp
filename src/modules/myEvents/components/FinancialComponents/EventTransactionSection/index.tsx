@@ -17,6 +17,7 @@ import {
 } from './styles';
 import theme from '../../../../../global/styles/theme';
 import { SearchTransactions } from '../../../../../components/TransactionComponents/SearchTransactions';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 export function EventTransactionSection() {
   const {
@@ -25,7 +26,7 @@ export function EventTransactionSection() {
     shadowOpacity,
     shadowRadius,
   } = theme.iconButtonShadow;
-  const { eventTransactions } = useMyEvent();
+  const { eventTransactions } = useEventVariables();
   const {
     cancelledTransactionFilter,
     sortTransactionsByInterval,
