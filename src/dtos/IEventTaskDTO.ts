@@ -1,3 +1,4 @@
+import IEventTaskFollowersDTO from "./IEventTaskFollowerDTO";
 import IEventTaskNoteDTO from "./IEventTaskNoteDTO";
 
 export default interface IEventTaskDTO {
@@ -10,4 +11,5 @@ export default interface IEventTaskDTO {
   created_at: Date;
   updated_at: Date;
   notes: IEventTaskNoteDTO[];
+  followers: IEventTaskFollowersDTO[];
 }

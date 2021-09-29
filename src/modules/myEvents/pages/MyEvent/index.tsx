@@ -74,6 +74,9 @@ import {
   BodyContainer,
 } from './styles';
 import { useEventVariables } from '../../../../hooks/eventVariables';
+import { EventTaskFollowersWindow } from '../../components/EventTaskComponents/EventTaskFollowersWindow';
+import { AddEventTaskFollowersWindow } from '../../components/EventTaskComponents/AddEventTaskFollowersWindow';
+import { EventTaskFollowersDescriptionWindow } from '../../components/EventTaskComponents/EventTaskFollowersDescriptionWindow';
 
 const MyEvent: React.FC = () => {
   const {
@@ -88,6 +91,7 @@ const MyEvent: React.FC = () => {
     selectedEvent,
     selectedEventSupplier,
     selectedEventTask,
+    selectedEventTaskFollower,
     selectEventTask,
     selectedEventGuest,
   } = useEventVariables();
@@ -113,6 +117,12 @@ const MyEvent: React.FC = () => {
     handleDeleteTaskConfirmationWindow,
     updateTask,
     deleteTask,
+    eventTaskFollowersWindow,
+    createEventTaskFollowersWindow,
+    handleDeleteTaskFollowerConfirmation,
+    deleteTaskFollowerConfirmation,
+    deleteTaskFollower,
+    eventTaskFollowersDescriptionWindow,
   } = useEventTasks();
   const {
     addSupplierWindow,
@@ -259,6 +269,8 @@ const MyEvent: React.FC = () => {
       {supplierBudgetForm && <EventSupplierBudgetForm />}
       {transactionNotesWindow && <TransactionNotesWindow />}
       {transactionFilesWindow && <TransactionFilesWindow />}
+      {eventTaskFollowersWindow && <EventTaskFollowersWindow />}
+      {createEventTaskFollowersWindow && <AddEventTaskFollowersWindow />}
       {selectWePlanGuestsWindow &&
         <SelectFromFriends
           closeWindow={handleSelectWePlanGuestsWindow}
@@ -330,6 +342,7 @@ const MyEvent: React.FC = () => {
       )}
       {createTransactionWindow && <CreateEventTransaction />}
       {sectionDescriptionWindow && <SectionDescriptionWindow />}
+      {eventTaskFollowersDescriptionWindow && <EventTaskFollowersDescriptionWindow />}
       {guestFilterWindow && <GuestFilterWindow />}
       {filterTransactionWindow && <TransactionsFilterWindow /> }
       {selectedEventTransaction
@@ -433,6 +446,16 @@ const MyEvent: React.FC = () => {
           firstFunction={handleDeleteTaskConfirmationWindow}
           secondButtonLabel="Deletar"
           secondFunction={handleDeleteTask}
+        />
+      )}
+      {selectedEventTaskFollower && deleteTaskFollowerConfirmation && (
+        <ShortConfirmationWindow
+          closeWindow={handleDeleteTaskFollowerConfirmation}
+          question="Deseja mesmo deletar o seguidor?"
+          firstButtonLabel="Não deletar"
+          firstFunction={handleDeleteTaskFollowerConfirmation}
+          secondButtonLabel="Deletar"
+          secondFunction={deleteTaskFollower}
         />
       )}
       {deleteGuestConfirmationWindow && (

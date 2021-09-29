@@ -36,8 +36,8 @@ export function MenuOptionButton({
       }}
       color={color} onPress={onPress}
     >
-      <Text>{text}</Text>
       <Icon name={icon} color={color} />
+      <Text>{text}</Text>
     </Container>
   );
 }

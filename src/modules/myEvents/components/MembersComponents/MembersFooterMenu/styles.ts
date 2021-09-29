@@ -6,15 +6,19 @@ interface IButtonProps {
   isActive: boolean;
 }
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
   width: 100%;
   padding: 0 16px;
+  max-height: 52px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 `;
 
 export const MenuButton = styled.TouchableOpacity<IButtonProps>`
   flex-direction: row;
-  width: 180px;
-  height: 56px;
+  width: 100px;
+  height: 48px;
   border-radius: 5px;
   background-color: ${({ theme, isActive }) => isActive
     ? theme.color.primary

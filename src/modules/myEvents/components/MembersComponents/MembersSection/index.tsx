@@ -38,15 +38,15 @@ export function MembersSection() {
         handleInfoButton={handleSectionDescriptionWindow}
         title="Membros"
       />
+      <MembersFooterMenu
+        handleSection={(data: string) => handleSection(data)}
+        section={section}
+      />
       <Body>
         {section === 'Members' && <MembersListSection />}
         {section === 'Main' && <MembersMainSection />}
         {section === 'Financial' && <MembersFinancialSection />}
       </Body>
-      <MembersFooterMenu
-        handleSection={(data: string) => handleSection(data)}
-        section={section}
-      />
     </Container>
   );
 }

@@ -25,7 +25,7 @@ export const Icon = styled(Feather)<IProps>`
 
 export const Text = styled.Text`
   color: ${({ theme }) => theme.color.text1};
-  margin: 0 16px 0 0;
+  margin: 0 0 0 16px;
   font-family: ${({ theme }) => theme.fonts.roboto};
   font-size: ${RFValue(24)}px;
 `;

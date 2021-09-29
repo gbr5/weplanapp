@@ -76,7 +76,7 @@ const Menu: React.FC = () => {
           color={theme.color.text1}
           icon="home"
           onPress={navigateToEventsPage}
-          text="Dashboard"
+          text="Página Inicial"
         />
         <MenuOptionButton
           color={theme.color.text1}

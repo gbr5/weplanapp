@@ -12,9 +12,11 @@ import IEventOwnerDTO from '../dtos/IEventOwnerDTO';
 import IEventSupplierDTO from '../dtos/IEventSupplierDTO';
 import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
 import IEventTaskDTO from '../dtos/IEventTaskDTO';
+import IEventTaskFollowerDTO from '../dtos/IEventTaskFollowerDTO';
 import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 import ITransactionDTO from '../dtos/ITransactionDTO';
 import IUserDTO from '../dtos/IUserDTO';
+import IUserFollowerDTO from '../dtos/IUserFollowerDTO';
 import { useAuth } from './auth';
 
 interface EventVariablesContextType {
@@ -39,6 +41,7 @@ interface EventVariablesContextType {
   selectedEventOwner: IEventOwnerDTO; // 21
   selectedEventSupplier: IEventSupplierDTO; // 22
   selectedEventTask: IEventTaskDTO; // 23
+  selectedEventTaskFollower: IEventTaskFollowerDTO; // 23
   selectedEventTransaction: IEventTransactionDTO; // 24
   selectedEventSupplierTransactionAgreement: IEventSupplierTransactionAgreementDTO; // 25
   selectedNewTransaction: ICreateTransactionDTO; // 26
@@ -65,6 +68,7 @@ interface EventVariablesContextType {
   selectEventOwner: (data: IEventOwnerDTO) => void;
   selectEventMember: (data: IEventMemberDTO) => void;
   selectEventTask: (data: IEventTaskDTO) => void;
+  selectEventTaskFollower: (data: IEventTaskFollowerDTO) => void;
   selectEventNote: (data: IEventNoteDTO) => void;
   selectEventTransaction: (data: IEventTransactionDTO) => void;
   selectEventSupplierTransactionAgreement: (
@@ -128,6 +132,9 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   );
   const [selectedEventNote, setSelectedEventNote] = useState(
     {} as IEventNoteDTO,
+  );
+  const [selectedEventTaskFollower, setSelectedEventTaskFollower] = useState(
+    {} as IEventTaskFollowerDTO,
   );
   const [selectedEventTransaction, setSelectedEventTransaction] = useState(
     {} as IEventTransactionDTO,
@@ -219,6 +226,10 @@ const EventVariablesProvider: React.FC = ({ children }) => {
 
   function selectEventTask(data: IEventTaskDTO): void {
     setSelectedEventTask(data);
+  }
+
+  function selectEventTaskFollower(data: IEventTaskFollowerDTO): void {
+    setSelectedEventTaskFollower(data);
   }
   function selectEventNote(data: IEventNoteDTO): void {
     setSelectedEventNote(data);
@@ -626,6 +637,8 @@ const EventVariablesProvider: React.FC = ({ children }) => {
         handleCurrentSection,
         filteredGuests,
         handleFilteredGuests,
+        selectEventTaskFollower,
+        selectedEventTaskFollower,
       }}
     >
       {children}

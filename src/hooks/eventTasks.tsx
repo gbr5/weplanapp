@@ -14,6 +14,8 @@ import { useMyEvent } from './myEvent';
 import ICreateEventTaskNoteDTO from '../dtos/ICreateEventTaskNoteDTO';
 import IEventTaskNoteDTO from '../dtos/IEventTaskNoteDTO';
 import { useEventVariables } from './eventVariables';
+import IUserFollowerDTO from '../dtos/IUserFollowerDTO';
+import IEventTaskFollowerDTO from '../dtos/IEventTaskFollowerDTO';
 
 interface EventTasksContextType {
   loading: boolean;
@@ -25,12 +27,18 @@ interface EventTasksContextType {
   selectTaskDateWindow: boolean;
   selectTaskTimeWindow: boolean;
   eventTaskNotesWindow: boolean;
+  eventTaskFollowersWindow: boolean;
+  createEventTaskFollowersWindow: boolean;
   deleteTaskConfirmationWindow: boolean;
+  eventTaskFollowersDescriptionWindow: boolean;
+  deleteTaskFollowerConfirmation: boolean;
   createTaskWindow: boolean;
   taskDate: Date;
+  createMultipleEventTaskFollowers: (data: IUserFollowerDTO[]) => Promise<void>;
   createTask: (data: ICreateEventTaskDTO) => Promise<void>;
   updateTask: (data: IEventTaskDTO) => Promise<void>;
   deleteTask: (data: IEventTaskDTO) => Promise<void>;
+  deleteTaskFollower: () => Promise<void>;
   createTaskNote: (data: ICreateEventTaskNoteDTO) => Promise<void>;
   deleteTaskNote: (data: IEventTaskNoteDTO) => Promise<void>;
   handleEditTaskPriorityWindow: () => void;
@@ -40,6 +48,10 @@ interface EventTasksContextType {
   handleSelectTaskDateWindow: () => void;
   handleSelectTaskTimeWindow: () => void;
   handleEventTaskNotesWindow: () => void;
+  handleEventTaskFollowersWindow: () => void;
+  handleCreateEventTaskFollowersWindow: () => void;
+  handleDeleteTaskFollowerConfirmation: () => void;
+  handleEventTaskFollowersDescriptionWindow: () => void;
   handleCreateTaskWindow: () => void;
   handleDeleteTaskConfirmationWindow: () => void;
   selectStatus: (status: 'not started' | 'running' | 'finnished') => void;
@@ -54,6 +66,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
     selectedEvent,
     selectedEventTask,
     selectEventTask,
+    selectedEventTaskFollower,
   } = useEventVariables();
   const {
     getEvent,
@@ -67,11 +80,15 @@ const EventTasksProvider: React.FC = ({ children }) => {
   const [selectTaskDateWindow, setSelectTaskDateWindow] = useState(false);
   const [selectTaskTimeWindow, setSelectTaskTimeWindow] = useState(false);
   const [eventTaskNotesWindow, setEventTaskNotesWindow] = useState(false);
+  const [eventTaskFollowersWindow, setEventTaskFollowersWindow] = useState(false);
+  const [createEventTaskFollowersWindow, setCreateEventTaskFollowersWindow] = useState(false);
   const [deleteTaskConfirmationWindow, setDeleteTaskConfirmationWindow] = useState(false);
   const [status, setStatus] = useState<'not started' | 'running' | 'finnished'>('not started');
   const [createTaskWindow, setCreateTaskWindow] = useState(false);
   const [taskDate, setTaskDate] = useState(addDays(new Date(), 3));
   const [loading, setLoading] = useState(false);
+  const [deleteTaskFollowerConfirmation, setDeleteTaskFollowerConfirmation] = useState(false);
+  const [eventTaskFollowersDescriptionWindow, setEventTaskFollowersDescriptionWindow] = useState(false);
 
   function unsetEventTasksVariables() {
     setEditTaskPriorityWindow(false);
@@ -82,10 +99,20 @@ const EventTasksProvider: React.FC = ({ children }) => {
     setSelectTaskTimeWindow(false);
     setEventTaskNotesWindow(false);
     setDeleteTaskConfirmationWindow(false);
+    setDeleteTaskFollowerConfirmation(false);
+    setEventTaskFollowersDescriptionWindow(false);
     setStatus('not started');
     setCreateTaskWindow(false);
     setTaskDate(addDays(new Date(), 3));
     setLoading(false);
+  }
+
+  function handleEventTaskFollowersDescriptionWindow() {
+    setEventTaskFollowersDescriptionWindow(!eventTaskFollowersDescriptionWindow);
+  }
+
+  function handleDeleteTaskFollowerConfirmation() {
+    setDeleteTaskFollowerConfirmation(!deleteTaskFollowerConfirmation);
   }
 
   function handleEditTaskPriorityWindow() {
@@ -114,6 +141,14 @@ const EventTasksProvider: React.FC = ({ children }) => {
 
   function handleEventTaskNotesWindow() {
     setEventTaskNotesWindow(!eventTaskNotesWindow);
+  }
+
+  function handleEventTaskFollowersWindow() {
+    setEventTaskFollowersWindow(!eventTaskFollowersWindow);
+  }
+
+  function handleCreateEventTaskFollowersWindow() {
+    setCreateEventTaskFollowersWindow(!createEventTaskFollowersWindow);
   }
 
   function handleCreateTaskWindow() {
@@ -149,6 +184,27 @@ const EventTasksProvider: React.FC = ({ children }) => {
     }
   }
 
+  async function createMultipleEventTaskFollowers(data: IUserFollowerDTO[]) {
+    try {
+      const followers = data.map(follower => {
+        return {
+          user_id: follower.follower.id,
+          type: follower.type,
+        };
+      })
+      setLoading(true);
+      await api.post(`/create-multiple-event-task-followers`, {
+        task_id: selectedEventTask.id,
+        followers,
+      });
+      await getEventTasks(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function updateTask(data: IEventTaskDTO) {
     try {
       setLoading(true);
@@ -169,6 +225,19 @@ const EventTasksProvider: React.FC = ({ children }) => {
       setLoading(true);
       await api.delete(`/event-tasks/${data.id}`);
       await getEventTasks(data.event_id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function deleteTaskFollower() {
+    try {
+      setLoading(true);
+      await api.delete(`/event-task-followers/${selectedEventTaskFollower.id}`);
+      handleDeleteTaskFollowerConfirmation();
+      await getEventTasks(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -210,8 +279,10 @@ const EventTasksProvider: React.FC = ({ children }) => {
 
   return (
     <EventTasksContext.Provider
-      value={{
-        loading,
+    value={{
+      loading,
+        createEventTaskFollowersWindow,
+        createMultipleEventTaskFollowers,
         status,
         editTaskPriorityWindow,
         editTaskStatusWindow,
@@ -220,6 +291,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
         selectTaskDateWindow,
         selectTaskTimeWindow,
         eventTaskNotesWindow,
+        eventTaskFollowersWindow,
         deleteTaskConfirmationWindow,
         taskDate,
         createTaskWindow,
@@ -235,11 +307,18 @@ const EventTasksProvider: React.FC = ({ children }) => {
         handleSelectTaskDateWindow,
         handleSelectTaskTimeWindow,
         handleEventTaskNotesWindow,
+        handleEventTaskFollowersWindow,
+        handleCreateEventTaskFollowersWindow,
         handleCreateTaskWindow,
         handleDeleteTaskConfirmationWindow,
         selectStatus,
         selectTaskDate,
         unsetEventTasksVariables,
+        handleDeleteTaskFollowerConfirmation,
+        deleteTaskFollowerConfirmation,
+        deleteTaskFollower,
+        handleEventTaskFollowersDescriptionWindow,
+        eventTaskFollowersDescriptionWindow,
       }}
     >
       {children}

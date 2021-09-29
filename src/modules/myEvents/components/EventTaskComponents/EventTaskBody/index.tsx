@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
+import IUserDTO from '../../../../../dtos/IUserDTO';
+import IUserFollowerDTO from '../../../../../dtos/IUserFollowerDTO';
 
 import theme from '../../../../../global/styles/theme';
+import { useAuth } from '../../../../../hooks/auth';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
@@ -32,13 +35,20 @@ export function EventTaskBody(): JSX.Element {
     shadowOpacity,
     shadowRadius,
   } = theme.buttonShadow;
-  const { selectedEventTask } = useEventVariables();
+  const { user } = useAuth();
+  const {
+    selectedEventTask,
+    eventOwners,
+    eventMembers,
+    eventSuppliers,
+  } = useEventVariables();
   const {
     handleEditTaskPriorityWindow,
     handleEditTaskStatusWindow,
     handleEditTaskDateWindow,
     handleEditTaskTimeWindow,
     handleEventTaskNotesWindow,
+    handleEventTaskFollowersWindow,
     handleDeleteTaskConfirmationWindow,
   } = useEventTasks();
 
@@ -81,6 +91,35 @@ export function EventTaskBody(): JSX.Element {
       color,
     };
   }, [selectedEventTask]);
+
+  const ownersMembersAndWePlanSuppliers = useMemo(() => {
+    const users: IUserFollowerDTO[] = [];
+    if (eventOwners.length > 0) {
+      eventOwners
+        .filter(owner => owner.userEventOwner.id !== user.id)
+        .map(owner => users.push({
+          follower: owner.userEventOwner,
+          type: 'owner',
+        }));
+    }
+    if (eventMembers.length > 0) {
+      eventMembers
+        .filter(owner => owner.userEventMember.id !== user.id)
+        .map(owner => users.push({
+          follower: owner.userEventMember,
+          type: 'member',
+        }));
+    }
+    if (eventSuppliers.length > 0) {
+      eventSuppliers
+        .filter(owner => owner.weplanUser)
+        .map(owner => users.push({
+          follower: owner.eventWeplanSupplier.weplanEventSupplier,
+          type: 'supplier',
+        }));
+    }
+    return users;
+    }, [eventSuppliers, eventOwners, eventMembers]);
 
   return (
     <Container
@@ -158,6 +197,32 @@ export function EventTaskBody(): JSX.Element {
             )}
           </IconContainer>
         </MenuButton>
+        {ownersMembersAndWePlanSuppliers.length > 0 && (
+          <MenuButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+            }}
+            onPress={handleEventTaskFollowersWindow}
+          >
+            <MenuTitle>Seguidores</MenuTitle>
+            <IconContainer
+              style={{
+                elevation: 5,
+              }}
+              color={theme.color.title}
+            >
+              <Icon name="users" />
+              {selectedEventTask.followers.length > 0 && (
+                <NumberOfNotesContainer>
+                  <NumberOfNotes>{selectedEventTask.followers.length}</NumberOfNotes>
+                </NumberOfNotesContainer>
+              )}
+            </IconContainer>
+          </MenuButton>
+        )}
         <MenuButton
           style={{
             shadowColor,
