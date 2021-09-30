@@ -40,7 +40,7 @@ const NewTaskForm: React.FC<IProps> = ({
 }) => {
   const { selectedEvent } = useEventVariables();
   const {
-    createTask,
+    createEventTask,
     loading,
     taskDate,
     handleSelectTaskDateWindow,
@@ -53,7 +53,7 @@ const NewTaskForm: React.FC<IProps> = ({
   const handleSubmit = useCallback(async ({
     title,
   }: IFormData) => {
-    await createTask({
+    await createEventTask({
       event_id: selectedEvent.id,
       title,
       due_date: taskDate,
@@ -62,7 +62,7 @@ const NewTaskForm: React.FC<IProps> = ({
     });
     formRef.current?.clearField;
     closeWindow();
-  }, [closeWindow, createTask]);
+  }, [closeWindow, createEventTask]);
 
   function selectTaskPriority(data: 'low' | 'neutral' | 'high') {
     setPriority(data);

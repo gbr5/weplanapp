@@ -1,6 +1,6 @@
 import IUserDTO from "./IUserDTO";
 
-export default interface IEventTaskFollowerDTO {
+export default interface ITaskFollowerDTO {
   id: string;
   user_id: string;
   task_id: string;

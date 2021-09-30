@@ -19,7 +19,7 @@ export function EditTaskPriorityWindow() {
 
   async function handleUpdateTaskPriority({ priority }: IPriorityButton) {
     await updateTask({
-      ...selectedEventTask,
+      ...selectedEventTask.task,
       priority,
     });
     handleEditTaskPriorityWindow();
@@ -39,7 +39,7 @@ export function EditTaskPriorityWindow() {
         <Underline />
         <IconContainer>
           <IconButton
-            isActive={selectedEventTask.priority === 'low'}
+            isActive={selectedEventTask.task.priority === 'low'}
             onPress={() => handleUpdateTaskPriority({
               priority: 'low',
             })}
@@ -50,7 +50,7 @@ export function EditTaskPriorityWindow() {
             />
           </IconButton>
           <IconButton
-            isActive={selectedEventTask.priority === 'neutral'}
+            isActive={selectedEventTask.task.priority === 'neutral'}
             onPress={() => handleUpdateTaskPriority({
               priority: 'neutral',
             })}
@@ -61,7 +61,7 @@ export function EditTaskPriorityWindow() {
             />
           </IconButton>
           <IconButton
-            isActive={selectedEventTask.priority === 'high'}
+            isActive={selectedEventTask.task.priority === 'high'}
             onPress={() => handleUpdateTaskPriority({
               priority: 'high',
             })}

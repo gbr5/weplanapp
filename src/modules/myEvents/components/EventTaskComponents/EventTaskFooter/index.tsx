@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import IEventTaskDTO from '../../../../../dtos/IEventTaskDTO';
 import theme from '../../../../../global/styles/theme';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 import formatOnlyTime from '../../../../../utils/formatOnlyTime';
@@ -27,16 +28,16 @@ export function EventTaskFooter({
     shadowOpacity,
     shadowRadius,
   } = theme.buttonShadow;
-  const { selectEventTask, selectedTask } = useMyEvent();
+  const { selectEventTask, selectedEventTask } = useEventVariables();
   const {
     handleEditTaskPriorityWindow,
     handleEditTaskStatusWindow,
   } = useEventTasks();
 
   function handleTaskPriority() {
-    !selectedTask
-      || !selectedTask.id
-      || selectedTask.id !== eventTask.id
+    !selectedEventTask
+      || !selectedEventTask.id
+      || selectedEventTask.id !== eventTask.id
         ? (
             selectEventTask(eventTask),
             handleEditTaskPriorityWindow()
@@ -45,9 +46,9 @@ export function EventTaskFooter({
   }
 
   function handleTaskStatus() {
-    !selectedTask
-      || !selectedTask.id
-      || selectedTask.id !== eventTask.id
+    !selectedEventTask
+      || !selectedEventTask.id
+      || selectedEventTask.id !== eventTask.id
         ? (
             selectEventTask(eventTask),
             handleEditTaskStatusWindow()
@@ -56,31 +57,31 @@ export function EventTaskFooter({
   }
 
   const priorityColor = useMemo(() => {
-    return eventTask.priority === 'neutral'
+    return eventTask.task.priority === 'neutral'
       ? theme.color.info
-      : (eventTask.priority === 'low'
+      : (eventTask.task.priority === 'low'
         ? theme.color.success
         : theme.color.atention
     );
-  }, [eventTask.priority]);
+  }, [eventTask.task.priority]);
 
   const status = useMemo(() => {
-    return eventTask.status === 'not started'
+    return eventTask.task.status === 'not started'
       ? 'cloud'
-      : (eventTask.status === 'running'
+      : (eventTask.task.status === 'running'
         ? 'zap'
         : 'award'
     );
-  }, [eventTask.status]);
+  }, [eventTask.task.status]);
 
   const statusColor = useMemo(() => {
-    return eventTask.status === 'not started'
+    return eventTask.task.status === 'not started'
       ? theme.color.info
-      : (eventTask.status === 'running'
+      : (eventTask.task.status === 'running'
         ? theme.color.atention
         : theme.color.success
     );
-  }, [eventTask.status]);
+  }, [eventTask.task.status]);
 
   return (
     <Container>
@@ -113,8 +114,8 @@ export function EventTaskFooter({
         />
       </PriorityButton>
       <DateTime>Previsão:</DateTime>
-      <DateTime>{formatOnlyTime(String(eventTask.due_date))}</DateTime>
-      <DateTime>{formatOnlyDateShort(String(eventTask.due_date))}</DateTime>
+      <DateTime>{formatOnlyTime(String(eventTask.task.due_date))}</DateTime>
+      <DateTime>{formatOnlyDateShort(String(eventTask.task.due_date))}</DateTime>
     </Container>
   );
 }

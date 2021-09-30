@@ -32,7 +32,7 @@ export function EventTaskFollowersWindow() {
           handleAddButton={handleCreateEventTaskFollowersWindow}
           handleInfoButton={handleEventTaskFollowersDescriptionWindow}
         />
-        {selectedEventTask.followers.map(follower => {
+        {selectedEventTask.task.followers.map(follower => {
             return (
               <EventTaskFollower
                 key={follower.id}

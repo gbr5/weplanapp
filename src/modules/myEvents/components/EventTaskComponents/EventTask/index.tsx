@@ -51,7 +51,7 @@ export function EventTask({
         isActive={selectedEventTask.id === eventTask.id}
         onPress={handleTaskBody}
       >
-        <Title>{eventTask.title}</Title>
+        <Title>{eventTask.task.title}</Title>
         <Underline />
         {selectedEventTask.id !== eventTask.id ? (
           <EventTaskFooter eventTask={eventTask} />

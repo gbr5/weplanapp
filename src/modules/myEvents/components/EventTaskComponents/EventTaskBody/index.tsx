@@ -53,19 +53,19 @@ export function EventTaskBody(): JSX.Element {
   } = useEventTasks();
 
   const status = useMemo(() => {
-    const title = selectedEventTask.status === 'not started'
+    const title = selectedEventTask.task.status === 'not started'
       ? 'Início'
-      : (selectedEventTask.status === 'running'
+      : (selectedEventTask.task.status === 'running'
         ? 'Execução'
         : 'Fim');
-    const icon = selectedEventTask.status === 'not started'
+    const icon = selectedEventTask.task.status === 'not started'
       ? 'cloud'
-      : (selectedEventTask.status === 'running'
+      : (selectedEventTask.task.status === 'running'
         ? 'zap'
         : 'award');
-    const color = selectedEventTask.status === 'not started'
+    const color = selectedEventTask.task.status === 'not started'
       ? theme.color.info
-      : (selectedEventTask.status === 'running'
+      : (selectedEventTask.task.status === 'running'
         ? theme.color.atention
         : theme.color.success);
     return {
@@ -76,14 +76,14 @@ export function EventTaskBody(): JSX.Element {
   }, [selectedEventTask]);
 
   const priority = useMemo(() => {
-    const title = selectedEventTask.priority === 'low'
+    const title = selectedEventTask.task.priority === 'low'
       ? 'Baixa'
-      : (selectedEventTask.priority === 'neutral'
+      : (selectedEventTask.task.priority === 'neutral'
         ? 'Neutra'
         : 'Alta');
-    const color = selectedEventTask.priority === 'low'
+    const color = selectedEventTask.task.priority === 'low'
       ? theme.color.success
-      : (selectedEventTask.priority === 'neutral'
+      : (selectedEventTask.task.priority === 'neutral'
         ? theme.color.info
         : theme.color.atention);
     return {
@@ -190,9 +190,9 @@ export function EventTaskBody(): JSX.Element {
             color={theme.color.info_light}
           >
             <Icon name="file-text" />
-            {selectedEventTask.notes.length > 0 && (
+            {selectedEventTask.task.notes.length > 0 && (
               <NumberOfNotesContainer>
-                <NumberOfNotes>{selectedEventTask.notes.length}</NumberOfNotes>
+                <NumberOfNotes>{selectedEventTask.task.notes.length}</NumberOfNotes>
               </NumberOfNotesContainer>
             )}
           </IconContainer>
@@ -215,9 +215,9 @@ export function EventTaskBody(): JSX.Element {
               color={theme.color.title}
             >
               <Icon name="users" />
-              {selectedEventTask.followers.length > 0 && (
+              {selectedEventTask.task.followers.length > 0 && (
                 <NumberOfNotesContainer>
-                  <NumberOfNotes>{selectedEventTask.followers.length}</NumberOfNotes>
+                  <NumberOfNotes>{selectedEventTask.task.followers.length}</NumberOfNotes>
                 </NumberOfNotesContainer>
               )}
             </IconContainer>
@@ -256,7 +256,7 @@ export function EventTaskBody(): JSX.Element {
           onPress={handleEditTaskTimeWindow}
         >
           <DateText>
-            {formatOnlyTime(String(selectedEventTask.due_date))}
+            {formatOnlyTime(String(selectedEventTask.task.due_date))}
           </DateText>
         </DateButton>
         <DateButton
@@ -270,7 +270,7 @@ export function EventTaskBody(): JSX.Element {
           onPress={handleEditTaskDateWindow}
         >
           <DateText>
-          {formatOnlyDateShort(String(selectedEventTask.due_date))}
+          {formatOnlyDateShort(String(selectedEventTask.task.due_date))}
           </DateText>
         </DateButton>
       </DateContainer>

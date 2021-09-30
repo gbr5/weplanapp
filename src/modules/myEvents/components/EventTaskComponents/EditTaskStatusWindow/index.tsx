@@ -18,7 +18,7 @@ export function EditTaskStatusWindow() {
 
   async function handleUpdateTaskStatus(status: 'not started' | 'running' | 'finnished') {
     await updateTask({
-      ...selectedEventTask,
+      ...selectedEventTask.task,
       status,
     });
     handleEditTaskStatusWindow();
@@ -38,7 +38,7 @@ export function EditTaskStatusWindow() {
         <Underline />
         <IconContainer>
           <IconButton
-            isActive={selectedEventTask.status === 'not started'}
+            isActive={selectedEventTask.task.status === 'not started'}
             onPress={() => handleUpdateTaskStatus('not started')}
           >
             <Icon
@@ -47,7 +47,7 @@ export function EditTaskStatusWindow() {
             />
           </IconButton>
           <IconButton
-            isActive={selectedEventTask.status === 'running'}
+            isActive={selectedEventTask.task.status === 'running'}
             onPress={() => handleUpdateTaskStatus('running')}
           >
             <Icon
@@ -56,7 +56,7 @@ export function EditTaskStatusWindow() {
             />
           </IconButton>
           <IconButton
-            isActive={selectedEventTask.status === 'finnished'}
+            isActive={selectedEventTask.task.status === 'finnished'}
             onPress={() => handleUpdateTaskStatus('finnished')}
           >
             <Icon

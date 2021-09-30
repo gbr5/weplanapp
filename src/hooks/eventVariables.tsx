@@ -12,11 +12,10 @@ import IEventOwnerDTO from '../dtos/IEventOwnerDTO';
 import IEventSupplierDTO from '../dtos/IEventSupplierDTO';
 import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
 import IEventTaskDTO from '../dtos/IEventTaskDTO';
-import IEventTaskFollowerDTO from '../dtos/IEventTaskFollowerDTO';
+import ITaskFollowerDTO from '../dtos/ITaskFollowerDTO';
 import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 import ITransactionDTO from '../dtos/ITransactionDTO';
 import IUserDTO from '../dtos/IUserDTO';
-import IUserFollowerDTO from '../dtos/IUserFollowerDTO';
 import { useAuth } from './auth';
 
 interface EventVariablesContextType {
@@ -41,7 +40,7 @@ interface EventVariablesContextType {
   selectedEventOwner: IEventOwnerDTO; // 21
   selectedEventSupplier: IEventSupplierDTO; // 22
   selectedEventTask: IEventTaskDTO; // 23
-  selectedEventTaskFollower: IEventTaskFollowerDTO; // 23
+  selectedEventTaskFollower: ITaskFollowerDTO; // 23
   selectedEventTransaction: IEventTransactionDTO; // 24
   selectedEventSupplierTransactionAgreement: IEventSupplierTransactionAgreementDTO; // 25
   selectedNewTransaction: ICreateTransactionDTO; // 26
@@ -68,7 +67,7 @@ interface EventVariablesContextType {
   selectEventOwner: (data: IEventOwnerDTO) => void;
   selectEventMember: (data: IEventMemberDTO) => void;
   selectEventTask: (data: IEventTaskDTO) => void;
-  selectEventTaskFollower: (data: IEventTaskFollowerDTO) => void;
+  selectEventTaskFollower: (data: ITaskFollowerDTO) => void;
   selectEventNote: (data: IEventNoteDTO) => void;
   selectEventTransaction: (data: IEventTransactionDTO) => void;
   selectEventSupplierTransactionAgreement: (
@@ -134,7 +133,7 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     {} as IEventNoteDTO,
   );
   const [selectedEventTaskFollower, setSelectedEventTaskFollower] = useState(
-    {} as IEventTaskFollowerDTO,
+    {} as ITaskFollowerDTO,
   );
   const [selectedEventTransaction, setSelectedEventTransaction] = useState(
     {} as IEventTransactionDTO,
@@ -228,7 +227,7 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     setSelectedEventTask(data);
   }
 
-  function selectEventTaskFollower(data: IEventTaskFollowerDTO): void {
+  function selectEventTaskFollower(data: ITaskFollowerDTO): void {
     setSelectedEventTaskFollower(data);
   }
   function selectEventNote(data: IEventNoteDTO): void {
@@ -294,8 +293,7 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   async function handleEventTasks(data: IEventTaskDTO[]): Promise<void> {
     const event = await AsyncStorage.getItem('@WePlan-Party:selected-event');
 
-    (isMember || isOwner) &&
-      event &&
+    (isMember || isOwner) && event &&
       await AsyncStorage.setItem(
         `@WePlan-Party:event-${JSON.parse(event).id}-tasks`,
         JSON.stringify(data),
@@ -304,8 +302,7 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   }
   async function handleEventNotes(data: IEventNoteDTO[]): Promise<void> {
     const event = await AsyncStorage.getItem('@WePlan-Party:selected-event');
-    (isMember || isOwner) &&
-      event &&
+    (isMember || isOwner) && event &&
       await AsyncStorage.setItem(
         `@WePlan-Party:event-${JSON.parse(event).id}-notes`,
         JSON.stringify(data),

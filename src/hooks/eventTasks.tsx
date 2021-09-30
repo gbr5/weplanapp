@@ -12,10 +12,10 @@ import IEventTaskDTO from '../dtos/IEventTaskDTO';
 import ICreateEventTaskDTO from '../dtos/ICreateEventTaskDTO';
 import { useMyEvent } from './myEvent';
 import ICreateEventTaskNoteDTO from '../dtos/ICreateEventTaskNoteDTO';
-import IEventTaskNoteDTO from '../dtos/IEventTaskNoteDTO';
+import ITaskNoteDTO from '../dtos/ITaskNoteDTO';
 import { useEventVariables } from './eventVariables';
 import IUserFollowerDTO from '../dtos/IUserFollowerDTO';
-import IEventTaskFollowerDTO from '../dtos/IEventTaskFollowerDTO';
+import ITaskDTO from '../dtos/ITaskDTO';
 
 interface EventTasksContextType {
   loading: boolean;
@@ -35,12 +35,12 @@ interface EventTasksContextType {
   createTaskWindow: boolean;
   taskDate: Date;
   createMultipleEventTaskFollowers: (data: IUserFollowerDTO[]) => Promise<void>;
-  createTask: (data: ICreateEventTaskDTO) => Promise<void>;
-  updateTask: (data: IEventTaskDTO) => Promise<void>;
+  createEventTask: (data: ICreateEventTaskDTO) => Promise<void>;
+  updateTask: (data: ITaskDTO) => Promise<void>;
   deleteTask: (data: IEventTaskDTO) => Promise<void>;
   deleteTaskFollower: () => Promise<void>;
   createTaskNote: (data: ICreateEventTaskNoteDTO) => Promise<void>;
-  deleteTaskNote: (data: IEventTaskNoteDTO) => Promise<void>;
+  deleteTaskNote: (data: ITaskNoteDTO) => Promise<void>;
   handleEditTaskPriorityWindow: () => void;
   handleEditTaskStatusWindow: () => void;
   handleEditTaskDateWindow: () => void;
@@ -159,7 +159,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
     setDeleteTaskConfirmationWindow(!deleteTaskConfirmationWindow)
   }
 
-  async function createTask({
+  async function createEventTask({
     due_date,
     event_id,
     priority,
@@ -186,15 +186,15 @@ const EventTasksProvider: React.FC = ({ children }) => {
 
   async function createMultipleEventTaskFollowers(data: IUserFollowerDTO[]) {
     try {
+      setLoading(true);
       const followers = data.map(follower => {
         return {
           user_id: follower.follower.id,
           type: follower.type,
         };
-      })
-      setLoading(true);
-      await api.post(`/create-multiple-event-task-followers`, {
-        task_id: selectedEventTask.id,
+      });
+      await api.post(`/create-multiple-task-followers`, {
+        task_id: selectedEventTask.task.id,
         followers,
       });
       await getEventTasks(selectedEvent.id);
@@ -205,13 +205,29 @@ const EventTasksProvider: React.FC = ({ children }) => {
     }
   }
 
-  async function updateTask(data: IEventTaskDTO) {
+  async function updateTask(data: ITaskDTO) {
     try {
       setLoading(true);
-      const response = await api.put(`/event-tasks/${data.id}`, data);
-      selectedEventTask && selectedEventTask.id && selectEventTask(response.data);
-      await getEventTasks(data.event_id);
-      await getEventNotes(data.event_id);
+      const {
+        id,
+        title,
+        due_date,
+        priority,
+        status,
+      } = data;
+      const response = await api.put(`/tasks/`, {
+        id,
+        title,
+        due_date,
+        priority,
+        status,
+      });
+      selectedEventTask && selectedEventTask.id && selectEventTask({
+        ...selectedEventTask,
+        task: response.data,
+      });
+      await getEventTasks(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
       selectStatus(data.status);
     } catch (err) {
       throw new Error(err);
@@ -235,7 +251,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
   async function deleteTaskFollower() {
     try {
       setLoading(true);
-      await api.delete(`/event-task-followers/${selectedEventTaskFollower.id}`);
+      await api.delete(`/task-followers/${selectedEventTaskFollower.id}`);
       handleDeleteTaskFollowerConfirmation();
       await getEventTasks(selectedEvent.id);
     } catch (err) {
@@ -248,8 +264,9 @@ const EventTasksProvider: React.FC = ({ children }) => {
   async function createTaskNote(data: ICreateEventTaskNoteDTO) {
     try {
       setLoading(true);
-      await api.post(`/event-task-notes`, data);
+      await api.post(`/task-notes`, data);
       await getEvent(selectedEvent.id);
+      await getEventTasks(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -257,10 +274,10 @@ const EventTasksProvider: React.FC = ({ children }) => {
     }
   }
 
-  async function deleteTaskNote(data: IEventTaskNoteDTO) {
+  async function deleteTaskNote(data: ITaskNoteDTO) {
     try {
       setLoading(true);
-      await api.delete(`/event-task-notes/${data.id}`);
+      await api.delete(`/task-notes/${data.id}`);
       await getEvent(selectedEvent.id);
     } catch (err) {
       throw new Error(err);
@@ -295,7 +312,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
         deleteTaskConfirmationWindow,
         taskDate,
         createTaskWindow,
-        createTask,
+        createEventTask,
         updateTask,
         deleteTask,
         createTaskNote,

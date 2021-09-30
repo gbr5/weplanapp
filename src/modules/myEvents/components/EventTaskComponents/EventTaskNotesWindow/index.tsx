@@ -30,7 +30,7 @@ export function EventTaskNotesWindow({
   async function handleCreateTaskNote(note: string) {
     await createTaskNote({
       note,
-      task_id: selectedEventTask.id,
+      task_id: selectedEventTask.task.id,
     });
     await getEvent(selectedEvent.id);
   }
@@ -51,7 +51,7 @@ export function EventTaskNotesWindow({
       <Container>
         <Title>Notas</Title>
         <Underline />
-        <TaskTitle>Tarefa: {selectedEventTask.title}</TaskTitle>
+        <TaskTitle>Tarefa: {selectedEventTask.task.title}</TaskTitle>
 
         <NoteForm
           handleNote={(data: string) => handleCreateTaskNote(data)}
@@ -59,7 +59,7 @@ export function EventTaskNotesWindow({
         />
 
         <NotesContainer
-          data={selectedEventTask.notes.map(taskNotes => taskNotes.note)}
+          data={selectedEventTask.task.notes.map(taskNotes => taskNotes.note)}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Note key={item.id} selectedNote={item} />

@@ -56,7 +56,7 @@ export function AddEventTaskFollowersWindow() {
     if (eventOwners.length > 1) {
       eventOwners
         .map(owner => {
-          const findOwner = selectedEventTask.followers.find(item => item.follower.id === owner.userEventOwner.id);
+          const findOwner = selectedEventTask.task.followers.find(item => item.follower.id === owner.userEventOwner.id);
           if (!findOwner) {
             followers.push({
               follower: owner.userEventOwner,
@@ -75,7 +75,7 @@ export function AddEventTaskFollowersWindow() {
     if (eventMembers.length > 0) {
       eventMembers
         .map(member => {
-          const findMember = selectedEventTask.followers.find(item => item.follower.id === member.userEventMember.id);
+          const findMember = selectedEventTask.task.followers.find(item => item.follower.id === member.userEventMember.id);
           if (!findMember) {
             followers.push({
               follower: member.userEventMember,
@@ -97,7 +97,7 @@ export function AddEventTaskFollowersWindow() {
           && supplier.eventWeplanSupplier.weplanEventSupplier.id
         )
         .map(supplier => {
-          const findFollower = selectedEventTask.followers.find(follower =>
+          const findFollower = selectedEventTask.task.followers.find(follower =>
             follower.user_id === supplier.eventWeplanSupplier.weplanEventSupplier.id
           );
           if (!findFollower) {
@@ -121,7 +121,7 @@ export function AddEventTaskFollowersWindow() {
           && guest.weplanGuest.weplanUserGuest.id
         )
         .map(guest => {
-          const findFollower = selectedEventTask.followers.find(follower =>
+          const findFollower = selectedEventTask.task.followers.find(follower =>
             follower.user_id === guest.weplanGuest.weplanUserGuest.id
           );
           if (!findFollower) {

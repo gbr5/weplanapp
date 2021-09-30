@@ -226,7 +226,7 @@ const MyEvent: React.FC = () => {
 
   async function handleUpdateTaskDate(date: Date) {
     await updateTask({
-      ...selectedEventTask,
+      ...selectedEventTask.task,
       due_date: date,
     });
     handleCloseEditTaskDateWindow();
@@ -234,7 +234,7 @@ const MyEvent: React.FC = () => {
 
   async function handleUpdateTaskTime(date: Date) {
     await updateTask({
-      ...selectedEventTask,
+      ...selectedEventTask.task,
       due_date: date,
     });
     handleCloseEditTaskTimeWindow();
@@ -396,7 +396,7 @@ const MyEvent: React.FC = () => {
             loading={loading}
             closeWindow={handleCloseEditTaskDateWindow}
             selectDate={handleUpdateTaskDate}
-            selectedDate={new Date(selectedEventTask.due_date)}
+            selectedDate={new Date(selectedEventTask.task.due_date)}
           />
       )}
       {editTaskTimeWindow
@@ -406,7 +406,7 @@ const MyEvent: React.FC = () => {
             loading={loading}
             closeWindow={handleCloseEditTaskTimeWindow}
             selectDate={handleUpdateTaskTime}
-            selectedDate={new Date(selectedEventTask.due_date)}
+            selectedDate={new Date(selectedEventTask.task.due_date)}
           />
       )}
       {selectTaskDateWindow && (

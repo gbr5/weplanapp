@@ -1,5 +1,5 @@
 import React from 'react';
-import IEventTaskFollowerDTO from '../../../../../dtos/IEventTaskFollowerDTO';
+import ITaskFollowerDTO from '../../../../../dtos/ITaskFollowerDTO';
 import IUserFollowerDTO from '../../../../../dtos/IUserFollowerDTO';
 import theme from '../../../../../global/styles/theme';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
@@ -8,7 +8,7 @@ import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { Container, Icon, Name } from './styles';
 
 interface IProps {
-  user: IEventTaskFollowerDTO;
+  user: ITaskFollowerDTO;
 }
 
 export function EventTaskFollower({

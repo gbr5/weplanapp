@@ -1,15 +1,8 @@
-import IEventTaskFollowersDTO from "./IEventTaskFollowerDTO";
-import IEventTaskNoteDTO from "./IEventTaskNoteDTO";
+import ITaskDTO from "./ITaskDTO";
 
 export default interface IEventTaskDTO {
   id: string;
   event_id: string;
-  title: string;
-  priority: 'low' | 'neutral' | 'high';
-  status: 'not started' | 'running' | 'finnished';
-  due_date: Date;
-  created_at: Date;
-  updated_at: Date;
-  notes: IEventTaskNoteDTO[];
-  followers: IEventTaskFollowersDTO[];
+  task_id: string;
+  task: ITaskDTO;
 }

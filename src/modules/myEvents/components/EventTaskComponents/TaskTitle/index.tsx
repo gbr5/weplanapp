@@ -36,7 +36,7 @@ export function TaskTitle(): JSX.Element {
     try {
       setLoading(true);
       await updateTask({
-        ...selectedEventTask,
+        ...selectedEventTask.task,
         title,
       });
     } catch {
@@ -62,8 +62,8 @@ export function TaskTitle(): JSX.Element {
             <TitleButton onPress={handleEditTask}>
               <TaskLabel>Editar Tarefa:</TaskLabel>
                 <InlineFormField
-                  defaultValue={selectedEventTask.title}
-                  placeholder={selectedEventTask.title}
+                  defaultValue={selectedEventTask.task.title}
+                  placeholder={selectedEventTask.task.title}
                   handleOnSubmit={handleUpdateTask}
                   closeComponent={handleEditTask}
                 />
@@ -72,7 +72,7 @@ export function TaskTitle(): JSX.Element {
             <TitleButton onPress={handleEditTask}>
               <TaskLabel>Editar Tarefa:</TaskLabel>
                 <Title>
-                  {selectedEventTask.title}
+                  {selectedEventTask.task.title}
                 </Title>
             </TitleButton>
           )}
