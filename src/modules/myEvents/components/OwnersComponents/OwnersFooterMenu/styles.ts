@@ -13,8 +13,8 @@ export const Container = styled.ScrollView`
 
 export const MenuButton = styled.TouchableOpacity<IButtonProps>`
   flex-direction: row;
-  width: 180px;
-  height: 56px;
+  width: 100px;
+  height: 48px;
   border-radius: 5px;
   background-color: ${({ theme, isActive }) => isActive
     ? theme.color.primary
@@ -43,5 +43,4 @@ export const MenuIcon = styled(Feather)<IButtonProps>`
     ? theme.color.text1
     : theme.color.primary
   };
-  margin-left: 8px;
 `;

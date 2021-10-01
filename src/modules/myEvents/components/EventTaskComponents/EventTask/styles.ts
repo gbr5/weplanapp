@@ -14,6 +14,7 @@ export const Container = styled.TouchableOpacity<IButtonProps>`
   margin-top: 8px;
   /* border: .5px solid ${({ theme }) => theme.color.text3}; */
   border: none;
+  min-height: 104px;
 `;
 
 export const CloseButton = styled.TouchableOpacity`
@@ -41,6 +42,7 @@ export const Title = styled.Text`
   letter-spacing: 1px;
   margin-top: 4px;
   line-height: 26px;
+  min-height: 32px;
   /* min-height: 32px; */
 `;
 

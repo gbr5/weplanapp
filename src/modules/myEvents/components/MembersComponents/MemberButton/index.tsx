@@ -11,6 +11,8 @@ import {
   Name,
   Icon,
 } from './styles';
+import { useMyEvent } from '../../../../../hooks/myEvent';
+import theme from '../../../../../global/styles/theme';
 
 interface IProps {
   member: IEventMemberDTO;
@@ -21,14 +23,24 @@ export function MemberButton({
   member,
   index,
 }: IProps) {
+  const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
   const { selectedEventMember, selectEventMember} = useEventVariables();
+  const { getSelectedUserEventTasks } = useMyEvent();
 
   const [memberBody, setMemberBody] = useState(false);
 
-  function handleMemberBody() {
-    memberBody
-      ? selectEventMember({} as IEventMemberDTO)
-      : selectEventMember(member);
+  async function handleMemberBody() {
+    if (memberBody) {
+      selectEventMember({} as IEventMemberDTO)
+    } else {
+      await getSelectedUserEventTasks(member.userEventMember.id);
+      selectEventMember(member);
+    }
     setMemberBody(!memberBody);
   }
 
@@ -45,7 +57,17 @@ export function MemberButton({
 
   return (
     <>
-      <Container isActive={selectedEventMember.id === member.id} onPress={handleMemberBody}>
+      <Container
+        style={{
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+          elevation: 5,
+        }}
+        isActive={selectedEventMember.id === member.id}
+        onPress={handleMemberBody}
+      >
         <Index>{index}</Index>
         <Name>{member.userEventMember.name}</Name>
         {memberBody ? (

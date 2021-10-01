@@ -46,7 +46,7 @@ export function FinancialSection() {
   } = useMyEvent();
 
   const budget = useMemo(() => {
-    return eventBudget ? formatBrlCurrency(eventBudget.budget) : formatBrlCurrency(0);
+    return eventBudget && eventBudget.budget ? formatBrlCurrency(eventBudget.budget) : formatBrlCurrency(0);
   }, [eventBudget]);
 
   const totalExecutedValue = useMemo(() => {

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import IEventOwnerDTO from '../../../../../dtos/IEventOwnerDTO';
 import theme from '../../../../../global/styles/theme';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
+import { useMyEvent } from '../../../../../hooks/myEvent';
 
 import { OwnerButtonInfo } from '../OwnerButtonInfo';
 
@@ -30,13 +31,17 @@ export function OwnerButton({
   } = theme.objectButtonShadow;
 
   const { selectedEventOwner, selectEventOwner} = useEventVariables();
+  const { getSelectedUserEventTasks } = useMyEvent();
 
   const [ownerBody, setOwnerBody] = useState(false);
 
-  function handleOwnerBody() {
-    ownerBody
-      ? selectEventOwner({} as IEventOwnerDTO)
-      : selectEventOwner(owner);
+  async function handleOwnerBody() {
+    if (ownerBody) {
+      selectEventOwner({} as IEventOwnerDTO)
+    } else {
+      await getSelectedUserEventTasks(owner.userEventOwner.id);
+      selectEventOwner(owner);
+    }
     setOwnerBody(!ownerBody);
   }
 

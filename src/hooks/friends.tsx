@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import IFriendDTO from '../dtos/IFriendDTO';
+import IUserContactDTO from '../dtos/IUserContactDTO';
 import IUserDTO from '../dtos/IUserDTO';
 import api from '../services/api';
 import { useAuth } from './auth';
@@ -13,10 +14,12 @@ interface FriendsContextType {
   selectUserWindow: boolean;
   friendRequestsWindow: boolean;
   deleteFriendWindow: boolean;
+  selectedUserContact: IUserContactDTO;
   selectedFriend: IFriendDTO;
   unselectedFriends: IFriendDTO[];
   handleFriendRequestsWindow: () => void;
   handleSelectUserWindow: () => void;
+  handleSelectedUserContact: (contact: IUserContactDTO) => void;
   handleDeleteFriendWindow: () => void;
   getFriends: () => Promise<void>;
   getFriendRequests: () => Promise<void>;
@@ -43,6 +46,7 @@ const FriendsProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false); //6
   const [selectedFriend, setSelectedFriend] = useState({} as IFriendDTO); //7
   const [selectUserWindow, setSelectUserWindow] = useState(false); //9
+  const [selectedUserContact, setSelectedUserContact] = useState({} as IUserContactDTO); //9
   const [unselectedFriends, setUnselectedFriends] = useState<IFriendDTO[]>([]); // 9
 
   function resetFriendsVariables() {
@@ -75,6 +79,10 @@ const FriendsProvider: React.FC = ({ children }) => {
 
   function handleSelectUserWindow() {
     setSelectUserWindow(!selectUserWindow);
+  }
+
+  function handleSelectedUserContact(data: IUserContactDTO) {
+    setSelectedUserContact(data);
   }
 
   function handleFriendRequestsWindow() {
@@ -224,6 +232,8 @@ const FriendsProvider: React.FC = ({ children }) => {
         selectedFriends,
         handleUnselectedFriends,
         unselectedFriends,
+        handleSelectedUserContact,
+        selectedUserContact,
       }}
     >
       {children}

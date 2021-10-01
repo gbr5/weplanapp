@@ -31,6 +31,7 @@ interface EventTasksContextType {
   createEventTaskFollowersWindow: boolean;
   deleteTaskConfirmationWindow: boolean;
   eventTaskFollowersDescriptionWindow: boolean;
+  userEventTasksWindow: boolean;
   deleteTaskFollowerConfirmation: boolean;
   createTaskWindow: boolean;
   taskDate: Date;
@@ -53,6 +54,7 @@ interface EventTasksContextType {
   handleDeleteTaskFollowerConfirmation: () => void;
   handleEventTaskFollowersDescriptionWindow: () => void;
   handleCreateTaskWindow: () => void;
+  handleUserEventTasksWindow: () => void;
   handleDeleteTaskConfirmationWindow: () => void;
   selectStatus: (status: 'not started' | 'running' | 'finnished') => void;
   selectTaskDate: (data: Date) => void;
@@ -80,6 +82,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
   const [selectTaskDateWindow, setSelectTaskDateWindow] = useState(false);
   const [selectTaskTimeWindow, setSelectTaskTimeWindow] = useState(false);
   const [eventTaskNotesWindow, setEventTaskNotesWindow] = useState(false);
+  const [userEventTasksWindow, setUserEventTasksWindow] = useState(false);
   const [eventTaskFollowersWindow, setEventTaskFollowersWindow] = useState(false);
   const [createEventTaskFollowersWindow, setCreateEventTaskFollowersWindow] = useState(false);
   const [deleteTaskConfirmationWindow, setDeleteTaskConfirmationWindow] = useState(false);
@@ -109,6 +112,10 @@ const EventTasksProvider: React.FC = ({ children }) => {
 
   function handleEventTaskFollowersDescriptionWindow() {
     setEventTaskFollowersDescriptionWindow(!eventTaskFollowersDescriptionWindow);
+  }
+
+  function handleUserEventTasksWindow() {
+    setUserEventTasksWindow(!userEventTasksWindow);
   }
 
   function handleDeleteTaskFollowerConfirmation() {
@@ -296,8 +303,8 @@ const EventTasksProvider: React.FC = ({ children }) => {
 
   return (
     <EventTasksContext.Provider
-    value={{
-      loading,
+      value={{
+        loading,
         createEventTaskFollowersWindow,
         createMultipleEventTaskFollowers,
         status,
@@ -336,6 +343,8 @@ const EventTasksProvider: React.FC = ({ children }) => {
         deleteTaskFollower,
         handleEventTaskFollowersDescriptionWindow,
         eventTaskFollowersDescriptionWindow,
+        handleUserEventTasksWindow,
+        userEventTasksWindow,
       }}
     >
       {children}

@@ -57,6 +57,7 @@ interface MyEventContextType {
   getEvent: (eventId: string) => Promise<void>;
   getEventNotes: (eventId: string) => Promise<void>;
   getEventTasks: (eventId: string) => Promise<void>;
+  getSelectedUserEventTasks: (user_id: string) => Promise<IEventTaskDTO[]>;
   getEventBudget: (eventId: string) => Promise<void>;
   getEventTransactions: (eventId: string) => Promise<void>;
   createEventBudget: (budget: number) => Promise<void>;
@@ -85,6 +86,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     selectEventSupplier,
     selectedEventSupplier,
     handleEventBudget,
+    handleSelectedUserEventTasks,
     handleEventGuests,
     handleEventSuppliers,
     handleEventOwners,
@@ -98,6 +100,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     eventOwners,
     selectedEventGuest,
     handleFilteredGuests,
+    unsetVariables,
   } = useEventVariables();
 
   const [eventFinancialSubSection, setEventFinancialSubSection] = useState('Main');
@@ -156,6 +159,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     setIsOwner(false);
     setTotalEventCost(0);
     setAvailableNumberOfGuests(0);
+    unsetVariables();
   }
 
   function handleBudgetWindow() {
@@ -224,6 +228,16 @@ const MyEventProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get<IEventBudgetDTO>(`/event-budget/${eventId}`);
       handleEventBudget(response.data);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async function getSelectedUserEventTasks(user_id: string) {
+    try {
+      const response = await api.get<IEventTaskDTO[]>(`/list-event-tasks-by-user/${user_id}/${selectedEvent.id}`);
+      handleSelectedUserEventTasks(response.data);
+      return response.data;
     } catch (err) {
       throw new Error(err);
     }
@@ -304,9 +318,9 @@ const MyEventProvider: React.FC = ({ children }) => {
   }
 
   async function handleSelectedEvent(data: IEventDTO) {
-    if (data.id !== selectedEvent.id) {
-      unsetEventVariables();
-    }
+    if (!data || (data && !data.id)) return unsetEventVariables();
+    console.log('CHEGOU AQUI!!!!')
+    // data.id !== selectedEvent.id && unsetEventVariables();
     try {
       Promise.all([
         getEventGuests(data.id),
@@ -455,6 +469,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         getEventTasks,
         getEventBudget,
         getEventTransactions,
+        getSelectedUserEventTasks,
         handleDeleteEvent,
       }}
     >

@@ -9,7 +9,7 @@ interface IButtonProps {
 export const Container = styled.TouchableOpacity<IButtonProps>`
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, isActive }) => isActive ? theme.color.text4 : theme.color.text6};
+  background-color: ${({ theme, isActive }) => isActive ? theme.color.text5 : theme.color.text6};
   border: none;
   margin-top: 8px;
   border-radius: 8px;

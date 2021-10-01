@@ -12,7 +12,7 @@ interface EventMembersContextType {
   addMultipleMembers: (data: IFriendDTO[]) => Promise<void>;
   editEventMember: (data: IEventMemberDTO) => void;
   createEventMember: (data: ICreateEventMemberDTO) => void;
-  deleteEventMember: (id: string) => void;
+  deleteEventMember: (id: string) => Promise<void>;
 }
 
 const EventMembersContext = createContext({} as EventMembersContextType);
@@ -29,14 +29,15 @@ const EventMembersProvider: React.FC = ({ children }) => {
 
   async function addMultipleMembers(data: IFriendDTO[]) {
     try {
-      Promise.all([
-        data.map(({ friend }) => {
-          return api.post(`/event-members/${selectedEvent.id}`, {
-            member_id: friend.id,
-            number_of_guests: 0,
-          });
-        }),
-      ]);
+      const members = data.map(member => {
+        return {
+          member_id: member.friend.id,
+        };
+      });
+      await api.post(`/create-multiple-event-members/`, {
+        event_id: selectedEvent.id,
+        members,
+      });
       await getEventMembers(selectedEvent.id);
     } catch (err) {
       throw new Error(err);

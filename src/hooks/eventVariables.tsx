@@ -21,37 +21,39 @@ import { useAuth } from './auth';
 interface EventVariablesContextType {
   eventBudget: IEventBudgetDTO; // 1
   eventGuests: IEventGuestDTO[]; // 2
-  filteredGuests: IEventGuestDTO[]; // 2
-  eventSuppliers: IEventSupplierDTO[]; // 3
-  eventOwners: IEventOwnerDTO[]; // 7
-  eventMembers: IEventMemberDTO[]; // 8
-  eventTasks: IEventTaskDTO[]; // 9
-  eventNotes: IEventNoteDTO[]; // 10
-  eventSupplierTransactionAgreements: IEventSupplierTransactionAgreementDTO[]; // 11
-  eventTransactions: IEventTransactionDTO[]; // 12
-  filteredEventTransactions: IEventTransactionDTO[]; // 13
-  newTransactions: ICreateTransactionDTO[]; // 14
-  selectedDate: Date; // 15
-  selectedDateWindow: boolean; // 16
-  selectedEvent: IEventDTO; // 17
-  selectedEventGuest: IEventGuestDTO; // 18
-  selectedEventMember: IEventMemberDTO; // 19
-  selectedEventNote: IEventNoteDTO; // 20
-  selectedEventOwner: IEventOwnerDTO; // 21
-  selectedEventSupplier: IEventSupplierDTO; // 22
-  selectedEventTask: IEventTaskDTO; // 23
-  selectedEventTaskFollower: ITaskFollowerDTO; // 23
-  selectedEventTransaction: IEventTransactionDTO; // 24
-  selectedEventSupplierTransactionAgreement: IEventSupplierTransactionAgreementDTO; // 25
-  selectedNewTransaction: ICreateTransactionDTO; // 26
-  isOwner: boolean;
-  master: IUserDTO;
-  currentSection: string;
-  handleEventGuests: (data: IEventGuestDTO[]) => Promise<void>;
-  handleEventSuppliers: (data: IEventSupplierDTO[]) => Promise<void>;
+  filteredGuests: IEventGuestDTO[]; // 3
+  eventSuppliers: IEventSupplierDTO[]; // 4
+  eventOwners: IEventOwnerDTO[]; // 5
+  eventMembers: IEventMemberDTO[]; // 6
+  eventTasks: IEventTaskDTO[]; // 7
+  eventNotes: IEventNoteDTO[]; // 8
+  eventSupplierTransactionAgreements: IEventSupplierTransactionAgreementDTO[]; // 9
+  eventTransactions: IEventTransactionDTO[]; // 10
+  filteredEventTransactions: IEventTransactionDTO[]; // 11
+  newTransactions: ICreateTransactionDTO[]; // 12
+  selectedDate: Date; // 13
+  selectedDateWindow: boolean; // 14
+  selectedEvent: IEventDTO; // 15
+  selectedEventGuest: IEventGuestDTO; // 16
+  selectedEventMember: IEventMemberDTO; // 17
+  selectedEventNote: IEventNoteDTO; // 18
+  selectedEventOwner: IEventOwnerDTO; // 19
+  selectedEventSupplier: IEventSupplierDTO; // 20
+  selectedEventTask: IEventTaskDTO; // 21
+  selectedEventTaskFollower: ITaskFollowerDTO; // 22
+  selectedEventTransaction: IEventTransactionDTO; // 23
+  selectedEventSupplierTransactionAgreement: IEventSupplierTransactionAgreementDTO; // 24
+  selectedNewTransaction: ICreateTransactionDTO; // 25
+  selectedUserEventTasks: IEventTaskDTO[]; // 26
+  isOwner: boolean; // 27
+  master: IUserDTO; // 28
+  currentSection: string; //29
+  handleEventGuests: (data: IEventGuestDTO[]) => void;
+  handleEventSuppliers: (data: IEventSupplierDTO[]) => void;
   handleEventOwners: (data: IEventOwnerDTO[]) => Promise<void>;
   handleEventMembers: (data: IEventMemberDTO[]) => Promise<void>;
   handleEventTasks: (data: IEventTaskDTO[]) => Promise<void>;
+  handleSelectedUserEventTasks: (data: IEventTaskDTO[]) => void;
   handleEventNotes: (data: IEventNoteDTO[]) => Promise<void>;
   handleEventTransactions: (data: IEventTransactionDTO[]) => Promise<void>;
   transformEventTransactions: (
@@ -99,6 +101,7 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   const [eventGuests, setEventGuests] = useState<IEventGuestDTO[]>([]);
   const [eventSuppliers, setEventSuppliers] = useState<IEventSupplierDTO[]>([]);
   const [eventTasks, setEventTasks] = useState<IEventTaskDTO[]>([]);
+  const [selectedUserEventTasks, setSelectedUserEventTasks] = useState<IEventTaskDTO[]>([]);
   const [eventNotes, setEventNotes] = useState<IEventNoteDTO[]>([]);
   const [
     eventSupplierTransactionAgreements,
@@ -151,35 +154,66 @@ const EventVariablesProvider: React.FC = ({ children }) => {
 
   async function unsetVariables(): Promise<void> {
     await AsyncStorage.removeItem('@WePlan-Party:selected-event');
-    setEventBudget({} as IEventBudgetDTO); // 1
-    setEventGuests([]); // 2
-    setFilteredGuests([]); // 2
-    setEventSuppliers([]); // 3
-    setNewTransactions([]); // 4
-    setEventOwners([]); // 5
-    setEventMembers([]); // 6
-    setEventTasks([]); // 7
-    setEventNotes([]); // 8
-    setEventSupplierTransactionAgreements([]); // 9
-    setEventTransactions([]); // 10
-    setFilteredEventTransactions([]); // 11
-    setSelectedDate(addDays(new Date(), 3)); // 12
-    setSelectedDateWindow(false); // 13
-    setSelectedEvent({} as IEventDTO); // 14
-    setSelectedEventGuest({} as IEventGuestDTO); // 15
-    setSelectedEventSupplier({} as IEventSupplierDTO); // 16
-    setSelectedEventOwner({} as IEventOwnerDTO); // 17
-    setSelectedEventMember({} as IEventMemberDTO); // 18
-    setSelectedEventTask({} as IEventTaskDTO); // 19
-    setSelectedEventNote({} as IEventNoteDTO); // 20
-    setSelectedEventTransaction({} as IEventTransactionDTO); // 21
+    // 1
+    setEventBudget({} as IEventBudgetDTO);
+    // 2
+    setEventGuests([]);
+    // 3
+    setFilteredGuests([]);
+    // 4
+    setEventSuppliers([]);
+    // 5
+    setNewTransactions([]);
+    // 6
+    setEventOwners([]);
+    // 7
+    setEventMembers([]);
+    // 8
+    setEventTasks([]);
+    // 9
+    setEventNotes([]);
+    // 10
+    setEventSupplierTransactionAgreements([]);
+    // 11
+    setSelectedUserEventTasks([]);
+    // 12
+    setEventTransactions([]);
+    // 13
+    setFilteredEventTransactions([]);
+    // 14
+    setSelectedDate(addDays(new Date(), 3));
+    // 15
+    setSelectedDateWindow(false);
+    // 16
+    setSelectedEvent({} as IEventDTO);
+    // 17
+    setSelectedEventGuest({} as IEventGuestDTO);
+    // 18
+    setSelectedEventSupplier({} as IEventSupplierDTO);
+    // 19
+    setSelectedEventOwner({} as IEventOwnerDTO);
+    // 20
+    setSelectedEventMember({} as IEventMemberDTO);
+    // 21
+    setSelectedEventTask({} as IEventTaskDTO);
+    // 22
+    setSelectedEventNote({} as IEventNoteDTO);
+    // 23
+    setSelectedEventTransaction({} as IEventTransactionDTO);
+    // 24
     setSelectedEventSupplierTransactionAgreement(
       {} as IEventSupplierTransactionAgreementDTO,
-    ); // 22
-    setSelectedNewTransaction({} as ICreateTransactionDTO); // 23
+    );
+    // 25
+    setSelectedNewTransaction({} as ICreateTransactionDTO);
+    // 26
     setCurrentSection('notes');
+    // 27
     setIsOwner(false);
+    // 28
     setIsMember(false);
+    // 29
+
   }
 
   function handleSelectedDate(data: Date): void {
@@ -191,6 +225,9 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   }
   function handleCurrentSection(data: string): void {
     setCurrentSection(data);
+  }
+  function handleSelectedUserEventTasks(data: IEventTaskDTO[]): void {
+    setSelectedUserEventTasks(data);
   }
   function selectNewTransactions(data: ICreateTransactionDTO[]): void {
     setNewTransactions(data);
@@ -241,23 +278,10 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   ): void {
     setSelectedEventSupplierTransactionAgreement(data);
   }
-  async function handleEventGuests(data: IEventGuestDTO[]): Promise<void> {
-    const event = await AsyncStorage.getItem(`@WePlan-Party:selected-event`);
-
-    event &&
-      await AsyncStorage.setItem(
-        `@WePlan-Party:event-${JSON.parse(event).id}-guests`,
-        JSON.stringify(data),
-      );
+  function handleEventGuests(data: IEventGuestDTO[]): void {
     setEventGuests(data);
   }
-  async function handleEventSuppliers(data: IEventSupplierDTO[]): Promise<void> {
-    const event = await AsyncStorage.getItem(`@WePlan-Party:selected-event`);
-    event &&
-      await AsyncStorage.setItem(
-        `@WePlan-Party:event-${JSON.parse(event).id}-suppliers`,
-        JSON.stringify(data),
-      );
+  function handleEventSuppliers(data: IEventSupplierDTO[]): void {
     setEventSuppliers(data);
   }
   async function handleEventOwners(data: IEventOwnerDTO[]): Promise<void> {
@@ -636,6 +660,8 @@ const EventVariablesProvider: React.FC = ({ children }) => {
         handleFilteredGuests,
         selectEventTaskFollower,
         selectedEventTaskFollower,
+        handleSelectedUserEventTasks,
+        selectedUserEventTasks,
       }}
     >
       {children}

@@ -1,20 +1,23 @@
 import React, { createContext, useContext } from 'react';
 import { useEventGuests } from './eventGuests';
 import { useEventSuppliers } from './eventSuppliers';
+import { useEventVariables } from './eventVariables';
 import { useMyEvent } from './myEvent';
 
 interface UnsetEventVariablesContextType {
-  unsetVariables: () => void;
+  resetEvent: () => void;
 }
 
 const UnsetEventVariablesContext = createContext({} as UnsetEventVariablesContextType);
 
 const UnsetEventVariablesProvider: React.FC = ({ children }) => {
+  const { unsetVariables } = useEventVariables();
   const { unsetEventVariables } = useMyEvent();
   const { unsetEventGuestVariables } = useEventGuests();
   const { unsetEventSuppliersVariables } = useEventSuppliers();
 
-  function unsetVariables() {
+  function resetEvent() {
+    unsetVariables();
     unsetEventVariables();
     unsetEventGuestVariables();
     unsetEventSuppliersVariables();
@@ -23,7 +26,7 @@ const UnsetEventVariablesProvider: React.FC = ({ children }) => {
   return (
     <UnsetEventVariablesContext.Provider
       value={{
-        unsetVariables,
+        resetEvent,
       }}
     >
       {children}

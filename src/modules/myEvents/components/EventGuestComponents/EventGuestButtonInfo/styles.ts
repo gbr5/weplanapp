@@ -74,7 +74,6 @@ export const MenuText = styled.Text`
 `;
 
 export const DeleteText = styled.Text`
-  margin-bottom: 12px;
   font-size: ${RFValue(16)}px;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text6};
@@ -125,7 +124,7 @@ export const FieldButton = styled.TouchableOpacity`
   min-height: 60px;
 `;
 
-export const DeleteButton = styled.TouchableOpacity`
+export const TaskButton = styled.TouchableOpacity`
   position: relative;
   flex-direction: row;
   width: 99%;
@@ -135,6 +134,21 @@ export const DeleteButton = styled.TouchableOpacity`
   padding: 0 8px;
   padding-top: 16px;
   border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.primary_light};
+  margin: 4px;
+  border: none;
+  min-height: 60px;
+`;
+
+export const DeleteButton = styled.TouchableOpacity`
+  position: relative;
+  flex-direction: row;
+  width: 99%;
+  align-items: center;
+  justify-content: space-around;
+  margin: 8px 0;
+  padding: 0 8px;
+  border-radius: 5px;
   background-color: ${({ theme }) => theme.color.atention};
   margin: 4px;
   border: none;
@@ -143,9 +157,21 @@ export const DeleteButton = styled.TouchableOpacity`
 
 export const ConfirmGuestButton = styled.TouchableOpacity`
   border: none;
+  margin-bottom: 12px;
   /* margin-left: 8px; */
   align-items: center;
   justify-content: center;
+`;
+
+export const BellButton = styled.TouchableOpacity`
+  border: none;
+  margin-bottom: 12px;
+  /* margin-left: 8px; */
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.color.primary};
+  padding: 5px;
+  border-radius: 5px;
 `;
 
 export const Icon = styled(Feather)`

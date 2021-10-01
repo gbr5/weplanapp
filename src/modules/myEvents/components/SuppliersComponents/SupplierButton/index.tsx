@@ -12,6 +12,7 @@ import {
   Icon,
 } from './styles';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
+import { useMyEvent } from '../../../../../hooks/myEvent';
 
 interface IProps {
   supplier: IEventSupplierDTO;
@@ -28,14 +29,23 @@ export function SupplierButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedEventSupplier, selectEventSupplier} = useEventVariables();
+  const {
+    selectedEventSupplier,
+    selectEventSupplier,
+  } = useEventVariables();
+  const { getSelectedUserEventTasks } = useMyEvent();
 
   const [supplierBody, setSupplierBody] = useState(false);
 
-  function handleSupplierBody() {
-    supplierBody
-      ? selectEventSupplier({} as IEventSupplierDTO)
-      : selectEventSupplier(supplier);
+  async function handleSupplierBody() {
+    if (supplierBody) {
+      selectEventSupplier({} as IEventSupplierDTO)
+    } else {
+      if (supplier.eventWeplanSupplier && supplier.eventWeplanSupplier.weplanEventSupplier && supplier.eventWeplanSupplier.weplanEventSupplier.id) {
+        await getSelectedUserEventTasks(supplier.eventWeplanSupplier.weplanEventSupplier.id);
+      }
+      selectEventSupplier(supplier);
+    }
     setSupplierBody(!supplierBody);
   }
 

@@ -91,7 +91,7 @@ export const IconContainer = styled.View<IBackgroundColor>`
   padding: 8px;
   background-color: ${({ color }) => color};
   border-radius: 8px;
-  border: 2px solid black;
+  border: none;
 `;
 
 export const NextTransactionContainer = styled.View`
@@ -117,14 +117,14 @@ export const MenuButtonSection = styled.ScrollView`
 `;
 
 export const MenuButton = styled.TouchableOpacity`
-  background-color: ${({ theme }) => theme.color.text5};
+  background-color: ${({ theme }) => theme.color.text6};
   margin-bottom: 8px;
   border-radius: 24px;
   align-items: center;
   justify-content: center;
   width: 112px;
   height: 112px;
-  border: 1px solid ${({ theme }) => theme.color.title};
+  border: none;
   margin-right: 16px;
 `;
 
@@ -147,6 +147,12 @@ export const MenuText = styled.Text`
   font-size: ${RFValue(16)}px;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text1};
+`;
+
+export const ContactSection = styled.ScrollView`
+  position: relative;
+  margin: 7px 4px 0;
+  padding-left: 16px;
 `;
 
 export const SectionBorder = styled.View`

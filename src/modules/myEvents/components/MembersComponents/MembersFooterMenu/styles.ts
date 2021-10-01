@@ -47,5 +47,4 @@ export const MenuIcon = styled(Feather)<IButtonProps>`
     ? theme.color.text1
     : theme.color.primary
   };
-  margin-left: 8px;
 `;

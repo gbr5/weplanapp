@@ -34,6 +34,7 @@ import {
   SupplierLabel, // 20
   FieldContainer, // 21
 } from './styles';
+import { useEventTasks } from '../../../../../hooks/eventTasks';
 
 export function SupplierButtonInfo() {
   const {
@@ -42,7 +43,11 @@ export function SupplierButtonInfo() {
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedEventSupplier, eventTransactions } = useEventVariables();
+  const {
+    selectedEventSupplier,
+    eventTransactions,
+    selectedUserEventTasks,
+  } = useEventVariables();
   const {
     handleCreateSupplierTransactionAgreementWindow,
     handleDischargingWindow,
@@ -55,6 +60,7 @@ export function SupplierButtonInfo() {
     handleSupplierFilesWindow,
     handleSupplierBudgetsWindow,
   } = useEventSuppliers();
+  const { handleUserEventTasksWindow } = useEventTasks();
 
   const [loading, setLoading] = useState(false);
   const [editName, setEditName] = useState(false);
@@ -100,7 +106,7 @@ export function SupplierButtonInfo() {
             today,
           ) > differenceInMilliseconds(new Date(b.transaction.due_date), today)
         ) {
-          return 1
+          return 1;
         };
         if (
           differenceInMilliseconds(
@@ -108,7 +114,7 @@ export function SupplierButtonInfo() {
             today,
           ) < differenceInMilliseconds(new Date(b.transaction.due_date), today)
         ) {
-          return -1
+          return -1;
         };
         return 0;
       })[0];
@@ -117,11 +123,9 @@ export function SupplierButtonInfo() {
   const nextPaymentLate = useMemo(() => {
     return !nextPayment ?? new Date(nextPayment.transaction.due_date) < new Date();
   }, [nextPayment])
-
   const numberOfNotes = useMemo(() => {
     return selectedEventSupplier.notes.length;
   }, [selectedEventSupplier.notes]);
-
   const numberOfBudgets = useMemo(() => {
     return selectedEventSupplier.budgets.length;
   }, [selectedEventSupplier.notes]);
@@ -147,7 +151,7 @@ export function SupplierButtonInfo() {
       .filter(agreement => !agreement.isCancelled).length;
   }, [selectedEventSupplier.notes]);
 
-  const top = '-50%';
+  const top = '-40%';
   const left = '-20%';
 
   async function handleUpdateSupplierName(name: string) {
@@ -223,7 +227,41 @@ export function SupplierButtonInfo() {
             <Icon name="bell" />
           </IconContainer>
         </MenuButton> */}
-
+        {selectedEventSupplier.weplanUser &&
+          selectedEventSupplier.eventWeplanSupplier &&
+          selectedEventSupplier.eventWeplanSupplier.id &&
+          selectedEventSupplier.eventWeplanSupplier.weplanEventSupplier.id &&
+          selectedEventSupplier.eventWeplanSupplier.weplanEventSupplier && (
+          <MenuButton
+            style={{
+              shadowColor: theme.menuShadow.shadowColor,
+              shadowOffset: theme.menuShadow.shadowOffset,
+              shadowOpacity: theme.menuShadow.shadowOpacity,
+              shadowRadius: theme.menuShadow.shadowRadius,
+              elevation: 5,
+            }}
+            onPress={handleUserEventTasksWindow}
+          >
+            <MenuText>Tarefas</MenuText>
+            <IconContainer
+              style={{
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+                elevation: 5,
+              }}
+              color={theme.color.atention_light}
+            >
+              <NotificationNumber
+                top={top}
+                left={left}
+                number={selectedUserEventTasks.length}
+              />
+              <Icon name="bell" />
+            </IconContainer>
+          </MenuButton>
+        )}
         {selectedEventSupplier.isHired && (
           <MenuButton
             style={{

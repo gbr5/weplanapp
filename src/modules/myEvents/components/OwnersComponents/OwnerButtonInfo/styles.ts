@@ -149,6 +149,12 @@ export const MenuText = styled.Text`
   color: ${({ theme }) => theme.color.text1};
 `;
 
+export const ContactSection = styled.ScrollView`
+  position: relative;
+  margin: 7px 4px 0;
+  padding-left: 16px;
+`;
+
 export const SectionBorder = styled.View`
   width: 100%;
   min-height: 1px;

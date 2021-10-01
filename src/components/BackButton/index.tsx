@@ -3,7 +3,6 @@ import React from 'react';
 import { useCallback } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import theme from '../../global/styles/theme';
-import { useUnsetEventVariables } from '../../hooks/unsetEventVariables';
 import { Container } from './styles';
 
 interface IProps {
@@ -24,8 +23,8 @@ const BackButton: React.FC<IProps> = ({
   const navigation = useNavigation();
 
   const goBack = useCallback(() => {
-    navigation.goBack();
     unsetVariables && unsetVariables();
+    navigation.goBack();
   }, [navigation]);
 
   return (

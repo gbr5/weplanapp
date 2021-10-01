@@ -223,25 +223,27 @@ export function EventTaskBody(): JSX.Element {
             </IconContainer>
           </MenuButton>
         )}
-        <MenuButton
-          style={{
-            shadowColor,
-            shadowOffset,
-            shadowOpacity,
-            shadowRadius,
-          }}
-          onPress={handleDeleteTaskConfirmationWindow}
-        >
-          <MenuTitle>Deletar</MenuTitle>
-          <IconContainer
+        {user.id === selectedEventTask.task.user_id && (
+          <MenuButton
             style={{
-              elevation: 5,
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
             }}
-            color={theme.color.atention}
+            onPress={handleDeleteTaskConfirmationWindow}
           >
-            <Icon name="trash-2" />
-          </IconContainer>
-        </MenuButton>
+            <MenuTitle>Deletar</MenuTitle>
+            <IconContainer
+              style={{
+                elevation: 5,
+              }}
+              color={theme.color.atention}
+            >
+              <Icon name="trash-2" />
+            </IconContainer>
+          </MenuButton>
+        )}
       </Menu>
       <DateContainer>
         <DateHeader>Data Prevista</DateHeader>

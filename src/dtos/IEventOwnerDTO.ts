@@ -1,8 +1,10 @@
+import IEventDTO from './IEventDTO';
 import IUserDTO from './IUserDTO';
 
 export default interface IEventOwnerDTO {
   id: string;
   event_id: string;
+  event: IEventDTO;
   description: string;
   number_of_guests: number;
   userEventOwner: IUserDTO;

@@ -5,7 +5,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import Backdrop from '../../../../components/Backdrop';
 import IFriendDTO from '../../../../dtos/IFriendDTO';
 import theme from '../../../../global/styles/theme';
+import { useEventVariables } from '../../../../hooks/eventVariables';
 import { useFriends } from '../../../../hooks/friends';
+import { useMyEvent } from '../../../../hooks/myEvent';
 
 import {
   Container,
@@ -30,18 +32,44 @@ export function SearchFriends({
     shadowRadius,
   } = theme.iconButtonShadow;
   const inputRef = useRef<TextInput>(null);
-
   const { friends } = useFriends();
+  const { eventOwners, eventMembers, eventGuests } = useEventVariables();
 
   const [backdrop, setBackdrop] = useState(false);
   const [filterString, setFilterString] = useState<string | undefined>(undefined);
+
+  const sortedFriends = useMemo(() => {
+    const sortedFriends: IFriendDTO[] = [];
+    friends && friends.length > 0 && friends.map(friend => {
+      if (!friend.isConfirmed) return [];
+      const findFriendOwner = eventOwners.find(
+        owner => owner.userEventOwner.id === friend.friend.id,
+      );
+      const findFriendMember = eventMembers.find(
+        owner => owner.userEventMember.id === friend.friend.id,
+      );
+      const findFriendGuest = eventGuests
+        .filter(
+          guest =>
+            guest.weplanUser && guest.weplanGuest && guest.weplanGuest.id,
+        )
+        .find(
+          owner => owner.weplanGuest.weplanUserGuest.id === friend.friend.id,
+        );
+      if (!findFriendMember && !findFriendOwner && !findFriendGuest)
+        sortedFriends.push(friend);
+
+      return [];
+    });
+    return sortedFriends;
+  }, []);
 
   function handleResetSearch() {
     setFilterString(undefined);
     inputRef.current && inputRef.current.clear();
     Keyboard.dismiss();
     setBackdrop(false);
-    handleFriends(friends);
+    handleFriends(sortedFriends);
   }
 
   function handleOffSearch() {
@@ -51,9 +79,10 @@ export function SearchFriends({
 
   const handleLookForTransaction = useCallback((data: string) => {
     setFilterString(data);
-    if (data === '') return handleFriends(friends);
+
+    if (data === '') return handleFriends(sortedFriends);
     setBackdrop(true);
-    const finrFriends = friends.filter(({ friend }) => {
+    const finrFriends = sortedFriends.filter(({ friend }) => {
       return friend.name.toLowerCase().includes(data.toLowerCase());
     });
     handleFriends(finrFriends);

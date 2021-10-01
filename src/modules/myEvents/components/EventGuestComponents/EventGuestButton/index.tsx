@@ -31,6 +31,7 @@ export function EventGuestButton({ guest, index }: IProps): JSX.Element {
     shadowRadius,
   } = theme.objectButtonShadow;
   const { user } = useAuth();
+  const { getSelectedUserEventTasks } = useMyEvent();
   const { selectedEventGuest, selectEventGuest } = useEventVariables();
   const { editGuest } = useEventGuests();
 
@@ -42,12 +43,23 @@ export function EventGuestButton({ guest, index }: IProps): JSX.Element {
     selectedEventGuest,
   ]);
 
-  function handleSelectGuest(): void {
+  async function handleSelectGuest(): Promise<void> {
     if (
       (selectedEventGuest && !selectedEventGuest.id) ||
       selectedEventGuest.id !== guest.id
-    )
+    ) {
+      console.log(guest);
+      if (
+        guest.weplanUser &&
+        guest.weplanGuest &&
+        guest.weplanGuest.id &&
+        guest.weplanGuest.weplanUserGuest &&
+        guest.weplanGuest.weplanUserGuest.id
+      ) {
+        await getSelectedUserEventTasks(guest.weplanGuest.weplanUserGuest.id);
+      }
       return selectEventGuest(guest);
+    }
     return selectEventGuest({} as IEventGuestDTO);
   }
 

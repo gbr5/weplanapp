@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useFriends } from '../../../hooks/friends';
 import theme from '../../../global/styles/theme';
@@ -17,6 +17,7 @@ import {
   FriendButton,
   Name,
 } from './styles';
+import { useEventVariables } from '../../../hooks/eventVariables';
 
 interface IProps {
   handleAddFriends: (data: IFriendDTO[]) => Promise<void>;
@@ -33,14 +34,36 @@ export function SelectFromFriends({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const {
-    friends,
-    selectedFriends,
-    handleSelectedFriends,
-  } = useFriends();
+  const { eventOwners, eventMembers, eventGuests } = useEventVariables();
+  const { selectedFriends, friends, handleSelectedFriends } = useFriends();
 
-  const [filteredFriends, setFilteredFriends] = useState<IFriendDTO[]>(friends);
+  const [filteredFriends, setFilteredFriends] = useState<IFriendDTO[]>([]);
 
+  useEffect(() => {
+    const sortedFriends: IFriendDTO[] = [];
+    friends && friends.length > 0 && friends.map(friend => {
+      if (!friend.isConfirmed) return [];
+      const findFriendOwner = eventOwners.find(
+        owner => owner.userEventOwner.id === friend.friend.id,
+      );
+      const findFriendMember = eventMembers.find(
+        owner => owner.userEventMember.id === friend.friend.id,
+      );
+      const findFriendGuest = eventGuests
+        .filter(
+          guest =>
+            guest.weplanUser && guest.weplanGuest && guest.weplanGuest.id,
+        )
+        .find(
+          owner => owner.weplanGuest.weplanUserGuest.id === friend.friend.id,
+        );
+      if (!findFriendMember && !findFriendOwner && !findFriendGuest)
+        sortedFriends.push(friend);
+
+      return [];
+    });
+    setFilteredFriends(sortedFriends);
+  }, [friends, eventMembers, eventOwners, eventGuests]);
   function handleFilteredFriends(data: IFriendDTO[]) {
     setFilteredFriends(data);
   }
@@ -57,14 +80,19 @@ export function SelectFromFriends({
     ]);
   }
 
+  function handleCloseWindow() {
+    handleSelectedFriends([]);
+    closeWindow();
+  }
+
   async function handleSelectFriends() {
     await handleAddFriends(selectedFriends);
-    closeWindow();
+    handleCloseWindow();
   }
 
   return (
     <WindowContainer
-      closeWindow={closeWindow}
+      closeWindow={handleCloseWindow}
       zIndex={15}
       top="5%"
       left="0%"

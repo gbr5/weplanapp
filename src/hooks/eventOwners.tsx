@@ -29,15 +29,15 @@ const EventOwnersProvider: React.FC = ({ children }) => {
 
   async function addMultipleOwners(data: IFriendDTO[]) {
     try {
-      Promise.all([
-        data.map(({ friend }) => {
-          return api.post(`/event-owners/${selectedEvent.id}`, {
-            owner_id: friend.id,
-            number_of_guests: 0,
-            description: ' ',
-          });
-        }),
-      ]);
+      const owners = data.map(owner => {
+        return {
+          owner_id: owner.friend.id
+        };
+      });
+      await api.post(`/create-multiple-event-owners/`, {
+        event_id: selectedEvent.id,
+        owners,
+      });
       await getEventOwners(selectedEvent.id);
     } catch (err) {
       throw new Error(err);

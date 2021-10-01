@@ -6,6 +6,11 @@ import { useEventSuppliers } from '../../../../hooks/eventSuppliers';
 import { useNote } from '../../../../hooks/notes';
 import { useTransaction } from '../../../../hooks/transactions';
 import { useFiles } from '../../../../hooks/files';
+import { useEventOwners } from '../../../../hooks/eventOwners';
+import { useEventMembers } from '../../../../hooks/eventMembers';
+import { useEventVariables } from '../../../../hooks/eventVariables';
+import { useUserContacts } from '../../../../hooks/userContacts';
+import { useEventGuests } from '../../../../hooks/eventGuests';
 
 import IEventTaskDTO from '../../../../dtos/IEventTaskDTO';
 import INoteDTO from '../../../../dtos/INoteDTO';
@@ -38,11 +43,8 @@ import { EventSupplierAgreementTransactionsWindow } from '../../components/Finan
 import { MembersSection } from '../../components/MembersComponents/MembersSection';
 import { OwnersSection } from '../../components/OwnersComponents/OwnersSection';
 import { SectionDescriptionWindow } from '../../components/OwnersComponents/SectionDescriptionWindow';
-import { useEventGuests } from '../../../../hooks/eventGuests';
 import { GuestFilterWindow } from '../../components/EventGuestComponents/GuestFilterWindow';
 import { TransactionsFilterWindow } from '../../components/FinancialComponents/TransactionsFilterWindow';
-import { useUnsetEventVariables } from '../../../../hooks/unsetEventVariables';
-import { useUserContacts } from '../../../../hooks/userContacts';
 import { NewGuestWindow } from '../../components/EventGuestComponents/NewGuestWindow';
 import { SelectMobileContacts } from '../../../../components/ContactComponents/SelectMobileContacts';
 import { CreateEventTransaction } from '../../../../components/TransactionComponents/CreateEventTransaction';
@@ -61,8 +63,10 @@ import { EditSupplierBudgetAmount } from '../../components/SuppliersComponents/E
 import { EditSupplierBudgetDescription } from '../../components/SuppliersComponents/EditSupplierBudgetDescription';
 import { EditFileNameWindow } from '../../../../components/FilesComponents/EditFileNameWindow';
 import { SelectFromFriends } from '../../../../components/FriendsComponents/SelectFromFriends';
-import { useEventOwners } from '../../../../hooks/eventOwners';
-import { useEventMembers } from '../../../../hooks/eventMembers';
+import { EventTaskFollowersWindow } from '../../components/EventTaskComponents/EventTaskFollowersWindow';
+import { AddEventTaskFollowersWindow } from '../../components/EventTaskComponents/AddEventTaskFollowersWindow';
+import { EventTaskFollowersDescriptionWindow } from '../../components/EventTaskComponents/EventTaskFollowersDescriptionWindow';
+import { UserEventTasksWindow } from '../../components/EventTaskComponents/UserEventTasksWindow';
 import { SelectOneFromFriends } from '../../../../components/FriendsComponents/SelectOneFromFriends';
 import { CreateGuestContactWindow } from '../../components/EventGuestComponents/CreateGuestContactWindow';
 
@@ -73,10 +77,9 @@ import {
   DashboardButton,
   BodyContainer,
 } from './styles';
-import { useEventVariables } from '../../../../hooks/eventVariables';
-import { EventTaskFollowersWindow } from '../../components/EventTaskComponents/EventTaskFollowersWindow';
-import { AddEventTaskFollowersWindow } from '../../components/EventTaskComponents/AddEventTaskFollowersWindow';
-import { EventTaskFollowersDescriptionWindow } from '../../components/EventTaskComponents/EventTaskFollowersDescriptionWindow';
+import IEventDTO from '../../../../dtos/IEventDTO';
+import { WPFriendContactWindow } from '../../../../components/WPFriendContactWindow';
+import { useFriends } from '../../../../hooks/friends';
 
 const MyEvent: React.FC = () => {
   const {
@@ -85,7 +88,9 @@ const MyEvent: React.FC = () => {
     budgetWindow,
     calculateTotalEventCost,
     sectionDescriptionWindow,
+    handleSelectedEvent,
   } = useMyEvent();
+  const { selectedUserContact } = useFriends();
   const {
     eventSuppliers,
     selectedEvent,
@@ -123,6 +128,7 @@ const MyEvent: React.FC = () => {
     deleteTaskFollowerConfirmation,
     deleteTaskFollower,
     eventTaskFollowersDescriptionWindow,
+    userEventTasksWindow,
   } = useEventTasks();
   const {
     addSupplierWindow,
@@ -202,7 +208,10 @@ const MyEvent: React.FC = () => {
     transactionFilesWindow,
   } = useTransaction();
   const { selectMobileContactsWindow, mobileContacts } = useUserContacts();
-  const { unsetVariables } = useUnsetEventVariables();
+
+  function handleUnsetVariables() {
+    handleSelectedEvent({} as IEventDTO);
+  }
 
   function handleCloseEditTaskDateWindow() {
     selectEventTask({} as IEventTaskDTO);
@@ -277,6 +286,10 @@ const MyEvent: React.FC = () => {
           handleAddFriends={createMultipleWePlanGuests}
         />
       }
+      {selectedUserContact && selectedUserContact.id && (
+        <WPFriendContactWindow />
+      )}
+      {userEventTasksWindow && <UserEventTasksWindow />}
       {addOwnerWindow &&
         <SelectFromFriends
           closeWindow={handleAddOwnerWindow}
@@ -507,7 +520,7 @@ const MyEvent: React.FC = () => {
       )}
 
       <Container>
-        <PageHeader unsetVariables={unsetVariables} >
+        <PageHeader unsetVariables={handleUnsetVariables} >
           <DashboardButton onPress={() => selectEventSection('Tasks')}>
             <EventName>{selectedEvent.name}</EventName>
           </DashboardButton>

@@ -27,9 +27,13 @@ import {
   Name,
   DeleteText,
   DeleteIcon,
+  TaskButton,
+  BellButton,
 } from './styles';
 import GuestContact from '../GuestContact';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
+import { useEventTasks } from '../../../../../hooks/eventTasks';
+import { NotificationNumber } from '../../../../../components/NotificationNumber';
 
 export function EventGuestButtonInfo(): JSX.Element {
   const {
@@ -44,6 +48,7 @@ export function EventGuestButtonInfo(): JSX.Element {
     eventGuests,
     eventOwners,
     eventMembers,
+    selectedUserEventTasks,
   } = useEventVariables();
   const {
     isOwner,
@@ -56,6 +61,7 @@ export function EventGuestButtonInfo(): JSX.Element {
     handleCreateGuestContactWindow,
     handleDeleteGuestConfirmationWindow,
   } = useEventGuests();
+  const { handleUserEventTasksWindow } = useEventTasks();
 
   const [editGuestName, setEditGuestName] = useState(false);
   const [
@@ -263,26 +269,67 @@ export function EventGuestButtonInfo(): JSX.Element {
       )}
       <SectionBorder />
       {isOwner && (
-        <MenuButtonSection horizontal>
-          <MenuButton onPress={handleCreateGuestContactWindow}>
-            <MenuText>Adicionar Contato</MenuText>
-            <IconContainer
-              style={{
-                elevation: 5,
-                shadowColor,
-                shadowOffset,
-                shadowOpacity,
-                shadowRadius,
-              }}
-              color={theme.color.primary}
-            >
-              <Icon name="plus" />
-            </IconContainer>
-          </MenuButton>
-          {selectedEventGuest.contacts.map(contact =>
-            <GuestContact key={contact.id} guestContact={contact}/>
-          )}
-        </MenuButtonSection>
+        <>
+          <MenuButtonSection horizontal>
+            <MenuButton onPress={handleCreateGuestContactWindow}>
+              <MenuText>Adicionar Contato</MenuText>
+              <IconContainer
+                style={{
+                  elevation: 5,
+                  shadowColor,
+                  shadowOffset,
+                  shadowOpacity,
+                  shadowRadius,
+                }}
+                color={theme.color.primary}
+              >
+                <Icon name="plus" />
+              </IconContainer>
+            </MenuButton>
+            {selectedEventGuest.contacts.map(contact =>
+              <GuestContact key={contact.id} guestContact={contact}/>
+            )}
+          </MenuButtonSection>
+          {selectedEventGuest.weplanUser &&
+            selectedEventGuest.weplanGuest &&
+            selectedEventGuest.weplanGuest.id &&
+            selectedEventGuest.weplanGuest.weplanUserGuest &&
+            selectedEventGuest.weplanGuest.weplanUserGuest.id && (
+              <>
+                <SectionBorder />
+
+                <TaskButton
+                  style={{
+                    shadowColor,
+                    shadowOffset,
+                    shadowOpacity,
+                    shadowRadius,
+                    elevation: 5,
+                  }}
+                  onPress={handleUserEventTasksWindow}
+                >
+                  <MenuText>Tarefas</MenuText>
+                  <BellButton
+                    style={{
+                      shadowColor,
+                      shadowOffset,
+                      shadowOpacity,
+                      shadowRadius,
+                      elevation: 5,
+                    }}
+                    onPress={handleUserEventTasksWindow}
+                  >
+                    <NotificationNumber
+                      left="-50%"
+                      top="-50%"
+                      number={selectedUserEventTasks.length}
+                    />
+                    <Icon name="bell" />
+                  </BellButton>
+                </TaskButton>
+              </>
+            )}
+        </>
       )}
       {isMine && (
         <>

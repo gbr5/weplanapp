@@ -38,17 +38,17 @@ export function OwnersSection() {
         handleAddButton={handleAddOwnerForm}
         handleInfoButton={handleSectionDescriptionWindow}
       />
-      <Body>
-        {section === 'Main' && selectedEvent.event_type === 'Prom' && <OwnersMainSection />}
-        {section === 'Owners'&& <OwnersListSection />}
-        {section === 'Financial' && selectedEvent.event_type === 'Prom'  && <OwnersFinancialSection />}
-      </Body>
       {selectedEvent.event_type === 'Prom' && (
         <OwnersFooterMenu
           handleSection={(data: string) => handleSection(data)}
           section={section}
         />
       )}
+      <Body>
+        {section === 'Main' && selectedEvent.event_type === 'Prom' && <OwnersMainSection />}
+        {section === 'Owners'&& <OwnersListSection />}
+        {section === 'Financial' && selectedEvent.event_type === 'Prom'  && <OwnersFinancialSection />}
+      </Body>
     </Container>
   );
 }
