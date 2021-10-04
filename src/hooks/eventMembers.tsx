@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
+
 import ICreateEventMemberDTO from '../dtos/ICreateEventMember';
 import IEventMemberDTO from '../dtos/IEventMemberDTO';
+
 import IFriendDTO from '../dtos/IFriendDTO';
 import api from '../services/api';
 import { useEventVariables } from './eventVariables';
@@ -8,7 +10,19 @@ import { useMyEvent } from './myEvent';
 
 interface EventMembersContextType {
   addMemberWindow: boolean;
+  createEventMemberTaskWindow: boolean;
+  eventMemberTaskWindow: boolean;
+  eventMemberTransactionAgreementsWindow: boolean;
+  createEventMemberTransactionAgreement: boolean;
+  newMemberTransactionAgreementConfirmation: boolean;
+  eventMemberAgreementTransactionsWindow: boolean;
+  handleEventMemberAgreementTransactionsWindow: () => void;
+  handleCreateEventMemberTransactionAgreement: () => void;
+  handleNewMemberTransactionAgreementConfirmation: () => void;
+  handleEventMemberTransactionAgreementsWindow: () => void;
   handleAddMemberWindow: () => void;
+  handleCreateEventMemberTaskWindow: () => void;
+  handleEventMemberTaskWindow: () => void;
   addMultipleMembers: (data: IFriendDTO[]) => Promise<void>;
   editEventMember: (data: IEventMemberDTO) => void;
   createEventMember: (data: ICreateEventMemberDTO) => void;
@@ -22,11 +36,35 @@ const EventMembersProvider: React.FC = ({ children }) => {
   const { selectedEvent } = useEventVariables();
 
   const [addMemberWindow, setAddMemberWindow] = useState(false);
+  const [createEventMemberTaskWindow, setCreateEventMemberTaskWindow] = useState(false);
+  const [eventMemberTaskWindow, setEventMemberTaskWindow] = useState(false);
+  const [eventMemberTransactionAgreementsWindow, setEventMemberTransactionAgreementsWindow] = useState(false);
+  const [newMemberTransactionAgreementConfirmation, setNewMemberTransactionAgreementConfirmation] = useState(false);
+  const [createEventMemberTransactionAgreement, setCreateEventMemberTransactionAgreement] = useState(false);
+  const [eventMemberAgreementTransactionsWindow, setEventMemberAgreementTransactionsWindow] = useState(false);
 
   function handleAddMemberWindow() {
     setAddMemberWindow(!addMemberWindow);
   }
+  function handleCreateEventMemberTaskWindow() {
+    setCreateEventMemberTaskWindow(!createEventMemberTaskWindow);
+  }
+  function handleEventMemberTaskWindow() {
+    setEventMemberTaskWindow(!eventMemberTaskWindow);
+  }
 
+  function handleEventMemberTransactionAgreementsWindow() {
+    setEventMemberTransactionAgreementsWindow(!eventMemberTransactionAgreementsWindow);
+  }
+  function handleNewMemberTransactionAgreementConfirmation() {
+    setNewMemberTransactionAgreementConfirmation(!newMemberTransactionAgreementConfirmation);
+  }
+  function handleEventMemberAgreementTransactionsWindow() {
+    setEventMemberAgreementTransactionsWindow(!eventMemberAgreementTransactionsWindow);
+  }
+  function handleCreateEventMemberTransactionAgreement() {
+    setCreateEventMemberTransactionAgreement(!createEventMemberTransactionAgreement);
+  }
   async function addMultipleMembers(data: IFriendDTO[]) {
     try {
       const members = data.map(member => {
@@ -78,8 +116,20 @@ const EventMembersProvider: React.FC = ({ children }) => {
         createEventMember,
         deleteEventMember,
         addMemberWindow,
+        createEventMemberTaskWindow,
         addMultipleMembers,
         handleAddMemberWindow,
+        handleCreateEventMemberTaskWindow,
+        eventMemberTransactionAgreementsWindow,
+        handleEventMemberTransactionAgreementsWindow,
+        createEventMemberTransactionAgreement,
+        eventMemberAgreementTransactionsWindow,
+        handleCreateEventMemberTransactionAgreement,
+        handleEventMemberAgreementTransactionsWindow,
+        handleNewMemberTransactionAgreementConfirmation,
+        newMemberTransactionAgreementConfirmation,
+        eventMemberTaskWindow,
+        handleEventMemberTaskWindow,
       }}
     >
       {children}

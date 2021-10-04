@@ -17,6 +17,16 @@ import { useEventVariables } from './eventVariables';
 import IUserFollowerDTO from '../dtos/IUserFollowerDTO';
 import ITaskDTO from '../dtos/ITaskDTO';
 
+interface ICreateEventOwnerTaskDTO extends ICreateEventTaskDTO {
+  owner_id: string;
+}
+interface ICreateEventMemberTaskDTO extends ICreateEventTaskDTO {
+  member_id: string;
+}
+interface ICreateEventWePlanSupplierTaskDTO extends ICreateEventTaskDTO {
+  supplier_id: string;
+}
+
 interface EventTasksContextType {
   loading: boolean;
   status: 'not started' | 'running' | 'finnished';
@@ -37,6 +47,9 @@ interface EventTasksContextType {
   taskDate: Date;
   createMultipleEventTaskFollowers: (data: IUserFollowerDTO[]) => Promise<void>;
   createEventTask: (data: ICreateEventTaskDTO) => Promise<void>;
+  createEventOwnerTask: (data: ICreateEventOwnerTaskDTO) => Promise<void>;
+  createEventMemberTask: (data: ICreateEventMemberTaskDTO) => Promise<void>;
+  createEventWePlanSupplierTask: (data: ICreateEventWePlanSupplierTaskDTO) => Promise<void>;
   updateTask: (data: ITaskDTO) => Promise<void>;
   deleteTask: (data: IEventTaskDTO) => Promise<void>;
   deleteTaskFollower: () => Promise<void>;
@@ -74,6 +87,7 @@ const EventTasksProvider: React.FC = ({ children }) => {
     getEvent,
     getEventNotes,
     getEventTasks,
+    getSelectedUserEventTasks,
   } = useMyEvent();
   const [editTaskPriorityWindow, setEditTaskPriorityWindow] = useState(false);
   const [editTaskStatusWindow, setEditTaskStatusWindow] = useState(false);
@@ -183,6 +197,90 @@ const EventTasksProvider: React.FC = ({ children }) => {
         title,
       });
       await getEventTasks(event_id);
+      await getEventNotes(event_id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function createEventWePlanSupplierTask({
+    due_date,
+    event_id,
+    supplier_id,
+    priority,
+    status,
+    title,
+  }: ICreateEventWePlanSupplierTaskDTO) {
+    try {
+      setLoading(true);
+      await api.post(`/create-event-weplan-supplier-task`, {
+        due_date,
+        event_id,
+        supplier_id,
+        priority,
+        status,
+        title,
+      });
+      await getEventTasks(event_id);
+      await getSelectedUserEventTasks(supplier_id);
+      await getEventNotes(event_id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function createEventMemberTask({
+    due_date,
+    event_id,
+    member_id,
+    priority,
+    status,
+    title,
+  }: ICreateEventMemberTaskDTO) {
+    try {
+      setLoading(true);
+      const response = await api.post(`/create-event-member-task`, {
+        due_date,
+        event_id,
+        member_id,
+        priority,
+        status,
+        title,
+      });
+      await getEventTasks(event_id);
+      await getSelectedUserEventTasks(member_id);
+      await getEventNotes(event_id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function createEventOwnerTask({
+    due_date,
+    event_id,
+    owner_id,
+    priority,
+    status,
+    title,
+  }: ICreateEventOwnerTaskDTO) {
+    try {
+      setLoading(true);
+      await api.post(`/create-event-owner-task`, {
+        due_date,
+        event_id,
+        owner_id,
+        priority,
+        status,
+        title,
+      });
+      await getEventTasks(event_id);
+      await getSelectedUserEventTasks(owner_id);
       await getEventNotes(event_id);
     } catch (err) {
       throw new Error(err);
@@ -320,6 +418,9 @@ const EventTasksProvider: React.FC = ({ children }) => {
         taskDate,
         createTaskWindow,
         createEventTask,
+        createEventOwnerTask,
+        createEventMemberTask,
+        createEventWePlanSupplierTask,
         updateTask,
         deleteTask,
         createTaskNote,

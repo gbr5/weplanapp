@@ -21,6 +21,7 @@ import IUpdateEventSupplierTransactionAgreementDTO from '../dtos/IUpdateEventSup
 import ICreateEventSupplierBudgetDTO from '../dtos/ICreateEventSupplierBudgetDTO';
 import IEventSupplierBudgetDTO from '../dtos/IEventSupplierBudgetDTO';
 import { useEventVariables } from './eventVariables';
+import { useTransaction } from './transactions';
 
 interface IUpdateAgreementAndTransactionsDTO {
   id: string;
@@ -29,6 +30,8 @@ interface IUpdateAgreementAndTransactionsDTO {
 
 interface EventSuppliersContextType {
   addSupplierWindow: boolean;
+  createEventWePlanSupplierTaskWindow: boolean;
+  eventWePlanSupplierTaskWindow: boolean;
   createSupplierTransactionAgreementWindow: boolean;
   cancelAgreementsWindow: boolean;
   dischargeOption: string;
@@ -68,6 +71,8 @@ interface EventSuppliersContextType {
   getEventSupplierTransactions: (agreement_id: string) => Promise<IEventSupplierTransactionDTO[]>;
   handleDichargeOption: (data: string) => void;
   handleAddSupplierWindow: () => void;
+  handleCreateEventWePlanSupplierTaskWindow: () => void;
+  handleEventWePlanSupplierTaskWindow: () => void;
   handleSupplierTransactionAgreementsWindow: () => void;
   handleDischargingWindow: () => void;
   handleEditSupplierNameWindow: () => void;
@@ -113,6 +118,8 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   } = useMyEvent();
 
   const [addSupplierWindow, setAddSupplierWindow] = useState(false);
+  const [createEventWePlanSupplierTaskWindow, setCreateEventWePlanSupplierTaskWindow] = useState(false);
+  const [eventWePlanSupplierTaskWindow, setEventWePlanSupplierTaskWindow] = useState(false);
   const [supplierNotesWindow, setSupplierNotesWindow] = useState(false);
   const [supplierFilesWindow, setSupplierFilesWindow] = useState(false);
   const [supplierBudgetsWindow, setSupplierBudgetsWindow] = useState(false);
@@ -153,6 +160,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
 
   function unsetEventSuppliersVariables() {
     setAddSupplierWindow(false);
+    setCreateEventWePlanSupplierTaskWindow(false);
     setCreateSupplierTransactionAgreementWindow(false);
     setCancelAllAgreementsWindow(false);
     setCancelFutureTransactionsWindow(false);
@@ -208,6 +216,12 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   }
   function handleAddSupplierWindow() {
     setAddSupplierWindow(!addSupplierWindow)
+  }
+  function handleCreateEventWePlanSupplierTaskWindow() {
+    setCreateEventWePlanSupplierTaskWindow(!createEventWePlanSupplierTaskWindow)
+  }
+  function handleEventWePlanSupplierTaskWindow() {
+    setEventWePlanSupplierTaskWindow(!eventWePlanSupplierTaskWindow)
   }
   function handleEditSupplierNameWindow() {
     setEditSupplierNameWindow(!editSupplierNameWindow)
@@ -535,6 +549,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         }));
     }
   }, [selectedEventSupplier]);
+
   return (
     <EventSuppliersContext.Provider
       value={{
@@ -606,6 +621,10 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         supplierBudgetForm,
         handleSupplierSelectedDateWindow,
         supplierSelectedDateWindow,
+        createEventWePlanSupplierTaskWindow,
+        eventWePlanSupplierTaskWindow,
+        handleEventWePlanSupplierTaskWindow,
+        handleCreateEventWePlanSupplierTaskWindow
       }}
     >
       {children}

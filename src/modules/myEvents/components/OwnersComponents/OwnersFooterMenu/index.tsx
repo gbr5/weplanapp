@@ -17,7 +17,7 @@ export function OwnersFooterMenu({
   section,
 }: IProps) {
   return (
-    <Container horizontal>
+    <Container>
       <MenuButton
         isActive={section === 'Owners'}
         onPress={() => handleSection('Owners')}

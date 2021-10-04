@@ -35,6 +35,10 @@ import {
   FieldContainer, // 21
 } from './styles';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
+import IEventTransactionAgreementDTO from '../../../../../dtos/IEventTransactionAgreementDTO';
+import { useTransaction } from '../../../../../hooks/transactions';
+import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';
+import { useMyEvent } from '../../../../../hooks/myEvent';
 
 export function SupplierButtonInfo() {
   const {
@@ -44,6 +48,7 @@ export function SupplierButtonInfo() {
     shadowRadius,
   } = theme.objectButtonShadow;
   const {
+    selectedEvent,
     selectedEventSupplier,
     eventTransactions,
     selectedUserEventTasks,
@@ -59,8 +64,14 @@ export function SupplierButtonInfo() {
     handleSupplierNotesWindow,
     handleSupplierFilesWindow,
     handleSupplierBudgetsWindow,
+    handleEventWePlanSupplierTaskWindow,
   } = useEventSuppliers();
-  const { handleUserEventTasksWindow } = useEventTasks();
+  const { getSelectedUserEventTasks } = useMyEvent();
+  const {
+    handlePayee,
+    handlePayer,
+    handleSelectedEventTransactionAgreements,
+  } = useTransaction();
 
   const [loading, setLoading] = useState(false);
   const [editName, setEditName] = useState(false);
@@ -161,6 +172,57 @@ export function SupplierButtonInfo() {
     });
   }
 
+  function handleSupplierAgreementsWindow() {
+    handlePayee({
+      id: selectedEventSupplier.id,
+      name: selectedEventSupplier.name,
+    });
+    handlePayer({
+      id: selectedEvent.id,
+      name: selectedEvent.name,
+    });
+    const agreements: IEventTransactionAgreementDTO[] = selectedEventSupplier
+      .transactionAgreements.map(agreement => {
+      const transactions: IEventTransactionDTO[] = agreement.transactions
+        .map(({ transaction }) => {
+        return {
+          agreement_id: agreement.id,
+          agreement_type: 'owner',
+          event_id: selectedEvent.id,
+          transaction,
+        };
+      });
+      const {
+        amount,
+        created_at,
+        id,
+        isCancelled,
+        number_of_installments,
+        supplier_id,
+        updated_at,
+      } = agreement;
+      return {
+        amount,
+        created_at,
+        event_id: selectedEvent.id,
+        id,
+        isCancelled,
+        number_of_installments,
+        participant_id: supplier_id,
+        participant_type: 'supplier',
+        transactions,
+        updated_at,
+      };
+    });
+    handleSelectedEventTransactionAgreements(agreements);
+    handleSupplierTransactionAgreementsWindow();
+  }
+
+  async function openSupplierTasksWindow() {
+    getSelectedUserEventTasks(selectedEventSupplier.eventWeplanSupplier.weplanEventSupplier.id);
+    handleEventWePlanSupplierTaskWindow();
+  }
+
   return (
     <Container
       style={{
@@ -240,7 +302,7 @@ export function SupplierButtonInfo() {
               shadowRadius: theme.menuShadow.shadowRadius,
               elevation: 5,
             }}
-            onPress={handleUserEventTasksWindow}
+            onPress={openSupplierTasksWindow}
           >
             <MenuText>Tarefas</MenuText>
             <IconContainer
@@ -316,7 +378,7 @@ export function SupplierButtonInfo() {
 
         {selectedEventSupplier.isHired && (
           <MenuButton
-            onPress={handleSupplierTransactionAgreementsWindow}
+            onPress={handleSupplierAgreementsWindow}
             style={{
               shadowColor: theme.menuShadow.shadowColor,
               shadowOffset: theme.menuShadow.shadowOffset,

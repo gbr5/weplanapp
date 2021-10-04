@@ -11,17 +11,21 @@ import {
   Container,
 } from './styles';
 
-export function UserEventTasksWindow() {
+interface IProps {
+  createTaskWindow: () => void;
+  closeWindow: () => void;
+}
+
+export function UserEventTasksWindow({
+  closeWindow,
+  createTaskWindow,
+}: IProps) {
   const { selectedUserEventTasks } = useEventVariables();
   const { handleSectionDescriptionWindow } = useMyEvent();
-  const {
-    handleCreateTaskWindow,
-    handleUserEventTasksWindow,
-  } = useEventTasks();
 
   return (
     <WindowContainer
-      closeWindow={handleUserEventTasksWindow}
+      closeWindow={closeWindow}
       zIndex={8}
       top="5%"
       left="0%"
@@ -31,7 +35,7 @@ export function UserEventTasksWindow() {
       <Container>
         <SectionHeader
           title="Tarefas"
-          handleAddButton={handleCreateTaskWindow}
+          handleAddButton={createTaskWindow}
           handleInfoButton={handleSectionDescriptionWindow}
         />
         {selectedUserEventTasks.map(task => {

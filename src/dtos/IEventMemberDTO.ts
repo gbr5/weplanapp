@@ -1,4 +1,5 @@
 import IEventDTO from './IEventDTO';
+import IEventMemberTransactionAgreementDTO from './IEventMemberTransactionAgreementDTO';
 import IUserDTO from './IUserDTO';
 
 export default interface IEventMemberDTO {
@@ -8,6 +9,7 @@ export default interface IEventMemberDTO {
   number_of_guests: number;
   userEventMember: IUserDTO;
   event_avatar_url?: string;
+  transactionAgreements: IEventMemberTransactionAgreementDTO[];
   created_at: Date;
   upated_at: Date;
 }

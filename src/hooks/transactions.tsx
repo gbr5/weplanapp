@@ -20,6 +20,11 @@ import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 import IEventSupplierTransactionAgreementDTO from '../dtos/IEventSupplierTransactionAgreementDTO';
 import { useFiles } from './files';
 import { useEventVariables } from './eventVariables';
+import IEventTransactionAgreementDTO from '../dtos/IEventTransactionAgreementDTO';
+import IUpdateEventTransactionAgreementDTO from '../dtos/IUpdateEventTransactionAgreementDTO';
+import ICreateEventTransactionAgreementDTO from '../dtos/ICreateEventTransactionAgreementDTO';
+import ICreateEventOwnerTransactionAgreementWithTransactionsDTO from '../dtos/ICreateEventOwnerTransactionAgreementWithTransactionsDTO';
+import ICreateEventMemberTransactionAgreementWithTransactionsDTO from '../dtos/ICreateEventMemberTransactionAgreementWithTransactionsDTO';
 
 interface INewAgreementDTO {
   amount: number;
@@ -27,6 +32,10 @@ interface INewAgreementDTO {
 }
 
 interface IEditTransactionFileDTO {
+  id: string;
+  name: string;
+}
+interface IPaymentParticipantDTO {
   id: string;
   name: string;
 }
@@ -43,12 +52,16 @@ interface TransactionContextType {
   editNewTransactionDueDateWindow: boolean;
   editTransactionDueDateWindow: boolean;
   filteredEventTransactions: IEventTransactionDTO[];
+  payee: IPaymentParticipantDTO;
+  payer: IPaymentParticipantDTO;
   filterTransactionWindow: boolean;
   loading: boolean;
   newAgreementAmount: number;
   newAgreementInstallments: number;
   newEventSupplierTransactionAgreement: boolean;
   newTransactions: ICreateTransactionDTO[];
+  selectedEventTransactionAgreements: IEventTransactionAgreementDTO[];
+  selectedEventTransactionAgreement: IEventTransactionAgreementDTO;
   selectedNewTransaction: ICreateTransactionDTO;
   selectedDate: Date;
   selectedDateWindow: boolean;
@@ -60,19 +73,27 @@ interface TransactionContextType {
   fromDateTransactionFilter: Date;
   toDateTransactionFilter: Date;
   filterTransactionOption: string;
+  refreshOwnerTransactionAgreements: () => void;
+  refreshMemberTransactionAgreements: () => void;
+  refreshSupplierTransactionAgreements: () => void;
   handleFilterTransactionOption: (data: string) => void;
+  handleSelectedEventTransactionAgreements: (data: IEventTransactionAgreementDTO[]) => void;
+  handleSelectedEventTransactionAgreement: (data: IEventTransactionAgreementDTO) => void;
   cancelEventTransaction: () => Promise<void>;
   importTransactionFile: (transaction_id: string) => Promise<void>;
   editTransactionFile: (data: IEditTransactionFileDTO) => Promise<void>;
   importTransactionImage: (transaction_id: string) => Promise<void>;
   handleTransactionFilesWindow: () => void;
   createSupplierTransactionAgreementWithTransactions: (data: ICreateEventSupplierTransactionAgreementWithTransactionsDTO) => Promise<void>;
+  createTransactionAgreementWithTransactions: (data: ICreateEventTransactionAgreementDTO) => Promise<void>;
   deleteAllSupplierAgreements: () => Promise<void>;
   deleteTransaction: (id: string) => Promise<void>;
   createTransaction: (data: ICreateTransactionDTO) => Promise<ITransactionDTO>;
   editTransaction: (data: ITransactionDTO) => Promise<ITransactionDTO>;
   handleCreateTransactionWindow: () => void;
   handleCancelEventTransactionConfirmationWindow: () => void;
+  handlePayee: (data: IPaymentParticipantDTO) => void;
+  handlePayer: (data: IPaymentParticipantDTO) => void;
   handleEditNewTransactionValueWindow: () => void;
   handleEditNewTransactionDueDateWindow: () => void;
   handleEditTransactionDueDateWindow: () => void;
@@ -95,6 +116,7 @@ interface TransactionContextType {
   selectNewTransactions: (data: ICreateTransactionDTO[]) => void;
   selectTransaction: (data: ITransactionDTO) => void;
   updateEventSupplierTransactionAgreement: (data: IUpdateEventSupplierTransactionAgreementDTO) => Promise<void>;
+  updateEventTransactionAgreement: (data: IUpdateEventTransactionAgreementDTO) => Promise<void>;
 }
 
 const TransactionContext = createContext({} as TransactionContextType);
@@ -102,12 +124,16 @@ const TransactionContext = createContext({} as TransactionContextType);
 const TransactionProvider: React.FC = ({ children }) => {
   const {
     selectedEventSupplier,
+    selectedEventMember,
+    selectedEventOwner,
     selectedEvent,
     eventSuppliers,
     eventTransactions,
   } = useEventVariables();
   const {
     getEventSuppliers,
+    getEventOwners,
+    getEventMembers,
     getEventNotes,
     getEventTransactions,
   } = useMyEvent();
@@ -120,6 +146,8 @@ const TransactionProvider: React.FC = ({ children }) => {
   const { handleSelectedFile, selectedFile } = useFiles();
 
   const [loading, setLoading] = useState(false);
+  const [payee, setPayee] = useState({} as IPaymentParticipantDTO);
+  const [payer, setPayer] = useState({} as IPaymentParticipantDTO);
   const [transactionNotesWindow, setTransactionNotesWindow] = useState(false);
   const [createTransactionWindow, setCreateTransactionWindow] = useState(false);
   const [cancelEventTransactionConfirmationWindow, setCancelEventTransactionConfirmationWindow] = useState(false);
@@ -136,6 +164,8 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 3));
   const [selectedDateWindow, setSelectedDateWindow] = useState(false);
   const [selectedEventTransaction, setSelectedEventTransaction] = useState({} as IEventTransactionDTO);
+  const [selectedEventTransactionAgreements, setSelectedEventTransactionAgreements] = useState<IEventTransactionAgreementDTO[]>([]);
+  const [selectedEventTransactionAgreement, setSelectedEventTransactionAgreement] = useState({} as IEventTransactionAgreementDTO);
   const [selectedTransaction, setSelectedTransaction] = useState({} as ITransactionDTO);
   const [fromDateTransactionFilter, setFromDateTransactionFilter] = useState(subDays(new Date(), 15));
   const [toDateTransactionFilter, setToDateTransactionFilter] = useState(new Date());
@@ -145,6 +175,12 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [filterTransactionOption, setFilterTransactionOption] = useState('all');
   const [filteredEventTransactions, setFilteredEventTransactions] = useState<IEventTransactionDTO[]>(eventTransactions);
 
+  function handlePayee(data: IPaymentParticipantDTO) {
+    setPayee(data);
+  }
+  function handlePayer(data: IPaymentParticipantDTO) {
+    setPayer(data);
+  }
   function handleTransactionFilesWindow() {
     setTransactionFilesWindow(!transactionFilesWindow);
   }
@@ -175,6 +211,12 @@ const TransactionProvider: React.FC = ({ children }) => {
   function handleSelectedEventTransaction(data: IEventTransactionDTO) {
     setSelectedEventTransaction(data);
   }
+  function handleSelectedEventTransactionAgreement(data: IEventTransactionAgreementDTO) {
+    setSelectedEventTransactionAgreement(data);
+  }
+  function handleSelectedEventTransactionAgreements(data: IEventTransactionAgreementDTO[]) {
+    setSelectedEventTransactionAgreements(sortAgreement(data));
+  }
   function handleEditTransactionDueDateWindow() {
     setEditTransactionDueDateWindow(!editTransactionDueDateWindow);
   }
@@ -189,6 +231,136 @@ const TransactionProvider: React.FC = ({ children }) => {
   }
   function handleCancelEventTransactionConfirmationWindow() {
     setCancelEventTransactionConfirmationWindow(!cancelEventTransactionConfirmationWindow);
+  }
+
+  function sortAgreement(data: IEventTransactionAgreementDTO[]) {
+    return data.sort((a, b) => {
+      if (new Date(a.created_at) > new Date(b.created_at)) return 1;
+      if (new Date(a.created_at) < new Date(b.created_at)) return -1;
+      return 0;
+    })
+  }
+  function refreshOwnerTransactionAgreements() {
+    const agreements: IEventTransactionAgreementDTO[] = [];
+    const ownerAgreements = selectedEventOwner.transactionAgreements ?? [];
+    ownerAgreements && ownerAgreements.length > 0 && ownerAgreements.map(({
+      amount,
+      created_at,
+      id,
+      isCancelled,
+      number_of_installments,
+      owner_id,
+      transactions,
+      updated_at,
+    }) => {
+      const eventTransactions: IEventTransactionDTO[] = transactions.length > 0
+        ? transactions.map(({ transaction }) => {
+          return {
+            agreement_id: id,
+            agreement_type: 'owner',
+            event_id: selectedEvent.id,
+            transaction,
+          };
+        })
+        : [];
+      agreements.push({
+        amount,
+        created_at,
+        event_id: selectedEvent.id,
+        id,
+        isCancelled,
+        number_of_installments,
+        participant_id: owner_id,
+        participant_type: 'owner',
+        transactions: eventTransactions,
+        updated_at,
+      })
+    });
+    agreements &&
+      agreements.length > 0 &&
+        handleSelectedEventTransactionAgreements(agreements);
+  }
+
+  function refreshMemberTransactionAgreements() {
+    const agreements: IEventTransactionAgreementDTO[] = [];
+    const memberAgreements = selectedEventMember.transactionAgreements ?? [];
+    memberAgreements && memberAgreements.length > 0 && memberAgreements.map(({
+      amount,
+      created_at,
+      id,
+      isCancelled,
+      number_of_installments,
+      member_id,
+      transactions,
+      updated_at,
+    }) => {
+      const eventTransactions: IEventTransactionDTO[] = transactions.length > 0
+        ? transactions.map(({ transaction }) => {
+          return {
+            agreement_id: id,
+            agreement_type: 'member',
+            event_id: selectedEvent.id,
+            transaction,
+          };
+        })
+        : [];
+      agreements.push({
+        amount,
+        created_at,
+        event_id: selectedEvent.id,
+        id,
+        isCancelled,
+        number_of_installments,
+        participant_id: member_id,
+        participant_type: 'member',
+        transactions: eventTransactions,
+        updated_at,
+      })
+    });
+    agreements &&
+      agreements.length > 0 &&
+        handleSelectedEventTransactionAgreements(agreements);
+  }
+
+  function refreshSupplierTransactionAgreements() {
+    const agreements: IEventTransactionAgreementDTO[] = [];
+    const supplierAgreements = selectedEventSupplier.transactionAgreements ?? [];
+    supplierAgreements && supplierAgreements.length > 0 && supplierAgreements.map(({
+      amount,
+      created_at,
+      id,
+      isCancelled,
+      number_of_installments,
+      supplier_id,
+      transactions,
+      updated_at,
+    }) => {
+      const eventTransactions: IEventTransactionDTO[] = transactions.length > 0
+        ? transactions.map(({ transaction }) => {
+          return {
+            agreement_id: id,
+            agreement_type: 'supplier',
+            event_id: selectedEvent.id,
+            transaction,
+          };
+        })
+        : [];
+      agreements.push({
+        amount,
+        created_at,
+        event_id: selectedEvent.id,
+        id,
+        isCancelled,
+        number_of_installments,
+        participant_id: supplier_id,
+        participant_type: 'supplier',
+        transactions: eventTransactions,
+        updated_at,
+      })
+    });
+    agreements &&
+      agreements.length > 0 &&
+        handleSelectedEventTransactionAgreements(agreements);
   }
   function handleEventTransactions(data: ITransactionDTO[]) {
     const updatedTransactions = data.map(transaction => {
@@ -363,6 +535,68 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(false);
     }
   }
+  async function createOwnerTransactionAgreementWithTransactions({
+    amount,
+    number_of_installments,
+    owner_id,
+    transactions,
+  }: ICreateEventOwnerTransactionAgreementWithTransactionsDTO) {
+    try {
+      setLoading(true);
+      const updatedTransactions = transactions.map(transaction => {
+        const name = `${selectedEventOwner.userEventOwner.name} ${transactions.length > 1 ? `${transactions.findIndex(item => item === transaction) + 1} / ${transactions.length}` : ''}`;
+        return {
+          ...transaction,
+          name,
+        };
+      });
+      await api.post(`/event-owner-transaction-agreement-with-transactions`, {
+        amount,
+        number_of_installments,
+        owner_id,
+        transactions: updatedTransactions,
+      });
+      await getEventOwners(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
+      await getEventTransactions(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+      refreshOwnerTransactionAgreements();
+    }
+  }
+  async function createMemberTransactionAgreementWithTransactions({
+    amount,
+    number_of_installments,
+    member_id,
+    transactions,
+  }: ICreateEventMemberTransactionAgreementWithTransactionsDTO) {
+    try {
+      setLoading(true);
+      const updatedTransactions = transactions.map(transaction => {
+        const name = `${selectedEventMember.userEventMember.name} ${transactions.length > 1 ? `${transactions.findIndex(item => item === transaction) + 1} / ${transactions.length}` : ''}`;
+        return {
+          ...transaction,
+          name,
+        };
+      });
+      await api.post(`/event-member-transaction-agreement-with-transactions`, {
+        amount,
+        number_of_installments,
+        member_id: member_id,
+        transactions: updatedTransactions,
+      });
+      await getEventMembers(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
+      await getEventTransactions(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+      refreshMemberTransactionAgreements();
+    }
+  }
   async function createSupplierTransactionAgreementWithTransactions({
     amount,
     number_of_installments,
@@ -397,6 +631,94 @@ const TransactionProvider: React.FC = ({ children }) => {
       throw new Error(err);
     } finally {
       setLoading(false);
+      refreshSupplierTransactionAgreements();
+    }
+  }
+  async function createTransactionAgreementWithTransactions(data: ICreateEventTransactionAgreementDTO) {
+    const {
+      amount,
+      number_of_installments,
+      transactions,
+      participant_id,
+      participant_type,
+    } = data;
+    if (participant_type === 'supplier') {
+      return createSupplierTransactionAgreementWithTransactions({
+        amount,
+        number_of_installments,
+        transactions,
+        supplier_id: participant_id,
+      });
+    }
+    if (participant_type === 'owner') {
+      return createOwnerTransactionAgreementWithTransactions({
+        amount,
+        number_of_installments,
+        transactions,
+        owner_id: participant_id,
+      });
+    }
+    if (participant_type === 'member') {
+      return createMemberTransactionAgreementWithTransactions({
+        amount,
+        number_of_installments,
+        transactions,
+        member_id: participant_id,
+      });
+    }
+  }
+  async function updateEventOwnerTransactionAgreement({
+    amount,
+    number_of_installments,
+    id,
+    isCancelled,
+    transactions,
+  }: IUpdateEventSupplierTransactionAgreementDTO) {
+    try {
+      setLoading(true);
+      const response = await api.put(`/event-owner-transaction-agreements`, {
+        amount,
+        id,
+        number_of_installments,
+        isCancelled,
+        transactions,
+      });
+      setSelectedEventTransactionAgreement(response.data);
+      await getEventOwners(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
+      await getEventTransactions(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+      refreshOwnerTransactionAgreements();
+    }
+  }
+  async function updateEventMemberTransactionAgreement({
+    amount,
+    number_of_installments,
+    id,
+    isCancelled,
+    transactions,
+  }: IUpdateEventSupplierTransactionAgreementDTO) {
+    try {
+      setLoading(true);
+      const response = await api.put(`/event-supplier-transaction-agreements`, {
+        amount,
+        id,
+        number_of_installments,
+        isCancelled,
+        transactions,
+      });
+      setSelectedEventTransactionAgreement(response.data);
+      await getEventMembers(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
+      await getEventTransactions(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+      refreshMemberTransactionAgreements();
     }
   }
   async function updateEventSupplierTransactionAgreement({
@@ -416,6 +738,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         transactions,
       });
       selectSupplierTransactionAgreement(response.data);
+      setSelectedEventTransactionAgreement(response.data);
       await getEventSuppliers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
@@ -423,6 +746,43 @@ const TransactionProvider: React.FC = ({ children }) => {
       throw new Error(err);
     } finally {
       setLoading(false);
+      refreshSupplierTransactionAgreements();
+    }
+  }
+  async function updateEventTransactionAgreement({
+    agreement_type,
+    amount,
+    number_of_installments,
+    id,
+    isCancelled,
+    transactions,
+  }: IUpdateEventTransactionAgreementDTO) {
+    if (agreement_type === 'supplier') {
+      return updateEventSupplierTransactionAgreement({
+        amount,
+        number_of_installments,
+        id,
+        isCancelled,
+        transactions,
+      });
+    }
+    if (agreement_type === 'owner') {
+      return updateEventOwnerTransactionAgreement({
+        amount,
+        number_of_installments,
+        id,
+        isCancelled,
+        transactions,
+      });
+    }
+    if (agreement_type === 'member') {
+      return updateEventMemberTransactionAgreement({
+        amount,
+        number_of_installments,
+        id,
+        isCancelled,
+        transactions,
+      });
     }
   }
   async function deleteAllSupplierAgreements() {
@@ -561,6 +921,7 @@ const TransactionProvider: React.FC = ({ children }) => {
       value={{
         cancelEventTransaction,
         cancelEventTransactionConfirmationWindow,
+        createTransactionAgreementWithTransactions,
         createTransactionWindow,
         createSupplierTransactionAgreementWithTransactions,
         deleteTransaction,
@@ -619,6 +980,18 @@ const TransactionProvider: React.FC = ({ children }) => {
         importTransactionFile,
         editTransactionFile,
         importTransactionImage,
+        handlePayee,
+        handlePayer,
+        payee,
+        payer,
+        handleSelectedEventTransactionAgreements,
+        selectedEventTransactionAgreements,
+        handleSelectedEventTransactionAgreement,
+        selectedEventTransactionAgreement,
+        updateEventTransactionAgreement,
+        refreshOwnerTransactionAgreements,
+        refreshMemberTransactionAgreements,
+        refreshSupplierTransactionAgreements,
       }}
     >
       {children}

@@ -6,9 +6,12 @@ interface IButtonProps {
   isActive: boolean;
 }
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
   width: 100%;
   padding: 0 16px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 `;
 
 export const MenuButton = styled.TouchableOpacity<IButtonProps>`

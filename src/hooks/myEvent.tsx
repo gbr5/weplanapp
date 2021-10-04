@@ -81,6 +81,10 @@ const MyEventProvider: React.FC = ({ children }) => {
     selectEvent,
     selectedEvent,
     selectEventGuest,
+    selectedEventMember,
+    selectEventMember,
+    selectedEventOwner,
+    selectEventOwner,
     selectEventTask,
     selectedEventTask,
     selectEventSupplier,
@@ -298,6 +302,11 @@ const MyEventProvider: React.FC = ({ children }) => {
       const response = await api
         .get<IEventMemberDTO[]>(`event-members/${eventId}`);
       handleEventMembers(response.data);
+
+      if (selectedEventMember && selectedEventMember.id) {
+        const member = response.data.find(item => item.id === selectedEventMember.id);
+        if (member) selectEventMember(member);
+      }
     } catch (err) {
       throw new Error(err);
     }
@@ -312,6 +321,11 @@ const MyEventProvider: React.FC = ({ children }) => {
         xOwner.userEventOwner.id === user.id && setIsOwner(true);
         return xOwner;
       });
+
+      if (selectedEventOwner && selectedEventOwner.id) {
+        const owner = response.data.find(item => item.id === selectedEventOwner.id);
+        if (owner) selectEventOwner(owner);
+      }
     } catch (err) {
       throw new Error(err);
     }
@@ -319,7 +333,6 @@ const MyEventProvider: React.FC = ({ children }) => {
 
   async function handleSelectedEvent(data: IEventDTO) {
     if (!data || (data && !data.id)) return unsetEventVariables();
-    console.log('CHEGOU AQUI!!!!')
     // data.id !== selectedEvent.id && unsetEventVariables();
     try {
       Promise.all([

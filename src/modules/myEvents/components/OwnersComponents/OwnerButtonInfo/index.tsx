@@ -3,13 +3,16 @@ import { ContactLink } from '../../../../../components/ContactLink';
 import { NotificationNumber } from '../../../../../components/NotificationNumber';
 import WindowContainer from '../../../../../components/WindowContainer';
 import { WPFriendContact } from '../../../../../components/WPFriendContact';
+import IEventTransactionAgreementDTO from '../../../../../dtos/IEventTransactionAgreementDTO';
+import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';
 import IUserContactDTO from '../../../../../dtos/IUserContactDTO';
 import theme from '../../../../../global/styles/theme';
 import { useAuth } from '../../../../../hooks/auth';
 import { useEventOwners } from '../../../../../hooks/eventOwners';
-import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useFriends } from '../../../../../hooks/friends';
+import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useTransaction } from '../../../../../hooks/transactions';
 
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
@@ -35,6 +38,7 @@ export function OwnerButtonInfo() {
     shadowRadius,
   } = theme.objectButtonShadow;
   const { user } = useAuth();
+  const { getSelectedUserEventTasks } = useMyEvent();
   const { selectedUserContact, handleSelectedUserContact } = useFriends();
   const {
     selectedEventOwner,
@@ -42,9 +46,15 @@ export function OwnerButtonInfo() {
     selectedUserEventTasks,
   } = useEventVariables();
   const {
-    handleUserEventTasksWindow,
-  } = useEventTasks();
-  const { deleteEventOwner } = useEventOwners();
+    deleteEventOwner,
+    handleEventOwnerTransactionAgreementsWindow,
+    handleEventOwnerTaskWindow,
+  } = useEventOwners();
+  const {
+    handleSelectedEventTransactionAgreements,
+    handlePayer,
+    handlePayee,
+  } = useTransaction();
   // const { eventDebitTransactions } = useTransaction();
 
   const [accessContact, setAccessContact] = useState(false);
@@ -60,6 +70,57 @@ export function OwnerButtonInfo() {
   async function handleDeleteOwner() {
     await deleteEventOwner(selectedEventOwner.id);
     closeContactWindow();
+  }
+
+  function handleOwnerAgreementsWindow() {
+    handlePayer({
+      id: selectedEventOwner.id,
+      name: selectedEventOwner.userEventOwner.name,
+    });
+    handlePayee({
+      id: selectedEvent.id,
+      name: selectedEvent.name,
+    });
+    const agreements: IEventTransactionAgreementDTO[] = selectedEventOwner
+      .transactionAgreements.map(agreement => {
+      const transactions: IEventTransactionDTO[] = agreement.transactions
+        .map(({ transaction }) => {
+        return {
+          agreement_id: agreement.id,
+          agreement_type: 'owner',
+          event_id: selectedEvent.id,
+          transaction,
+        };
+      });
+      const {
+        amount,
+        created_at,
+        id,
+        isCancelled,
+        number_of_installments,
+        owner_id,
+        updated_at,
+      } = agreement;
+      return {
+        amount,
+        created_at,
+        event_id: selectedEvent.id,
+        id,
+        isCancelled,
+        number_of_installments,
+        participant_id: owner_id,
+        participant_type: 'owner',
+        transactions,
+        updated_at,
+      };
+    });
+    handleSelectedEventTransactionAgreements(agreements);
+    handleEventOwnerTransactionAgreementsWindow();
+  }
+
+  async function openOwnerTasksWindow() {
+    getSelectedUserEventTasks(selectedEventOwner.userEventOwner.id);
+    handleEventOwnerTaskWindow();
   }
 
   return (
@@ -103,7 +164,7 @@ export function OwnerButtonInfo() {
               shadowRadius,
               elevation: 5,
             }}
-            onPress={handleUserEventTasksWindow}
+            onPress={openOwnerTasksWindow}
           >
             <MenuText>Tarefas</MenuText>
             <IconContainer
@@ -133,6 +194,7 @@ export function OwnerButtonInfo() {
                 shadowOpacity,
                 shadowRadius,
               }}
+              onPress={handleOwnerAgreementsWindow}
             >
               <MenuText>Transações</MenuText>
               <IconContainer
@@ -157,8 +219,17 @@ export function OwnerButtonInfo() {
               <Icon name="file-text" />
             </IconContainer>
           </MenuButton> */}
-          {selectedEvent.event_type === 'Prom' && (
-            <MenuButton>
+          {/* {selectedEvent.event_type === 'Prom' && (
+            <MenuButton
+              style={{
+                shadowColor,
+                shadowOffset,
+                shadowOpacity,
+                shadowRadius,
+                elevation: 5,
+              }}
+              onPress={handleOwnerAgreementsWindow}
+            >
               <MenuText>Contratos</MenuText>
               <IconContainer
                 color={theme.color.success_light}
@@ -166,7 +237,7 @@ export function OwnerButtonInfo() {
                 <Icon name="lock" />
               </IconContainer>
             </MenuButton>
-          )}
+          )} */}
 
           <MenuButton
             style={{

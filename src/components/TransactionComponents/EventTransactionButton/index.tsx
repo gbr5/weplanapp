@@ -2,6 +2,7 @@ import React from 'react';
 import { useMemo } from 'react';
 import IEventTransactionDTO from '../../../dtos/IEventTransactionDTO';
 import theme from '../../../global/styles/theme';
+import { useEventVariables } from '../../../hooks/eventVariables';
 import { useTransaction } from '../../../hooks/transactions';
 import { formatBrlCurrency } from '../../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../../utils/formatOnlyDateShort';
@@ -45,6 +46,7 @@ export function EventTransactionButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
+  const { selectedEvent } = useEventVariables();
   const {
     selectedEventTransaction,
     handleSelectedEventTransaction,
@@ -77,6 +79,11 @@ export function EventTransactionButton({
 
   const day = useMemo(() => formatOnlyDateShort(String(eventTransaction.transaction.due_date)), [eventTransaction]);
   const year = new Date(eventTransaction.transaction.due_date).getFullYear();
+
+  const transactionType = useMemo(() => {
+    if (eventTransaction.transaction.payer_id === selectedEvent.id) return 'debit';
+    return 'credit';
+  }, [eventTransaction, selectedEvent]);
 
   return (
     <>
@@ -123,7 +130,7 @@ export function EventTransactionButton({
         onPress={handleSelectTransaction}
       >
         {eventTransaction.transaction.isCancelled && <CancelledTransaction />}
-        {eventTransaction.transaction.payer_id === eventTransaction.event_id ? (
+        {transactionType === 'credit' ? (
           <TextContainer>
             <Name>
               {eventTransaction.transaction.name}
@@ -148,7 +155,7 @@ export function EventTransactionButton({
               isPaid={eventTransaction.transaction.isPaid}
             >
               <Sign> - </Sign>
-              {formatBrlCurrency(eventTransaction.transaction.amount)}
+              ( {formatBrlCurrency(eventTransaction.transaction.amount)} )
             </Amount>
           </TextContainer>
         )}

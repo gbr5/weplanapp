@@ -30,12 +30,18 @@ export const Index = styled.Text`
 export const AmountButton = styled.TouchableOpacity`
   align-items: flex-end;
   justify-content: center;
-  width: 65%;
+  width: 63%;
   margin-right: 8px;
+  background-color: ${({ theme }) => theme.color.text6};
+  padding: 5px;
+  border-radius: 4px;
 `;
 export const DateButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
+  background-color: ${({ theme }) => theme.color.text6};
+  padding: 6.7px;
+  border-radius: 4px;
 `;
 
 export const Amount = styled.Text<IAmountProps>`
@@ -62,19 +68,19 @@ export const DateText = styled.Text`
 `;
 
 export const IsPaidButton = styled.TouchableOpacity<IAmountProps>`
-  background-color: ${({ theme }) => theme.color.info_light};
+  background-color: ${({ theme }) => theme.color.text6};
   ${({ theme, isOverdue }) => isOverdue && css`
     background-color: ${theme.color.atention};
   `};
   ${({ theme, isPaid }) => isPaid && css`
     background-color: ${theme.color.success_light};
   `};
-  padding: 2px 2px 4px 4px;
+  padding: 2px 2px 3px 3px;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.color.text1};
-  margin: 0 12px 4px;
+  margin: 4px 12px 4px;
 `;
 
 export const IsPaidIcon = styled(Feather)<IAmountProps>`

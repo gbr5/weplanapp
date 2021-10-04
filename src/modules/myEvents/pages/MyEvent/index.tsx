@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useMyEvent } from '../../../../hooks/myEvent';
 import { useEventTasks } from '../../../../hooks/eventTasks';
@@ -80,6 +80,9 @@ import {
 import IEventDTO from '../../../../dtos/IEventDTO';
 import { WPFriendContactWindow } from '../../../../components/WPFriendContactWindow';
 import { useFriends } from '../../../../hooks/friends';
+import { CreateTransactionAgreement } from '../../../../components/CreateTransactionAgreement';
+import { SelectedEventTransactionAgreementsWindow } from '../../../../components/SelectedEventAgreementTransactionsWindow';
+import { NewEventTransactionAgreementConfirmation } from '../../../../components/NewEventTransactionAgreementConfirmation';
 
 const MyEvent: React.FC = () => {
   const {
@@ -99,6 +102,8 @@ const MyEvent: React.FC = () => {
     selectedEventTaskFollower,
     selectEventTask,
     selectedEventGuest,
+    selectedEventOwner,
+    selectedEventMember,
   } = useEventVariables();
   const {
     loading,
@@ -129,6 +134,7 @@ const MyEvent: React.FC = () => {
     deleteTaskFollower,
     eventTaskFollowersDescriptionWindow,
     userEventTasksWindow,
+    handleUserEventTasksWindow,
   } = useEventTasks();
   const {
     addSupplierWindow,
@@ -144,6 +150,8 @@ const MyEvent: React.FC = () => {
     editSupplierNameWindow,
     editSupplierCategoryWindow,
     supplierTransactionAgreementsWindow,
+    handleSupplierTransactionAgreementsWindow,
+    handleCreateSupplierTransactionAgreementWindow,
     supplierNotesWindow,
     supplierFilesWindow,
     supplierBudgetsWindow,
@@ -155,6 +163,10 @@ const MyEvent: React.FC = () => {
     supplierSelectedDate,
     updateSupplierBudgetDueDate,
     handleSupplierSelectedDateWindow,
+    createEventWePlanSupplierTaskWindow,
+    handleCreateEventWePlanSupplierTaskWindow,
+    eventWePlanSupplierTaskWindow,
+    handleEventWePlanSupplierTaskWindow,
   } = useEventSuppliers();
   const {
     guestFilterWindow,
@@ -184,11 +196,31 @@ const MyEvent: React.FC = () => {
     handleAddOwnerWindow,
     addOwnerWindow,
     addMultipleOwners,
+    createEventOwnerTransactionAgreement,
+    handleCreateEventOwnerTransactionAgreement,
+    eventOwnerTransactionAgreementsWindow,
+    handleEventOwnerTransactionAgreementsWindow,
+    newOwnerTransactionAgreementConfirmation,
+    handleNewOwnerTransactionAgreementConfirmation,
+    createEventOwnerTaskWindow,
+    handleCreateEventOwnerTaskWindow,
+    eventOwnerTaskWindow,
+    handleEventOwnerTaskWindow,
   } = useEventOwners();
   const {
     handleAddMemberWindow,
     addMemberWindow,
     addMultipleMembers,
+    createEventMemberTransactionAgreement,
+    handleCreateEventMemberTransactionAgreement,
+    eventMemberTransactionAgreementsWindow,
+    handleEventMemberTransactionAgreementsWindow,
+    newMemberTransactionAgreementConfirmation,
+    handleNewMemberTransactionAgreementConfirmation,
+    createEventMemberTaskWindow,
+    eventMemberTaskWindow,
+    handleCreateEventMemberTaskWindow,
+    handleEventMemberTaskWindow,
   } = useEventMembers();
   const {
     cancelEventTransaction,
@@ -199,6 +231,7 @@ const MyEvent: React.FC = () => {
     handleSelectedDate,
     handleUpdateTransactionDueDate,
     newEventSupplierTransactionAgreement,
+    handleNewEventSupplierTransactionAgreement,
     selectedDate,
     selectedDateWindow,
     selectedEventTransaction,
@@ -286,10 +319,83 @@ const MyEvent: React.FC = () => {
           handleAddFriends={createMultipleWePlanGuests}
         />
       }
+      {eventOwnerTransactionAgreementsWindow && (
+        <SelectedEventTransactionAgreementsWindow
+          handleCreateAgreementWindow={handleCreateEventOwnerTransactionAgreement}
+          agreement_type="owner"
+          closeWindow={handleEventOwnerTransactionAgreementsWindow}
+          overTitle="Anfitrião"
+          title={selectedEventOwner.userEventOwner.name}
+        />
+      )}
+      {createEventOwnerTransactionAgreement && (
+        <CreateTransactionAgreement
+          nextWindow={handleNewOwnerTransactionAgreementConfirmation}
+          closeWindow={handleCreateEventOwnerTransactionAgreement}
+        />
+      )}
+      {newOwnerTransactionAgreementConfirmation && (
+        <NewEventTransactionAgreementConfirmation
+          overTitle="Contrato com Anfitrião"
+          title={selectedEventOwner.userEventOwner.name}
+          participant_id={selectedEventOwner.id}
+          participant_type="owner"
+          closeWindow={handleNewOwnerTransactionAgreementConfirmation}
+          closePreviousWindow={handleCreateEventOwnerTransactionAgreement}
+        />
+      )}
+      {eventMemberTransactionAgreementsWindow && (
+        <SelectedEventTransactionAgreementsWindow
+          handleCreateAgreementWindow={handleCreateEventMemberTransactionAgreement}
+          agreement_type="member"
+          closeWindow={handleEventMemberTransactionAgreementsWindow}
+          overTitle="Membro"
+          title={selectedEventMember.userEventMember.name}
+        />
+      )}
+      {createEventMemberTransactionAgreement && (
+        <CreateTransactionAgreement
+          nextWindow={handleNewMemberTransactionAgreementConfirmation}
+          closeWindow={handleCreateEventMemberTransactionAgreement}
+        />
+      )}
+      {newMemberTransactionAgreementConfirmation && (
+        <NewEventTransactionAgreementConfirmation
+          overTitle="Contrato com Membro"
+          title={selectedEventMember.userEventMember.name}
+          participant_id={selectedEventMember.id}
+          participant_type="member"
+          closeWindow={handleNewMemberTransactionAgreementConfirmation}
+          closePreviousWindow={handleCreateEventMemberTransactionAgreement}
+        />
+      )}
       {selectedUserContact && selectedUserContact.id && (
         <WPFriendContactWindow />
       )}
-      {userEventTasksWindow && <UserEventTasksWindow />}
+      {eventOwnerTaskWindow && (
+        <UserEventTasksWindow
+          closeWindow={handleEventOwnerTaskWindow}
+          createTaskWindow={handleCreateEventOwnerTaskWindow}
+        />
+      )}
+      {eventMemberTaskWindow && (
+        <UserEventTasksWindow
+          closeWindow={handleEventMemberTaskWindow}
+          createTaskWindow={handleCreateEventMemberTaskWindow}
+        />
+      )}
+      {eventWePlanSupplierTaskWindow && (
+        <UserEventTasksWindow
+          closeWindow={handleEventWePlanSupplierTaskWindow}
+          createTaskWindow={handleCreateEventWePlanSupplierTaskWindow}
+        />
+      )}
+      {userEventTasksWindow && (
+        <UserEventTasksWindow
+          closeWindow={handleUserEventTasksWindow}
+          createTaskWindow={handleCreateTaskWindow}
+        />
+      )}
       {addOwnerWindow &&
         <SelectFromFriends
           closeWindow={handleAddOwnerWindow}
@@ -347,8 +453,17 @@ const MyEvent: React.FC = () => {
         && selectedEventSupplier.id
         && editSupplierCategoryWindow
         && <EditSupplierCategory />}
-      {supplierTransactionAgreementsWindow && (
+      {/* {supplierTransactionAgreementsWindow && (
         <SupplierTransactionAgreementsWindow />
+      )} */}
+      {supplierTransactionAgreementsWindow && (
+        <SelectedEventTransactionAgreementsWindow
+          agreement_type="supplier"
+          closeWindow={handleSupplierTransactionAgreementsWindow}
+          handleCreateAgreementWindow={handleCreateSupplierTransactionAgreementWindow}
+          overTitle="Fornecedor"
+          title={selectedEventSupplier.name}
+        />
       )}
       {selectMobileContactsWindow && mobileContacts.length > 0 && (
         <SelectMobileContacts />
@@ -450,7 +565,18 @@ const MyEvent: React.FC = () => {
             closeWindow={handleCloseEventTaskNotesWindow}
           />
       )}
-      {createTaskWindow && <NewTaskForm closeWindow={handleCreateTaskWindow} />}
+      {createTaskWindow && (
+        <NewTaskForm closeWindow={handleCreateTaskWindow} />
+      )}
+      {createEventOwnerTaskWindow && (
+        <NewTaskForm closeWindow={handleCreateEventOwnerTaskWindow} />
+      )}
+      {createEventMemberTaskWindow && (
+        <NewTaskForm closeWindow={handleCreateEventMemberTaskWindow} />
+      )}
+      {createEventWePlanSupplierTaskWindow && (
+        <NewTaskForm closeWindow={handleCreateEventWePlanSupplierTaskWindow} />
+      )}
       {deleteTaskConfirmationWindow && (
         <ShortConfirmationWindow
           closeWindow={handleDeleteTaskConfirmationWindow}
@@ -492,8 +618,16 @@ const MyEvent: React.FC = () => {
       {createSupplierTransactionAgreementWindow &&
         selectedEventSupplier &&
         selectedEventSupplier.id && (
-          <CreateSupplierTransactionAgreement />
+          <CreateTransactionAgreement
+            closeWindow={handleCreateSupplierTransactionAgreementWindow}
+            nextWindow={handleNewEventSupplierTransactionAgreement}
+          />
         )}
+      {/* {createSupplierTransactionAgreementWindow &&
+        selectedEventSupplier &&
+        selectedEventSupplier.id && (
+          <CreateSupplierTransactionAgreement />
+        )} */}
       {editEventTransactionValueWindow && (
         <EditTransactionAmount />
       )}
@@ -516,8 +650,18 @@ const MyEvent: React.FC = () => {
           />
         )}
       {newEventSupplierTransactionAgreement && (
-        <NewEventSupplierTransactionAgreementConfirmation />
+        <NewEventTransactionAgreementConfirmation
+          closeWindow={handleNewEventSupplierTransactionAgreement}
+          overTitle="Contrato com Fornecedor"
+          participant_id={selectedEventSupplier.id}
+          participant_type="supplier"
+          title={selectedEventSupplier.name}
+          closePreviousWindow={handleCreateSupplierTransactionAgreementWindow}
+        />
       )}
+      {/* {newEventSupplierTransactionAgreement && (
+        <NewEventSupplierTransactionAgreementConfirmation />
+      )} */}
 
       <Container>
         <PageHeader unsetVariables={handleUnsetVariables} >

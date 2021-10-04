@@ -26,6 +26,10 @@ import {
   DateButton,
   TimeText,
 } from './styles';
+import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
+import { useEventOwners } from '../../../../../hooks/eventOwners';
+import { useEventMembers } from '../../../../../hooks/eventMembers';
+import { useAuth } from '../../../../../hooks/auth';
 
 interface IFormData {
   title: string;
@@ -38,13 +42,25 @@ interface IProps {
 const NewTaskForm: React.FC<IProps> = ({
   closeWindow,
 }) => {
-  const { selectedEvent } = useEventVariables();
+  const { user } = useAuth();
+  const {
+    selectedEvent,
+    selectedEventSupplier,
+    selectedEventMember,
+    selectedEventOwner,
+  } = useEventVariables();
+  const { createEventWePlanSupplierTaskWindow } = useEventSuppliers();
+  const { createEventOwnerTaskWindow } = useEventOwners();
+  const { createEventMemberTaskWindow } = useEventMembers();
   const {
     createEventTask,
     loading,
     taskDate,
     handleSelectTaskDateWindow,
     handleSelectTaskTimeWindow,
+    createEventOwnerTask,
+    createEventMemberTask,
+    createEventWePlanSupplierTask,
   } = useEventTasks();
   const formRef = useRef<FormHandles>(null);
 
@@ -53,13 +69,61 @@ const NewTaskForm: React.FC<IProps> = ({
   const handleSubmit = useCallback(async ({
     title,
   }: IFormData) => {
-    await createEventTask({
-      event_id: selectedEvent.id,
-      title,
-      due_date: taskDate,
-      priority: selectedPriority,
-      status: 'not started',
-    });
+    if (
+      selectedEventOwner &&
+      selectedEventOwner.id &&
+      selectedEventOwner.userEventOwner.id !== user.id &&
+      createEventOwnerTaskWindow
+    ) {
+      await createEventOwnerTask({
+        event_id: selectedEvent.id,
+        owner_id: selectedEventOwner.userEventOwner.id,
+        title,
+        due_date: taskDate,
+        priority: selectedPriority,
+        status: 'not started',
+      });
+    } else if (
+      selectedEventMember &&
+      selectedEventMember.id &&
+      selectedEventMember.userEventMember.id !== user.id &&
+      createEventMemberTaskWindow
+    ) {
+      await createEventMemberTask({
+        event_id: selectedEvent.id,
+        member_id: selectedEventMember.userEventMember.id,
+        title,
+        due_date: taskDate,
+        priority: selectedPriority,
+        status: 'not started',
+      });
+    } else if (
+      selectedEventSupplier &&
+      selectedEventSupplier.id &&
+      selectedEventSupplier.weplanUser &&
+      selectedEventSupplier.eventWeplanSupplier &&
+      selectedEventSupplier.eventWeplanSupplier.weplanEventSupplier &&
+      selectedEventSupplier.eventWeplanSupplier.weplanEventSupplier.id &&
+      createEventWePlanSupplierTaskWindow
+    ) {
+      await createEventWePlanSupplierTask({
+        event_id: selectedEvent.id,
+        supplier_id: selectedEventSupplier.eventWeplanSupplier.weplanEventSupplier.id,
+        title,
+        due_date: taskDate,
+        priority: selectedPriority,
+        status: 'not started',
+      });
+    } else {
+      await createEventTask({
+        event_id: selectedEvent.id,
+        title,
+        due_date: taskDate,
+        priority: selectedPriority,
+        status: 'not started',
+      });
+    }
+
     formRef.current?.clearField;
     closeWindow();
   }, [closeWindow, createEventTask]);

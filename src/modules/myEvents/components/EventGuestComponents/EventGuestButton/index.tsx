@@ -48,7 +48,6 @@ export function EventGuestButton({ guest, index }: IProps): JSX.Element {
       (selectedEventGuest && !selectedEventGuest.id) ||
       selectedEventGuest.id !== guest.id
     ) {
-      console.log(guest);
       if (
         guest.weplanUser &&
         guest.weplanGuest &&

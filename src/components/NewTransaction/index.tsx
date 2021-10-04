@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useMemo } from 'react';
 import ICreateTransactionDTO from '../../dtos/ICreateTransactionDTO';
+import theme from '../../global/styles/theme';
 import { useTransaction } from '../../hooks/transactions';
 import { formatBrlCurrency } from '../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../utils/formatOnlyDateShort';
@@ -29,12 +30,20 @@ export function NewTransaction({
   index,
 }: IProps) {
   const {
+    shadowColor,
+    shadowOffset,
+    shadowOpacity,
+    shadowRadius,
+  } = theme.objectButtonShadow;
+
+  const {
     handleEditNewTransactionValueWindow,
     handleEditNewTransactionDueDateWindow,
     handleSelectedNewTransaction,
     newTransactions,
     selectNewTransactions,
   } = useTransaction();
+
   const [isPaid, setIsPaid] = useState(false);
 
   function handleIsPaid() {
@@ -66,7 +75,16 @@ export function NewTransaction({
       <Container>
         <TextContainer>
           <Index>{index}</Index>
-          <AmountButton onPress={handleEditAmount}>
+          <AmountButton
+            onPress={handleEditAmount}
+            style={{
+              elevation: 5,
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+            }}
+          >
             <Amount
               isOverdue={isOverdue}
               isPaid={transaction.isPaid}
@@ -74,7 +92,16 @@ export function NewTransaction({
               {formatBrlCurrency(transaction.amount)}
             </Amount>
           </AmountButton>
-          <DateButton onPress={handleEditDate}>
+          <DateButton
+            style={{
+              elevation: 5,
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+            }}
+            onPress={handleEditDate}
+          >
             <DateText>
               {formatOnlyDateShort(String( transaction.due_date ))}
             </DateText>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ContactLink } from '../../../../../components/ContactLink';
 import { NotificationNumber } from '../../../../../components/NotificationNumber';
-import WindowContainer from '../../../../../components/WindowContainer';
 import { WPFriendContact } from '../../../../../components/WPFriendContact';
+import IEventTransactionAgreementDTO from '../../../../../dtos/IEventTransactionAgreementDTO';
+import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';
 import IUserContactDTO from '../../../../../dtos/IUserContactDTO';
 
 import theme from '../../../../../global/styles/theme';
@@ -10,6 +10,8 @@ import { useEventMembers } from '../../../../../hooks/eventMembers';
 import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useFriends } from '../../../../../hooks/friends';
+import { useMyEvent } from '../../../../../hooks/myEvent';
+import { useTransaction } from '../../../../../hooks/transactions';
 
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 
@@ -36,10 +38,20 @@ export function MemberButtonInfo() {
   const {
     selectedEventMember,
     selectedUserEventTasks,
+    selectedEvent,
   } = useEventVariables();
+  const { getSelectedUserEventTasks } = useMyEvent();
   const { handleSelectedUserContact } = useFriends();
-  const { handleUserEventTasksWindow } = useEventTasks();
-  const { deleteEventMember } = useEventMembers();
+  const {
+    handlePayee,
+    handlePayer,
+    handleSelectedEventTransactionAgreements
+  } = useTransaction();
+  const {
+    deleteEventMember,
+    handleEventMemberTaskWindow,
+    handleEventMemberTransactionAgreementsWindow,
+  } = useEventMembers();
 
   const [accessContact, setAccessContact] = useState(false);
 
@@ -56,6 +68,55 @@ export function MemberButtonInfo() {
     closeContactWindow();
   }
 
+  function handleMemberAgreementsWindow() {
+    handlePayer({
+      id: selectedEventMember.id,
+      name: selectedEventMember.userEventMember.name,
+    });
+    handlePayee({
+      id: selectedEvent.id,
+      name: selectedEvent.name,
+    });
+    const agreements: IEventTransactionAgreementDTO[] = selectedEventMember.transactionAgreements.map(agreement => {
+      const transactions: IEventTransactionDTO[] = agreement.transactions
+        .map(({ transaction }) => {
+        return {
+          agreement_id: agreement.id,
+          agreement_type: 'member',
+          event_id: selectedEvent.id,
+          transaction,
+        };
+      });
+      const {
+        amount,
+        created_at,
+        id,
+        isCancelled,
+        member_id,
+        number_of_installments,
+        updated_at,
+      } = agreement;
+      return {
+        amount,
+        created_at,
+        event_id: selectedEvent.id,
+        id,
+        isCancelled,
+        number_of_installments,
+        participant_id: member_id,
+        participant_type: 'member',
+        transactions,
+        updated_at,
+      };
+    });
+    handleSelectedEventTransactionAgreements(agreements);
+    handleEventMemberTransactionAgreementsWindow();
+  }
+
+  async function openMemberTasksWindow() {
+    getSelectedUserEventTasks(selectedEventMember.userEventMember.id);
+    handleEventMemberTaskWindow();
+  }
   return (
     <Container>
       <SectionBorder />
@@ -69,7 +130,7 @@ export function MemberButtonInfo() {
             shadowRadius,
             elevation: 5,
           }}
-          onPress={handleUserEventTasksWindow}
+          onPress={openMemberTasksWindow}
         >
           <MenuText>Perfil</MenuText>
           <IconContainer
@@ -98,7 +159,7 @@ export function MemberButtonInfo() {
             shadowRadius,
             elevation: 5,
           }}
-          onPress={handleUserEventTasksWindow}
+          onPress={openMemberTasksWindow}
         >
           <MenuText>Tarefas</MenuText>
           <IconContainer
@@ -128,6 +189,7 @@ export function MemberButtonInfo() {
             shadowRadius,
             elevation: 5,
           }}
+          onPress={handleMemberAgreementsWindow}
         >
           <MenuText>Transações</MenuText>
           <IconContainer
@@ -166,7 +228,7 @@ export function MemberButtonInfo() {
             <Icon name="file-text" />
           </IconContainer>
         </MenuButton>
-
+{/*
         <MenuButton
           style={{
             shadowColor,
@@ -189,7 +251,7 @@ export function MemberButtonInfo() {
           >
             <Icon name="lock" />
           </IconContainer>
-        </MenuButton>
+        </MenuButton> */}
 
         <MenuButton
           style={{
