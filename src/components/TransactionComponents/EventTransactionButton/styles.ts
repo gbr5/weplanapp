@@ -51,8 +51,8 @@ export const Index = styled.Text`
 
 export const Sign = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(22)}px;
+  color: ${({ theme }) => theme.color.atention};
+  font-size: ${RFValue(18)}px;
 `;
 
 export const Amount = styled.Text<IAmountProps>`

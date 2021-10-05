@@ -154,8 +154,7 @@ export function EventTransactionButton({
               isOverdue={isOverdue}
               isPaid={eventTransaction.transaction.isPaid}
             >
-              <Sign> - </Sign>
-              ( {formatBrlCurrency(eventTransaction.transaction.amount)} )
+              <Sign> - ( </Sign>{formatBrlCurrency(eventTransaction.transaction.amount)}<Sign> )</Sign>
             </Amount>
           </TextContainer>
         )}

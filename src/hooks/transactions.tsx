@@ -73,7 +73,11 @@ interface TransactionContextType {
   fromDateTransactionFilter: Date;
   toDateTransactionFilter: Date;
   filterTransactionOption: string;
+  eventTransactionsWindow: boolean;
+  sortEventTransactions: (data: IEventTransactionDTO[]) => IEventTransactionDTO[];
+  sortTransactionAgreements: (data: IEventTransactionAgreementDTO[]) => IEventTransactionAgreementDTO[];
   refreshOwnerTransactionAgreements: () => void;
+  handleEventTransactionsWindow: () => void;
   refreshMemberTransactionAgreements: () => void;
   refreshSupplierTransactionAgreements: () => void;
   handleFilterTransactionOption: (data: string) => void;
@@ -149,6 +153,7 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [payee, setPayee] = useState({} as IPaymentParticipantDTO);
   const [payer, setPayer] = useState({} as IPaymentParticipantDTO);
   const [transactionNotesWindow, setTransactionNotesWindow] = useState(false);
+  const [eventTransactionsWindow, setEventTransactionsWindow] = useState(false);
   const [createTransactionWindow, setCreateTransactionWindow] = useState(false);
   const [cancelEventTransactionConfirmationWindow, setCancelEventTransactionConfirmationWindow] = useState(false);
   const [editNewTransactionValueWindow, setEditNewTransactionValueWindow] = useState(false);
@@ -193,6 +198,13 @@ const TransactionProvider: React.FC = ({ children }) => {
   function handleTransactionNotesWindow() {
     setTransactionNotesWindow(!transactionNotesWindow);
   }
+  function handleEventTransactionsWindow() {
+    if (eventTransactionsWindow) {
+      handleSelectedEventTransactionAgreement({} as IEventTransactionAgreementDTO);
+      handleSelectedEventTransaction({} as IEventTransactionDTO);
+    }
+    setEventTransactionsWindow(!eventTransactionsWindow);
+  }
   function handleEditEventTransactionValueWindow() {
     setEditEventTransactionValueWindow(!editEventTransactionValueWindow);
   }
@@ -215,7 +227,7 @@ const TransactionProvider: React.FC = ({ children }) => {
     setSelectedEventTransactionAgreement(data);
   }
   function handleSelectedEventTransactionAgreements(data: IEventTransactionAgreementDTO[]) {
-    setSelectedEventTransactionAgreements(sortAgreement(data));
+    setSelectedEventTransactionAgreements(sortTransactionAgreements(data));
   }
   function handleEditTransactionDueDateWindow() {
     setEditTransactionDueDateWindow(!editTransactionDueDateWindow);
@@ -233,12 +245,20 @@ const TransactionProvider: React.FC = ({ children }) => {
     setCancelEventTransactionConfirmationWindow(!cancelEventTransactionConfirmationWindow);
   }
 
-  function sortAgreement(data: IEventTransactionAgreementDTO[]) {
+  function sortTransactionAgreements(data: IEventTransactionAgreementDTO[]) {
     return data.sort((a, b) => {
       if (new Date(a.created_at) > new Date(b.created_at)) return 1;
       if (new Date(a.created_at) < new Date(b.created_at)) return -1;
       return 0;
-    })
+    });
+  }
+
+  function sortEventTransactions(data: IEventTransactionDTO[]) {
+    return data.sort((a, b) => {
+      if (new Date(a.transaction.created_at) > new Date(b.transaction.created_at)) return 1;
+      if (new Date(a.transaction.created_at) < new Date(b.transaction.created_at)) return -1;
+      return 0;
+    });
   }
   function refreshOwnerTransactionAgreements() {
     const agreements: IEventTransactionAgreementDTO[] = [];
@@ -992,6 +1012,10 @@ const TransactionProvider: React.FC = ({ children }) => {
         refreshOwnerTransactionAgreements,
         refreshMemberTransactionAgreements,
         refreshSupplierTransactionAgreements,
+        sortEventTransactions,
+        sortTransactionAgreements,
+        eventTransactionsWindow,
+        handleEventTransactionsWindow,
       }}
     >
       {children}

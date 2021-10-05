@@ -10,14 +10,6 @@ import {
 
 export function MembersListSection() {
   const { eventMembers } = useEventVariables();
-  const [section, setSection] = useState('Main');
-
-  function handleSection(data: string) {
-    setSection(data);
-  }
-  function handleAddOwnerForm() {
-
-  }
   return (
     <Container>
       <Body>

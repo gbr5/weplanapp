@@ -101,6 +101,12 @@ export const SectionButton = styled.View`
   justify-content: space-between;
 `;
 
+
+export const Body = styled.View`
+  width: 100%;
+  height: 70%;
+`;
+
 export const MenuButton = styled.TouchableOpacity<IMenuButtonProps>`
   flex-direction: row;
   /* width: 180px; */

@@ -83,6 +83,7 @@ import { useFriends } from '../../../../hooks/friends';
 import { CreateTransactionAgreement } from '../../../../components/CreateTransactionAgreement';
 import { SelectedEventTransactionAgreementsWindow } from '../../../../components/SelectedEventAgreementTransactionsWindow';
 import { NewEventTransactionAgreementConfirmation } from '../../../../components/NewEventTransactionAgreementConfirmation';
+import { EventTransactionsWindow } from '../../../../components/EventTransactionsWindow';
 
 const MyEvent: React.FC = () => {
   const {
@@ -239,6 +240,9 @@ const MyEvent: React.FC = () => {
     editEventTransactionValueWindow,
     transactionNotesWindow,
     transactionFilesWindow,
+    selectedEventTransactionAgreement,
+    handleEventTransactionsWindow,
+    eventTransactionsWindow,
   } = useTransaction();
   const { selectMobileContactsWindow, mobileContacts } = useUserContacts();
 
@@ -453,9 +457,14 @@ const MyEvent: React.FC = () => {
         && selectedEventSupplier.id
         && editSupplierCategoryWindow
         && <EditSupplierCategory />}
-      {/* {supplierTransactionAgreementsWindow && (
-        <SupplierTransactionAgreementsWindow />
-      )} */}
+      {eventTransactionsWindow && (
+        <EventTransactionsWindow
+          closeWindow={handleEventTransactionsWindow}
+          overTitle="Transações"
+          title={selectedEventTransactionAgreement.participant_name ?? 'Do Evento'}
+          transactions={selectedEventTransactionAgreement.transactions}
+        />
+      )}
       {supplierTransactionAgreementsWindow && (
         <SelectedEventTransactionAgreementsWindow
           agreement_type="supplier"

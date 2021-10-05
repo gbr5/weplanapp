@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useEventMembers } from '../../../../../hooks/eventMembers';
 import { useFriends } from '../../../../../hooks/friends';
-import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import { SectionHeader } from '../../../../../components/SectionHeader';
 import { MembersFinancialSection } from '../MembersFinancialSection';
@@ -18,7 +17,6 @@ import {
 
 export function MembersSection() {
   const { handleSectionDescriptionWindow } = useMyEvent();
-  const { selectedEvent } = useEventVariables();
   const { handleAddMemberWindow } = useEventMembers();
   const { getFriends } = useFriends();
 

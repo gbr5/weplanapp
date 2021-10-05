@@ -17,6 +17,7 @@ import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 import ITransactionDTO from '../dtos/ITransactionDTO';
 import IUserDTO from '../dtos/IUserDTO';
 import { useAuth } from './auth';
+import IEventTransactionAgreementDTO from '../dtos/IEventTransactionAgreementDTO';
 
 interface EventVariablesContextType {
   eventBudget: IEventBudgetDTO; // 1
@@ -27,8 +28,11 @@ interface EventVariablesContextType {
   eventMembers: IEventMemberDTO[]; // 6
   eventTasks: IEventTaskDTO[]; // 7
   eventNotes: IEventNoteDTO[]; // 8
-  eventSupplierTransactionAgreements: IEventSupplierTransactionAgreementDTO[]; // 9
+  eventSupplierTransactionAgreements: IEventTransactionAgreementDTO[]; // 9
+  eventOwnerTransactionAgreements: IEventTransactionAgreementDTO[]; // 9
+  eventMemberTransactionAgreements: IEventTransactionAgreementDTO[]; // 9
   eventTransactions: IEventTransactionDTO[]; // 10
+  eventTransactionAgreements: IEventTransactionAgreementDTO[]; // 10
   filteredEventTransactions: IEventTransactionDTO[]; // 11
   newTransactions: ICreateTransactionDTO[]; // 12
   selectedDate: Date; // 13
@@ -104,10 +108,6 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   const [selectedUserEventTasks, setSelectedUserEventTasks] = useState<IEventTaskDTO[]>([]);
   const [eventNotes, setEventNotes] = useState<IEventNoteDTO[]>([]);
   const [
-    eventSupplierTransactionAgreements,
-    setEventSupplierTransactionAgreements,
-  ] = useState<IEventSupplierTransactionAgreementDTO[]>([]);
-  const [
     selectedEventSupplierTransactionAgreement,
     setSelectedEventSupplierTransactionAgreement,
   ] = useState({} as IEventSupplierTransactionAgreementDTO);
@@ -172,8 +172,6 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     setEventTasks([]);
     // 9
     setEventNotes([]);
-    // 10
-    setEventSupplierTransactionAgreements([]);
     // 11
     setSelectedUserEventTasks([]);
     // 12
@@ -404,7 +402,6 @@ const EventVariablesProvider: React.FC = ({ children }) => {
         }-supplier-transaction-agreements`,
         JSON.stringify(data),
       );
-    setEventSupplierTransactionAgreements(data);
   }
   async function handleEventBudget(data: IEventBudgetDTO): Promise<void> {
     (isMember || isOwner) &&
@@ -601,9 +598,256 @@ const EventVariablesProvider: React.FC = ({ children }) => {
       }
     )();
   }, []);
+  const eventMemberTransactionAgreements = useMemo(() => {
+    const agreements: IEventTransactionAgreementDTO[] = [];
+    eventMembers.map(member => {
+      member.transactionAgreements.map(agreement => {
+        const transactions: IEventTransactionDTO[] = [];
+        const {
+          amount,
+          created_at,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+        } = agreement;
+        agreement.transactions.map(({ transaction }) => {
+          transactions.push({
+            agreement_id: agreement.id,
+            agreement_type: 'member',
+            event_id: member.event_id,
+            transaction,
+          });
+          return transaction;
+        });
+        agreements.push({
+          amount,
+          created_at,
+          event_id: member.event_id,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+          transactions,
+          participant_id: member.id,
+          participant_type: 'member',
+          participant_name: member.userEventMember.name,
+        });
+        return agreement;
+      });
+      return member;
+    });
+    return agreements;
+  }, [eventMembers]);
+  const eventOwnerTransactionAgreements = useMemo(() => {
+    const agreements: IEventTransactionAgreementDTO[] = [];
+    eventOwners.map(owner => {
+      owner.transactionAgreements.map(agreement => {
+        const transactions: IEventTransactionDTO[] = [];
+        const {
+          amount,
+          created_at,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+        } = agreement;
+        agreement.transactions.map(({ transaction }) => {
+          transactions.push({
+            agreement_id: agreement.id,
+            agreement_type: 'owner',
+            event_id: owner.event_id,
+            transaction,
+          });
+          return transaction;
+        });
+        agreements.push({
+          amount,
+          created_at,
+          event_id: owner.event_id,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+          transactions,
+          participant_id: owner.id,
+          participant_type: 'owner',
+          participant_name: owner.userEventOwner.name,
+        });
+        return agreement;
+      });
+      return owner;
+    });
+    return agreements;
+  }, [eventOwners]);
+  const eventSupplierTransactionAgreements = useMemo(() => {
+    const agreements: IEventTransactionAgreementDTO[] = [];
+    eventSuppliers.map(supplier => {
+      supplier.transactionAgreements.map(agreement => {
+        const transactions: IEventTransactionDTO[] = [];
+        const {
+          amount,
+          created_at,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+        } = agreement;
+        agreement.transactions.map(({ transaction }) => {
+          transactions.push({
+            agreement_id: agreement.id,
+            agreement_type: 'supplier',
+            event_id: supplier.event_id,
+            transaction,
+          });
+          return transaction;
+        });
+        agreements.push({
+          amount,
+          created_at,
+          event_id: supplier.event_id,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+          transactions,
+          participant_id: supplier.id,
+          participant_type: 'supplier',
+          participant_name: supplier.name,
+        });
+        return agreement;
+      });
+      return supplier;
+    });
+    return agreements;
+  }, [eventSuppliers]);
+
+  const eventTransactionAgreements = useMemo(() => {
+    const agreements: IEventTransactionAgreementDTO[] = [];
+    eventMembers.map(member => {
+      member.transactionAgreements.map(agreement => {
+        const transactions: IEventTransactionDTO[] = [];
+        const {
+          amount,
+          created_at,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+        } = agreement;
+        agreement.transactions.map(({ transaction }) => {
+          transactions.push({
+            agreement_id: agreement.id,
+            agreement_type: 'member',
+            event_id: member.event_id,
+            transaction,
+          });
+          return transaction;
+        });
+        agreements.push({
+          amount,
+          created_at,
+          event_id: member.event_id,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+          transactions,
+          participant_id: member.id,
+          participant_type: 'member',
+          participant_name: member.userEventMember.name,
+        });
+        return agreement;
+      });
+      return member;
+    });
+    eventOwners.map(owner => {
+      owner.transactionAgreements.map(agreement => {
+        const transactions: IEventTransactionDTO[] = [];
+        const {
+          amount,
+          created_at,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+        } = agreement;
+        agreement.transactions.map(({ transaction }) => {
+          transactions.push({
+            agreement_id: agreement.id,
+            agreement_type: 'owner',
+            event_id: owner.event_id,
+            transaction,
+          });
+          return transaction;
+        });
+        agreements.push({
+          amount,
+          created_at,
+          event_id: owner.event_id,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+          transactions,
+          participant_id: owner.id,
+          participant_type: 'owner',
+          participant_name: owner.userEventOwner.name,
+        });
+        return agreement;
+      });
+      return owner;
+    });
+    eventSuppliers.map(supplier => {
+      supplier.transactionAgreements.map(agreement => {
+        const transactions: IEventTransactionDTO[] = [];
+        const {
+          amount,
+          created_at,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+        } = agreement;
+        agreement.transactions.map(({ transaction }) => {
+          transactions.push({
+            agreement_id: agreement.id,
+            agreement_type: 'supplier',
+            event_id: supplier.event_id,
+            transaction,
+          });
+          return transaction;
+        });
+        agreements.push({
+          amount,
+          created_at,
+          event_id: supplier.event_id,
+          id,
+          isCancelled,
+          number_of_installments,
+          updated_at,
+          transactions,
+          participant_id: supplier.id,
+          participant_type: 'supplier',
+          participant_name: supplier.name,
+        });
+        return agreement;
+      });
+      return supplier;
+    });
+    return agreements;
+  }, [
+    eventMembers,
+    eventOwners,
+    eventSuppliers,
+  ]);
+
   return (
     <EventVariablesContext.Provider
       value={{
+        eventMemberTransactionAgreements,
+        eventOwnerTransactionAgreements,
+        eventTransactionAgreements,
         isOwner,
         master,
         eventBudget,

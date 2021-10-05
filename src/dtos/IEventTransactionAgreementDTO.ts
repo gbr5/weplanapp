@@ -5,6 +5,7 @@ export default interface IEventTransactionAgreementDTO {
   participant_id: string;
   event_id: string;
   participant_type: string;
+  participant_name?: string;
   amount: number;
   number_of_installments: number;
   isCancelled: boolean;

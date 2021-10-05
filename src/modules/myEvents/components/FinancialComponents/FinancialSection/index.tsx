@@ -1,4 +1,6 @@
 import React, { useMemo } from 'react';
+import { EventTransactionAgreementFlatList } from '../../../../../components/EventTransactionAgreementFlatList';
+import { SearchTransactions } from '../../../../../components/TransactionComponents/SearchTransactions';
 import theme from '../../../../../global/styles/theme';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
 
@@ -6,11 +8,11 @@ import { useMyEvent } from '../../../../../hooks/myEvent';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 
-import { EventSupplierTransactionAgreementsSection } from '../EventSupplierTransactionAgreementsSection';
 import { EventTransactionSection } from '../EventTransactionSection';
 
 import {
   Container,
+  Body,
   TitleButton,
   Title,
   FirstSection,
@@ -37,7 +39,8 @@ export function FinancialSection() {
   const {
     eventBudget,
     eventTransactions,
-    selectedEvent
+    selectedEvent,
+    eventTransactionAgreements,
   } = useEventVariables();
   const {
     handleBudgetWindow,
@@ -71,65 +74,67 @@ export function FinancialSection() {
   }, [eventTransactions]);
 
   return (
-    <>
-      <Container>
-        <TitleButton
+    <Container>
+      <TitleButton
+        onPress={() => handleEventFinancialSubSection('Main')}
+      >
+        <Title>Financeiro</Title>
+      </TitleButton>
+      <SectionButton>
+        <MenuButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+            elevation: 5,
+          }}
           onPress={() => handleEventFinancialSubSection('Main')}
+          isActive={eventFinancialSubSection === 'Main'}
         >
-          <Title>Financeiro</Title>
-        </TitleButton>
-        <SectionButton>
-          <MenuButton
-            style={{
-              shadowColor,
-              shadowOffset,
-              shadowOpacity,
-              shadowRadius,
-              elevation: 5,
-            }}
-            onPress={() => handleEventFinancialSubSection('Main')}
+          <MenuIcon
+            name="home"
             isActive={eventFinancialSubSection === 'Main'}
-          >
-            <MenuIcon
-              name="home"
-              isActive={eventFinancialSubSection === 'Main'}
-            />
-          </MenuButton>
-          <MenuButton
-            style={{
-              shadowColor,
-              shadowOffset,
-              shadowOpacity,
-              shadowRadius,
-              elevation: 5,
-            }}
-            onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
+          />
+        </MenuButton>
+        <MenuButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+            elevation: 5,
+          }}
+          onPress={() => handleEventFinancialSubSection('TransactionAgreements')}
+          isActive={eventFinancialSubSection === 'TransactionAgreements'}
+        >
+          <MenuIcon
+            name="file-text"
             isActive={eventFinancialSubSection === 'TransactionAgreements'}
-          >
-            <MenuIcon
-              name="file-text"
-              isActive={eventFinancialSubSection === 'TransactionAgreements'}
-            />
-          </MenuButton>
-          <MenuButton
-            style={{
-              shadowColor,
-              shadowOffset,
-              shadowOpacity,
-              shadowRadius,
-              elevation: 5,
-            }}
-            onPress={() => handleEventFinancialSubSection('Transactions')}
+          />
+        </MenuButton>
+        <MenuButton
+          style={{
+            shadowColor,
+            shadowOffset,
+            shadowOpacity,
+            shadowRadius,
+            elevation: 5,
+          }}
+          onPress={() => handleEventFinancialSubSection('Transactions')}
+          isActive={eventFinancialSubSection === 'Transactions'}
+        >
+          <MenuIcon
+            name="dollar-sign"
             isActive={eventFinancialSubSection === 'Transactions'}
-          >
-            <MenuIcon
-              name="dollar-sign"
-              isActive={eventFinancialSubSection === 'Transactions'}
-            />
-          </MenuButton>
-        </SectionButton>
+          />
+        </MenuButton>
+      </SectionButton>
+      <Body>
         {eventFinancialSubSection === 'TransactionAgreements' && (
-          <EventSupplierTransactionAgreementsSection />
+          <EventTransactionAgreementFlatList
+            transactionAgreements={eventTransactionAgreements}
+          />
         )}
         {eventFinancialSubSection === 'Transactions' && (
           <EventTransactionSection />
@@ -165,7 +170,7 @@ export function FinancialSection() {
 
           </FirstSection>
         )}
-      </Container>
-    </>
+      </Body>
+    </Container>
   );
 }
