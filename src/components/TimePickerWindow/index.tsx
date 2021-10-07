@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import DatePicker from 'react-native-date-picker';
+import theme from '../../global/styles/theme';
 import Button from '../Button';
 
 import WindowContainer from '../WindowContainer';
@@ -39,13 +40,22 @@ export function TimePickerWindow({
     >
       <Container>
         <DatePicker
+          dividerHeight={8}
+          style={{
+            width: 350,
+            height: 230,
+            aspectRatio: 1.5,
+            borderRadius: 2,
+            backgroundColor: theme.color.text5,
+            flex: 1,
+          }}
           onDateChange={setDate}
           date={date}
           mode="time"
           locale="pt-BR"
         />
-        <Button loading={loading} onPress={handleSelectDate}>Selecionar</Button>
       </Container>
+      <Button loading={loading} onPress={handleSelectDate}>Selecionar</Button>
     </WindowContainer>
   );
 }

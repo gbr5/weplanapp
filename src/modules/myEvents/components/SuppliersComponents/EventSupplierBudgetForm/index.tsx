@@ -16,7 +16,6 @@ import Input from '../../../../../components/Input';
 import { FormButton } from '../../../../../components/FormButton';
 import { WindowHeader } from '../../../../../components/WindowHeader';
 
-import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import {
   Container,
   FormQuestion,
@@ -24,6 +23,7 @@ import {
   DateText,
   DateButton,
 } from './styles';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../../../../components/CreateTransactionAgreement/styles';
 
 interface IFormData {
   amount: string;
@@ -37,16 +37,16 @@ export function EventSupplierBudgetForm() {
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedEventSupplier } = useEventVariables();
   const {
     handleSupplierBudgetForm,
     createSupplierBudget,
     loading,
   } = useEventSuppliers();
   const {
+    selectedEventSupplier,
     selectedDate,
     handleSelectedDateWindow,
-  } = useTransaction();
+  } = useEventVariables();
   const formRef = useRef<FormHandles>(null);
   const descriptionRef = useRef<TextInput>(null);
 

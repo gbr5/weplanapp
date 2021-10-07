@@ -24,6 +24,8 @@ import {
   Month,
   DayContainer,
   Day,
+  SignUp,
+  MainContainer,
 } from './styles';
 
 interface IProps {
@@ -132,30 +134,37 @@ export function EventTransactionButton({
         {eventTransaction.transaction.isCancelled && <CancelledTransaction />}
         {transactionType === 'credit' ? (
           <TextContainer>
-            <Name>
-              {eventTransaction.transaction.name}
-            </Name>
-            <Amount
-              isOverdue={isOverdue}
-              isPaid={eventTransaction.transaction.isPaid}
-            >
-              {formatBrlCurrency(eventTransaction.transaction.amount)}
-            </Amount>
+            <SignUp name="arrow-up-circle" />
+            <MainContainer>
+              <Name>
+                {eventTransaction.transaction.name}
+              </Name>
+              <Amount
+                isOverdue={isOverdue}
+                isPaid={eventTransaction.transaction.isPaid}
+              >
+                {formatBrlCurrency(eventTransaction.transaction.amount)}
+              </Amount>
+            </MainContainer>
           </TextContainer>
         ) : (
           <TextContainer>
-            <Name>
-              {eventTransaction.transaction.name}
-            </Name>
-            <Amount
-              style={{
-                textAlign: 'left',
-              }}
-              isOverdue={isOverdue}
-              isPaid={eventTransaction.transaction.isPaid}
-            >
-              <Sign> - ( </Sign>{formatBrlCurrency(eventTransaction.transaction.amount)}<Sign> )</Sign>
-            </Amount>
+            <Sign name="arrow-down-circle" />
+            <MainContainer>
+              <Name>
+                {eventTransaction.transaction.name}
+              </Name>
+              <Amount
+                // style={{
+                //   textAlign: 'left',
+                // }}
+                isOverdue={isOverdue}
+                isPaid={eventTransaction.transaction.isPaid}
+              >
+                {formatBrlCurrency(eventTransaction.transaction.amount)}
+              </Amount>
+            </MainContainer>
+
           </TextContainer>
         )}
         {!eventTransaction.transaction.isCancelled && (

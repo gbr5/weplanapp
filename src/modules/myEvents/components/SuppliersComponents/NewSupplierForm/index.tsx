@@ -11,16 +11,16 @@ import ISupplierSubCategoryDTO from '../../../../../dtos/ISupplierSubCategoryDTO
 
 import Input from '../../../../../components/Input';
 import WindowContainer from '../../../../../components/WindowContainer';
+import { WindowHeader } from '../../../../../components/WindowHeader';
+import { FormButton } from '../../../../../components/FormButton';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../../../../components/CreateTransactionAgreement/styles';
 
-import { FormContainer, KeyboardAvoidingVueContainer } from '../CreateSupplierTransactionAgreement/styles';
 import {
   Container,
   FormQuestion,
   SupplierCategoryButton,
   SupplierCategoryButtonText,
 } from './styles';
-import { WindowHeader } from '../../../../../components/WindowHeader';
-import { FormButton } from '../../../../../components/FormButton';
 
 interface IFormData {
   name: string;
@@ -43,10 +43,17 @@ const NewSupplierForm: React.FC<IProps> = ({
   } = useEventSuppliers();
   const formRef = useRef<FormHandles>(null);
 
+  function openCategoryWindow() {
+    Keyboard.dismiss();
+    handleSupplierCategoryWindow();
+  }
+
   const handleSubmit = useCallback(async ({ name }: IFormData) => {
-    if (name === '') return Alert.alert('Dê um nome ao fornecedor!');
-    if (selectedSupplierCategory === '')
-      return Alert.alert('Defina a categoria do fonecedor!');
+    if (name === '') return Alert.alert('Dê um nome ao fornecedor!')
+    if (selectedSupplierCategory === '') {
+      openCategoryWindow();
+      return Alert.alert('Primeiro é necessário definir a categoria do fornecedor!');
+    };
     await createEventSuppliers({
       isHired: false,
       name,
@@ -57,6 +64,7 @@ const NewSupplierForm: React.FC<IProps> = ({
     selectSupplierSubCategory({} as ISupplierSubCategoryDTO);
     closeWindow();
   }, [closeWindow, createEventSuppliers]);
+
 
   return (
     <WindowContainer
@@ -89,11 +97,12 @@ const NewSupplierForm: React.FC<IProps> = ({
                   icon="user"
                   placeholder="Nome"
                   returnKeyType="next"
+                  onSubmitEditing={openCategoryWindow}
                 />
               </Form>
 
               <SupplierCategoryButton
-                onPress={handleSupplierCategoryWindow}
+                onPress={openCategoryWindow}
               >
                 <SupplierCategoryButtonText>
                   {selectedSupplierCategory !== ''

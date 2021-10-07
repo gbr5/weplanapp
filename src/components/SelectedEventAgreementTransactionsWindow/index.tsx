@@ -26,11 +26,6 @@ import IEventTransactionDTO from '../../dtos/IEventTransactionDTO';
 import { EventTransactionAgreementsMenu } from '../EventTransactionAgreementsMenu';
 import IEventTransactionAgreementDTO from '../../dtos/IEventTransactionAgreementDTO';
 import theme from '../../global/styles/theme';
-import { useEventVariables } from '../../hooks/eventVariables';
-import { useEventOwners } from '../../hooks/eventOwners';
-import { useEventMembers } from '../../hooks/eventMembers';
-import { useEventSuppliers } from '../../hooks/eventSuppliers';
-
 interface IProps {
   closeWindow: () => void;
   overTitle: string;
@@ -79,7 +74,11 @@ export function SelectedEventTransactionAgreementsWindow({
       });
       return agreement;
     });
-    return all;
+    return all.sort((a, b) => {
+      if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return 1;
+      if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return -1;
+      return 0;
+    });
   }, [selectedEventTransactionAgreements]);
 
   const selectedTransactions = useMemo(() => {
@@ -94,7 +93,11 @@ export function SelectedEventTransactionAgreementsWindow({
         });
         return transaction;
       });
-      return all;
+      return all.sort((a, b) => {
+        if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return 1;
+        if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return -1;
+        return 0;
+      });
     }
     return allTransactions;
   }, [allTransactions, selectedEventTransactionAgreement]);
@@ -166,9 +169,9 @@ export function SelectedEventTransactionAgreementsWindow({
     <WindowContainer
       closeWindow={handleCloseWindow}
       zIndex={16}
-      top="5%"
+      top="0%"
       left="0%"
-      height="90%"
+      height="100%"
       width="100%"
     >
       {cancelAgreementConfirmationWindow && (

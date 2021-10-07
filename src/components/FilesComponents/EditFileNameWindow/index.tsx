@@ -13,16 +13,10 @@ import Input from '../../Input';
 import WindowContainer from '../../WindowContainer';
 import { WindowHeader } from '../../WindowHeader';
 
-import {
-  FormContainer,
-  KeyboardAvoidingVueContainer,
-} from '../../../modules/myEvents/components/SuppliersComponents/CreateSupplierTransactionAgreement/styles';
-import {
-  Container,
-  Title,
-} from './styles';
+import { Container } from './styles';
 import { useFiles } from '../../../hooks/files';
 import { useTransaction } from '../../../hooks/transactions';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../CreateTransactionAgreement/styles';
 
 interface IFormParams {
   name: string;

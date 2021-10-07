@@ -26,7 +26,10 @@ export function EventTransactionSection() {
     shadowOpacity,
     shadowRadius,
   } = theme.iconButtonShadow;
-  const { eventTransactions } = useEventVariables();
+  const {
+    eventTransactions,
+    handleSelectedDate,
+  } = useEventVariables();
   const {
     cancelledTransactionFilter,
     sortTransactionsByInterval,
@@ -35,7 +38,6 @@ export function EventTransactionSection() {
     handleFilterTransactionWindow,
     filterTransactionOption,
     handleCreateTransactionWindow,
-    handleSelectedDate,
     filteredEventTransactions,
     handleFilteredEventTransactions,
   } = useTransaction();

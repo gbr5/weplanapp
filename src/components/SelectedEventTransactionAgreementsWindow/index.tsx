@@ -38,9 +38,9 @@ export function SelectedEventAgreementTransactionsWindow({
     <WindowContainer
       closeWindow={handleCloseWindow}
       zIndex={16}
-      top="5%"
+      top="0%"
       left="0%"
-      height="90%"
+      height="100%"
       width="100%"
     >
       <Container>

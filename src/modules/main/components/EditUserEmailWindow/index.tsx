@@ -20,12 +20,12 @@ import Input from '../../../../components/Input';
 import WindowContainer from '../../../../components/WindowContainer';
 import { WindowHeader } from '../../../../components/WindowHeader';
 
-import { FormContainer, KeyboardAvoidingVueContainer } from '../../../myEvents/components/SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import {
   Container,
   Title,
 } from './styles';
 import getValidationErrors from '../../../../utils/getValidationErros';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../../../components/CreateTransactionAgreement/styles';
 
 interface IFormParams {
   email: string;

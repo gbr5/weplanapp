@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { addDays } from 'date-fns';
 
 import { formatBrlCurrency } from '../../utils/formatBrlCurrency';
@@ -51,11 +51,8 @@ export function NewEventTransactionAgreementConfirmation({
   const { calculateTotalEventCost } = useMyEvent();
   const {
     createTransactionAgreementWithTransactions,
-    editNewTransactionValueWindow,
     editNewTransactionDueDateWindow,
     handleNewAgreement,
-    handleSelectedDate,
-    newAgreementAmount,
     newAgreementInstallments,
     newTransactions,
     selectNewTransactions,
@@ -64,6 +61,7 @@ export function NewEventTransactionAgreementConfirmation({
   } = useTransaction();
 
   const {
+    handleSelectedDate,
     selectedEvent,
     selectedEventOwner,
     selectedEventMember,
@@ -72,12 +70,18 @@ export function NewEventTransactionAgreementConfirmation({
 
   const {
     eventOwnerTransactionAgreementsWindow,
+    handleCreateEventOwnerTransactionAgreement,
+    createEventOwnerTransactionAgreement,
   } = useEventOwners();
   const {
     eventMemberTransactionAgreementsWindow,
+    createEventMemberTransactionAgreement,
+    handleCreateEventMemberTransactionAgreement,
   } = useEventMembers();
   const {
     eventSupplierAgreementTransactionsWindow,
+    createSupplierTransactionAgreementWindow,
+    handleCreateSupplierTransactionAgreementWindow,
   } = useEventSuppliers();
   const [loading, setLoading] = useState(false);
 
@@ -91,16 +95,32 @@ export function NewEventTransactionAgreementConfirmation({
     closeWindow();
     closePreviousWindow();
   }
+
+  const { newContractValue } = useMemo(() =>{
+    const contractValue = newTransactions
+      .map(({ amount }) => Number(amount))
+      .reduce((acc, cv) => acc + cv);
+    return {
+      newContractValue: contractValue,
+    };
+  }, [newTransactions]);
+
   async function handleSubmit() {
     try {
       setLoading(true);
       await createTransactionAgreementWithTransactions({
-        amount: newAgreementAmount,
+        amount: newContractValue,
         number_of_installments: newAgreementInstallments,
         participant_id,
         participant_type,
         transactions: newTransactions,
       });
+      createEventOwnerTransactionAgreement &&
+        handleCreateEventOwnerTransactionAgreement();
+      createEventMemberTransactionAgreement &&
+        handleCreateEventMemberTransactionAgreement();
+      createSupplierTransactionAgreementWindow &&
+        handleCreateSupplierTransactionAgreementWindow();
     } catch (err) {
       throw new Error(err);
     } finally {
@@ -126,30 +146,30 @@ export function NewEventTransactionAgreementConfirmation({
       }) => {
         const eventTransactions: IEventTransactionDTO[] = transactions.length > 0
           ? transactions.map(({ transaction }) => {
-            return {
-              agreement_id: id,
-              agreement_type: 'owner',
-              event_id: selectedEvent.id,
-              transaction,
-            };
-          })
+              return {
+                agreement_id: id,
+                agreement_type: 'owner',
+                event_id: selectedEvent.id,
+                transaction,
+              };
+            })
           : [];
-          agreements.push({
-            amount,
-            created_at,
-            event_id: selectedEvent.id,
-            id,
-            isCancelled,
-            number_of_installments,
-            participant_id: owner_id,
-            participant_type: 'owner',
-            transactions: eventTransactions,
-            updated_at,
-          })
-        });
-        agreements &&
-          agreements.length > 0 &&
-            handleSelectedEventTransactionAgreements(agreements);
+        agreements.push({
+          amount,
+          created_at,
+          event_id: selectedEvent.id,
+          id,
+          isCancelled,
+          number_of_installments,
+          participant_id: owner_id,
+          participant_type: 'owner',
+          transactions: eventTransactions,
+          updated_at,
+        })
+      });
+      agreements &&
+        agreements.length > 0 &&
+          handleSelectedEventTransactionAgreements(agreements);
     }
   }, [selectedEventOwner]);
   useEffect(() => {
@@ -236,17 +256,9 @@ export function NewEventTransactionAgreementConfirmation({
           handleSelectedEventTransactionAgreements(agreements);
     }
   }, [selectedEventSupplier]);
-  // function handleGoBack() {
-  // handleNewEventTransactionAgreement();
-  // }
 
   return (
     <>
-      {editNewTransactionValueWindow
-        && selectedNewTransaction
-        && selectedNewTransaction.amount
-        && <EditNewTransactionAmount />
-      }
       {editNewTransactionDueDateWindow
         && selectedNewTransaction
         && selectedNewTransaction.amount
@@ -268,15 +280,12 @@ export function NewEventTransactionAgreementConfirmation({
             <EditText>Editar</EditText>
             <EditIcon name="edit" />
           </EditButton>
-          {/* <Title>Contrato com {selectedEvent.name}</Title> */}
-          {/* <Underline /> */}
           <WindowHeader
             title={title}
             overTitle={overTitle}
           />
-          <Value>Total: {formatBrlCurrency(newAgreementAmount)}</Value>
+          <Value>Total: {formatBrlCurrency(newContractValue)}</Value>
 
-          {/* <SubText>Nº  |      Parcela      |  Data  |  Pago</SubText> */}
           <Underline />
 
           <TransactionContainer>

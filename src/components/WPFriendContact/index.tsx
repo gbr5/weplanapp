@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { ContactLink } from '../../components/ContactLink';
+import React from 'react';
 import IUserContactDTO from '../../dtos/IUserContactDTO';
 import theme from '../../global/styles/theme';
-import WindowContainer from '../WindowContainer';
 
-import { ContactInfo, Container, ContainerButton, ContactType } from './styles';
+import { ContactInfo, ContainerButton, ContactType } from './styles';
 
 interface IProps {
   contact: IUserContactDTO;

@@ -16,9 +16,9 @@ import { WindowHeader } from '../../../../../components/WindowHeader';
 import Input from '../../../../../components/Input';
 import { FormButton } from '../../../../../components/FormButton';
 
-import { FormContainer, KeyboardAvoidingVueContainer } from '../CreateSupplierTransactionAgreement/styles';
 import { Container, Title } from './styles';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../../../../components/CreateTransactionAgreement/styles';
 
 interface IFormParams {
   name: string;

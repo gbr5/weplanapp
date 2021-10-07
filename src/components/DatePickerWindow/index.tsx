@@ -31,7 +31,7 @@ export function DatePickerWindow({
   return (
     <WindowContainer
       closeWindow={closeWindow}
-      zIndex={zIndex ? zIndex : 25}
+      zIndex={zIndex ? zIndex : 95}
       top="10%"
       left="0%"
       height="50%"
@@ -39,13 +39,14 @@ export function DatePickerWindow({
     >
       <Container>
         <DatePicker
+          dividerHeight={8}
           onDateChange={setDate}
           date={date}
           mode="date"
           locale="pt-BR"
         />
-        <Button loading={loading} onPress={handleSelectDate}>Selecionar</Button>
       </Container>
+      <Button loading={loading} onPress={handleSelectDate}>Selecionar</Button>
     </WindowContainer>
   );
 }

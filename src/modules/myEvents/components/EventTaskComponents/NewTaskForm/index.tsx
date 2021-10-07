@@ -17,7 +17,6 @@ import { SelectTaskPriorityComponent } from '../SelectTaskPriorityComponent';
 import { FormButton } from '../../../../../components/FormButton';
 import { WindowHeader } from '../../../../../components/WindowHeader';
 
-import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import {
   Container,
   FormQuestion,
@@ -30,6 +29,7 @@ import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 import { useEventOwners } from '../../../../../hooks/eventOwners';
 import { useEventMembers } from '../../../../../hooks/eventMembers';
 import { useAuth } from '../../../../../hooks/auth';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../../../../components/CreateTransactionAgreement/styles';
 
 interface IFormData {
   title: string;

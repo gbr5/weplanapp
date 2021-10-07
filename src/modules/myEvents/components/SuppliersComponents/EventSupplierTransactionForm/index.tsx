@@ -29,10 +29,13 @@ interface IFormData {
 export function EventSupplierTransactionForm() {
   const formRef = useRef<FormHandles>(null);
 
-  const { selectedEvent, selectedEventSupplier } = useEventVariables();
   const {
+    selectedEvent,
+    selectedEventSupplier,
     handleSelectedDateWindow,
     selectedDate,
+  } = useEventVariables();
+  const {
     newTransactions,
     selectNewTransactions
   } = useTransaction();

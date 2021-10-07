@@ -5,7 +5,6 @@ import { Form } from '@unform/mobile';
 import { useTransaction } from '../../../hooks/transactions';
 
 import WindowContainer from '../../WindowContainer';
-import { FormContainer, KeyboardAvoidingVueContainer } from '../../../modules/myEvents/components/SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import { WindowHeader } from '../../WindowHeader';
 import Input from '../../Input';
 
@@ -16,6 +15,7 @@ import { FormButton } from '../../FormButton';
 import { Container, Title } from './styles';
 import ICreateTransactionDTO from '../../../dtos/ICreateTransactionDTO';
 import { Alert } from 'react-native';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../CreateTransactionAgreement/styles';
 
 interface IFormParams {
   amount: string;

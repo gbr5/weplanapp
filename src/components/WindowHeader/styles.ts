@@ -7,13 +7,13 @@ export const Container = styled.View`
 
 export const OverTitle = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
   color: ${({ theme }) => theme.color.secondary};
 `;
 
 export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(24)}px;
+  font-size: ${RFValue(20)}px;
   color: ${({ theme }) => theme.color.text1};
   text-align: center;
 `;

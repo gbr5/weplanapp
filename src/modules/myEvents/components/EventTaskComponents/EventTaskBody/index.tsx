@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import IUserDTO from '../../../../../dtos/IUserDTO';
 import IUserFollowerDTO from '../../../../../dtos/IUserFollowerDTO';
 
 import theme from '../../../../../global/styles/theme';

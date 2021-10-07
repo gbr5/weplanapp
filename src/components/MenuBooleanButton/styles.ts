@@ -29,7 +29,7 @@ export const MenuButton = styled.TouchableOpacity<IButtonProps>`
 export const MenuText = styled.Text<IButtonProps>`
   color: ${({ theme }) => theme.color.secondary};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
 
   ${({ isActive }) => isActive && css`
     color: ${({ theme }) => theme.color.text1};

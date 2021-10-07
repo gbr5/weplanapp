@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { EventTransactionAgreementFlatList } from '../../../../../components/EventTransactionAgreementFlatList';
-import { SearchTransactions } from '../../../../../components/TransactionComponents/SearchTransactions';
 import theme from '../../../../../global/styles/theme';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
 
@@ -12,6 +11,7 @@ import { EventTransactionSection } from '../EventTransactionSection';
 
 import {
   Container,
+  MonthlyPaymentButton,
   Body,
   TitleButton,
   Title,
@@ -41,6 +41,8 @@ export function FinancialSection() {
     eventTransactions,
     selectedEvent,
     eventTransactionAgreements,
+    monthlyPayments,
+    handleMonthlyPaymentWindow,
   } = useEventVariables();
   const {
     handleBudgetWindow,
@@ -141,6 +143,24 @@ export function FinancialSection() {
         )}
         {eventFinancialSubSection === 'Main' && (
           <FirstSection>
+            {selectedEvent.event_type === 'Prom' && (
+              <MonthlyPaymentButton
+                style={{
+                  shadowColor,
+                  shadowOffset,
+                  shadowOpacity,
+                  shadowRadius,
+                  elevation: 5,
+                }}
+                onPress={handleMonthlyPaymentWindow}
+              >
+                <BudgetTitle>Mensalidades</BudgetTitle>
+                <PercentageUnderline />
+                <BudgetValue>
+                  {formatBrlCurrency(monthlyPayments.totalPayed)} / {formatBrlCurrency(monthlyPayments.total)}
+                </BudgetValue>
+              </MonthlyPaymentButton>
+            )}
             <BudgetSection
               style={{
                 shadowColor,

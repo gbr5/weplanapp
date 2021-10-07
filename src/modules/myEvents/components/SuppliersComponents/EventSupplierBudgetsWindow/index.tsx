@@ -17,12 +17,12 @@ import { useEventVariables } from '../../../../../hooks/eventVariables';
 export function EventSupplierBudgetsWindow() {
   const {
     selectedEventSupplier,
+    handleSelectedDate,
   } = useEventVariables();
   const {
     handleSupplierBudgetsWindow,
     handleSupplierBudgetForm,
   } = useEventSuppliers();
-  const { handleSelectedDate } = useTransaction();
 
   const [budgetDescriptionWindow, setBudgetDescriptionWindow] = useState(false);
 

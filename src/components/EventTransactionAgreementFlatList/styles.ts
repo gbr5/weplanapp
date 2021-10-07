@@ -12,7 +12,7 @@ export const Container = styled(
   },
 })`
   width: 100%;
-  min-height: 100%;
+  max-height: 100%;
   flex: 1;
   margin-top: 8px;
   background-color: #f3f2f2;

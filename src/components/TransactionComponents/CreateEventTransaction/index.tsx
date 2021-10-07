@@ -9,7 +9,6 @@ import formatOnlyDateShort from '../../../utils/formatOnlyDateShort';
 import { useTransaction } from '../../../hooks/transactions';
 
 import WindowContainer from '../../WindowContainer';
-import { FormContainer, KeyboardAvoidingVueContainer } from '../../../modules/myEvents/components/SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import { WindowHeader } from '../../WindowHeader';
 import Input from '../../Input';
 import { FormButton } from '../../FormButton';
@@ -18,6 +17,7 @@ import Button from '../../Button';
 
 import { Container, Title } from './styles';
 import { useEventVariables } from '../../../hooks/eventVariables';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../CreateTransactionAgreement/styles';
 
 interface IFormParams {
   name: string;
@@ -28,15 +28,16 @@ interface IFormParams {
 export function CreateEventTransaction() {
   const noUserMemberUUID = '89890569-ed93-4bf3-b123-91813838aade';
 
-  const { selectedEvent } = useEventVariables();
   const {
     loading,
     handleCreateTransactionWindow,
     createTransaction,
-    handleSelectedDateWindow,
-    selectedDate,
-    handleSelectedDate,
   } = useTransaction();
+  const {
+    selectedEvent,
+    selectedDate,
+    handleSelectedDateWindow,
+  } = useEventVariables();
   const formRef = useRef<FormHandles>(null);
   const amountRef = useRef<TextInput>(null);
   const categoryRef = useRef<TextInput>(null);
@@ -85,7 +86,8 @@ export function CreateEventTransaction() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
       >
-        <WindowHeader title="Editar Transação" />
+
+        <WindowHeader overTitle="Nova" title="Transação" />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <FormContainer>
             <Container>

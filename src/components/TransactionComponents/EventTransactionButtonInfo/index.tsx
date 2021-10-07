@@ -27,6 +27,11 @@ import { NotificationNumber } from '../../NotificationNumber';
 import { useNote } from '../../../hooks/notes';
 import { useEffect } from 'react';
 import InlineFormField from '../../InlineFormField';
+import { useEventVariables } from '../../../hooks/eventVariables';
+import CurrencyInlineFormField from '../../CurrencyInlineFormField';
+import { Alert } from 'react-native';
+import { useEventSuppliers } from '../../../hooks/eventSuppliers';
+import { roundCurrency } from '../../../utils/roundCurrency';
 
 export function EventTransactionButtonInfo() {
   const {
@@ -40,20 +45,30 @@ export function EventTransactionButtonInfo() {
     editTransaction,
     handleCancelEventTransactionConfirmationWindow,
     handleSelectedEventTransaction,
-    handleSelectedDateWindow,
-    handleSelectedDate,
     selectedEventTransaction,
-    handleEditEventTransactionValueWindow,
     handleTransactionNotesWindow,
     handleTransactionFilesWindow,
+    updateEventSupplierTransactionAgreement,
   } = useTransaction();
+  const {
+    handleSelectedDate,
+    handleSelectedDateWindow,
+  } = useEventVariables();
+  const {
+    handleUpdateAgreementAndTransactions,
+  } = useEventSuppliers();
 
   const [loading, setLoading] = useState(false);
   const [editName, setEditName] = useState(false);
+  const [editAmount, setEditAmount] = useState(false);
   const [editCategory, setEditCategory] = useState(false);
 
   function handleEditName() {
     setEditName(!editName);
+  }
+
+  function handleEditAmount() {
+    setEditAmount(!editAmount);
   }
 
   function handleEditCategory() {
@@ -122,6 +137,48 @@ export function EventTransactionButtonInfo() {
     }
   }
 
+  async function handleUpdateTransactionAmount(newAmount: string) {
+    try {
+      setLoading(true);
+      const data = roundCurrency(newAmount);
+      if (!Number(data)) {
+        return Alert.alert('Valor da Transação', 'Apenas números são aceitos!');
+      }
+      if (Number(data) <= 0) {
+        return Alert.alert('Valor da Transação', 'Apenas valores maiores do que zero são aceitos!');
+      }
+      const amount = Number(data);
+      const oldEventTransaction = selectedEventTransaction;
+      if (selectedEventTransaction.agreement_type === 'none') {
+        const response = await editTransaction({
+          ...selectedEventTransaction.transaction,
+          amount,
+        });
+        handleSelectedEventTransaction({
+          ...oldEventTransaction,
+          transaction: response,
+        });
+      }
+      if (selectedEventTransaction.agreement_type === 'supplier') {
+        const updatedAgreement = handleUpdateAgreementAndTransactions({
+          id: selectedEventTransaction.agreement_id,
+          transactions: [
+            {
+              ...selectedEventTransaction.transaction,
+              amount,
+            },
+          ]
+        });
+        await updateEventSupplierTransactionAgreement(updatedAgreement);
+      }
+      handleEditAmount();
+    } catch (err) {
+      return Alert.alert('Erro na atualização', 'Tente novamente!');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function handleOpenUpdateTransactionDueDateWindow() {
     handleSelectedDate(new Date(selectedEventTransaction.transaction.due_date));
     handleSelectedDateWindow();
@@ -181,45 +238,9 @@ export function EventTransactionButtonInfo() {
           )}
         </CategoryContainer>
       {/* )} */}
-        <CategoryContainer>
+      <CategoryContainer>
         {editName ? (
-            <FieldButton
-              style={{
-                shadowColor,
-                shadowOffset,
-                shadowOpacity,
-                shadowRadius,
-                elevation: 5,
-              }}
-            >
-              <FieldLabel>Nome</FieldLabel>
-              <InlineFormField
-                defaultValue={selectedEventTransaction.transaction.name}
-                placeholder={selectedEventTransaction.transaction.name}
-                handleOnSubmit={updateTransactionName}
-                closeComponent={handleEditName}
-              />
-            </FieldButton>
-          ) : (
-            <FieldButton
-              style={{
-                shadowColor,
-                shadowOffset,
-                shadowOpacity,
-                shadowRadius,
-                elevation: 5,
-              }}
-              onPress={handleEditName}
-            >
-              <FieldLabel>Nome</FieldLabel>
-              <Label>
-                {selectedEventTransaction.transaction.name}
-              </Label>
-            </FieldButton>
-          )}
-        </CategoryContainer>
-      <FieldContainer>
-        <FieldButton
+          <FieldButton
             style={{
               shadowColor,
               shadowOffset,
@@ -227,28 +248,74 @@ export function EventTransactionButtonInfo() {
               shadowRadius,
               elevation: 5,
             }}
-          onPress={handleEditEventTransactionValueWindow}
-        >
-          <FieldButtonText>
-            {formatBrlCurrency(Number(selectedEventTransaction.transaction.amount))}
-          </FieldButtonText>
-        </FieldButton>
-        <FieldButton
-          style={{
-            shadowColor,
-            shadowOffset,
-            shadowOpacity,
-            shadowRadius,
-            elevation: 5,
-          }}
+          >
+            <FieldLabel>Nome</FieldLabel>
+            <InlineFormField
+              defaultValue={selectedEventTransaction.transaction.name}
+              placeholder={selectedEventTransaction.transaction.name}
+              handleOnSubmit={updateTransactionName}
+              closeComponent={handleEditName}
+            />
+          </FieldButton>
+        ) : (
+          <FieldButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
+            onPress={handleEditName}
+          >
+            <FieldLabel>Nome</FieldLabel>
+            <Label>
+              {selectedEventTransaction.transaction.name}
+            </Label>
+          </FieldButton>
+        )}
+      </CategoryContainer>
+      {!editAmount ? (
+        <FieldContainer>
+          <FieldButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
+            onPress={handleEditAmount}
+          >
+            <FieldButtonText>
+              {formatBrlCurrency(Number(selectedEventTransaction.transaction.amount))}
+            </FieldButtonText>
+          </FieldButton>
+          <FieldButton
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
 
-          onPress={handleOpenUpdateTransactionDueDateWindow}
-        >
-          <FieldButtonText>
-            {formatOnlyDate(String(selectedEventTransaction.transaction.due_date))}
-          </FieldButtonText>
-        </FieldButton>
-      </FieldContainer>
+            onPress={handleOpenUpdateTransactionDueDateWindow}
+          >
+            <FieldButtonText>
+              {formatOnlyDate(String(selectedEventTransaction.transaction.due_date))}
+            </FieldButtonText>
+          </FieldButton>
+        </FieldContainer>
+      ) : (
+        <FieldContainer>
+          <CurrencyInlineFormField
+            defaultValue={String(selectedEventTransaction.transaction.amount)}
+            handleOnSubmit={handleUpdateTransactionAmount}
+            closeComponent={handleEditAmount}
+          />
+        </FieldContainer>
+      )}
       <FieldContainer>
         <PaidButton
           style={{

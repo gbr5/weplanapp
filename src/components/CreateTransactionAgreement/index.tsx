@@ -29,14 +29,11 @@ import {
   ParticipantButton,
   Underline,
 } from './styles';
+import CurrencyInput from '../CurrencyInput';
+import { useEventVariables } from '../../hooks/eventVariables';
 
 interface IFormData {
-  amount: string;
   number_of_installments: string;
-}
-interface ITransactionParticipant {
-  name: string;
-  id: string;
 }
 
 interface IProps {
@@ -55,21 +52,23 @@ export function CreateTransactionAgreement({
     shadowRadius,
   } = theme.objectButtonShadow;
   const formRef = useRef<FormHandles>(null);
-  const amountRef = useRef<InputRefProps>(null);
   const numberRef = useRef<InputRefProps>(null);
   const {
     handleNewAgreement,
     selectNewTransactions,
-    handleSelectedDate,
-    selectedDate,
-    handleSelectedDateWindow,
     payer,
     payee,
     handlePayer,
     handlePayee,
   } = useTransaction();
+  const {
+    handleSelectedDate,
+    selectedDate,
+    handleSelectedDateWindow,
+  } = useEventVariables();
 
   const [lastField, setLastField] = useState(false);
+  const [amount, setAmount] = useState('0');
 
   function handleCloseWindow() {
     handleNewAgreement({
@@ -87,7 +86,6 @@ export function CreateTransactionAgreement({
   }
 
   const handleSubmit = useCallback(async ({
-    amount,
     number_of_installments,
   }: IFormData) => {
     Keyboard.dismiss();
@@ -115,6 +113,7 @@ export function CreateTransactionAgreement({
       await schema.validate(data, {
         abortEarly: false,
       });
+
       handleNewAgreement({
         amount: data.amount,
         installments: data.number_of_installments,
@@ -132,6 +131,7 @@ export function CreateTransactionAgreement({
           payer_id: payer.id,
         });
       }
+
       selectNewTransactions(transactions);
       setLastField(false);
       nextWindow();
@@ -143,7 +143,7 @@ export function CreateTransactionAgreement({
       }
       return Alert.alert('Erro ao criar contrato', 'Tente novamente!');
     }
-  }, []);
+  }, [amount]);
 
   function goToLastField() {
     setLastField(true);
@@ -159,6 +159,11 @@ export function CreateTransactionAgreement({
   function handleDateWindow() {
     dismissKeyBoard();
     handleSelectedDateWindow();
+  }
+
+  function handleUpdateAmount(e: string) {
+    const updatedAmount = String(Number(e.replace(/\D/g, ''))/100);
+    setAmount(updatedAmount);
   }
 
   return (
@@ -215,7 +220,7 @@ export function CreateTransactionAgreement({
 
               <Form ref={formRef} onSubmit={handleSubmit}>
                 <Question>Valor do Contrato</Question>
-                <Input
+                {/* <Input
                   name="amount"
                   keyboardType="numeric"
                   placeholderTextColor={theme.color.secondary}
@@ -225,8 +230,13 @@ export function CreateTransactionAgreement({
                   returnKeyType="next"
                   onSubmitEditing={goToLastField}
                   ref={amountRef}
+                /> */}
+                <CurrencyInput
+                  defaultValue={String(amount)}
+                  updateValue={handleUpdateAmount}
+                  onSubmit={goToLastField}
+                  // closeComponent={handleEditAmount}
                 />
-
                 <Question>Número de Parcelas</Question>
                 <Input
                   defaultValue="1"
@@ -237,8 +247,8 @@ export function CreateTransactionAgreement({
                   autoCapitalize="none"
                   keyboardType="numeric"
                   icon="hash"
-                  returnKeyType="send"
-                  onSubmitEditing={() => formRef.current?.submitForm()}
+                  returnKeyType="next"
+                  onSubmitEditing={handleDateWindow}
                 />
 
                 <Question>Data da primeira parcela</Question>

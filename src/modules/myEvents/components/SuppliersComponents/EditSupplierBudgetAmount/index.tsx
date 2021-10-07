@@ -14,8 +14,8 @@ import { WindowHeader } from '../../../../../components/WindowHeader';
 import Input from '../../../../../components/Input';
 import Button from '../../../../../components/Button';
 
-import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 import { Container, ValueContainer, CurrentValue, Title } from './styles';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../../../../components/CreateTransactionAgreement/styles';
 
 interface IFormParams {
   amount: string;
@@ -73,33 +73,33 @@ export function EditSupplierBudgetAmount() {
       width="100%"
     >
       <Container>
-      <KeyboardAvoidingVueContainer
-        style={{ flex: 1, width: '100%' }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        enabled
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <FormContainer
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ flex: 1 }}
-          >
-              <WindowHeader title="Editar Valor" />
-              <Form ref={formRef} onSubmit={handleSubmit}>
-                <ValueContainer>
-                  <Title>Valor Atual</Title>
-                  <CurrentValue>{currentValue}</CurrentValue>
-                </ValueContainer>
-                <Input
-                  name="amount"
-                  icon="dollar-sign"
-                  returnKeyType="send"
-                  keyboardType="numeric"
-                  onSubmitEditing={() => formRef.current?.submitForm()}
-                />
-              </Form>
-          </FormContainer>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingVueContainer>
+        <KeyboardAvoidingVueContainer
+          style={{ flex: 1, width: '100%' }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          enabled
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <FormContainer
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{ flex: 1 }}
+            >
+                <WindowHeader title="Editar Valor" />
+                <Form ref={formRef} onSubmit={handleSubmit}>
+                  <ValueContainer>
+                    <Title>Valor Atual</Title>
+                    <CurrentValue>{currentValue}</CurrentValue>
+                  </ValueContainer>
+                  <Input
+                    name="amount"
+                    icon="dollar-sign"
+                    returnKeyType="send"
+                    keyboardType="numeric"
+                    onSubmitEditing={() => formRef.current?.submitForm()}
+                  />
+                </Form>
+            </FormContainer>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingVueContainer>
       </Container>
       <Button
         loading={loading}

@@ -39,6 +39,16 @@ export const BudgetSection = styled.TouchableOpacity`
   justify-content: center;
 `;
 
+export const MonthlyPaymentButton = styled.TouchableOpacity`
+  width: 100%;
+  border-radius: 8px;
+  padding: 8px;
+  background-color: ${({ theme }) => theme.color.primary};
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+`;
+
 export const BudgetTitle = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   font-size: ${RFValue(20)}px;

@@ -5,7 +5,6 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import getValidationErrors from '../../../../../utils/getValidationErros';
-import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
 
 
@@ -14,9 +13,9 @@ import { WindowHeader } from '../../../../../components/WindowHeader';
 import Input from '../../../../../components/Input';
 import Button from '../../../../../components/Button';
 
-import { FormContainer, KeyboardAvoidingVueContainer } from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
-import { Container, ValueContainer, CurrentValue, Title } from './styles';
+import { Container } from './styles';
 import theme from '../../../../../global/styles/theme';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../../../../components/CreateTransactionAgreement/styles';
 
 interface IFormParams {
   description: string;
@@ -73,7 +72,6 @@ export function EditSupplierBudgetDescription() {
             contentContainerStyle={{ flex: 1 }}
           >
               <WindowHeader title="Editar Descrição" />
-              {/* <Title></Title> */}
               <Form ref={formRef} onSubmit={handleSubmit}>
                 <Input
                   placeholderTextColor={theme.color.secondary}

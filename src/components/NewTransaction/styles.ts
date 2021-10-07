@@ -8,10 +8,12 @@ interface IAmountProps {
 }
 
 export const Container = styled.View`
-  width: 100%;
+  max-width: 100%;
   padding: 0px;
   flex-direction: row;
   margin: 8px 0 0;
+  align-items: center;
+  max-width: 98%;
 `;
 
 export const TextContainer = styled.View`
@@ -68,6 +70,9 @@ export const DateText = styled.Text`
 `;
 
 export const IsPaidButton = styled.TouchableOpacity<IAmountProps>`
+  max-width: 32px;
+  max-height: 32px;
+
   background-color: ${({ theme }) => theme.color.text6};
   ${({ theme, isOverdue }) => isOverdue && css`
     background-color: ${theme.color.atention};

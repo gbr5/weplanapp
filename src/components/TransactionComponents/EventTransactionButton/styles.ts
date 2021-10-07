@@ -18,6 +18,7 @@ export const Container = styled.TouchableOpacity<IsContainerProps>`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  /* margin: 4px 0; */
   ${({ isCancelled }) => isCancelled && css`
     /* background-color: ${({ theme }) => theme.color.atention_light}; */
     opacity: 0.4;
@@ -35,8 +36,14 @@ export const CancelledTransaction = styled.View`
   border-radius: 4px;
 `;
 
+export const MainContainer = styled.View`
+  flex: 1;
+
+  /* align-items: center;
+  justify-content: center; */
+`;
 export const TextContainer = styled.View`
-  width: 95%;
+  flex: 1;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -49,16 +56,22 @@ export const Index = styled.Text`
   font-size: ${RFValue(18)}px;
 `;
 
-export const Sign = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
+export const SignUp = styled(Feather)`
+  color: ${({ theme }) => theme.color.success};
+  font-size: ${RFValue(20)}px;
+  margin: 0 4px;
+`;
+
+export const Sign = styled(Feather)`
   color: ${({ theme }) => theme.color.atention};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(20)}px;
+  margin: 0 4px;
 `;
 
 export const Amount = styled.Text<IAmountProps>`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
   ${({ isOverdue, isPaid }) => !isPaid && isOverdue &&
     css`
       color: ${({ theme }) => theme.color.atention};
@@ -74,9 +87,10 @@ export const Amount = styled.Text<IAmountProps>`
 export const Name = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.secondary};
-  font-size: ${RFValue(16)}px;
+  font-size: ${RFValue(14)}px;
   text-align: left;
   flex: 1;
+  margin-right: 4px;
 `;
 
 export const DateText = styled.Text`
@@ -141,7 +155,7 @@ export const MonthContainer = styled.View`
 export const Month = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.primary};
-  font-size: ${RFValue(16)}px;
+  font-size: ${RFValue(14)}px;
   z-index: 2;
   opacity: 1;
 `;
@@ -149,11 +163,11 @@ export const Month = styled.Text`
 export const Day = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto};
   color: ${({ theme }) => theme.color.text1};
-  font-size: ${RFValue(16)}px;
+  font-size: ${RFValue(14)}px;
 `;
 
 export const Year = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.primary};
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(16)}px;
 `;

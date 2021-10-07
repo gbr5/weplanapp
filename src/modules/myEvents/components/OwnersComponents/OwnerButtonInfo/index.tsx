@@ -134,6 +134,7 @@ export function OwnerButtonInfo() {
           height="40%"
           width="90%"
         >
+          <Name>{selectedUserContact.contact_type}</Name>
           <ContactLink
             type={selectedUserContact.contact_type}
             contact={selectedUserContact.contact_info}

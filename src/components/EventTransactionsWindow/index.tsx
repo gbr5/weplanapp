@@ -22,9 +22,9 @@ export function EventTransactionsWindow({
   return (
     <WindowContainer
       closeWindow={closeWindow}
-      height="90%"
+      height="100%"
       left="0%"
-      top="5%"
+      top="0%"
       width="100%"
       zIndex={20}
     >

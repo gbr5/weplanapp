@@ -2,6 +2,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 import React, { useRef } from 'react';
 import { Alert, Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../../../components/CreateTransactionAgreement/styles';
 import { FormButton } from '../../../../components/FormButton';
 import Input from '../../../../components/Input';
 import WindowContainer from '../../../../components/WindowContainer';
@@ -10,7 +11,6 @@ import theme from '../../../../global/styles/theme';
 import { useAuth } from '../../../../hooks/auth';
 import { useProfile } from '../../../../hooks/profile';
 import api from '../../../../services/api';
-import { FormContainer, KeyboardAvoidingVueContainer } from '../../../myEvents/components/SuppliersComponents/CreateSupplierTransactionAgreement/styles';
 
 import {
   Container,

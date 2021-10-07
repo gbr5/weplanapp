@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Linking } from 'react-native';
 
-import { Container, Title } from './styles';
+import { Container, Title, Text } from './styles';
 
 interface IProps {
   contact: string;
@@ -24,18 +24,42 @@ export function ContactLink({ contact, type }: IProps) {
     if (type === 'Phone') return {
       color: 'rgba(10, 150, 250, 0.2)',
       title: 'Ligar',
+      type: 'Telefone',
     };
     if (type === 'Whatsapp') return {
       color: 'rgba(10, 150, 50, 0.2)',
-      title: 'Acessar'
+      title: 'Acessar',
+      type: 'Whatsapp',
     };
     if (type === 'Email') return {
       color: 'rgba(150, 50, 50, 0.2)',
-      title: 'Acessar'
+      title: 'Acessar',
+      type: 'Email',
+    };
+    if (type === 'Facebook') return {
+      color: 'rgba(15, 15, 250, 0.2)',
+      title: 'Acessar',
+      type: 'Facebook',
+    };
+    if (type === 'Twitter') return {
+      color: 'rgba(5, 95, 215, 0.2)',
+      title: 'Acessar',
+      type: 'Facebook',
+    };
+    if (type === 'Linkedin') return {
+      color: 'rgba(50, 50, 255, 0.2)',
+      title: 'Acessar',
+      type: 'Linkedin',
+    };
+    if (type === 'Instagram') return {
+      color: 'rgba(250, 37, 155, 0.2)',
+      title: 'Acessar',
+      type: 'Instagram',
     };
     return {
       color: 'rgba(50, 50, 50, 0.2)',
-      title: 'Acessar'
+      title: 'Acessar',
+      type: 'Outros',
     };
   }, [type]);
 
@@ -47,6 +71,8 @@ export function ContactLink({ contact, type }: IProps) {
       onPress={makeCall}
     >
       <Title>{variables.title}</Title>
+      <Text>{variables.type}</Text>
+      <Text>{contact}</Text>
     </Container>
   );
 }

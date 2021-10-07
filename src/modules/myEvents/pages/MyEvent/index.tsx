@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { useMyEvent } from '../../../../hooks/myEvent';
 import { useEventTasks } from '../../../../hooks/eventTasks';
@@ -12,16 +12,11 @@ import { useEventVariables } from '../../../../hooks/eventVariables';
 import { useUserContacts } from '../../../../hooks/userContacts';
 import { useEventGuests } from '../../../../hooks/eventGuests';
 
-import IEventTaskDTO from '../../../../dtos/IEventTaskDTO';
-import INoteDTO from '../../../../dtos/INoteDTO';
-
 import { SelectSupplierCategory } from '../../components/SuppliersComponents/SelectSupplierCategory';
 import { SelectSupplierSubCategory } from '../../components/SuppliersComponents/SelectSupplierSubCategory';
 import NewSupplierForm from '../../components/SuppliersComponents/NewSupplierForm';
 import { BudgetWindow } from '../../components/BudgetWindow';
-import { CreateSupplierTransactionAgreement } from '../../components/SuppliersComponents/CreateSupplierTransactionAgreement';
 import { FinancialSection } from '../../components/FinancialComponents/FinancialSection';
-import { NewEventSupplierTransactionAgreementConfirmation } from '../../components/SuppliersComponents/NewEventSupplierTransactionAgreementConfirmation';
 import { MainMenu } from '../../components/MainMenu';
 import NewGuestForm from '../../components/EventGuestComponents/NewGuestForm';
 import PageHeader from '../../../../components/PageHeader';
@@ -48,10 +43,9 @@ import { TransactionsFilterWindow } from '../../components/FinancialComponents/T
 import { NewGuestWindow } from '../../components/EventGuestComponents/NewGuestWindow';
 import { SelectMobileContacts } from '../../../../components/ContactComponents/SelectMobileContacts';
 import { CreateEventTransaction } from '../../../../components/TransactionComponents/CreateEventTransaction';
-import { EditTransactionAmount } from '../../components/FinancialComponents/EditTransactionAmount';
+
 import { EditSupplierName } from '../../components/SuppliersComponents/EditSupplierName';
 import { EditSupplierCategory } from '../../components/SuppliersComponents/EditSupplierCategory';
-import { SupplierTransactionAgreementsWindow } from '../../components/FinancialComponents/SupplierTransactionAgreementsWindow';
 import { EventNotesSection } from '../../components/EventNotesComponents/EventNotesSection';
 import { SupplierNotesSection } from '../../components/SuppliersComponents/SupplierNotesWindow';
 import { TransactionNotesWindow } from '../../../../components/TransactionComponents/TransactionNotesWindow';
@@ -77,6 +71,7 @@ import {
   DashboardButton,
   BodyContainer,
 } from './styles';
+
 import IEventDTO from '../../../../dtos/IEventDTO';
 import { WPFriendContactWindow } from '../../../../components/WPFriendContactWindow';
 import { useFriends } from '../../../../hooks/friends';
@@ -84,6 +79,10 @@ import { CreateTransactionAgreement } from '../../../../components/CreateTransac
 import { SelectedEventTransactionAgreementsWindow } from '../../../../components/SelectedEventAgreementTransactionsWindow';
 import { NewEventTransactionAgreementConfirmation } from '../../../../components/NewEventTransactionAgreementConfirmation';
 import { EventTransactionsWindow } from '../../../../components/EventTransactionsWindow';
+import { EventMonthlyPaymentAgreementsWindow } from '../../../../components/EventMonthlyPaymentAgreementsWindow';
+import { SelectMonthlyPaymentAgreementParticipant } from '../../../../components/SelectMonthlyPaymentAgreementParticipant';
+import { CreateEventMonthlyPaymentAgrements } from '../../../../components/CreateEventMonthlyPaymentAgrements';
+import { NewEventMonthlyPaymentConfirmation } from '../../../../components/NewEventMonthlyPaymentConfirmation';
 
 const MyEvent: React.FC = () => {
   const {
@@ -105,6 +104,14 @@ const MyEvent: React.FC = () => {
     selectedEventGuest,
     selectedEventOwner,
     selectedEventMember,
+    monthlyPaymentWindow,
+    selectMonthlyPaymentAgreementParticipantWindow,
+    newEventMonthlyPaymentConfirmation,
+    createMonthlyPaymentAgreementWindow,
+    handleSelectedDateWindow,
+    handleSelectedDate,
+    selectedDate,
+    selectedDateWindow,
   } = useEventVariables();
   const {
     loading,
@@ -228,13 +235,9 @@ const MyEvent: React.FC = () => {
     cancelEventTransactionConfirmationWindow,
     filterTransactionWindow,
     handleCancelEventTransactionConfirmationWindow,
-    handleSelectedDateWindow,
-    handleSelectedDate,
     handleUpdateTransactionDueDate,
     newEventSupplierTransactionAgreement,
     handleNewEventSupplierTransactionAgreement,
-    selectedDate,
-    selectedDateWindow,
     selectedEventTransaction,
     createTransactionWindow,
     editEventTransactionValueWindow,
@@ -250,32 +253,12 @@ const MyEvent: React.FC = () => {
     handleSelectedEvent({} as IEventDTO);
   }
 
-  function handleCloseEditTaskDateWindow() {
-    selectEventTask({} as IEventTaskDTO);
-    handleEditTaskDateWindow();
-  }
-
-  function handleCloseEditTaskTimeWindow() {
-    selectEventTask({} as IEventTaskDTO);
-    handleEditTaskTimeWindow();
-  }
-
-  function handleCloseEventTaskNotesWindow() {
-    selectEventTask({} as IEventTaskDTO);
-    handleEventTaskNotesWindow();
-  }
-
-  function handleCloseEditTaskNoteWindow() {
-    handleEditNoteWindow();
-    selectNote({} as INoteDTO);
-  }
-
   async function handleUpdateTaskDate(date: Date) {
     await updateTask({
       ...selectedEventTask.task,
       due_date: date,
     });
-    handleCloseEditTaskDateWindow();
+    handleEditTaskDateWindow();
   }
 
   async function handleUpdateTaskTime(date: Date) {
@@ -283,7 +266,7 @@ const MyEvent: React.FC = () => {
       ...selectedEventTask.task,
       due_date: date,
     });
-    handleCloseEditTaskTimeWindow();
+    handleEditTaskTimeWindow();
   }
 
   async function handleDeleteTask() {
@@ -308,6 +291,7 @@ const MyEvent: React.FC = () => {
   return (
     <>
       {budgetWindow && <BudgetWindow />}
+      {monthlyPaymentWindow && <EventMonthlyPaymentAgreementsWindow />}
       {editFileWindow && <EditFileNameWindow />}
       {supplierNotesWindow && <SupplierNotesSection />}
       {supplierFilesWindow && <EventSupplierFilesWindow />}
@@ -317,6 +301,15 @@ const MyEvent: React.FC = () => {
       {transactionFilesWindow && <TransactionFilesWindow />}
       {eventTaskFollowersWindow && <EventTaskFollowersWindow />}
       {createEventTaskFollowersWindow && <AddEventTaskFollowersWindow />}
+      {selectMonthlyPaymentAgreementParticipantWindow && (
+        <SelectMonthlyPaymentAgreementParticipant />
+      )}
+      {createMonthlyPaymentAgreementWindow && (
+        <CreateEventMonthlyPaymentAgrements />
+      )}
+      {newEventMonthlyPaymentConfirmation && (
+        <NewEventMonthlyPaymentConfirmation />
+      )}
       {selectWePlanGuestsWindow &&
         <SelectFromFriends
           closeWindow={handleSelectWePlanGuestsWindow}
@@ -531,7 +524,7 @@ const MyEvent: React.FC = () => {
         && selectedEventTask.id && (
           <DatePickerWindow
             loading={loading}
-            closeWindow={handleCloseEditTaskDateWindow}
+            closeWindow={handleEditTaskDateWindow}
             selectDate={handleUpdateTaskDate}
             selectedDate={new Date(selectedEventTask.task.due_date)}
           />
@@ -541,7 +534,7 @@ const MyEvent: React.FC = () => {
         && selectedEventTask.id && (
           <TimePickerWindow
             loading={loading}
-            closeWindow={handleCloseEditTaskTimeWindow}
+            closeWindow={handleEditTaskTimeWindow}
             selectDate={handleUpdateTaskTime}
             selectedDate={new Date(selectedEventTask.task.due_date)}
           />
@@ -571,7 +564,7 @@ const MyEvent: React.FC = () => {
         && selectedEventTask
         && selectedEventTask.id && (
           <EventTaskNotesWindow
-            closeWindow={handleCloseEventTaskNotesWindow}
+            closeWindow={handleEventTaskNotesWindow}
           />
       )}
       {createTaskWindow && (
@@ -617,7 +610,7 @@ const MyEvent: React.FC = () => {
         />
       )}
       {editNoteWindow && (
-        <EditNoteWindow closeWindow={handleCloseEditTaskNoteWindow} />
+        <EditNoteWindow closeWindow={handleEditNoteWindow} />
       )}
       {addSupplierWindow && (
         <NewSupplierForm closeWindow={handleAddSupplierWindow} />
@@ -632,14 +625,6 @@ const MyEvent: React.FC = () => {
             nextWindow={handleNewEventSupplierTransactionAgreement}
           />
         )}
-      {/* {createSupplierTransactionAgreementWindow &&
-        selectedEventSupplier &&
-        selectedEventSupplier.id && (
-          <CreateSupplierTransactionAgreement />
-        )} */}
-      {editEventTransactionValueWindow && (
-        <EditTransactionAmount />
-      )}
       {selectedDateWindow && (
         <DatePickerWindow
           closeWindow={handleSelectedDateWindow}
@@ -668,10 +653,6 @@ const MyEvent: React.FC = () => {
           closePreviousWindow={handleCreateSupplierTransactionAgreementWindow}
         />
       )}
-      {/* {newEventSupplierTransactionAgreement && (
-        <NewEventSupplierTransactionAgreementConfirmation />
-      )} */}
-
       <Container>
         <PageHeader unsetVariables={handleUnsetVariables} >
           <DashboardButton onPress={() => selectEventSection('Tasks')}>

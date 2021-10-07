@@ -22,6 +22,7 @@ import IEventTransactionDTO from '../dtos/IEventTransactionDTO';
 import { Alert } from 'react-native';
 import { useEvent } from './event';
 import { useEventVariables } from './eventVariables';
+import IEventMonthlyPaymentAgreementDTO from '../dtos/IEventMonthlyPaymentAgreementDTO';
 
 interface MyEventContextType {
   eventFinancialSubSection: string;
@@ -51,6 +52,7 @@ interface MyEventContextType {
   getEventGuests: (eventId: string) => Promise<void>;
   getEventOwners: (event_id: string) => Promise<void>;
   getEventMembers: (event_id: string) => Promise<void>;
+  getEventMonthlyPaymentAgreements: (event_id: string) => Promise<void>;
   getEventSuppliers: (event_id: string) => Promise<void>;
   calculateTotalEventCost: () => void;
   selectEventSection: (e: string) => void;
@@ -95,6 +97,9 @@ const MyEventProvider: React.FC = ({ children }) => {
     handleEventSuppliers,
     handleEventOwners,
     handleEventMembers,
+    handleEventMonthlyPaymentAgreements,
+    selectEventMonthlyPaymentAgreement,
+    selectedEventMonthlyPaymentAgreement,
     handleEventNotes,
     handleEventTasks,
     handleEventTransactions,
@@ -305,7 +310,22 @@ const MyEventProvider: React.FC = ({ children }) => {
 
       if (selectedEventMember && selectedEventMember.id) {
         const member = response.data.find(item => item.id === selectedEventMember.id);
-        if (member) selectEventMember(member);
+        member && selectEventMember(member);
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async function getEventMonthlyPaymentAgreements(eventId: string) {
+    try {
+      const response = await api
+        .get<IEventMonthlyPaymentAgreementDTO[]>(`event-monthly-payment-agreements/${eventId}`);
+        handleEventMonthlyPaymentAgreements(response.data);
+
+      if (selectedEventMonthlyPaymentAgreement && selectedEventMonthlyPaymentAgreement.id) {
+        const agreement = response.data.find(item => item.id === selectedEventMonthlyPaymentAgreement.id);
+        agreement && selectEventMonthlyPaymentAgreement(agreement);
       }
     } catch (err) {
       throw new Error(err);
@@ -344,6 +364,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         getEventTasks(data.id),
         getEventBudget(data.id),
         getEventTransactions(data.id),
+        getEventMonthlyPaymentAgreements(data.id),
       ]);
       setCurrentSection('Notes');
       await selectEvent(data);
@@ -484,6 +505,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         getEventTransactions,
         getSelectedUserEventTasks,
         handleDeleteEvent,
+        getEventMonthlyPaymentAgreements,
       }}
     >
       {children}

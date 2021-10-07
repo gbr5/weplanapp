@@ -18,41 +18,105 @@ import ITransactionDTO from '../dtos/ITransactionDTO';
 import IUserDTO from '../dtos/IUserDTO';
 import { useAuth } from './auth';
 import IEventTransactionAgreementDTO from '../dtos/IEventTransactionAgreementDTO';
+import IEventMonthlyPaymentAgreementDTO from '../dtos/IEventMonthlyPaymentAgreementDTO';
+import IParticipantDTO from '../dtos/IParticipantDTO';
+import ICreateEventParticipantsMonthlyPaymentAgreementsDTO from '../dtos/ICreateEventParticipantsMonthlyPaymentAgreementsDTO';
 
+interface IMonthlyPayments {
+  eventTransactions: IEventTransactionDTO[];
+  eventOwnerAgreements: IEventTransactionAgreementDTO[];
+  eventMemberAgreements: IEventTransactionAgreementDTO[];
+  transactionAgreements: IEventTransactionAgreementDTO[];
+  total: number;
+  totalPayed: number;
+  totalNotPayed: number;
+  totalDelayed: number;
+}
 interface EventVariablesContextType {
-  eventBudget: IEventBudgetDTO; // 1
-  eventGuests: IEventGuestDTO[]; // 2
-  filteredGuests: IEventGuestDTO[]; // 3
-  eventSuppliers: IEventSupplierDTO[]; // 4
-  eventOwners: IEventOwnerDTO[]; // 5
-  eventMembers: IEventMemberDTO[]; // 6
-  eventTasks: IEventTaskDTO[]; // 7
-  eventNotes: IEventNoteDTO[]; // 8
-  eventSupplierTransactionAgreements: IEventTransactionAgreementDTO[]; // 9
-  eventOwnerTransactionAgreements: IEventTransactionAgreementDTO[]; // 9
-  eventMemberTransactionAgreements: IEventTransactionAgreementDTO[]; // 9
-  eventTransactions: IEventTransactionDTO[]; // 10
-  eventTransactionAgreements: IEventTransactionAgreementDTO[]; // 10
-  filteredEventTransactions: IEventTransactionDTO[]; // 11
-  newTransactions: ICreateTransactionDTO[]; // 12
-  selectedDate: Date; // 13
-  selectedDateWindow: boolean; // 14
-  selectedEvent: IEventDTO; // 15
-  selectedEventGuest: IEventGuestDTO; // 16
-  selectedEventMember: IEventMemberDTO; // 17
-  selectedEventNote: IEventNoteDTO; // 18
-  selectedEventOwner: IEventOwnerDTO; // 19
-  selectedEventSupplier: IEventSupplierDTO; // 20
-  selectedEventTask: IEventTaskDTO; // 21
-  selectedEventTaskFollower: ITaskFollowerDTO; // 22
-  selectedEventTransaction: IEventTransactionDTO; // 23
-  selectedEventSupplierTransactionAgreement: IEventSupplierTransactionAgreementDTO; // 24
-  selectedNewTransaction: ICreateTransactionDTO; // 25
-  selectedUserEventTasks: IEventTaskDTO[]; // 26
-  isOwner: boolean; // 27
-  master: IUserDTO; // 28
-  currentSection: string; //29
+  // 1 setEventBudget
+  eventBudget: IEventBudgetDTO;
+  // 2 setEventGuests
+  eventGuests: IEventGuestDTO[];
+  // 3 setEventMonthlyPaymentAgreements
+  eventMonthlyPaymentAgreements: IEventMonthlyPaymentAgreementDTO[];
+  // 4 setSelectedEventMonthlyPaymentAgreement
+  selectedEventMonthlyPaymentAgreement: IEventMonthlyPaymentAgreementDTO;
+  // 5 setFilteredGuests
+  filteredGuests: IEventGuestDTO[];
+  // 6 setEventSuppliers
+  eventSuppliers: IEventSupplierDTO[];
+  // 7 setEventOwners
+  eventOwners: IEventOwnerDTO[];
+  // 8 setEventMembers
+  eventMembers: IEventMemberDTO[];
+  // 9 setEventTasks
+  eventTasks: IEventTaskDTO[];
+  // 10 setEventNotes
+  eventNotes: IEventNoteDTO[];
+  // 11 setEventTransactions
+  eventTransactions: IEventTransactionDTO[];
+  // 12 setFilteredEventTransactions
+  filteredEventTransactions: IEventTransactionDTO[];
+  // 13 setNewTransactions
+  newTransactions: ICreateTransactionDTO[];
+  // 14 setSelectedDate
+  selectedDate: Date;
+  // 15 setSelectedDateWindow
+  selectedDateWindow: boolean;
+  // 16 setSelectedEvent
+  selectedEvent: IEventDTO;
+  // 17 setSelectedEventGuest
+  selectedEventGuest: IEventGuestDTO;
+  // 18 setSelectedEventMember
+  selectedEventMember: IEventMemberDTO;
+  // 19 setSelectedEventNote
+  selectedEventNote: IEventNoteDTO;
+  // 20 setSelectedEventOwner
+  selectedEventOwner: IEventOwnerDTO;
+  // 21 setSelectedEventSupplier
+  selectedEventSupplier: IEventSupplierDTO;
+  // 22 setSelectedEventTask
+  selectedEventTask: IEventTaskDTO;
+  // 23 setSelectedEventTaskFollower
+  selectedEventTaskFollower: ITaskFollowerDTO;
+  // 24 setSelectedEventTransaction
+  selectedEventTransaction: IEventTransactionDTO;
+  // 25 setSelectedEventSupplierTransactionAgreement
+  selectedEventSupplierTransactionAgreement: IEventSupplierTransactionAgreementDTO;
+  // 26 setSelectedNewTransaction
+  selectedNewTransaction: ICreateTransactionDTO;
+  // 27 setSelectedUserEventTasks
+  selectedUserEventTasks: IEventTaskDTO[];
+  // 28 setIsOwner
+  isOwner: boolean;
+  // 29 setCurrentSection
+  currentSection: string;
+  // 30 setMonthlyPaymentWindow
+  monthlyPaymentWindow: boolean;
+  // 31 setSelectMonthlyPaymentAgreementParticipantWindow
+  selectMonthlyPaymentAgreementParticipantWindow: boolean;
+  // 32 setCreateMonthlyPaymentAgreementWindow
+  createMonthlyPaymentAgreementWindow: boolean;
+  // 33 setSelectedParticipants
+  selectedParticipants: IParticipantDTO[];
+  // 34 setParticipants
+  participants: IParticipantDTO[];
+  // 35 setSelectedEventMonthlyPaymentAgreementParticipants
+  newMonthlyPaymentAgreementVariables: ICreateEventParticipantsMonthlyPaymentAgreementsDTO;
+  // 36 setNewEventMonthlyPaymentConfirmation
+  newEventMonthlyPaymentConfirmation: boolean;
+  // UseMemo !!
+  master: IUserDTO;
+  eventTransactionAgreements: IEventTransactionAgreementDTO[];
+  eventSupplierTransactionAgreements: IEventTransactionAgreementDTO[];
+  eventOwnerTransactionAgreements: IEventTransactionAgreementDTO[];
+  eventMemberTransactionAgreements: IEventTransactionAgreementDTO[];
+  monthlyPayments: IMonthlyPayments;
   handleEventGuests: (data: IEventGuestDTO[]) => void;
+  handleNewMonthlyPaymentAgreementVariables: (data: ICreateEventParticipantsMonthlyPaymentAgreementsDTO) => void;
+  handleNewEventMonthlyPaymentConfirmation: () => void;
+  handleEventMonthlyPaymentAgreements: (data: IEventMonthlyPaymentAgreementDTO[]) => void;
+  selectEventMonthlyPaymentAgreement: (data: IEventMonthlyPaymentAgreementDTO) => void;
   handleEventSuppliers: (data: IEventSupplierDTO[]) => void;
   handleEventOwners: (data: IEventOwnerDTO[]) => Promise<void>;
   handleEventMembers: (data: IEventMemberDTO[]) => Promise<void>;
@@ -68,6 +132,8 @@ interface EventVariablesContextType {
   ) => Promise<void>;
   selectEvent: (data: IEventDTO) => Promise<void>;
   selectEventGuest: (data: IEventGuestDTO) => void;
+  handleParticipants: (data: IParticipantDTO[]) => void;
+  handleSelectedParticipants: (data: IParticipantDTO[]) => void;
   handleFilteredGuests: (data: IEventGuestDTO[]) => void;
   selectEventSupplier: (data: IEventSupplierDTO) => void;
   selectEventOwner: (data: IEventOwnerDTO) => void;
@@ -87,6 +153,9 @@ interface EventVariablesContextType {
   handleSelectedNewTransaction: (data: ICreateTransactionDTO) => void;
   selectNewTransactions: (data: ICreateTransactionDTO[]) => void;
   handleCurrentSection: (date: string) => void;
+  handleMonthlyPaymentWindow: () => void;
+  handleSelectMonthlyPaymentAgreementParticipantWindow: () => void;
+  handleCreateMonthlyPaymentAgreementWindow: () => void;
 }
 
 const EventVariablesContext = createContext({} as EventVariablesContextType);
@@ -95,14 +164,22 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
 
   const [isOwner, setIsOwner] = useState(false);
+  const [newEventMonthlyPaymentConfirmation, setNewEventMonthlyPaymentConfirmation] = useState(false);
+  const [selectMonthlyPaymentAgreementParticipantWindow, setSelectMonthlyPaymentAgreementParticipantWindow] = useState(false);
+  const [createMonthlyPaymentAgreementWindow, setCreateMonthlyPaymentAgreementWindow] = useState(false);
+  const [monthlyPaymentWindow, setMonthlyPaymentWindow] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<IEventDTO>({} as IEventDTO);
   const [eventOwners, setEventOwners] = useState<IEventOwnerDTO[]>([]);
 
   const [eventMembers, setEventMembers] = useState<IEventMemberDTO[]>([]);
+  const [participants, setParticipants] = useState<IParticipantDTO[]>([]);
+  const [selectedParticipants, setSelectedParticipants] = useState<IParticipantDTO[]>([]);
 
   const [eventBudget, setEventBudget] = useState<IEventBudgetDTO>({} as IEventBudgetDTO);
   const [eventGuests, setEventGuests] = useState<IEventGuestDTO[]>([]);
+  const [eventMonthlyPaymentAgreements, setEventMonthlyPaymentAgreements] = useState<IEventMonthlyPaymentAgreementDTO[]>([]);
+  const [selectedEventMonthlyPaymentAgreement, setSelectedEventMonthlyPaymentAgreement] = useState({} as IEventMonthlyPaymentAgreementDTO);
   const [eventSuppliers, setEventSuppliers] = useState<IEventSupplierDTO[]>([]);
   const [eventTasks, setEventTasks] = useState<IEventTaskDTO[]>([]);
   const [selectedUserEventTasks, setSelectedUserEventTasks] = useState<IEventTaskDTO[]>([]);
@@ -151,6 +228,25 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   const [selectedDateWindow, setSelectedDateWindow] = useState(false);
   const [currentSection, setCurrentSection] = useState('notes');
   const [filteredGuests, setFilteredGuests] = useState(eventGuests);
+  const [newMonthlyPaymentAgreementVariables, setNewMonthlyPaymentAgreementVariables] = useState({} as ICreateEventParticipantsMonthlyPaymentAgreementsDTO);
+
+  function handleMonthlyPaymentWindow() {
+    setMonthlyPaymentWindow(!monthlyPaymentWindow);
+  }
+
+  function handleNewMonthlyPaymentAgreementVariables(data: ICreateEventParticipantsMonthlyPaymentAgreementsDTO) {
+    setNewMonthlyPaymentAgreementVariables(data);
+  }
+
+  function handleNewEventMonthlyPaymentConfirmation() {
+    setNewEventMonthlyPaymentConfirmation(!newEventMonthlyPaymentConfirmation);
+  }
+  function handleSelectMonthlyPaymentAgreementParticipantWindow() {
+    setSelectMonthlyPaymentAgreementParticipantWindow(!selectMonthlyPaymentAgreementParticipantWindow);
+  }
+  function handleCreateMonthlyPaymentAgreementWindow() {
+    setCreateMonthlyPaymentAgreementWindow(!createMonthlyPaymentAgreementWindow);
+  }
 
   async function unsetVariables(): Promise<void> {
     await AsyncStorage.removeItem('@WePlan-Party:selected-event');
@@ -159,59 +255,75 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     // 2
     setEventGuests([]);
     // 3
-    setFilteredGuests([]);
+    setEventMonthlyPaymentAgreements([]);
     // 4
-    setEventSuppliers([]);
+    setSelectedEventMonthlyPaymentAgreement({} as IEventMonthlyPaymentAgreementDTO);
     // 5
-    setNewTransactions([]);
+    setFilteredGuests([]);
     // 6
-    setEventOwners([]);
+    setEventSuppliers([]);
     // 7
-    setEventMembers([]);
+    setNewTransactions([]);
     // 8
-    setEventTasks([]);
+    setEventOwners([]);
     // 9
-    setEventNotes([]);
+    setEventMembers([]);
+    // 10
+    setEventTasks([]);
     // 11
-    setSelectedUserEventTasks([]);
+    setEventNotes([]);
     // 12
-    setEventTransactions([]);
+    setSelectedUserEventTasks([]);
     // 13
-    setFilteredEventTransactions([]);
+    setEventTransactions([]);
     // 14
-    setSelectedDate(addDays(new Date(), 3));
+    setFilteredEventTransactions([]);
     // 15
-    setSelectedDateWindow(false);
+    setSelectedDate(addDays(new Date(), 3));
     // 16
-    setSelectedEvent({} as IEventDTO);
+    setSelectedDateWindow(false);
     // 17
-    setSelectedEventGuest({} as IEventGuestDTO);
+    setSelectedEvent({} as IEventDTO);
     // 18
-    setSelectedEventSupplier({} as IEventSupplierDTO);
+    setSelectedEventGuest({} as IEventGuestDTO);
     // 19
-    setSelectedEventOwner({} as IEventOwnerDTO);
+    setSelectedEventSupplier({} as IEventSupplierDTO);
     // 20
-    setSelectedEventMember({} as IEventMemberDTO);
+    setSelectedEventOwner({} as IEventOwnerDTO);
     // 21
-    setSelectedEventTask({} as IEventTaskDTO);
+    setSelectedEventMember({} as IEventMemberDTO);
     // 22
-    setSelectedEventNote({} as IEventNoteDTO);
+    setSelectedEventTask({} as IEventTaskDTO);
     // 23
-    setSelectedEventTransaction({} as IEventTransactionDTO);
+    setSelectedEventNote({} as IEventNoteDTO);
     // 24
+    setSelectedEventTransaction({} as IEventTransactionDTO);
+    // 25
     setSelectedEventSupplierTransactionAgreement(
       {} as IEventSupplierTransactionAgreementDTO,
     );
-    // 25
-    setSelectedNewTransaction({} as ICreateTransactionDTO);
     // 26
-    setCurrentSection('notes');
+    setSelectedNewTransaction({} as ICreateTransactionDTO);
     // 27
-    setIsOwner(false);
+    setCurrentSection('notes');
     // 28
-    setIsMember(false);
+    setIsOwner(false);
     // 29
-
+    setIsMember(false);
+    // 30
+    setMonthlyPaymentWindow(false);
+    // 31
+    setSelectMonthlyPaymentAgreementParticipantWindow(false);
+    // 32
+    setSelectedParticipants([]);
+    // 33
+    setParticipants([]);
+    // 34
+    setNewMonthlyPaymentAgreementVariables({} as ICreateEventParticipantsMonthlyPaymentAgreementsDTO);
+    // 35
+    setSelectedEventTaskFollower({} as ITaskFollowerDTO);
+    // 36
+    setNewEventMonthlyPaymentConfirmation(false);
   }
 
   function handleSelectedDate(data: Date): void {
@@ -220,6 +332,12 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   }
   function handleSelectedNewTransaction(data: ICreateTransactionDTO): void {
     setSelectedNewTransaction(data);
+  }
+  function handleSelectedParticipants(data: IParticipantDTO[]): void {
+    setSelectedParticipants(data);
+  }
+  function handleParticipants(data: IParticipantDTO[]): void {
+    setParticipants(data);
   }
   function handleCurrentSection(data: string): void {
     setCurrentSection(data);
@@ -240,6 +358,13 @@ const EventVariablesProvider: React.FC = ({ children }) => {
 
   function selectEventGuest(data: IEventGuestDTO): void {
     setSelectedEventGuest(data);
+  }
+
+  function selectEventMonthlyPaymentAgreement(data: IEventMonthlyPaymentAgreementDTO): void {
+    setSelectedEventMonthlyPaymentAgreement(data);
+  }
+  function handleEventMonthlyPaymentAgreements(data: IEventMonthlyPaymentAgreementDTO[]): void {
+    setEventMonthlyPaymentAgreements(data);
   }
 
   function handleFilteredGuests(data: IEventGuestDTO[]): void {
@@ -842,12 +967,138 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     eventSuppliers,
   ]);
 
+  const monthlyPayments = useMemo(() => {
+    const eventtransactions: IEventTransactionDTO[] = [];
+    const eventOwnerAgreements: IEventTransactionAgreementDTO[] = [];
+    const eventMemberAgreements: IEventTransactionAgreementDTO[] = [];
+    const transactionAgreements: IEventTransactionAgreementDTO[] = [];
+    eventMonthlyPaymentAgreements.map(agreement => {
+      agreement.eventMemberTransactionAgreements.map(item => {
+        const transactions: IEventTransactionDTO[] = [];
+        item.transactions.map(({ transaction }) => {
+          const nTransaction = {
+            agreement_id: item.id,
+            agreement_type: 'member',
+            event_id: selectedEvent.id,
+            transaction,
+          };
+          transactions.push(nTransaction);
+          eventtransactions.push(nTransaction);
+          return transaction;
+        });
+        const {
+          amount,
+          updated_at,
+          created_at,
+          id,
+          isCancelled,
+          member_id,
+          number_of_installments,
+        } = item;
+        const findMember = eventMembers.find(member => member.id === member_id);
+        const nMAgreement = {
+          amount,
+          created_at,
+          event_id: selectedEvent.id,
+          id,
+          isCancelled,
+          number_of_installments,
+          participant_id: member_id,
+          participant_type: 'member',
+          transactions,
+          updated_at,
+          participant_name: findMember?.userEventMember.name ?? '',
+        };
+        eventMemberAgreements.push(nMAgreement);
+        transactionAgreements.push(nMAgreement);
+        return item;
+      });
+      agreement.eventOwnerTransactionAgreements.map(item => {
+        const transactions: IEventTransactionDTO[] = [];
+        item.transactions.map(({ transaction }) => {
+          const nTransaction = {
+            agreement_id: item.id,
+            agreement_type: 'owner',
+            event_id: selectedEvent.id,
+            transaction,
+          };
+          transactions.push(nTransaction);
+          eventtransactions.push(nTransaction);
+          return transaction;
+        });
+        const {
+          amount,
+          updated_at,
+          created_at,
+          id,
+          isCancelled,
+          owner_id,
+          number_of_installments,
+        } = item;
+        const findOwner = eventOwners.find(owner => owner.id === owner_id);
+        const nOAgreement = {
+          amount,
+          created_at,
+          event_id: selectedEvent.id,
+          id,
+          isCancelled,
+          number_of_installments,
+          participant_id: owner_id,
+          participant_type: 'owner',
+          transactions,
+          updated_at,
+          participant_name: findOwner?.userEventOwner.name ?? '',
+        };
+        eventOwnerAgreements.push(nOAgreement);
+        transactionAgreements.push(nOAgreement);
+        return item;
+      });
+      return agreement;
+    });
+    const total = eventtransactions
+      .filter(item => !item.transaction.isCancelled)
+      .map(item => Number(item.transaction.amount))
+      .reduce((acc, cv) => acc + cv, 0);
+    const totalPayed = eventtransactions
+      .filter(item =>
+        !item.transaction.isCancelled &&
+        item.transaction.isPaid
+      )
+      .map(item => Number(item.transaction.amount))
+      .reduce((acc, cv) => acc + cv, 0);
+    const totalNotPayed = eventtransactions
+      .filter(item =>
+        !item.transaction.isCancelled &&
+        !item.transaction.isPaid
+      )
+      .map(item => Number(item.transaction.amount))
+      .reduce((acc, cv) => acc + cv, 0);
+    const totalDelayed = eventtransactions
+      .filter(item =>
+        !item.transaction.isCancelled &&
+        !item.transaction.isPaid &&
+        new Date() > item.transaction.due_date
+      )
+      .map(item => Number(item.transaction.amount))
+      .reduce((acc, cv) => acc + cv, 0);
+    return {
+      eventTransactions: eventtransactions,
+      eventOwnerAgreements,
+      eventMemberAgreements,
+      transactionAgreements,
+      total,
+      totalPayed,
+      totalNotPayed,
+      totalDelayed,
+    };
+  }, [eventTransactions]);
+
   return (
     <EventVariablesContext.Provider
       value={{
+        monthlyPayments,
         eventMemberTransactionAgreements,
         eventOwnerTransactionAgreements,
-        eventTransactionAgreements,
         isOwner,
         master,
         eventBudget,
@@ -906,6 +1157,25 @@ const EventVariablesProvider: React.FC = ({ children }) => {
         selectedEventTaskFollower,
         handleSelectedUserEventTasks,
         selectedUserEventTasks,
+        eventMonthlyPaymentAgreements,
+        handleEventMonthlyPaymentAgreements,
+        selectEventMonthlyPaymentAgreement,
+        selectedEventMonthlyPaymentAgreement,
+        handleSelectMonthlyPaymentAgreementParticipantWindow,
+        handleCreateMonthlyPaymentAgreementWindow,
+        handleMonthlyPaymentWindow,
+        monthlyPaymentWindow,
+        selectMonthlyPaymentAgreementParticipantWindow,
+        createMonthlyPaymentAgreementWindow,
+        handleParticipants,
+        handleSelectedParticipants,
+        participants,
+        selectedParticipants,
+        handleNewMonthlyPaymentAgreementVariables,
+        newMonthlyPaymentAgreementVariables,
+        eventTransactionAgreements,
+        handleNewEventMonthlyPaymentConfirmation,
+        newEventMonthlyPaymentConfirmation,
       }}
     >
       {children}

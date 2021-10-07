@@ -13,14 +13,11 @@ import Input from '../../../../../components/Input';
 import WindowContainer from '../../../../../components/WindowContainer';
 
 import {
-  FormContainer,
-  KeyboardAvoidingVueContainer,
-} from '../../SuppliersComponents/CreateSupplierTransactionAgreement/styles';
-import {
   Container,
   Title,
   FormQuestion,
 } from './styles';
+import { FormContainer, KeyboardAvoidingVueContainer } from '../../../../../components/CreateTransactionAgreement/styles';
 
 interface IFormData {
   first_name: string;

@@ -5,7 +5,7 @@ import React, {
   useEffect,
 } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { addDays, subDays } from 'date-fns';
+import { subDays } from 'date-fns';
 import DocumentPicker from 'react-native-document-picker';
 
 import api from '../services/api';
@@ -25,6 +25,7 @@ import IUpdateEventTransactionAgreementDTO from '../dtos/IUpdateEventTransaction
 import ICreateEventTransactionAgreementDTO from '../dtos/ICreateEventTransactionAgreementDTO';
 import ICreateEventOwnerTransactionAgreementWithTransactionsDTO from '../dtos/ICreateEventOwnerTransactionAgreementWithTransactionsDTO';
 import ICreateEventMemberTransactionAgreementWithTransactionsDTO from '../dtos/ICreateEventMemberTransactionAgreementWithTransactionsDTO';
+import ICreateEventParticipantsMonthlyPaymentAgreementsDTO from '../dtos/ICreateEventParticipantsMonthlyPaymentAgreementsDTO';
 
 interface INewAgreementDTO {
   amount: number;
@@ -63,8 +64,6 @@ interface TransactionContextType {
   selectedEventTransactionAgreements: IEventTransactionAgreementDTO[];
   selectedEventTransactionAgreement: IEventTransactionAgreementDTO;
   selectedNewTransaction: ICreateTransactionDTO;
-  selectedDate: Date;
-  selectedDateWindow: boolean;
   selectedTransaction: ITransactionDTO;
   selectedEventTransaction: IEventTransactionDTO;
   cancelledTransactionFilter: boolean;
@@ -75,6 +74,7 @@ interface TransactionContextType {
   filterTransactionOption: string;
   eventTransactionsWindow: boolean;
   sortEventTransactions: (data: IEventTransactionDTO[]) => IEventTransactionDTO[];
+  createEventParticipantMonthlyPaymentAgreements: (data: ICreateEventParticipantsMonthlyPaymentAgreementsDTO) => Promise<void>;
   sortTransactionAgreements: (data: IEventTransactionAgreementDTO[]) => IEventTransactionAgreementDTO[];
   refreshOwnerTransactionAgreements: () => void;
   handleEventTransactionsWindow: () => void;
@@ -112,9 +112,7 @@ interface TransactionContextType {
   handleFilterTransactionWindow: () => void;
   handleNewEventSupplierTransactionAgreement: () => void;
   handleNewAgreement: (data: INewAgreementDTO) => void;
-  handleSelectedDate: (data: Date) => void;
   handleUpdateTransactionDueDate: (data: Date) => void;
-  handleSelectedDateWindow: () => void;
   handleSelectedEventTransaction: (data: IEventTransactionDTO) => void;
   handleSelectedNewTransaction: (data: ICreateTransactionDTO) => void;
   selectNewTransactions: (data: ICreateTransactionDTO[]) => void;
@@ -166,8 +164,6 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [newAgreementInstallments, setNewAgreementInstallments] = useState(1);
   const [newTransactions, setNewTransactions] = useState<ICreateTransactionDTO[]>([]);
   const [selectedNewTransaction, setSelectedNewTransaction] = useState({} as ICreateTransactionDTO);
-  const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 3));
-  const [selectedDateWindow, setSelectedDateWindow] = useState(false);
   const [selectedEventTransaction, setSelectedEventTransaction] = useState({} as IEventTransactionDTO);
   const [selectedEventTransactionAgreements, setSelectedEventTransactionAgreements] = useState<IEventTransactionAgreementDTO[]>([]);
   const [selectedEventTransactionAgreement, setSelectedEventTransactionAgreement] = useState({} as IEventTransactionAgreementDTO);
@@ -410,18 +406,11 @@ const TransactionProvider: React.FC = ({ children }) => {
   function handleNewEventSupplierTransactionAgreement() {
     setNewEventSupplierTransactionAgreement(!newEventSupplierTransactionAgreement);
   }
-  function handleSelectedDate(data: Date) {
-    setSelectedDate(data);
-    setSelectedDateWindow(false);
-  }
   function handleSelectedNewTransaction(data: ICreateTransactionDTO) {
     setSelectedNewTransaction(data);
   }
   function selectNewTransactions(data: ICreateTransactionDTO[]) {
     setNewTransactions(data);
-  }
-  function handleSelectedDateWindow() {
-    setSelectedDateWindow(!selectedDateWindow);
   }
   function selectTransaction(data: ITransactionDTO) {
     setSelectedTransaction(data);
@@ -553,6 +542,38 @@ const TransactionProvider: React.FC = ({ children }) => {
       throw new Error(err);
     } finally {
       setLoading(false);
+    }
+  }
+  async function createEventParticipantMonthlyPaymentAgreements({
+    amount,
+    number_of_installments,
+    event_id,
+    monthly_payment,
+    name,
+    participants,
+    start_date,
+  }: ICreateEventParticipantsMonthlyPaymentAgreementsDTO) {
+    try {
+      setLoading(true);
+      await api.post(`/create-event-participant-monthly-payment-agreements`, {
+        amount,
+        number_of_installments,
+        event_id,
+        monthly_payment,
+        name,
+        participants,
+        start_date,
+      });
+      await getEventOwners(selectedEvent.id);
+      await getEventMembers(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
+      await getEventTransactions(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    } finally {
+      setLoading(false);
+      refreshOwnerTransactionAgreements();
+      refreshMemberTransactionAgreements();
     }
   }
   async function createOwnerTransactionAgreementWithTransactions({
@@ -965,8 +986,6 @@ const TransactionProvider: React.FC = ({ children }) => {
         handleFilterTransactionWindow,
         handleNewAgreement,
         handleNewEventSupplierTransactionAgreement,
-        handleSelectedDate,
-        handleSelectedDateWindow,
         handleSelectedEventTransaction,
         handleSelectedNewTransaction,
         handleUpdateTransactionDueDate,
@@ -976,8 +995,6 @@ const TransactionProvider: React.FC = ({ children }) => {
         selectedNewTransaction,
         newTransactions,
         newAgreementInstallments,
-        selectedDate,
-        selectedDateWindow,
         selectedEventTransaction,
         selectedTransaction,
         selectNewTransactions,
@@ -1016,6 +1033,7 @@ const TransactionProvider: React.FC = ({ children }) => {
         sortTransactionAgreements,
         eventTransactionsWindow,
         handleEventTransactionsWindow,
+        createEventParticipantMonthlyPaymentAgreements,
       }}
     >
       {children}

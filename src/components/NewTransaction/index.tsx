@@ -6,6 +6,7 @@ import theme from '../../global/styles/theme';
 import { useTransaction } from '../../hooks/transactions';
 import { formatBrlCurrency } from '../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../utils/formatOnlyDateShort';
+import CurrencyInlineFormField from '../CurrencyInlineFormField';
 
 import {
   Container,
@@ -37,14 +38,22 @@ export function NewTransaction({
   } = theme.objectButtonShadow;
 
   const {
-    handleEditNewTransactionValueWindow,
     handleEditNewTransactionDueDateWindow,
     handleSelectedNewTransaction,
     newTransactions,
     selectNewTransactions,
+    selectedNewTransaction,
   } = useTransaction();
 
   const [isPaid, setIsPaid] = useState(false);
+  const [editAmount, setEditAmount] = useState(false);
+
+  function handleEditAmount() {
+    editAmount
+      ? handleSelectedNewTransaction({} as ICreateTransactionDTO)
+      : handleSelectedNewTransaction(transaction);
+    setEditAmount(!editAmount)
+  }
 
   function handleIsPaid() {
     setIsPaid(!isPaid);
@@ -60,72 +69,95 @@ export function NewTransaction({
     return false;
   }, [transaction]);
 
-  function handleEditAmount() {
-    handleSelectedNewTransaction(transaction);
-    handleEditNewTransactionValueWindow();
-  }
-
   function handleEditDate() {
     handleSelectedNewTransaction(transaction);
     handleEditNewTransactionDueDateWindow();
   }
 
+  function handleUpdateAmount(e: string) {
+    const newTransaction: ICreateTransactionDTO = {
+      ...transaction,
+      amount: Number(e.replace(/\D/g, ''))/100,
+    }
+    const transactionsUpdated = newTransactions
+      .filter(item => item !== transaction);
+    const updatedTransactions = [
+      ...transactionsUpdated,
+      newTransaction,
+    ].sort((a, b) => {
+      if (a.due_date > b.due_date) return 1;
+      if (a.due_date < b.due_date) return -1;
+      return 0;
+    });
+    selectNewTransactions(updatedTransactions);
+  }
+
   return (
     <>
       <Container>
-        <TextContainer>
-          <Index>{index}</Index>
-          <AmountButton
-            onPress={handleEditAmount}
-            style={{
-              elevation: 5,
-              shadowColor,
-              shadowOffset,
-              shadowOpacity,
-              shadowRadius,
-            }}
-          >
-            <Amount
+        <Index>{index}</Index>
+        {editAmount && selectedNewTransaction === transaction ? (
+          <CurrencyInlineFormField
+            defaultValue={String(transaction.amount)}
+            handleOnSubmit={handleUpdateAmount}
+            closeComponent={handleEditAmount}
+          />
+        ) : (
+          <>
+            <TextContainer>
+              <AmountButton
+                onPress={handleEditAmount}
+                style={{
+                  elevation: 5,
+                  shadowColor,
+                  shadowOffset,
+                  shadowOpacity,
+                  shadowRadius,
+                }}
+              >
+                <Amount
+                  isOverdue={isOverdue}
+                  isPaid={transaction.isPaid}
+                >
+                  {formatBrlCurrency(transaction.amount)}
+                </Amount>
+              </AmountButton>
+              <DateButton
+                style={{
+                  elevation: 5,
+                  shadowColor,
+                  shadowOffset,
+                  shadowOpacity,
+                  shadowRadius,
+                }}
+                onPress={handleEditDate}
+              >
+                <DateText>
+                  {formatOnlyDateShort(String( transaction.due_date ))}
+                </DateText>
+              </DateButton>
+            </TextContainer>
+            <IsPaidButton
+              onPress={handleIsPaid}
               isOverdue={isOverdue}
-              isPaid={transaction.isPaid}
+              isPaid={isPaid}
             >
-              {formatBrlCurrency(transaction.amount)}
-            </Amount>
-          </AmountButton>
-          <DateButton
-            style={{
-              elevation: 5,
-              shadowColor,
-              shadowOffset,
-              shadowOpacity,
-              shadowRadius,
-            }}
-            onPress={handleEditDate}
-          >
-            <DateText>
-              {formatOnlyDateShort(String( transaction.due_date ))}
-            </DateText>
-          </DateButton>
-        </TextContainer>
-        <IsPaidButton
-          onPress={handleIsPaid}
-          isOverdue={isOverdue}
-          isPaid={isPaid}
-        >
-          {isPaid ? (
-            <IsPaidIcon
-              name="check-square"
-              isOverdue={isOverdue}
-              isPaid={isPaid}
-            />
-          ) : (
-            <IsPaidIcon
-              name="square"
-              isOverdue={isOverdue}
-              isPaid={isPaid}
-            />
-          )}
-        </IsPaidButton>
+              {isPaid ? (
+                <IsPaidIcon
+                  name="check-square"
+                  isOverdue={isOverdue}
+                  isPaid={isPaid}
+                />
+              ) : (
+                <IsPaidIcon
+                  name="square"
+                  isOverdue={isOverdue}
+                  isPaid={isPaid}
+                />
+              )}
+            </IsPaidButton>
+          </>
+        )}
       </Container>
       <Underline />
     </>

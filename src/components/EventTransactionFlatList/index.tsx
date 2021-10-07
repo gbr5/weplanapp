@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import IEventTransactionDTO from '../../dtos/IEventTransactionDTO';
 import { EventTransactionButton } from '../TransactionComponents/EventTransactionButton';
 
@@ -15,13 +15,20 @@ export function EventTransactionFlatList({
   year,
   month,
 }: IProps) {
+  const sortedTransactions = useMemo(() => {
+    return transactions.sort((a, b) => {
+      if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return 1;
+      if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return -1;
+      return 0;
+    })
+  }, [transactions]);
   return (
     <Container
-      data={transactions}
+      data={sortedTransactions}
       keyExtractor={(item) => item.transaction.id}
       renderItem={({ item }) => {
         const transactionYear = new Date(item.transaction.due_date).getFullYear();
-        const firstOfYear = year && transactions
+        const firstOfYear = year && sortedTransactions
           .filter(({ transaction }) =>
             new Date(transaction.due_date).getFullYear() === transactionYear
           )[0].transaction.id === item.transaction.id;
@@ -29,13 +36,13 @@ export function EventTransactionFlatList({
         const date = new Date(item.transaction.due_date).getDate();
 
 
-        const firstOfMonth = month && transactions
+        const firstOfMonth = month && sortedTransactions
           .filter(({ transaction }) =>
             new Date(transaction.due_date).getFullYear() === transactionYear
             && new Date(transaction.due_date).getMonth() === transactionMonth
           )[0].transaction.id === item.transaction.id;
 
-        const firstOfDay = transactions
+        const firstOfDay = sortedTransactions
           .filter(({ transaction }) =>
             new Date(transaction.due_date).getFullYear() === transactionYear
             && new Date(transaction.due_date).getMonth() === transactionMonth

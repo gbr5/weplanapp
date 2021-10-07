@@ -92,3 +92,17 @@ export const EditIcon = styled(Feather)`
   font-size: ${RFValue(24)}px;
   color: ${({ theme }) => theme.color.text6};
 `;
+
+export const ResumeContainer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0;
+`;
+
+export const ResumeTitle = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.roboto};
+  color: ${({ theme }) => theme.color.text2};
+  font-size: ${RFValue(16)}px;
+`;
