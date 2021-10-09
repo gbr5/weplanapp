@@ -17,6 +17,8 @@ import {
   ContractInfo,
   NumberOfInstallments,
   CreatedDate,
+  MenuButton,
+  Icon,
 } from './styles';
 
 interface IProps {
@@ -40,6 +42,7 @@ export function EventMonthlyPaymentAgreementButton({
     selectEventMonthlyPaymentAgreement,
     eventOwners,
     eventMembers,
+    handleEventMonthlyPaymentSettingsWindow,
   } = useEventVariables();
 
   const { handleEventTransactions } = useEventVariables();
@@ -155,6 +158,11 @@ export function EventMonthlyPaymentAgreementButton({
     return agreement.id === selectedEventMonthlyPaymentAgreement.id;
   }, [agreement, selectedEventMonthlyPaymentAgreement,]);
 
+  function openEventMonthlyPaymentSettingsWindow() {
+    selectEventMonthlyPaymentAgreement(agreement);
+    handleEventMonthlyPaymentSettingsWindow();
+  }
+
   return (
     <Container
       isSelected={isSelected}
@@ -167,6 +175,18 @@ export function EventMonthlyPaymentAgreementButton({
       }}
       onPress={handleSelectEventMonthlyPaymentAgreement}
     >
+      <MenuButton
+        style={{
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+          elevation: 5,
+        }}
+        onPress={openEventMonthlyPaymentSettingsWindow}
+      >
+        <Icon name="trash-2" />
+      </MenuButton>
       <Index>{index}</Index>
       <Body>
         <NumberOfInstallments>

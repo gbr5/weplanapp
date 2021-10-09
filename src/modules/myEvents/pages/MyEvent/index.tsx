@@ -83,6 +83,8 @@ import { EventMonthlyPaymentAgreementsWindow } from '../../../../components/Even
 import { SelectMonthlyPaymentAgreementParticipant } from '../../../../components/SelectMonthlyPaymentAgreementParticipant';
 import { CreateEventMonthlyPaymentAgrements } from '../../../../components/CreateEventMonthlyPaymentAgrements';
 import { NewEventMonthlyPaymentConfirmation } from '../../../../components/NewEventMonthlyPaymentConfirmation';
+import { EventMonthlyPaymentSettings } from '../../../../components/EventMonthlyPaymentSettings';
+import { EventDashboardSection } from '../../components/EventDashboardSection';
 
 const MyEvent: React.FC = () => {
   const {
@@ -100,7 +102,7 @@ const MyEvent: React.FC = () => {
     selectedEventSupplier,
     selectedEventTask,
     selectedEventTaskFollower,
-    selectEventTask,
+    eventMonthlyPaymentSettingsWindow,
     selectedEventGuest,
     selectedEventOwner,
     selectedEventMember,
@@ -291,6 +293,7 @@ const MyEvent: React.FC = () => {
   return (
     <>
       {budgetWindow && <BudgetWindow />}
+      {eventMonthlyPaymentSettingsWindow && <EventMonthlyPaymentSettings />}
       {monthlyPaymentWindow && <EventMonthlyPaymentAgreementsWindow />}
       {editFileWindow && <EditFileNameWindow />}
       {supplierNotesWindow && <SupplierNotesSection />}
@@ -661,6 +664,7 @@ const MyEvent: React.FC = () => {
         </PageHeader>
         <Body>
           <BodyContainer>
+            {currentSection === 'Dashboard' && <EventDashboardSection />}
             {currentSection === 'Notes' && <EventNotesSection />}
             {currentSection === 'Guests' && <GuestsSection />}
             {currentSection === 'Tasks' && <TasksSection />}

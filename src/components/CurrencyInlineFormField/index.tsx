@@ -67,7 +67,6 @@ const CurrencyInlineFormField: React.FC<IProps> = ({
           onSubmitEditing={handleSubmit}
         />
       </InputContainer>
-
       <Button
         style={{
           shadowColor,

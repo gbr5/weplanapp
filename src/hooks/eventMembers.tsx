@@ -24,7 +24,8 @@ interface EventMembersContextType {
   handleCreateEventMemberTaskWindow: () => void;
   handleEventMemberTaskWindow: () => void;
   addMultipleMembers: (data: IFriendDTO[]) => Promise<void>;
-  editEventMember: (data: IEventMemberDTO) => void;
+  editEventMember: (data: IEventMemberDTO) => Promise<void>;
+  editEventMembersNumberOfGuests: (number_of_guests: number) => Promise<void>;
   createEventMember: (data: ICreateEventMemberDTO) => void;
   deleteEventMember: (id: string) => Promise<void>;
 }
@@ -92,8 +93,18 @@ const EventMembersProvider: React.FC = ({ children }) => {
   }
   async function editEventMember(data: IEventMemberDTO) {
     try {
-      await api.put(`/event-members/${data.id}`, {
+      await api.put(`/member/number-of-guests/${data.id}`, {
         number_of_guests: data.number_of_guests,
+      });
+      await getEventMembers(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+  async function editEventMembersNumberOfGuests(number_of_guests: number) {
+    try {
+      await api.put(`/members/number-of-guests/${selectedEvent.id}`, {
+        number_of_guests,
       });
       await getEventMembers(selectedEvent.id);
     } catch (err) {
@@ -113,6 +124,7 @@ const EventMembersProvider: React.FC = ({ children }) => {
     <EventMembersContext.Provider
       value={{
         editEventMember,
+        editEventMembersNumberOfGuests,
         createEventMember,
         deleteEventMember,
         addMemberWindow,

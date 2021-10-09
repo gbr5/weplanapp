@@ -55,6 +55,7 @@ interface EventVariablesContextType {
   eventNotes: IEventNoteDTO[];
   // 11 setEventTransactions
   eventTransactions: IEventTransactionDTO[];
+  allEventTransactions: IEventTransactionDTO[];
   // 12 setFilteredEventTransactions
   filteredEventTransactions: IEventTransactionDTO[];
   // 13 setNewTransactions
@@ -97,6 +98,7 @@ interface EventVariablesContextType {
   selectMonthlyPaymentAgreementParticipantWindow: boolean;
   // 32 setCreateMonthlyPaymentAgreementWindow
   createMonthlyPaymentAgreementWindow: boolean;
+  eventMonthlyPaymentSettingsWindow: boolean;
   // 33 setSelectedParticipants
   selectedParticipants: IParticipantDTO[];
   // 34 setParticipants
@@ -112,6 +114,8 @@ interface EventVariablesContextType {
   eventOwnerTransactionAgreements: IEventTransactionAgreementDTO[];
   eventMemberTransactionAgreements: IEventTransactionAgreementDTO[];
   monthlyPayments: IMonthlyPayments;
+  totalEventRevenue: number;
+  totalEventCost: number;
   handleEventGuests: (data: IEventGuestDTO[]) => void;
   handleNewMonthlyPaymentAgreementVariables: (data: ICreateEventParticipantsMonthlyPaymentAgreementsDTO) => void;
   handleNewEventMonthlyPaymentConfirmation: () => void;
@@ -123,7 +127,8 @@ interface EventVariablesContextType {
   handleEventTasks: (data: IEventTaskDTO[]) => Promise<void>;
   handleSelectedUserEventTasks: (data: IEventTaskDTO[]) => void;
   handleEventNotes: (data: IEventNoteDTO[]) => Promise<void>;
-  handleEventTransactions: (data: IEventTransactionDTO[]) => Promise<void>;
+  handleEventTransactions: (data: IEventTransactionDTO[]) => void;
+  handleAllEventTransactions: (data: IEventTransactionDTO[]) => Promise<void>;
   transformEventTransactions: (
     data: ITransactionDTO[],
   ) => Promise<IEventTransactionDTO[]>;
@@ -154,6 +159,7 @@ interface EventVariablesContextType {
   selectNewTransactions: (data: ICreateTransactionDTO[]) => void;
   handleCurrentSection: (date: string) => void;
   handleMonthlyPaymentWindow: () => void;
+  handleEventMonthlyPaymentSettingsWindow: () => void;
   handleSelectMonthlyPaymentAgreementParticipantWindow: () => void;
   handleCreateMonthlyPaymentAgreementWindow: () => void;
 }
@@ -165,6 +171,7 @@ const EventVariablesProvider: React.FC = ({ children }) => {
 
   const [isOwner, setIsOwner] = useState(false);
   const [newEventMonthlyPaymentConfirmation, setNewEventMonthlyPaymentConfirmation] = useState(false);
+  const [eventMonthlyPaymentSettingsWindow, setEventMonthlyPaymentSettingsWindow] = useState(false);
   const [selectMonthlyPaymentAgreementParticipantWindow, setSelectMonthlyPaymentAgreementParticipantWindow] = useState(false);
   const [createMonthlyPaymentAgreementWindow, setCreateMonthlyPaymentAgreementWindow] = useState(false);
   const [monthlyPaymentWindow, setMonthlyPaymentWindow] = useState(false);
@@ -189,6 +196,9 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     setSelectedEventSupplierTransactionAgreement,
   ] = useState({} as IEventSupplierTransactionAgreementDTO);
   const [eventTransactions, setEventTransactions] = useState<
+  IEventTransactionDTO[]
+  >([]);
+  const [allEventTransactions, setAllEventTransactions] = useState<
   IEventTransactionDTO[]
   >([]);
   const [filteredEventTransactions, setFilteredEventTransactions] = useState<
@@ -234,6 +244,10 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     setMonthlyPaymentWindow(!monthlyPaymentWindow);
   }
 
+  function handleEventMonthlyPaymentSettingsWindow() {
+    setEventMonthlyPaymentSettingsWindow(!eventMonthlyPaymentSettingsWindow);
+  }
+
   function handleNewMonthlyPaymentAgreementVariables(data: ICreateEventParticipantsMonthlyPaymentAgreementsDTO) {
     setNewMonthlyPaymentAgreementVariables(data);
   }
@@ -276,12 +290,14 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     setSelectedUserEventTasks([]);
     // 13
     setEventTransactions([]);
+    setAllEventTransactions([]);
     // 14
     setFilteredEventTransactions([]);
     // 15
     setSelectedDate(addDays(new Date(), 3));
     // 16
     setSelectedDateWindow(false);
+    setEventMonthlyPaymentSettingsWindow(false);
     // 17
     setSelectedEvent({} as IEventDTO);
     // 18
@@ -457,6 +473,9 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     setEventNotes(data);
   }
   async function handleEventTransactions(data: IEventTransactionDTO[]): Promise<void> {
+    setEventTransactions(data);
+  }
+  async function handleAllEventTransactions(data: IEventTransactionDTO[]): Promise<void> {
     const event = await AsyncStorage.getItem('@WePlan-Party:selected-event');
     (isMember || isOwner) &&
       event &&
@@ -464,7 +483,7 @@ const EventVariablesProvider: React.FC = ({ children }) => {
         `@WePlan-Party:event-${JSON.parse(event).id}-transactions`,
         JSON.stringify(data),
       );
-    setEventTransactions(data);
+    setAllEventTransactions(data);
   }
   async function transformEventTransactions(
     data: ITransactionDTO[],
@@ -1093,6 +1112,23 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     };
   }, [eventTransactions]);
 
+  const { totalEventCost, totalEventRevenue } = useMemo(() => {
+    const totalCost =  allEventTransactions
+      .filter(({ transaction }) => !transaction.isCancelled && transaction.payer_id === selectedEvent.id)
+      .map(({ transaction }) => Number(transaction.amount))
+      .reduce((acc, cv) => acc + cv, 0);
+
+    const totalRevenue =  allEventTransactions
+      .filter(({ transaction }) => !transaction.isCancelled && transaction.payee_id === selectedEvent.id)
+      .map(({ transaction }) => Number(transaction.amount))
+      .reduce((acc, cv) => acc + cv, 0);
+
+      return {
+        totalEventCost: totalCost,
+        totalEventRevenue: totalRevenue,
+      }
+  }, [allEventTransactions]);
+
   return (
     <EventVariablesContext.Provider
       value={{
@@ -1176,6 +1212,12 @@ const EventVariablesProvider: React.FC = ({ children }) => {
         eventTransactionAgreements,
         handleNewEventMonthlyPaymentConfirmation,
         newEventMonthlyPaymentConfirmation,
+        allEventTransactions,
+        handleAllEventTransactions,
+        eventMonthlyPaymentSettingsWindow,
+        handleEventMonthlyPaymentSettingsWindow,
+        totalEventCost,
+        totalEventRevenue,
       }}
     >
       {children}

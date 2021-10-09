@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Platform } from 'react-native';
+
 import theme from '../../../../global/styles/theme';
 import { useEventVariables } from '../../../../hooks/eventVariables';
 
@@ -11,6 +12,7 @@ import {
   MenuButton,
   MenuButtonText,
   MenuButtonNumber,
+  Icon,
 } from './styles';
 
 export function MainMenu() {
@@ -62,8 +64,11 @@ export function MainMenu() {
 
   const tasksInfo = useMemo(() => {
     if (eventTasks && eventTasks.length > 0) {
-      const finnishedTasks = eventTasks.filter(task => task.status === 'finnished').length;
-      return `${finnishedTasks} / ${eventTasks.length}`;
+      const finnishedTasks = eventTasks.filter(task => task.task.status === 'finnished').length;
+      return finnishedTasks &&
+        eventTasks && eventTasks.length > 0
+          ? `${finnishedTasks} / ${eventTasks.length}`
+          : '0 / 0';
     }
   }, [eventTasks]);
 
@@ -72,6 +77,29 @@ export function MainMenu() {
 
   return (
     <Container horizontal>
+      <MenuButton
+        style={currentSection !== 'Dashboard' && {
+          shadowColor,
+          shadowOffset,
+          shadowOpacity,
+          shadowRadius,
+          elevation,
+        }}
+        onPress={() => selectEventSection('Dashboard')}
+        isActive={currentSection === 'Dashboard'}
+      >
+        <MenuButtonText
+          isActive={currentSection === 'Dashboard'}
+        >
+          Home
+        </MenuButtonText>
+        <Icon name="home" />
+        {/* <MenuButtonNumber
+          isActive={currentSection === 'Dashboard'}
+        >
+          {notesInfo}
+        </MenuButtonNumber> */}
+      </MenuButton>
       <MenuButton
         style={currentSection !== 'Notes' && {
           shadowColor,

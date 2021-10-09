@@ -24,19 +24,11 @@ export const Title = styled.Text`
   margin-top: 8px;
 `;
 
-export const FirstSection = styled.View`
+export const FirstSection = styled.ScrollView`
   width: 100%;
   margin-top: 8px;
-  height: 60.7%;
-`;
-
-export const BudgetSection = styled.TouchableOpacity`
-  width: 100%;
-  border-radius: 8px;
-  padding: 8px;
-  background-color: ${({ theme }) => theme.color.primary};
-  align-items: center;
-  justify-content: center;
+  height: 100%;
+  /* height: 60.7%; */
 `;
 
 export const MonthlyPaymentButton = styled.TouchableOpacity`

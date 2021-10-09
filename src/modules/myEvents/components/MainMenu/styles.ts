@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import theme from '../../../../global/styles/theme';
+import Feather from 'react-native-vector-icons/Feather';
 
 interface IProps {
   isActive: boolean;
@@ -60,4 +61,10 @@ export const MenuButtonNumber = styled.Text<IProps>`
     && css`
       color: ${({ theme }) => theme.color.text1};
     `}
+`;
+
+export const Icon = styled(Feather)`
+  color: ${({ theme }) => theme.color.secondary};
+  margin-top: 4px;
+  font-size: ${RFValue(20)}px;
 `;

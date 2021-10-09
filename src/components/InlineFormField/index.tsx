@@ -6,6 +6,7 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import theme from '../../global/styles/theme';
 import Input from '../Input';
+import { KeyboardTypeOptions } from 'react-native';
 
 interface IFormParams {
   name: string;
@@ -14,6 +15,7 @@ interface IFormParams {
 interface IProps {
   defaultValue: string;
   placeholder: string;
+  keyboardType?: KeyboardTypeOptions;
   handleOnSubmit: (e: string) => void;
   closeComponent?: Function;
 }
@@ -23,6 +25,7 @@ const InlineFormField: React.FC<IProps> = ({
   handleOnSubmit,
   placeholder,
   closeComponent,
+  keyboardType,
 }) => {
   const {
     shadowColor,
@@ -47,6 +50,7 @@ const InlineFormField: React.FC<IProps> = ({
       <Form style={{ flex: 1 }} ref={formRef} onSubmit={handleSubmit}>
         <Input
           name="name"
+          keyboardType={keyboardType ? keyboardType : 'default'}
           placeholderTextColor={theme.color.text1}
           defaultValue={defaultValue}
           placeholder={placeholder}

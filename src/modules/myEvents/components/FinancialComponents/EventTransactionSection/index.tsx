@@ -27,7 +27,7 @@ export function EventTransactionSection() {
     shadowRadius,
   } = theme.iconButtonShadow;
   const {
-    eventTransactions,
+    allEventTransactions,
     handleSelectedDate,
   } = useEventVariables();
   const {
@@ -44,8 +44,8 @@ export function EventTransactionSection() {
 
   const transactions = useMemo<IEventTransactionDTO[]>(() => {
     if (filteredEventTransactions.length <= 0) {
-      handleFilteredEventTransactions(eventTransactions);
-      return eventTransactions;
+      handleFilteredEventTransactions(allEventTransactions);
+      return allEventTransactions;
     }
     let resultTransactions = filteredEventTransactions;
     if (sortTransactionsByInterval) {
@@ -86,7 +86,7 @@ export function EventTransactionSection() {
     fromDateTransactionFilter,
     toDateTransactionFilter,
     sortTransactionsByInterval,
-    eventTransactions,
+    allEventTransactions,
     handleFilteredEventTransactions,
   ]);
 
@@ -128,7 +128,7 @@ export function EventTransactionSection() {
       <Title>Transações</Title>
 
       <SearchTransactions
-        eventTransactions={eventTransactions}
+        eventTransactions={allEventTransactions}
         handleEventTransactions={(data: IEventTransactionDTO[]) => handleFilteredEventTransactions(data)}
       />
 

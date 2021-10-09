@@ -111,3 +111,17 @@ export const StatusContainer = styled.View<IsOverdueProps>`
   justify-content: center;
   margin-left: auto;
 `;
+
+export const MenuButton = styled.TouchableOpacity`
+  position: absolute;
+  background-color: ${({ theme }) => theme.color.text6};
+  padding: 4px;
+  border-radius: 4px;
+  right: 8px;
+  bottom: 4px;
+`;
+
+export const Icon = styled(Feather)`
+  font-size: ${RFValue(20)}px;
+  color: ${({ theme }) => theme.color.atention};
+`;

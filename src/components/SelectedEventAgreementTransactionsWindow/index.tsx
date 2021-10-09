@@ -192,7 +192,7 @@ export function SelectedEventTransactionAgreementsWindow({
         <AddButton
           onPress={handleCreateAgreementWindow}
           right="5%"
-          top="4%"
+          top="3%"
         />
 
         <TitleContainer>

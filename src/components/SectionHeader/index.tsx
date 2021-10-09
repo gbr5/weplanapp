@@ -22,14 +22,14 @@ export function SectionHeader({
     <Container>
       <InfoButton
         onPress={handleInfoButton}
-        top="0%"
+        top="-10%"
         left="2%"
         icon={firstIcon}
       />
       <WindowHeader title={title} />
       <AddButton
         onPress={handleAddButton}
-        top="0%"
+        top="-10%"
         right="2%"
       />
     </Container>

@@ -138,6 +138,7 @@ const TransactionProvider: React.FC = ({ children }) => {
     getEventMembers,
     getEventNotes,
     getEventTransactions,
+    getEventMonthlyPaymentAgreements,
   } = useMyEvent();
   const {
     selectSupplierTransactionAgreement,
@@ -564,9 +565,10 @@ const TransactionProvider: React.FC = ({ children }) => {
         participants,
         start_date,
       });
+      await getEventMonthlyPaymentAgreements(selectedEvent.id);
+      await getEventNotes(selectedEvent.id);
       await getEventOwners(selectedEvent.id);
       await getEventMembers(selectedEvent.id);
-      await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
     } catch (err) {
       throw new Error(err);

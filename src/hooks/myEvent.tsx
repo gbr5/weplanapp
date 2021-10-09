@@ -43,6 +43,7 @@ interface MyEventContextType {
   currentSection: string;
   sectionDescriptionWindow: boolean;
   deleteEventConfirmationWindow: boolean;
+  deleteEventMonthlyPaymentAgreementWithTransactions: (data: IEventMonthlyPaymentAgreementDTO) => Promise<void>;
   handleSelectedEvent: (data: IEventDTO) => Promise<void>;
   handleEventFinancialSubSection: (data: string) => void;
   handleBudgetWindow: () => void;
@@ -65,6 +66,7 @@ interface MyEventContextType {
   createEventBudget: (budget: number) => Promise<void>;
   updateEventBudget: (data: IEventBudgetDTO) => Promise<void>;
   unsetEventVariables: () => void;
+  editEvent: (data: IEventDTO) => Promise<void>;
   handleDeleteEvent: () => void;
 }
 
@@ -102,6 +104,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     selectedEventMonthlyPaymentAgreement,
     handleEventNotes,
     handleEventTasks,
+    handleAllEventTransactions,
     handleEventTransactions,
     handleEventSupplierTransactionAgreements,
     eventMembers,
@@ -190,14 +193,14 @@ const MyEventProvider: React.FC = ({ children }) => {
   async function getEventTransactions(eventId: string) {
     try {
       const transactions = await api.get<IEventTransactionDTO[]>(`/list-event-transactions/${eventId}`);
-
-      handleEventTransactions(transactions.data
+      const eventTransactions = transactions.data
         .sort((a, b) => {
-          if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return 1;
-          if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return -1;
+          if (new Date(a.transaction.due_date) < new Date(b.transaction.due_date)) return 1;
+          if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date)) return -1;
           return 0;
-        })
-      );
+        });
+      handleEventTransactions(eventTransactions);
+      handleAllEventTransactions(eventTransactions);
     } catch (err) {
       throw new Error(err);
     }
@@ -317,21 +320,6 @@ const MyEventProvider: React.FC = ({ children }) => {
     }
   }
 
-  async function getEventMonthlyPaymentAgreements(eventId: string) {
-    try {
-      const response = await api
-        .get<IEventMonthlyPaymentAgreementDTO[]>(`event-monthly-payment-agreements/${eventId}`);
-        handleEventMonthlyPaymentAgreements(response.data);
-
-      if (selectedEventMonthlyPaymentAgreement && selectedEventMonthlyPaymentAgreement.id) {
-        const agreement = response.data.find(item => item.id === selectedEventMonthlyPaymentAgreement.id);
-        agreement && selectEventMonthlyPaymentAgreement(agreement);
-      }
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-
   async function getEventOwners(eventId: string) {
     try {
       const response = await api
@@ -350,6 +338,36 @@ const MyEventProvider: React.FC = ({ children }) => {
       throw new Error(err);
     }
   }
+
+  async function getEventMonthlyPaymentAgreements(eventId: string) {
+    try {
+      const response = await api
+        .get<IEventMonthlyPaymentAgreementDTO[]>(`event-monthly-payment-agreements/${eventId}`);
+        handleEventMonthlyPaymentAgreements(response.data);
+
+      if (selectedEventMonthlyPaymentAgreement && selectedEventMonthlyPaymentAgreement.id) {
+        const agreement = response.data.find(item => item.id === selectedEventMonthlyPaymentAgreement.id);
+        agreement && selectEventMonthlyPaymentAgreement(agreement);
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async function deleteEventMonthlyPaymentAgreementWithTransactions(data: IEventMonthlyPaymentAgreementDTO) {
+    try {
+      await api
+        .delete(`event-monthly-payment-agreements/${data.id}`);
+      handleEventMonthlyPaymentAgreements([]);
+      await getEventMonthlyPaymentAgreements(selectedEvent.id);
+      await getEventOwners(selectedEvent.id);
+      await getEventMembers(selectedEvent.id);
+      await getEventTransactions(selectedEvent.id);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
 
   async function handleSelectedEvent(data: IEventDTO) {
     if (!data || (data && !data.id)) return unsetEventVariables();
@@ -462,6 +480,34 @@ const MyEventProvider: React.FC = ({ children }) => {
     }
   }
 
+  async function editEvent({
+    name,
+    date,
+    isNumberOfGuestsRestricted,
+    number_of_guests,
+    members_number_of_guests,
+  }: IEventDTO) {
+    try {
+      await api.put(`/events/${selectedEvent.id}`, {
+        name,
+        date: new Date(date),
+        isNumberOfGuestsRestricted,
+        number_of_guests,
+        members_number_of_guests,
+      });
+      selectEvent({
+        ...selectedEvent,
+        name,
+        date,
+        isNumberOfGuestsRestricted,
+        number_of_guests,
+        members_number_of_guests,
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   return (
     <MyEventContext.Provider
       value={{
@@ -497,6 +543,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         calculateTotalEventCost,
         selectEventSection,
         unsetEventVariables,
+        editEvent,
         handleSectionDescriptionWindow,
         sectionDescriptionWindow,
         getEventNotes,
@@ -506,6 +553,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         getSelectedUserEventTasks,
         handleDeleteEvent,
         getEventMonthlyPaymentAgreements,
+        deleteEventMonthlyPaymentAgreementWithTransactions,
       }}
     >
       {children}

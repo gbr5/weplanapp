@@ -169,7 +169,7 @@ export function EventMonthlyPaymentAgreementsWindow() {
         <AddButton
           onPress={handleOpenSelectParticipantWindow}
           right="5%"
-          top="4%"
+          top="2.5%"
         />
 
         <TitleContainer>

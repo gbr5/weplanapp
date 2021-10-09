@@ -6,6 +6,7 @@ import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
+import { EventBudgetButton } from '../EventBudgetButton';
 
 import { EventTransactionSection } from '../EventTransactionSection';
 
@@ -16,7 +17,6 @@ import {
   TitleButton,
   Title,
   FirstSection,
-  BudgetSection,
   BudgetTitle,
   BudgetValue,
   Resume,
@@ -161,22 +161,7 @@ export function FinancialSection() {
                 </BudgetValue>
               </MonthlyPaymentButton>
             )}
-            <BudgetSection
-              style={{
-                shadowColor,
-                shadowOffset,
-                shadowOpacity,
-                shadowRadius,
-                elevation: 5,
-              }}
-              onPress={handleBudgetWindow}
-            >
-              <BudgetTitle>Orçamento</BudgetTitle>
-              <PercentageUnderline />
-              <BudgetValue>
-                {budget}
-              </BudgetValue>
-            </BudgetSection>
+            <EventBudgetButton />
             <Resume>
               <ResumeTitle>Valores Contratados:</ResumeTitle>
               <ResumeUnderline />
