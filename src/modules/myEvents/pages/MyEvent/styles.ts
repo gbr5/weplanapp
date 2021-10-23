@@ -14,7 +14,8 @@ export const DashboardButton = styled.TouchableOpacity`
 export const EventName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
   color: ${({ theme }) => theme.color.primary};
-  font-size: ${RFValue(20)}px;
+  font-size: ${RFValue(16)}px;
+  max-width: 100%;
 `;
 
 export const Body = styled.View`

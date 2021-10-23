@@ -18,6 +18,7 @@ export const HeaderTitle = styled.Text`
   color: ${({ theme }) => theme.color.text6};
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;
+
 export const ProfileButton = styled.TouchableOpacity`
 
 `;

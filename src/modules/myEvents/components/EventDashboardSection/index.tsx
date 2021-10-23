@@ -1,11 +1,15 @@
 import React, { useMemo } from 'react';
 import { addDays } from 'date-fns/esm';
+import { differenceInDays } from 'date-fns';
+
+import { useEventVariables } from '../../../../hooks/eventVariables';
+import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
+
 import { EventNumberOfGuestsButton } from '../../../../components/EventNumberOfGuestsButton';
 import { EventRestrictedNumberOfGuestQuestion } from '../../../../components/EventRestrictedNumberOfGuestQuestion';
 import { EventTransactionButton } from '../../../../components/TransactionComponents/EventTransactionButton';
 import { WindowHeader } from '../../../../components/WindowHeader';
-import { useEventVariables } from '../../../../hooks/eventVariables';
-import { formatBrlCurrency } from '../../../../utils/formatBrlCurrency';
+import { EventPublishedQuestion } from '../../../../components/EventPublishedQuestion';
 
 import {
   Container,
@@ -14,8 +18,6 @@ import {
   NextTransactionsContainer,
   Title,
 } from './styles';
-import { differenceInDays } from 'date-fns';
-import { EventPublishedQuestion } from '../../../../components/EventPublishedQuestion';
 
 export function EventDashboardSection() {
   const {
@@ -30,6 +32,8 @@ export function EventDashboardSection() {
   } = useEventVariables();
 
   const today = new Date();
+  const newDate = new Date(today.setUTCHours(0));
+  const formattedDate = new Date(newDate.setMinutes(0));
 
   const numberOfEventParticipants = useMemo(() => {
     return eventOwners.length + eventMembers.length + eventGuests.length;
@@ -49,7 +53,7 @@ export function EventDashboardSection() {
       .filter(transaction =>
         !transaction.transaction.isCancelled
           && !transaction.transaction.isPaid
-          && new Date(transaction.transaction.due_date) < today
+          && new Date(transaction.transaction.due_date) < addDays(formattedDate, -1)
       )
       .sort((a, b) => {
         if (new Date(a.transaction.due_date) > new Date(b.transaction.due_date))

@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 
-import { useMyEvent } from '../../../../../hooks/myEvent';
 import { useTransaction } from '../../../../../hooks/transactions';
 
 import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';

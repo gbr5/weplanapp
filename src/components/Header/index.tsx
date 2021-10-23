@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
 
 import logoImg from '../../assets/headerLogo.png';
-import profilePlaceholder from '../../assets/profilePlaceholder.jpeg';
+import profilePlaceholder from '../../assets/placeholder.png';
 import MenuButton from '../MenuButton';
 
 import {

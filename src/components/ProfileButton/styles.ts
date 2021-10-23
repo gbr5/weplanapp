@@ -1,3 +1,4 @@
+import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity`
@@ -12,7 +13,7 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const UserAvatar = styled.Image`
-  width: 40px;
-  height: 40px;
-  border-radius: 28px
+  width: ${RFValue(40)}px;
+  height: ${RFValue(40)}px;
+  border-radius: 8px;
 `;

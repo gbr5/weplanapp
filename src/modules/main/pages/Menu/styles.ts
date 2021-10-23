@@ -1,3 +1,4 @@
+import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
@@ -13,9 +14,8 @@ export const Header = styled.View`
 
 export const Logo = styled.Image`
   border-radius: 10px;
-  height: 64px;
-  width: 64%;
-  margin-top: 16px;
+  height: ${RFValue(40)}px;
+  margin: 18px 0 0;
 `;
 
 export const Body = styled.View`

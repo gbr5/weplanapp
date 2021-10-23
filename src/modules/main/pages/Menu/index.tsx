@@ -1,16 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { useUnsetEventVariables } from '../../../../hooks/unsetEventVariables';
 import theme from '../../../../global/styles/theme';
 import { useFriends } from '../../../../hooks/friends';
 import { useAuth } from '../../../../hooks/auth';
-
 import logoImg from '../../../../assets/headerLogo.png';
 
 import ShortConfirmationWindow from '../../../../components/ShortConfirmationWindow';
 import CreateEvent from '../../../myEvents/components/CreateEvent';
 import { MenuOptionButton } from '../../components/MenuOptionButton';
+import PageHeader from '../../../../components/PageHeader';
 
 import {
   Container,
@@ -19,12 +18,13 @@ import {
   Body,
 } from './styles';
 import BackButton from '../../../../components/BackButton';
+import { useEventVariables } from '../../../../hooks/eventVariables';
 
 const Menu: React.FC = () => {
   const navigation = useNavigation();
 
   const { signOut } = useAuth();
-  const { unsetVariables } = useUnsetEventVariables();
+  const { unsetVariables } = useEventVariables();
   const { resetFriendsVariables } = useFriends();
 
   const [confirmationWindow, setConfirmationWindow] = useState(false);
@@ -39,11 +39,15 @@ const Menu: React.FC = () => {
   }, []);
 
   function navigateToFriendsPage() {
-    navigation.navigate('FriendsPage')
+    navigation.navigate('FriendsPage');
   }
 
   function navigateToEventsPage() {
-    navigation.navigate('Dashboard')
+    navigation.navigate('Dashboard');
+  }
+
+  function navigateBack() {
+    navigation.goBack();
   }
 
   function handleSignOut() {
@@ -67,10 +71,13 @@ const Menu: React.FC = () => {
       {createEventWindow && (
         <CreateEvent handleCloseWindow={() => handleCreateEventWindow(false)} />
       )}
-      <Header>
-        <BackButton />
+      {/* <Header>
+        <BackButton onPress={navigateBack} />
         <Logo source={logoImg} />
-      </Header>
+      </Header> */}
+      <PageHeader onPressBackButton={navigateBack}>
+        <Logo source={logoImg} />
+      </PageHeader>
       <Body>
         <MenuOptionButton
           color={theme.color.text1}
