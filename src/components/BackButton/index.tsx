@@ -6,13 +6,11 @@ import theme from '../../global/styles/theme';
 import { Container } from './styles';
 
 interface IProps {
-  unsetVariables?: () => void;
-  shadow?: boolean;
+  onPress: () => void;
 }
 
 const BackButton: React.FC<IProps> = ({
-  unsetVariables,
-  shadow,
+  onPress,
 }) => {
   const {
     shadowColor,
@@ -23,17 +21,17 @@ const BackButton: React.FC<IProps> = ({
   const navigation = useNavigation();
 
   const goBack = useCallback(() => {
-    unsetVariables && unsetVariables();
-    navigation.goBack();
+    onPress();
   }, [navigation]);
 
   return (
     <Container
-      style={shadow && {
+      style={{
         shadowColor,
         shadowOffset,
         shadowOpacity,
         shadowRadius,
+        elevation: 2,
       }}
       onPress={goBack}
     >

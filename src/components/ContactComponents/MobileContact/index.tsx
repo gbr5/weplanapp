@@ -12,10 +12,11 @@ import {
 } from './styles';
 
 interface IProps {
+  fullSelection: boolean;
   contact: Contact;
 }
 
-export function MobileContact({ contact }: IProps) {
+export function MobileContact({ contact, fullSelection }: IProps) {
   const {
     shadowColor,
     shadowOffset,
@@ -29,22 +30,28 @@ export function MobileContact({ contact }: IProps) {
 
   const [loading, setLoading] = useState(false);
 
-  function handleSelectContact() {
-    try {
-      setLoading(true);
-      handleSelectedMobileContacts(contact);
-    } catch(err) {
-      throw new Error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   const isSelected = useMemo(() => {
     const findContact = selectedMobileContacts.find(thisContact =>
       thisContact.recordID === contact.recordID);
     return findContact === undefined ? false : !!findContact;
   }, [selectedMobileContacts]);
+
+  const inActive = useMemo(() => {
+    if (fullSelection && !isSelected) return true;
+    false;
+  }, [fullSelection, isSelected]);
+
+  function handleSelectContact() {
+    if (inActive) return;
+    try {
+      setLoading(true);
+      handleSelectedMobileContacts(contact);
+    } catch {
+      throw new Error;
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Container
@@ -57,15 +64,17 @@ export function MobileContact({ contact }: IProps) {
       onPress={handleSelectContact}
     >
       <Name>{contact.givenName}   {contact.familyName}</Name>
-      <Button onPress={handleSelectContact}>
-        {loading ? (
-          <Icon isSelected={false} name="loader" />
-        ) : isSelected ? (
-          <Icon isSelected={true} name="check-square" />
-        ) : (
-          <Icon isSelected={false} name="square" />
-        )}
-      </Button>
+      {!inActive && (
+        <Button onPress={handleSelectContact}>
+          {loading ? (
+            <Icon isSelected={false} name="loader" />
+          ) : isSelected ? (
+            <Icon isSelected={true} name="check-square" />
+          ) : (
+            <Icon isSelected={false} name="square" />
+          )}
+        </Button>
+      )}
     </Container>
   );
 }

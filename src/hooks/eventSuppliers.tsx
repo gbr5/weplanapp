@@ -54,7 +54,6 @@ interface EventSuppliersContextType {
   supplierBudgetForm: boolean;
   supplierSubCategoryWindow: boolean;
   supplierSubCategories: ISupplierSubCategoryDTO[];
-  supplierTransactionsWindow: boolean;
   supplierTransactionAgreementsWindow: boolean;
   supplierSelectedDateWindow: boolean;
   supplierTransactions: ITransactionDTO[] | undefined;
@@ -85,7 +84,6 @@ interface EventSuppliersContextType {
   handleEditSupplierBudgetDescriptionWindow: () => void;
   handleSupplierBudgetForm: () => void;
   handleSupplierSubCategoryWindow: () => void;
-  handleSupplierTransactionsWindow: () => void;
   handleCreateSupplierTransactionAgreementWindow: () => void;
   handleCancelAllAgreementsWindow: () => void;
   handleCancelFutureTransactionsWindow: () => void;
@@ -145,7 +143,6 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   const [supplierAgreementTransactions, setSupplierAgreementTransactions] = useState<IEventSupplierTransactionDTO[]>([]);
   const [supplierSubCategoryWindow, setSupplierSubCategoryWindow] = useState(false);
   const [supplierSubCategories, setSupplierSubCategories] = useState<ISupplierSubCategoryDTO[]>([]);
-  const [supplierTransactionsWindow, setSupplierTransactionsWindow] = useState(false);
   const [supplierTransactionAgreementsWindow, setSupplierTransactionAgreementsWindow] = useState(false);
   const [supplierSelectedDateWindow, setSupplierSelectedDateWindow] = useState(false);
   const [supplierSelectedDate, setSupplierSelectedDate] = useState(new Date());
@@ -177,7 +174,6 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
     setSupplierAgreementTransactions([]);
     setSupplierSubCategoryWindow(false);
     setSupplierSubCategories([]);
-    setSupplierTransactionsWindow(false);
   }
   function handleUpdateAgreementAndTransactions({
     id,
@@ -259,9 +255,6 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
   function handleSupplierTransactionAgreementsWindow() {
     setSupplierTransactionAgreementsWindow(!supplierTransactionAgreementsWindow)
   }
-  function handleSupplierTransactionsWindow() {
-    setSupplierTransactionsWindow(!supplierTransactionsWindow)
-  }
   function handleSupplierSubCategoryWindow() {
     setSupplierSubCategoryWindow(!supplierSubCategoryWindow)
   }
@@ -297,7 +290,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         selectEventSupplier(response.data);
         handleCreateSupplierTransactionAgreementWindow();
       }
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -322,7 +315,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       });
       selectEventSupplier(response.data);
       await getEventSuppliers(selectedEvent.id);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -347,7 +340,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
 
       await getEventSuppliers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -371,7 +364,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       });
 
       await getEventSuppliers(selectedEvent.id);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -384,7 +377,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       >(`/event-supplier-transaction-agreements/${supplier_id}`);
 
       return response.data;
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -401,7 +394,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       });
       response.data && setSelectedSupplierTransactionAgreement(response.data);
       await getEventNotes(selectedEvent.id);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -412,7 +405,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       >(`/event-supplier-transactions/${agreement_id}`);
 
       return response.data;
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -421,7 +414,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get(`/supplier-sub-categories/${selectedSupplierCategory}`);
       setSupplierSubCategories(response.data);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -467,7 +460,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         await api.post(`/event-supplier-files/${supplier_id}`, data);
         await getEventSuppliers(selectedEvent.id);
       }
-    } catch(err) {
+    } catch (err: any | unknown) {
       // if (DocumentPicker.isCancel(err)) {
       //   return;
       // } else {
@@ -496,7 +489,7 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
       );
       await api.post(`/event-supplier-files/${supplier_id}`, data);
       await getEventSuppliers(selectedEvent.id);
-    } catch(err) {
+    } catch (err: any | unknown) {
       if (DocumentPicker.isCancel(err)) {
         return;
       } else {
@@ -579,7 +572,6 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         handleEventSupplierAgreementTransactionsWindow,
         handleSupplierCategoryWindow,
         handleSupplierSubCategoryWindow,
-        handleSupplierTransactionsWindow,
         handleUpdateAgreementAndTransactions,
         loading,
         selectedSupplierSubCategory,
@@ -592,7 +584,6 @@ const EventSuppliersProvider: React.FC = ({ children }) => {
         selectSupplierTransaction,
         supplierCategoryWindow,
         supplierSubCategoryWindow,
-        supplierTransactionsWindow,
         supplierAgreementTransactions,
         supplierSubCategories,
         supplierTransactions,

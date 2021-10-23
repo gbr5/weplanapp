@@ -18,6 +18,7 @@ export function EventSupplierBudgetsWindow() {
   const {
     selectedEventSupplier,
     handleSelectedDate,
+    isOwner,
   } = useEventVariables();
   const {
     handleSupplierBudgetsWindow,
@@ -31,8 +32,10 @@ export function EventSupplierBudgetsWindow() {
   }
 
   function openSupplierBudgetsForm() {
-    handleSelectedDate(addMonths(new Date(), 3));
-    handleSupplierBudgetForm();
+    if (isOwner) {
+      handleSelectedDate(addMonths(new Date(), 3));
+      handleSupplierBudgetForm();
+    }
   }
 
   return (

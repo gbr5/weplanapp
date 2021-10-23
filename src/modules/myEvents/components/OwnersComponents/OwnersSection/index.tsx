@@ -18,7 +18,7 @@ import {
 
 export function OwnersSection() {
   const { handleSectionDescriptionWindow } = useMyEvent();
-  const { selectedEvent } = useEventVariables();
+  const { selectedEvent, isOwner } = useEventVariables();
   const { handleAddOwnerWindow } = useEventOwners();
   const { getFriends } = useFriends();
 
@@ -28,8 +28,10 @@ export function OwnersSection() {
     setSection(data);
   }
   async function handleAddOwnerForm() {
-    await getFriends();
-    handleAddOwnerWindow();
+    if (isOwner) {
+      await getFriends();
+      handleAddOwnerWindow();
+    }
   }
   return (
     <Container>

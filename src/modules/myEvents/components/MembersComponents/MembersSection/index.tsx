@@ -9,6 +9,7 @@ import { MembersFinancialSection } from '../MembersFinancialSection';
 import { MembersFooterMenu } from '../MembersFooterMenu';
 import { MembersListSection } from '../MembersListSection';
 import { MembersMainSection } from '../MembersMainSection';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import {
   Container,
@@ -16,6 +17,7 @@ import {
 } from './styles';
 
 export function MembersSection() {
+  const { isOwner } = useEventVariables();
   const { handleSectionDescriptionWindow } = useMyEvent();
   const { handleAddMemberWindow } = useEventMembers();
   const { getFriends } = useFriends();
@@ -26,8 +28,10 @@ export function MembersSection() {
     setSection(data);
   }
   async function handleAddMemberForm() {
-    await getFriends();
-    handleAddMemberWindow();
+    if (isOwner) {
+      await getFriends();
+      handleAddMemberWindow();
+    }
   }
   return (
     <Container>

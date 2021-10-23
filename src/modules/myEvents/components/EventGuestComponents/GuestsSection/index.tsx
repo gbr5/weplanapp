@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState, useRef } from 'react';
-import { Keyboard, TextInput } from 'react-native';
+import { Keyboard, PermissionsAndroid, Platform, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import theme from '../../../../../global/styles/theme';
@@ -28,6 +28,7 @@ import { useEffect } from 'react';
 import { EventGuestButton } from '../EventGuestButton';
 import { useUserContacts } from '../../../../../hooks/userContacts';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
+import ShortConfirmationWindow from '../../../../../components/ShortConfirmationWindow';
 
 const GuestsSection: React.FC = () => {
   const {
@@ -55,8 +56,10 @@ const GuestsSection: React.FC = () => {
     onlyMyGuestsFilter,
   } = useEventGuests();
   const {
-    getUserMobileContacts,
-    handleSelectMobileContactsWindow,
+    verifyAccess,
+    importGuestNotice,
+    handleNewMobileGuest,
+    handleImportGuestNotice,
   } = useUserContacts();
 
   const [allGuestsSection, setAllGuestsSection] = useState(true);
@@ -143,13 +146,8 @@ const GuestsSection: React.FC = () => {
     onlyMyGuestsFilter,
   ]);
 
-  async function handleNewMobileGuest() {
-    await getUserMobileContacts();
-    handleSelectMobileContactsWindow(true);
-  }
-
   useEffect(() => {
-    if (eventGuests.length <= 0) handleNewMobileGuest();
+    if (eventGuests.length <= 0) verifyAccess();
   }, []);
 
   return (
@@ -167,6 +165,16 @@ const GuestsSection: React.FC = () => {
             firstLabel="Todos"
             secondFunction={openMyGuests}
             secondLabel="Meus"
+          />
+        )}
+        {importGuestNotice && (
+          <ShortConfirmationWindow
+            closeWindow={handleImportGuestNotice}
+            firstButtonLabel="Não conceder"
+            firstFunction={handleImportGuestNotice}
+            question="Permitir a WePlan acessar e fazer o upload (para os servidores) dos contatos selecionado por você."
+            secondButtonLabel="Liberar acesso"
+            secondFunction={handleNewMobileGuest}
           />
         )}
         {backdrop && (

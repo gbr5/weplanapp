@@ -21,10 +21,14 @@ interface IEventContextData {
   eventsAsOwner: IEventOwnerDTO[];
   eventsAsMember: IEventMemberDTO[];
   eventsAsGuest: IEventGuestDTO[];
-  getEventsAsOwner(): void;
-  getEventsAsMember(): void;
-  getEventsAsGuest(): void;
-  getNextEvent(): void;
+  selectedEventSection: 'host' | 'member' | 'guest';
+  eventAsGuestConfirmationWindow: boolean;
+  handleSelectedEventSection: (data: 'host' | 'member' | 'guest') => void;
+  handleEventAsGuestConfirmationWindow: () => void;
+  getEventsAsOwner(): Promise<void>;
+  getEventsAsMember(): Promise<void>;
+  getEventsAsGuest(): Promise<void>;
+  getNextEvent(): Promise<void>;
   createEvent(data: ICreateEventDTO): Promise<IEventDTO>;
 }
 
@@ -33,10 +37,21 @@ const EventContext = createContext({} as IEventContextData);
 // eslint-disable-next-line react/prop-types
 const EventProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(false);
+  const [eventAsGuestConfirmationWindow, setEventAsGuestConfirmationWindow] = useState(false);
+  const [selectedEventSection, setSelectedEventSection] = useState<'host' | 'member' | 'guest'>('host');
   const [nextEvent, setNextEvent] = useState({} as IEventDTO);
   const [eventsAsOwner, setEventsAsOwner] = useState<IEventOwnerDTO[]>([]);
   const [eventsAsMember, setEventsAsMember] = useState<IEventMemberDTO[]>([]);
   const [eventsAsGuest, setEventsAsGuest] = useState<IEventGuestDTO[]>([]);
+
+  function handleSelectedEventSection(data: 'host' | 'member' | 'guest') {
+    setSelectedEventSection(data);
+  }
+
+  function handleEventAsGuestConfirmationWindow() {
+    setEventAsGuestConfirmationWindow(!eventAsGuestConfirmationWindow);
+  }
+
   async function loadStorageData() {
     const events_as_owner = await AsyncStorage.getItem('@WP-App:events-as-owner');
     const events_as_member = await AsyncStorage.getItem('@WP-App:events-as-member');
@@ -49,9 +64,11 @@ const EventProvider: React.FC = ({ children }) => {
     }
     setLoading(false);
   }
+
   useEffect(() => {
     loadStorageData();
   }, []);
+
   const getEventsAsOwner = useCallback(async () => {
     try {
       const response = await api.get<IEventOwnerDTO[]>(
@@ -62,10 +79,11 @@ const EventProvider: React.FC = ({ children }) => {
         JSON.stringify(response.data),
       );
       return setEventsAsOwner(response.data);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }, []);
+
   const getEventsAsMember = useCallback(async () => {
     try {
       const response = await api.get<IEventMemberDTO[]>(
@@ -76,10 +94,11 @@ const EventProvider: React.FC = ({ children }) => {
         JSON.stringify(response.data),
       );
       setEventsAsMember(response.data);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }, []);
+
   const getEventsAsGuest = useCallback(async () => {
     try {
       const response = await api.get<IEventGuestDTO[]>(
@@ -90,18 +109,20 @@ const EventProvider: React.FC = ({ children }) => {
         JSON.stringify(response.data),
       );
       setEventsAsGuest(response.data);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }, []);
+
   const getNextEvent = useCallback(async () => {
     try {
       const response = await api.get<IEventDTO>('/my-next-event/');
       setNextEvent(response.data);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }, []);
+
   const createEvent = useCallback(async ({
     name, date, event_type, isDateDefined,
   }: ICreateEventDTO) => {
@@ -115,7 +136,7 @@ const EventProvider: React.FC = ({ children }) => {
       event && event.data && getNextEvent();
       event && event.data && getEventsAsOwner();
       return event.data;
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }, [getEventsAsOwner, getNextEvent]);
@@ -133,6 +154,10 @@ const EventProvider: React.FC = ({ children }) => {
         getEventsAsMember,
         getEventsAsGuest,
         getNextEvent,
+        handleSelectedEventSection,
+        selectedEventSection,
+        eventAsGuestConfirmationWindow,
+        handleEventAsGuestConfirmationWindow,
       }}
     >
       {children}

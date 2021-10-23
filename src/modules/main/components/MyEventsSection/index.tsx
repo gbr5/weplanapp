@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import ISectionProps from '../../../../dtos/ISectionProps';
 import { useEvent } from '../../../../hooks/event';
-import MyEventsAsHost from '../MyEventsAsHost';
-import MyEventsAsMember from '../MyEventsAsMember';
+import { MyEventsAs } from '../MyEventsAs';
 import NextEvent from '../NextEvent';
 
 import {
@@ -10,32 +8,35 @@ import {
 } from './styles';
 
 const MyEventsSection: React.FC = () => {
-  const [selectedSection, setSelectedSection] = useState('host');
-  const { getNextEvent, getEventsAsOwner } = useEvent();
-
-  function handleSection({ section }: ISectionProps) {
-    setSelectedSection(section);
-  }
+  const {
+    getNextEvent,
+    getEventsAsOwner,
+    getEventsAsMember,
+    getEventsAsGuest,
+  } = useEvent();
 
   useEffect(() => {
     getNextEvent();
-  }, [getNextEvent]);
+  }, []);
 
   useEffect(() => {
     getEventsAsOwner();
-  }, [getEventsAsOwner]);
+  }, []);
+
+  useEffect(() => {
+    getEventsAsMember();
+  }, []);
+
+  useEffect(() => {
+    getEventsAsGuest();
+  }, []);
 
   return (
     <Container>
       <NextEvent />
-      <MyEventsAsHost
-        handleSection={(e: ISectionProps) => handleSection(e)}
-        selectedSection={selectedSection}
-      />
-      <MyEventsAsMember
-        handleSection={handleSection}
-        selectedSection={selectedSection}
-      />
+      <MyEventsAs thisSection="host" />
+      <MyEventsAs thisSection="member" />
+      <MyEventsAs thisSection="guest" />
     </Container>
   );
 };

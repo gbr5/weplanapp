@@ -6,10 +6,10 @@ import { Container } from './styles';
 import theme from '../../global/styles/theme';
 
 interface IProps {
-  unsetVariables?: () => void;
+  onPressBackButton: () => void;
 }
 
-const PageHeader: React.FC<IProps> = ({ unsetVariables, children }) => {
+const PageHeader: React.FC<IProps> = ({ onPressBackButton, children }) => {
   const {
     shadowColor,
     shadowOffset,
@@ -25,7 +25,7 @@ const PageHeader: React.FC<IProps> = ({ unsetVariables, children }) => {
         shadowRadius,
       }}
     >
-      <BackButton unsetVariables={unsetVariables} />
+      <BackButton onPress={onPressBackButton} />
         {children}
       <ProfileButton />
     </Container>

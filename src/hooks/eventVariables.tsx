@@ -263,7 +263,6 @@ const EventVariablesProvider: React.FC = ({ children }) => {
   }
 
   async function unsetVariables(): Promise<void> {
-    await AsyncStorage.removeItem('@WePlan-Party:selected-event');
     // 1
     setEventBudget({} as IEventBudgetDTO);
     // 2
@@ -340,6 +339,7 @@ const EventVariablesProvider: React.FC = ({ children }) => {
     setSelectedEventTaskFollower({} as ITaskFollowerDTO);
     // 36
     setNewEventMonthlyPaymentConfirmation(false);
+    await AsyncStorage.removeItem('@WePlan-Party:selected-event');
   }
 
   function handleSelectedDate(data: Date): void {

@@ -16,8 +16,12 @@ import {
   IconContainer,
   Icon,
 } from './styles';
+import { useAuth } from '../../../hooks/auth';
+import { useEventVariables } from '../../../hooks/eventVariables';
 
 export function TransactionFilesWindow() {
+  const { user } = useAuth();
+  const { isOwner } = useEventVariables();
   const {
     selectedEventTransaction,
     handleTransactionFilesWindow,
@@ -28,12 +32,23 @@ export function TransactionFilesWindow() {
 
   const [imageButton, setImageButton] = useState(true);
 
+  const isAllowed = useMemo(() => {
+    if (
+      isOwner ||
+      user.id === selectedEventTransaction.transaction.payee_id ||
+      user.id === selectedEventTransaction.transaction.payer_id
+    ) return true;
+    return false;
+  }, [isOwner, selectedEventTransaction, user]);
+
   async function handleFile() {
+    if (!isAllowed) return;
     setImageButton(false);
     await importTransactionFile(selectedEventTransaction.transaction.id);
   }
 
   async function handleImages() {
+    if (!isAllowed) return;
     setImageButton(true);
     await importTransactionImage(selectedEventTransaction.transaction.id);
   }

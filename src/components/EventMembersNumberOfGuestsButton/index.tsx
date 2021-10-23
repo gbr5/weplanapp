@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import CurrencyInlineFormField from '../../components/CurrencyInlineFormField';
 import theme from '../../global/styles/theme';
+import { useEventMembers } from '../../hooks/eventMembers';
 import { useEventVariables } from '../../hooks/eventVariables';
 import { useMyEvent } from '../../hooks/myEvent';
 import { formatBrlCurrency } from '../../utils/formatBrlCurrency';
@@ -22,10 +23,8 @@ export function EventMembersNumberOfGuestsButton() {
     shadowRadius,
   } = theme.objectButtonShadow;
 
-  const {
-    editEvent,
-  } = useMyEvent();
   const { selectedEvent } = useEventVariables();
+  const { defineEventMembersNumberOfGuests } = useEventMembers();
 
   const [editNumberOfGuests, setEditNumberOfGuests] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,10 +36,7 @@ export function EventMembersNumberOfGuestsButton() {
   async function handleSubmit(members_number_of_guests: string) {
     try {
       setLoading(true);
-      await editEvent({
-        ...selectedEvent,
-        members_number_of_guests: Number(members_number_of_guests),
-      });
+      await defineEventMembersNumberOfGuests(Number(members_number_of_guests));
     } catch {
       throw new Error();
     } finally {

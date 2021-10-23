@@ -20,6 +20,14 @@ export const SubContainer = styled.View`
   width: 100%;
 `;
 
+export const NextTransactionsContainer = styled.View`
+  margin: 8px 0;
+  /* flex-direction: row; */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 export const Title = styled.Text`
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.roboto};

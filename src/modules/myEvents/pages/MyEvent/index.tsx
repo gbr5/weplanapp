@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/core';
 
 import { useMyEvent } from '../../../../hooks/myEvent';
 import { useEventTasks } from '../../../../hooks/eventTasks';
@@ -33,7 +34,6 @@ import { EditNoteWindow } from '../../../../components/EditNoteWindow';
 import { SuppliersSection } from '../../components/SuppliersComponents/SuppliersSection';
 import { DischargeSupplierWindow } from '../../components/SuppliersComponents/DischargeSupplierWindow';
 import { CancelAllAgreements } from '../../components/SuppliersComponents/CancelAllAgreements';
-import { SupplierTransactionsWindow } from '../../components/SuppliersComponents/SupplierTransactionsWindow';
 import { EventSupplierAgreementTransactionsWindow } from '../../components/FinancialComponents/EventSupplierAgreementTransactionsWindow';
 import { MembersSection } from '../../components/MembersComponents/MembersSection';
 import { OwnersSection } from '../../components/OwnersComponents/OwnersSection';
@@ -43,7 +43,6 @@ import { TransactionsFilterWindow } from '../../components/FinancialComponents/T
 import { NewGuestWindow } from '../../components/EventGuestComponents/NewGuestWindow';
 import { SelectMobileContacts } from '../../../../components/ContactComponents/SelectMobileContacts';
 import { CreateEventTransaction } from '../../../../components/TransactionComponents/CreateEventTransaction';
-
 import { EditSupplierName } from '../../components/SuppliersComponents/EditSupplierName';
 import { EditSupplierCategory } from '../../components/SuppliersComponents/EditSupplierCategory';
 import { EventNotesSection } from '../../components/EventNotesComponents/EventNotesSection';
@@ -63,15 +62,6 @@ import { EventTaskFollowersDescriptionWindow } from '../../components/EventTaskC
 import { UserEventTasksWindow } from '../../components/EventTaskComponents/UserEventTasksWindow';
 import { SelectOneFromFriends } from '../../../../components/FriendsComponents/SelectOneFromFriends';
 import { CreateGuestContactWindow } from '../../components/EventGuestComponents/CreateGuestContactWindow';
-
-import {
-  Container,
-  EventName,
-  Body,
-  DashboardButton,
-  BodyContainer,
-} from './styles';
-
 import IEventDTO from '../../../../dtos/IEventDTO';
 import { WPFriendContactWindow } from '../../../../components/WPFriendContactWindow';
 import { useFriends } from '../../../../hooks/friends';
@@ -86,7 +76,16 @@ import { NewEventMonthlyPaymentConfirmation } from '../../../../components/NewEv
 import { EventMonthlyPaymentSettings } from '../../../../components/EventMonthlyPaymentSettings';
 import { EventDashboardSection } from '../../components/EventDashboardSection';
 
+import {
+  Container,
+  EventName,
+  Body,
+  DashboardButton,
+  BodyContainer,
+} from './styles';
+
 const MyEvent: React.FC = () => {
+  const navigation = useNavigation();
   const {
     currentSection,
     selectEventSection,
@@ -154,7 +153,6 @@ const MyEvent: React.FC = () => {
     supplierSubCategoryWindow,
     createSupplierTransactionAgreementWindow,
     handleAddSupplierWindow,
-    supplierTransactionsWindow,
     selectedSupplierTransactionAgreement,
     eventSupplierAgreementTransactionsWindow,
     editSupplierNameWindow,
@@ -198,7 +196,6 @@ const MyEvent: React.FC = () => {
   } = useEventGuests();
   const {
     editNoteWindow,
-    selectNote,
     handleEditNoteWindow,
   } = useNote();
   const { editFileWindow } = useFiles();
@@ -242,7 +239,6 @@ const MyEvent: React.FC = () => {
     handleNewEventSupplierTransactionAgreement,
     selectedEventTransaction,
     createTransactionWindow,
-    editEventTransactionValueWindow,
     transactionNotesWindow,
     transactionFilesWindow,
     selectedEventTransactionAgreement,
@@ -253,6 +249,8 @@ const MyEvent: React.FC = () => {
 
   function handleUnsetVariables() {
     handleSelectedEvent({} as IEventDTO);
+    const canGoBack = navigation.canGoBack();
+    if (canGoBack) navigation.goBack();
   }
 
   async function handleUpdateTaskDate(date: Date) {
@@ -317,6 +315,7 @@ const MyEvent: React.FC = () => {
         <SelectFromFriends
           closeWindow={handleSelectWePlanGuestsWindow}
           handleAddFriends={createMultipleWePlanGuests}
+          isGuests={true}
         />
       }
       {eventOwnerTransactionAgreementsWindow && (
@@ -499,12 +498,6 @@ const MyEvent: React.FC = () => {
         )}
       {selectedEventSupplier
         && selectedEventSupplier.id
-        && supplierTransactionsWindow && (
-          <SupplierTransactionsWindow />
-        )
-      }
-      {selectedEventSupplier
-        && selectedEventSupplier.id
         && cancelAgreementsWindow && (
           <CancelAllAgreements />
         )
@@ -657,7 +650,7 @@ const MyEvent: React.FC = () => {
         />
       )}
       <Container>
-        <PageHeader unsetVariables={handleUnsetVariables} >
+        <PageHeader onPressBackButton={handleUnsetVariables} >
           <DashboardButton onPress={() => selectEventSection('Tasks')}>
             <EventName>{selectedEvent.name}</EventName>
           </DashboardButton>

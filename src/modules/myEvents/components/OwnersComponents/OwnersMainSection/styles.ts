@@ -41,5 +41,6 @@ export const ParticipantsContainer = styled(
   width: 100%;
   padding: 8px 4px;
   flex: 1;
+  min-height: 240px;
   max-height: 100%;
 `;

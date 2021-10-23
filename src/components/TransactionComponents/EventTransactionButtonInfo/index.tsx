@@ -32,6 +32,7 @@ import CurrencyInlineFormField from '../../CurrencyInlineFormField';
 import { Alert } from 'react-native';
 import { useEventSuppliers } from '../../../hooks/eventSuppliers';
 import { roundCurrency } from '../../../utils/roundCurrency';
+import { useAuth } from '../../../hooks/auth';
 
 export function EventTransactionButtonInfo() {
   const {
@@ -40,6 +41,7 @@ export function EventTransactionButtonInfo() {
     shadowOpacity,
     shadowRadius,
   } = theme.menuShadow;
+  const { user } = useAuth();
   const { getTransactionNotes, selectedTransactionNotes } = useNote();
   const {
     editTransaction,
@@ -53,6 +55,8 @@ export function EventTransactionButtonInfo() {
   const {
     handleSelectedDate,
     handleSelectedDateWindow,
+    isOwner,
+    eventMembers,
   } = useEventVariables();
   const {
     handleUpdateAgreementAndTransactions,
@@ -63,16 +67,37 @@ export function EventTransactionButtonInfo() {
   const [editAmount, setEditAmount] = useState(false);
   const [editCategory, setEditCategory] = useState(false);
 
+  const meAsMember = useMemo(() => {
+    if (!isOwner) {
+      const member = eventMembers.find(item => item.userEventMember.id === user.id);
+      if (member) {
+        return member.id;
+      }
+    }
+    return '';
+  }, [isOwner, eventMembers, user]);
+
+  const isAllowed = useMemo(() => {
+    if (
+      isOwner ||
+      user.id === selectedEventTransaction.transaction.payee_id ||
+      user.id === selectedEventTransaction.transaction.payer_id ||
+      meAsMember === selectedEventTransaction.transaction.payee_id ||
+      meAsMember === selectedEventTransaction.transaction.payer_id
+    ) return true;
+    return false;
+  }, [isOwner, meAsMember, selectedEventTransaction, user]);
+
   function handleEditName() {
-    setEditName(!editName);
+    isOwner && setEditName(!editName);
   }
 
   function handleEditAmount() {
-    setEditAmount(!editAmount);
+    isOwner && setEditAmount(!editAmount);
   }
 
   function handleEditCategory() {
-    setEditCategory(!editCategory);
+    isOwner && setEditCategory(!editCategory);
   }
 
   const color = useMemo(() => {
@@ -85,6 +110,7 @@ export function EventTransactionButtonInfo() {
   }, [selectedEventTransaction, theme]);
 
   async function updateTransactionIsPaid() {
+    if (!isAllowed) return;
     try {
       setLoading(true);
       const response = await editTransaction({
@@ -95,11 +121,16 @@ export function EventTransactionButtonInfo() {
         ...selectedEventTransaction,
         transaction: response,
       });
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleCancelTransactionWindow() {
+    if (!isOwner) return;
+    handleCancelEventTransactionConfirmationWindow()
   }
 
   async function updateTransactionName(name: string) {
@@ -113,7 +144,7 @@ export function EventTransactionButtonInfo() {
         ...selectedEventTransaction,
         transaction: response,
       });
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -130,7 +161,7 @@ export function EventTransactionButtonInfo() {
         ...selectedEventTransaction,
         transaction: response,
       });
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -172,7 +203,7 @@ export function EventTransactionButtonInfo() {
         await updateEventSupplierTransactionAgreement(updatedAgreement);
       }
       handleEditAmount();
-    } catch (err) {
+    } catch (err: any | unknown) {
       return Alert.alert('Erro na atualização', 'Tente novamente!');
     } finally {
       setLoading(false);
@@ -180,8 +211,10 @@ export function EventTransactionButtonInfo() {
   }
 
   function handleOpenUpdateTransactionDueDateWindow() {
-    handleSelectedDate(new Date(selectedEventTransaction.transaction.due_date));
-    handleSelectedDateWindow();
+    if (isOwner) {
+      handleSelectedDate(new Date(selectedEventTransaction.transaction.due_date));
+      handleSelectedDateWindow();
+    }
   }
 
   useEffect(() => {
@@ -386,7 +419,7 @@ export function EventTransactionButtonInfo() {
             shadowRadius,
             elevation: 5,
           }}
-          onPress={handleCancelEventTransactionConfirmationWindow}
+          onPress={handleCancelTransactionWindow}
         >
           <DeleteIcon name="trash-2" />
         </DeleteButton>

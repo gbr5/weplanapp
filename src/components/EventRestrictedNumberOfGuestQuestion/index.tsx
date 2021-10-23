@@ -18,7 +18,7 @@ export function EventRestrictedNumberOfGuestQuestion() {
         ...selectedEvent,
         isNumberOfGuestsRestricted: !selectedEvent.isNumberOfGuestsRestricted,
       });
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -26,9 +26,15 @@ export function EventRestrictedNumberOfGuestQuestion() {
   }
   return (
     <Container>
-      <Title>
-        Número de convidados restrito
-      </Title>
+      {selectedEvent.isNumberOfGuestsRestricted ? (
+        <Title>
+          Nº de convidados restrito
+        </Title>
+      ) : (
+        <Title>
+          Nº de convidados irrestrito
+        </Title>
+      )}
       <CheckBoxButton
         handleIsActive={handleSetEventNumberOfGuests}
         isActive={selectedEvent.isNumberOfGuestsRestricted}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 import { useEventVariables } from '../../../../../hooks/eventVariables';
 import IEventMemberDTO from '../../../../../dtos/IEventMemberDTO';
@@ -13,6 +13,7 @@ import {
 } from './styles';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import theme from '../../../../../global/styles/theme';
+import { useAuth } from '../../../../../hooks/auth';
 
 interface IProps {
   member: IEventMemberDTO;
@@ -29,19 +30,28 @@ export function MemberButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-  const { selectedEventMember, selectEventMember} = useEventVariables();
+  const { user } = useAuth();
+  const { selectedEventMember, selectEventMember, isOwner} = useEventVariables();
   const { getSelectedUserEventTasks } = useMyEvent();
 
   const [memberBody, setMemberBody] = useState(false);
 
+  const isAllowed = useMemo(() => {
+    if (isOwner || selectedEventMember && selectedEventMember.id && (user.id === selectedEventMember.userEventMember.id))
+      return true;
+    return false;
+  }, [isOwner, user, selectedEventMember]);
+
   async function handleMemberBody() {
-    if (memberBody) {
-      selectEventMember({} as IEventMemberDTO)
-    } else {
-      await getSelectedUserEventTasks(member.userEventMember.id);
-      selectEventMember(member);
+    if (isAllowed) {
+      if (memberBody) {
+        selectEventMember({} as IEventMemberDTO)
+      } else {
+        await getSelectedUserEventTasks(member.userEventMember.id);
+        selectEventMember(member);
+      }
+      setMemberBody(!memberBody);
     }
-    setMemberBody(!memberBody);
   }
 
   useEffect(() => {

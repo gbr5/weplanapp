@@ -13,24 +13,6 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.color.secondary};
 `;
 
-export const Title = styled.Text`
-  width: 100%;
-  text-align: center;
-  font-size: ${RFValue(24)}px;
-  color: ${({ theme }) => theme.color.text3};
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  margin: 12px auto 24px;
-`;
-
-export const Header = styled.View`
-  width: 100%;
-  padding: 24px;
-  background: ${({ theme }) => theme.color.secondary};
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
 export const Body = styled.View`
   padding: 0 16px;
   width: 100%;
@@ -38,38 +20,4 @@ export const Body = styled.View`
   background: ${({ theme }) => theme.color.text5};
   justify-content: flex-start;
   align-items: flex-start;
-`;
-export const HeaderTitle = styled.Text`
-  font-size: ${RFValue(20)}px;
-  line-height: 28px;
-  color: ${({ theme }) => theme.color.text6};
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
-`;
-export const UserName = styled.Text`
-  font-size: ${RFValue(20)}px;
-  line-height: 28px;
-  color: ${({ theme }) => theme.color.primary};
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
-`;
-export const ProfileButton = styled.TouchableOpacity`
-
-`;
-export const UserAvatar = styled.Image`
-  width: 56px;
-  height: 56px;
-  border-radius: 28px;
-`;
-
-export const OpenDatePickerButton = styled.TouchableOpacity`
-  height: 46px;
-  width: 100%;
-  background: ${({ theme }) => theme.color.primary};
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-`;
-export const OpenDatePickerButtonText = styled.Text`
-  font-size: ${RFValue(16)}px;
-  color: ${({ theme }) => theme.color.text1};
-  font-family: ${({ theme }) => theme.fonts.roboto_medium};
 `;

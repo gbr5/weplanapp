@@ -132,7 +132,7 @@ const MyEventProvider: React.FC = ({ children }) => {
   const [availableNumberOfGuests, setAvailableNumberOfGuests] = useState(0);
   const [totalEventCost, setTotalEventCost] = useState(0);
   const [isOwner, setIsOwner] = useState(false);
-  const [currentSection, setCurrentSection] = useState('Notes');
+  const [currentSection, setCurrentSection] = useState('Dashboard');
 
   const calculateTotalEventCost = useCallback(() => {
     const totalCost: number = hiredSuppliers
@@ -201,7 +201,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         });
       handleEventTransactions(eventTransactions);
       handleAllEventTransactions(eventTransactions);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -230,7 +230,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         const updatedSupplier = response.data.find(supplier => supplier.id === selectedEventSupplier.id);
         updatedSupplier && selectEventSupplier(updatedSupplier);
       }
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       calculateTotalEventCost();
@@ -240,7 +240,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get<IEventBudgetDTO>(`/event-budget/${eventId}`);
       handleEventBudget(response.data);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -250,7 +250,7 @@ const MyEventProvider: React.FC = ({ children }) => {
       const response = await api.get<IEventTaskDTO[]>(`/list-event-tasks-by-user/${user_id}/${selectedEvent.id}`);
       handleSelectedUserEventTasks(response.data);
       return response.data;
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -259,7 +259,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get<IEventNoteDTO[]>(`/event-notes/${eventId}`);
       handleEventNotes(response.data);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -272,7 +272,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         findTask && selectEventTask(findTask);
       }
       handleEventTasks(response.data);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -300,7 +300,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         );
         oldSelectedGuest !== undefined && selectEventGuest(oldSelectedGuest);
       }
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -315,7 +315,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         const member = response.data.find(item => item.id === selectedEventMember.id);
         member && selectEventMember(member);
       }
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -334,7 +334,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         const owner = response.data.find(item => item.id === selectedEventOwner.id);
         if (owner) selectEventOwner(owner);
       }
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -349,7 +349,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         const agreement = response.data.find(item => item.id === selectedEventMonthlyPaymentAgreement.id);
         agreement && selectEventMonthlyPaymentAgreement(agreement);
       }
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -363,7 +363,7 @@ const MyEventProvider: React.FC = ({ children }) => {
       await getEventOwners(selectedEvent.id);
       await getEventMembers(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -384,9 +384,9 @@ const MyEventProvider: React.FC = ({ children }) => {
         getEventTransactions(data.id),
         getEventMonthlyPaymentAgreements(data.id),
       ]);
-      setCurrentSection('Notes');
+      setCurrentSection('Dashboard');
       await selectEvent(data);
-    } catch(err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
 
@@ -396,7 +396,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     try {
       const response = await api.get<IEventDTO>(`/events/${eventId}`);
       selectEvent(response.data);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }
@@ -410,7 +410,7 @@ const MyEventProvider: React.FC = ({ children }) => {
       });
 
       await getEvent(selectedEvent.id);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -427,7 +427,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         budget,
       });
       await getEventBudget(selectedEvent.id);
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -470,7 +470,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         'Evento Deletado com sucesso',
         'Você já pode visualizar as alterações no seu dashboard.',
       );
-    } catch (err) {
+    } catch (err: any | unknown) {
       Alert.alert(
         'Não foi possível deletar seu evento',
         'Tente novamente.',
@@ -486,6 +486,7 @@ const MyEventProvider: React.FC = ({ children }) => {
     isNumberOfGuestsRestricted,
     number_of_guests,
     members_number_of_guests,
+    isPublished,
   }: IEventDTO) {
     try {
       await api.put(`/events/${selectedEvent.id}`, {
@@ -494,6 +495,7 @@ const MyEventProvider: React.FC = ({ children }) => {
         isNumberOfGuestsRestricted,
         number_of_guests,
         members_number_of_guests,
+        isPublished,
       });
       selectEvent({
         ...selectedEvent,
@@ -502,8 +504,14 @@ const MyEventProvider: React.FC = ({ children }) => {
         isNumberOfGuestsRestricted,
         number_of_guests,
         members_number_of_guests,
+        isPublished,
       });
-    } catch (err) {
+      if (isOwner) {
+        await getEventsAsOwner();
+      } else {
+        await getEventsAsMember();
+      }
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }

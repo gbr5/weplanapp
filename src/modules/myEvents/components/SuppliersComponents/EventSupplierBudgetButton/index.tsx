@@ -3,6 +3,7 @@ import { CheckBoxButton } from '../../../../../components/CheckBoxButton';
 import IEventSupplierBudgetDTO from '../../../../../dtos/IEventSupplierBudgetDTO';
 import theme from '../../../../../global/styles/theme';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { formatBrlCurrency } from '../../../../../utils/formatBrlCurrency';
 import formatOnlyDateShort from '../../../../../utils/formatOnlyDateShort';
 import { EventSupplierBudgetButtonInfo } from '../EventSupplierBudgetButtonInfo';
@@ -31,6 +32,7 @@ export function EventSupplierBudgetButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
+  const { isOwner } = useEventVariables();
   const {
     updateSupplierBudget,
     selectSupplierBudget,
@@ -39,22 +41,26 @@ export function EventSupplierBudgetButton({
   const [loading, setLoading] = useState(false);
 
   function handleBudgetInfo() {
-    if (selectedSupplierBudget.id === budget.id)
-      return selectSupplierBudget({} as IEventSupplierBudgetDTO);
-    selectSupplierBudget(budget);
+    if (isOwner) {
+      if (selectedSupplierBudget.id === budget.id)
+        return selectSupplierBudget({} as IEventSupplierBudgetDTO);
+      selectSupplierBudget(budget);
+    }
   }
 
   async function handleUpdateSupplierBudgetIsActive() {
-    try {
-      setLoading(true);
-      await updateSupplierBudget({
-        ...budget,
-        isActive: !budget.isActive,
-      });
-    } catch (err) {
-      throw new Error(err);
-    } finally {
-      setLoading(false);
+    if (isOwner) {
+      try {
+        setLoading(true);
+        await updateSupplierBudget({
+          ...budget,
+          isActive: !budget.isActive,
+        });
+      } catch (err: any | unknown) {
+        throw new Error(err);
+      } finally {
+        setLoading(false);
+      }
     }
   }
 

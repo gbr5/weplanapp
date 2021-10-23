@@ -18,9 +18,7 @@ interface IProps {
   event: IEventDTO;
 }
 
-export function EventButton({
-  event,
-}: IProps): JSX.Element {
+export function EventButton({ event }: IProps): JSX.Element {
   const navigation = useNavigation();
   const {
     shadowColor,

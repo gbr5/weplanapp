@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { CheckBoxButton } from '../../../../../components/CheckBoxButton';
 import { EventNumberOfGuestsButton } from '../../../../../components/EventNumberOfGuestsButton';
 import { EventRestrictedNumberOfGuestQuestion } from '../../../../../components/EventRestrictedNumberOfGuestQuestion';
 import { IParticipantWithGuests, ParticipantNumberOfGuestsButton } from '../../../../../components/ParticipantNumberOfGuestsButton';
@@ -11,7 +10,6 @@ import {
   Container,
   Body,
   ParticipantsContainer,
-  SubContainer,
   Title,
 } from './styles';
 
@@ -48,8 +46,8 @@ export function OwnersMainSection() {
           number_of_guests,
         });
       }
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error;
     } finally {
       setLoading(false);
     }
@@ -62,8 +60,8 @@ export function OwnersMainSection() {
         ...selectedEvent,
         isNumberOfGuestsRestricted: !selectedEvent.isNumberOfGuestsRestricted,
       });
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error;
     } finally {
       setLoading(false);
     }

@@ -48,8 +48,6 @@ interface TransactionContextType {
   createTransactionWindow: boolean;
   transactionFilesWindow: boolean;
   cancelEventTransactionConfirmationWindow: boolean;
-  editNewTransactionValueWindow: boolean;
-  editEventTransactionValueWindow: boolean;
   editNewTransactionDueDateWindow: boolean;
   editTransactionDueDateWindow: boolean;
   filteredEventTransactions: IEventTransactionDTO[];
@@ -98,12 +96,10 @@ interface TransactionContextType {
   handleCancelEventTransactionConfirmationWindow: () => void;
   handlePayee: (data: IPaymentParticipantDTO) => void;
   handlePayer: (data: IPaymentParticipantDTO) => void;
-  handleEditNewTransactionValueWindow: () => void;
   handleEditNewTransactionDueDateWindow: () => void;
   handleEditTransactionDueDateWindow: () => void;
   handleTransactionNotesWindow: () => void;
   handleCancelledTransactionFilter: () => void;
-  handleEditEventTransactionValueWindow: () => void;
   handleSortTransactionsByIntervalFilter: () => void;
   handleFromDateTransactionFilter: (data: Date) => void;
   handleFilteredEventTransactions: (data: IEventTransactionDTO[]) => void;
@@ -155,8 +151,6 @@ const TransactionProvider: React.FC = ({ children }) => {
   const [eventTransactionsWindow, setEventTransactionsWindow] = useState(false);
   const [createTransactionWindow, setCreateTransactionWindow] = useState(false);
   const [cancelEventTransactionConfirmationWindow, setCancelEventTransactionConfirmationWindow] = useState(false);
-  const [editNewTransactionValueWindow, setEditNewTransactionValueWindow] = useState(false);
-  const [editEventTransactionValueWindow, setEditEventTransactionValueWindow] = useState(false);
   const [editNewTransactionDueDateWindow, setEditNewTransactionDueDateWindow] = useState(false);
   const [editTransactionDueDateWindow, setEditTransactionDueDateWindow] = useState(false);
   const [filterTransactionWindow, setFilterTransactionWindow] = useState(false);
@@ -202,9 +196,6 @@ const TransactionProvider: React.FC = ({ children }) => {
     }
     setEventTransactionsWindow(!eventTransactionsWindow);
   }
-  function handleEditEventTransactionValueWindow() {
-    setEditEventTransactionValueWindow(!editEventTransactionValueWindow);
-  }
   function handleSortTransactionsByIntervalFilter() {
     setSortTransactionsByInterval(!sortTransactionsByInterval);
   }
@@ -228,9 +219,6 @@ const TransactionProvider: React.FC = ({ children }) => {
   }
   function handleEditTransactionDueDateWindow() {
     setEditTransactionDueDateWindow(!editTransactionDueDateWindow);
-  }
-  function handleEditNewTransactionValueWindow() {
-    setEditNewTransactionValueWindow(!editNewTransactionValueWindow);
   }
   function handleEditNewTransactionDueDateWindow() {
     setEditNewTransactionDueDateWindow(!editNewTransactionDueDateWindow);
@@ -445,8 +433,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       });
       await getEventTransactions(selectedEvent.id);
       return response.data;
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
     }
@@ -513,8 +501,8 @@ const TransactionProvider: React.FC = ({ children }) => {
         && await getEventSuppliers(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
       return response.data;
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
     }
@@ -539,8 +527,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       setLoading(true);
       await api.delete(`/transactions/${id}`)
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
     }
@@ -570,8 +558,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       await getEventOwners(selectedEvent.id);
       await getEventMembers(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
       refreshOwnerTransactionAgreements();
@@ -602,8 +590,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       await getEventOwners(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
       refreshOwnerTransactionAgreements();
@@ -633,8 +621,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       await getEventMembers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
       refreshMemberTransactionAgreements();
@@ -670,8 +658,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       await getEventSuppliers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
       refreshSupplierTransactionAgreements();
@@ -730,8 +718,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       await getEventOwners(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
       refreshOwnerTransactionAgreements();
@@ -757,8 +745,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       await getEventMembers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
       refreshMemberTransactionAgreements();
@@ -785,8 +773,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       await getEventSuppliers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
       refreshSupplierTransactionAgreements();
@@ -834,8 +822,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       await getEventSuppliers(selectedEvent.id);
       await getEventNotes(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     }
   }
   async function cancelEventTransaction() {
@@ -864,8 +852,8 @@ const TransactionProvider: React.FC = ({ children }) => {
       }
       await getEventTransactions(eventId);
       setCancelEventTransactionConfirmationWindow(false);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
     }
@@ -893,8 +881,8 @@ const TransactionProvider: React.FC = ({ children }) => {
         await getEventSuppliers(selectedEvent.id);
         await getEventTransactions(selectedEvent.id);
       }
-    } catch(err) {
-      throw new Error(err);
+    } catch {
+      throw new Error;
     } finally {
       setLoading(false);
     }
@@ -914,8 +902,8 @@ const TransactionProvider: React.FC = ({ children }) => {
         name: response.data.name,
       });
       await getEventTransactions(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch  {
+      throw new Error;
     } finally {
       setLoading(false);
     }
@@ -940,11 +928,11 @@ const TransactionProvider: React.FC = ({ children }) => {
       await api.post(`/transaction-files/${transaction_id}`, data);
       await getEventSuppliers(selectedEvent.id);
       await getEventTransactions(selectedEvent.id);
-    } catch(err) {
-      if (DocumentPicker.isCancel(err)) {
+    } catch (error: any | undefined) {
+      if (DocumentPicker.isCancel(error ?? undefined)) {
         return;
       } else {
-        throw new Error(err);
+        throw new Error;
       }
     } finally {
       setLoading(false);
@@ -970,17 +958,13 @@ const TransactionProvider: React.FC = ({ children }) => {
         deleteTransaction,
         deleteAllSupplierAgreements,
         editNewTransactionDueDateWindow,
-        editNewTransactionValueWindow,
         editTransaction,
         editTransactionDueDateWindow,
-        editEventTransactionValueWindow,
         filteredEventTransactions,
         filterTransactionWindow,
         handleCancelEventTransactionConfirmationWindow,
         handleCreateTransactionWindow,
         handleEditNewTransactionDueDateWindow,
-        handleEditNewTransactionValueWindow,
-        handleEditEventTransactionValueWindow,
         handleEditTransactionDueDateWindow,
         handleEventTransactions,
         handleFilteredEventTransactions,

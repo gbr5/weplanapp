@@ -34,6 +34,7 @@ interface EventGuestsContextType {
   onlyMyGuestsFilter: boolean;
   selectedGuestContact: IGuestContactDTO;
   createGuestContactWindow: boolean;
+  // myMaxNumberOfGuests: number;
   handleCreateGuestContactWindow: () => void;
   handleDeleteGuestConfirmationWindow: () => void;
   addNewGuest: (data: IAddNewEventGuestDTO) => Promise<void>;
@@ -163,8 +164,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         user_id: '0',
       });
       await getEventGuests(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       setLoading(false);
     }
@@ -179,8 +180,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       });
       await getEventGuests(selectedEvent.id);
       handleNewGuestWindow();
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       setLoading(false);
     }
@@ -222,8 +223,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         contacts,
       });
       await getEventGuests(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       setLoading(false);
     }
@@ -241,8 +242,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       selectEventGuest(response.data);
       await getEventGuests(data.event_id);
       return response.data;
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       setLoading(false);
     }
@@ -253,8 +254,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       setLoading(true);
       await api.delete(`event-guests/${data.id}`);
       await getEventGuests(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       selectEventGuest({} as IEventGuestDTO);
       setLoading(false);
@@ -266,8 +267,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       setLoading(true);
       await api.post('/guest-contacts', data);
       await getEventGuests(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       setLoading(false);
     }
@@ -278,8 +279,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       setLoading(true);
       await api.put(`/guest-contacts/${data.id}`, data);
       await getEventGuests(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       setLoading(false);
     }
@@ -290,8 +291,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       setLoading(true);
       await api.delete(`/guest-contacts/${data.id}`);
       await getEventGuests(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       setLoading(false);
     }
@@ -309,8 +310,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       );
       await getEventGuests(selectedEvent.id);
       setDissociateUserFromGuestConfirmation(false);
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       setLoading(false);
     }
@@ -341,8 +342,8 @@ const EventGuestsProvider: React.FC = ({ children }) => {
       });
 
       return await getEventGuests(selectedEvent.id);
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error();
     } finally {
       setLoading(false);
     }
@@ -383,9 +384,9 @@ const EventGuestsProvider: React.FC = ({ children }) => {
         guests: findGuests,
       });
       Alert.alert('Convites enviados com sucesso!');
-    } catch (err) {
+    } catch {
       Alert.alert('Ocorreu um erro, tente novamente!');
-      throw new Error(err);
+      throw new Error();
     }
   }
   useEffect(() => {

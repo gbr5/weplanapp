@@ -3,6 +3,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { useEvent } from '../../../../hooks/event';
 import { EventButton } from '../EventButton';
 import ISectionProps from '../../../../dtos/ISectionProps';
+import theme from '../../../../global/styles/theme';
 
 import {
   Container,
@@ -11,7 +12,6 @@ import {
   LabelUnderline,
   EventContainer,
 } from './styles';
-import theme from '../../../../global/styles/theme';
 
 interface IProps {
   handleSection: (section: ISectionProps) => void;

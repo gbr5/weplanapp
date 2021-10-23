@@ -240,7 +240,7 @@ export function OwnerButtonInfo() {
             </MenuButton>
           )} */}
 
-          <MenuButton
+          {/* <MenuButton
             style={{
               shadowColor: theme.menuShadow.shadowColor,
               shadowOffset: theme.menuShadow.shadowOffset,
@@ -262,7 +262,7 @@ export function OwnerButtonInfo() {
             >
               <Icon name="plus" />
             </IconContainer>
-          </MenuButton>
+          </MenuButton> */}
 
           {selectedEventOwner.userEventOwner.id !== user.id
             && user.id === selectedEvent.user_id && (

@@ -25,12 +25,12 @@ export function EventBudgetButton() {
     createEventBudget,
     updateEventBudget,
   } = useMyEvent();
-  const { eventBudget } = useEventVariables();
+  const { eventBudget, isOwner } = useEventVariables();
 
   const [editBudget, setEditBudget] = useState(false);
 
   function handleEditBudget() {
-    setEditBudget(!editBudget);
+    isOwner && setEditBudget(!editBudget);
   }
 
   const budget = useMemo(() => {

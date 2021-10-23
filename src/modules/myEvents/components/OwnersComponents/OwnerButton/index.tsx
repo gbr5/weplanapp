@@ -29,20 +29,21 @@ export function OwnerButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
-
-  const { selectedEventOwner, selectEventOwner} = useEventVariables();
+  const { selectedEventOwner, selectEventOwner, isOwner } = useEventVariables();
   const { getSelectedUserEventTasks } = useMyEvent();
 
   const [ownerBody, setOwnerBody] = useState(false);
 
   async function handleOwnerBody() {
-    if (ownerBody) {
-      selectEventOwner({} as IEventOwnerDTO)
-    } else {
-      await getSelectedUserEventTasks(owner.userEventOwner.id);
-      selectEventOwner(owner);
+    if (isOwner) {
+      if (ownerBody) {
+        selectEventOwner({} as IEventOwnerDTO)
+      } else {
+        await getSelectedUserEventTasks(owner.userEventOwner.id);
+        selectEventOwner(owner);
+      }
+      setOwnerBody(!ownerBody);
     }
-    setOwnerBody(!ownerBody);
   }
 
   useEffect(() => {

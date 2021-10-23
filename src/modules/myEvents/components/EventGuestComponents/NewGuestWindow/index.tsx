@@ -27,15 +27,9 @@ export function NewGuestWindow() {
     handleSelectWePlanGuestsWindow,
   } = useEventGuests();
   const {
-    getUserMobileContacts,
-    handleSelectMobileContactsWindow,
+    verifyAccess,
   } = useUserContacts();
   const { getFriends } = useFriends();
-
-  async function handleNewMobileGuest() {
-    await getUserMobileContacts();
-    handleSelectMobileContactsWindow(true);
-  }
 
   async function handleNewWePlanGuest() {
     await getFriends();
@@ -60,7 +54,7 @@ export function NewGuestWindow() {
             shadowOpacity,
             shadowRadius,
           }}
-          onPress={handleNewMobileGuest}
+          onPress={verifyAccess}
         >
           <ButtonTitle>Selecionar do celular</ButtonTitle>
         </Button>

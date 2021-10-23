@@ -14,14 +14,6 @@ export const Body = styled.View`
   height: 64%;
 `;
 
-export const SubContainer = styled.View`
-  margin: 8px 0;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-`;
-
 export const Title = styled.Text`
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.roboto};
@@ -41,6 +33,7 @@ export const ParticipantsContainer = styled(
   width: 100%;
   padding: 8px 4px;
   flex: 1;
-  min-height: 400px;
+  min-height: 240px;
+  max-height: 100%;
   border: 0.4px solid #e3e3e3;
 `;

@@ -39,6 +39,7 @@ import IEventTransactionAgreementDTO from '../../../../../dtos/IEventTransaction
 import { useTransaction } from '../../../../../hooks/transactions';
 import IEventTransactionDTO from '../../../../../dtos/IEventTransactionDTO';
 import { useMyEvent } from '../../../../../hooks/myEvent';
+import addDays from 'date-fns/addDays';
 
 export function SupplierButtonInfo() {
   const {
@@ -52,11 +53,12 @@ export function SupplierButtonInfo() {
     selectedEventSupplier,
     eventTransactions,
     selectedUserEventTasks,
+    isOwner,
+    handleSelectedDate,
   } = useEventVariables();
   const {
     handleCreateSupplierTransactionAgreementWindow,
     handleDischargingWindow,
-    handleSupplierTransactionsWindow,
     updateEventSupplier,
     handleEditSupplierCategoryWindow,
     selectSupplierCategory,
@@ -77,24 +79,39 @@ export function SupplierButtonInfo() {
   const [editName, setEditName] = useState(false);
 
   function handleEditName() {
-    setEditName(!editName);
+    isOwner && setEditName(!editName);
   }
 
   async function updateSupplierIsHired() {
-    try {
-      setLoading(true);
-      selectedEventSupplier.isHired && handleDischargingWindow();
-      !selectedEventSupplier.isHired && handleCreateSupplierTransactionAgreementWindow();
-    } catch (err) {
-      throw new Error(err);
-    } finally {
-      setLoading(false);
+    if (isOwner) {
+      try {
+        setLoading(true);
+        selectedEventSupplier.isHired && handleDischargingWindow();
+        if (!selectedEventSupplier.isHired) {
+          handleSelectedDate(addDays(new Date(), 1));
+          handlePayee({
+            id: selectedEventSupplier.id,
+            name: selectedEventSupplier.name,
+          });
+          handlePayer({
+            id: selectedEvent.id,
+            name: selectedEvent.name,
+          });
+          handleCreateSupplierTransactionAgreementWindow();
+        }
+      } catch (err: any | unknown) {
+        throw new Error(err);
+      } finally {
+        setLoading(false);
+      }
     }
   }
 
   function openSelectCategoryWindow() {
-    selectSupplierCategory(selectedEventSupplier.supplier_sub_category);
-    handleEditSupplierCategoryWindow();
+    if (isOwner) {
+      selectSupplierCategory(selectedEventSupplier.supplier_sub_category);
+      handleEditSupplierCategoryWindow();
+    }
   }
 
   const totalCost = useMemo(() => {
@@ -249,46 +266,34 @@ export function SupplierButtonInfo() {
         </SupplierNameButton>
       </FieldContainer>
       <SectionBorder />
-        <FieldContainer>
-          <SupplierLabel>Nome</SupplierLabel>
-          {editName ? (
-            <InlineFormField
-              defaultValue={selectedEventSupplier.name}
-              placeholder={selectedEventSupplier.name}
-              handleOnSubmit={handleUpdateSupplierName}
-              closeComponent={handleEditName}
-              />
-          ) : (
-            <SupplierNameButton
-              onPress={handleEditName}
-              style={{
-                shadowColor,
-                shadowOffset,
-                shadowOpacity,
-                shadowRadius,
-                elevation: 5,
-              }}
-            >
-              <SupplierName>{selectedEventSupplier.name}</SupplierName>
-            </SupplierNameButton>
-          )}
-        </FieldContainer>
+      <FieldContainer>
+        <SupplierLabel>Nome</SupplierLabel>
+        {editName ? (
+          <InlineFormField
+            defaultValue={selectedEventSupplier.name}
+            placeholder={selectedEventSupplier.name}
+            handleOnSubmit={handleUpdateSupplierName}
+            closeComponent={handleEditName}
+            />
+        ) : (
+          <SupplierNameButton
+            onPress={handleEditName}
+            style={{
+              shadowColor,
+              shadowOffset,
+              shadowOpacity,
+              shadowRadius,
+              elevation: 5,
+            }}
+          >
+            <SupplierName>{selectedEventSupplier.name}</SupplierName>
+          </SupplierNameButton>
+        )}
+      </FieldContainer>
 
       <SectionBorder />
 
       <MenuButtonSection horizontal >
-
-        {/* <MenuButton>
-          <MenuText>Agenda</MenuText>
-          <IconContainer
-            color={theme.color.atention_light}
-          >
-            <NotificationContainer>
-              <NotificationNumber>0</NotificationNumber>
-            </NotificationContainer>
-            <Icon name="bell" />
-          </IconContainer>
-        </MenuButton> */}
         {selectedEventSupplier.weplanUser &&
           selectedEventSupplier.eventWeplanSupplier &&
           selectedEventSupplier.eventWeplanSupplier.id &&
@@ -321,32 +326,6 @@ export function SupplierButtonInfo() {
                 number={selectedUserEventTasks.length}
               />
               <Icon name="bell" />
-            </IconContainer>
-          </MenuButton>
-        )}
-        {selectedEventSupplier.isHired && (
-          <MenuButton
-            style={{
-              shadowColor: theme.menuShadow.shadowColor,
-              shadowOffset: theme.menuShadow.shadowOffset,
-              shadowOpacity: theme.menuShadow.shadowOpacity,
-              shadowRadius: theme.menuShadow.shadowRadius,
-              elevation: 5,
-            }}
-            onPress={handleSupplierTransactionsWindow}>
-            <MenuText>Transações</MenuText>
-            <IconContainer
-              style={{
-                elevation: 5,
-              }}
-              color={theme.color.title}
-            >
-              <NotificationNumber
-                top={top}
-                left={left}
-                number={numberOfTransactions}
-              />
-              <Icon name="dollar-sign" />
             </IconContainer>
           </MenuButton>
         )}

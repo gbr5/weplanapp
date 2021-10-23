@@ -3,6 +3,7 @@ import { MenuBooleanButton } from '../../../../../components/MenuBooleanButton';
 import { SectionHeader } from '../../../../../components/SectionHeader';
 import IEventSupplierDTO from '../../../../../dtos/IEventSupplierDTO';
 import { useEventSuppliers } from '../../../../../hooks/eventSuppliers';
+import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { SupplierButton } from '../SupplierButton';
 
@@ -12,6 +13,7 @@ import {
 } from './styles';
 
 export function SuppliersSection() {
+  const { isOwner } = useEventVariables();
   const {
     hiredSuppliers,
     notHiredSuppliers,
@@ -24,10 +26,14 @@ export function SuppliersSection() {
     setHiredSuppliersSection(data);
   }
 
+  function handleNewSupplierWindow() {
+    isOwner && handleAddSupplierWindow();
+  }
+
   return (
     <Container>
       <SectionHeader
-        handleAddButton={handleAddSupplierWindow}
+        handleAddButton={handleNewSupplierWindow}
         handleInfoButton={handleSectionDescriptionWindow}
         title="Fornecedores"
       />

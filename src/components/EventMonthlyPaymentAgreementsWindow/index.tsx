@@ -46,6 +46,7 @@ export function EventMonthlyPaymentAgreementsWindow() {
     selectedEvent,
     eventOwners,
     eventTransactions,
+    isOwner,
   } = useEventVariables();
   const {
     selectedEventTransactionAgreements,
@@ -166,11 +167,13 @@ export function EventMonthlyPaymentAgreementsWindow() {
           overTitle="Gerenciar"
           title="Mensalidades"
         />
-        <AddButton
-          onPress={handleOpenSelectParticipantWindow}
-          right="5%"
-          top="2.5%"
-        />
+        {isOwner && (
+          <AddButton
+            onPress={handleOpenSelectParticipantWindow}
+            right="5%"
+            top="2.5%"
+          />
+        )}
 
         <TitleContainer>
           <Title>

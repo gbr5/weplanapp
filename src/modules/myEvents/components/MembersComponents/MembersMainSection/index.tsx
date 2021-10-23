@@ -4,24 +4,22 @@ import { EventRestrictedNumberOfGuestQuestion } from '../../../../../components/
 import { IParticipantWithGuests, ParticipantNumberOfGuestsButton } from '../../../../../components/ParticipantNumberOfGuestsButton';
 import { useEventMembers } from '../../../../../hooks/eventMembers';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
-import { useMyEvent } from '../../../../../hooks/myEvent';
 
 import {
   Container,
   Body,
   ParticipantsContainer,
-  SubContainer,
   Title,
 } from './styles';
 
 export function MembersMainSection() {
-  const { editEvent } = useMyEvent();
   const {
     editEventMember,
   } = useEventMembers();
   const {
     selectedEvent,
     eventMembers,
+    isOwner,
   } = useEventVariables();
 
   const [loading, setLoading] = useState(false);
@@ -50,7 +48,7 @@ export function MembersMainSection() {
           number_of_guests,
         });
       }
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       setLoading(false);
@@ -60,11 +58,11 @@ export function MembersMainSection() {
   return (
     <Container>
       <Body>
-        <EventRestrictedNumberOfGuestQuestion />
+        {isOwner && <EventRestrictedNumberOfGuestQuestion />}
         {selectedEvent.isNumberOfGuestsRestricted &&
           participants.length > 0 && (
             <>
-              <EventMembersNumberOfGuestsButton />
+              {isOwner && <EventMembersNumberOfGuestsButton />}
               <Title>Nº de convidados por membro</Title>
               <ParticipantsContainer
                 data={participants}

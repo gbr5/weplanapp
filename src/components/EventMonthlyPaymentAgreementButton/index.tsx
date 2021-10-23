@@ -43,6 +43,7 @@ export function EventMonthlyPaymentAgreementButton({
     eventOwners,
     eventMembers,
     handleEventMonthlyPaymentSettingsWindow,
+    isOwner,
   } = useEventVariables();
 
   const { handleEventTransactions } = useEventVariables();
@@ -159,6 +160,7 @@ export function EventMonthlyPaymentAgreementButton({
   }, [agreement, selectedEventMonthlyPaymentAgreement,]);
 
   function openEventMonthlyPaymentSettingsWindow() {
+    if (!isOwner) return;
     selectEventMonthlyPaymentAgreement(agreement);
     handleEventMonthlyPaymentSettingsWindow();
   }

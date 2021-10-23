@@ -14,7 +14,7 @@ export const Label = styled.Text`
   color: ${({ theme }) => theme.color.text1};
   letter-spacing: 1px;
   font-family: ${({ theme }) => theme.fonts.roboto_medium};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(16)}px;
   padding-left: 8px;
 `;
 

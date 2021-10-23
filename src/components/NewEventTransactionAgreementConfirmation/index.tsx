@@ -7,7 +7,6 @@ import { useMyEvent } from '../../hooks/myEvent';
 import { useTransaction } from '../../hooks/transactions';
 import { useEventVariables } from '../../hooks/eventVariables';
 
-import { EditNewTransactionAmount } from '../../components/TransactionComponents/EditNewTransactionAmount';
 import { NewTransaction } from '../../components/NewTransaction';
 import WindowContainer from '../../components/WindowContainer';
 import { EditNewTransactionDueDate } from '../../components/TransactionComponents/EditNewTransactionDueDate';
@@ -121,7 +120,7 @@ export function NewEventTransactionAgreementConfirmation({
         handleCreateEventMemberTransactionAgreement();
       createSupplierTransactionAgreementWindow &&
         handleCreateSupplierTransactionAgreementWindow();
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     } finally {
       closeWindow();

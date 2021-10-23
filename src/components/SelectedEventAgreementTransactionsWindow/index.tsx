@@ -1,11 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Alert } from 'react-native';
 
+import theme from '../../global/styles/theme';
 import { formatBrlCurrency } from '../../utils/formatBrlCurrency';
-
+import { useEventVariables } from '../../hooks/eventVariables';
 import { useTransaction } from '../../hooks/transactions';
-
 import ITransactionDTO from '../../dtos/ITransactionDTO';
+import IEventTransactionDTO from '../../dtos/IEventTransactionDTO';
+import IEventTransactionAgreementDTO from '../../dtos/IEventTransactionAgreementDTO';
 
 import ShortConfirmationWindow from '../../components/ShortConfirmationWindow';
 import WindowContainer from '../../components/WindowContainer';
@@ -13,6 +15,7 @@ import { WindowHeader } from '../../components/WindowHeader';
 import { AddButton } from '../../components/AddButton';
 import { EventTransactionButton } from '../../components/TransactionComponents/EventTransactionButton';
 import Button from '../../components/Button';
+import { EventTransactionAgreementsMenu } from '../EventTransactionAgreementsMenu';
 
 import {
   Container,
@@ -22,10 +25,7 @@ import {
   TitleButton,
   TitleContainer,
 } from './styles';
-import IEventTransactionDTO from '../../dtos/IEventTransactionDTO';
-import { EventTransactionAgreementsMenu } from '../EventTransactionAgreementsMenu';
-import IEventTransactionAgreementDTO from '../../dtos/IEventTransactionAgreementDTO';
-import theme from '../../global/styles/theme';
+
 interface IProps {
   closeWindow: () => void;
   overTitle: string;
@@ -47,6 +47,7 @@ export function SelectedEventTransactionAgreementsWindow({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
+  const { isOwner } = useEventVariables();
   const {
     selectTransaction,
     updateEventTransactionAgreement,
@@ -189,11 +190,13 @@ export function SelectedEventTransactionAgreementsWindow({
           overTitle={overTitle}
           title={title}
         />
-        <AddButton
-          onPress={handleCreateAgreementWindow}
-          right="5%"
-          top="3%"
-        />
+        {isOwner && (
+          <AddButton
+            onPress={handleCreateAgreementWindow}
+            right="5%"
+            top="3%"
+          />
+        )}
 
         <TitleContainer>
           <Title>
@@ -251,7 +254,9 @@ export function SelectedEventTransactionAgreementsWindow({
             />
           )}
       </Container>
-      <Button onPress={handleCancelAgreementConfirmationWindow}>Deletar Contrato</Button>
+      {isOwner && (
+        <Button onPress={handleCancelAgreementConfirmationWindow}>Deletar Contrato</Button>
+      )}
     </WindowContainer>
   );
 }

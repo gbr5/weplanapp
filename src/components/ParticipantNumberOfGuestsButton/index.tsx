@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import IParticipantDTO from '../../dtos/IParticipantDTO';
 import theme from '../../global/styles/theme';
+import { useEventVariables } from '../../hooks/eventVariables';
 import InlineFormField from '../InlineFormField';
 
 import {
@@ -29,6 +30,7 @@ export function ParticipantNumberOfGuestsButton({
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
+  const { isOwner } = useEventVariables();
   const [editNumberOfGuests, setEditNumerOfGuests] = useState(false);
 
   async function handleUpdateNumberOfGuests(data: string) {
@@ -40,7 +42,7 @@ export function ParticipantNumberOfGuestsButton({
   }
 
   function handleEditNumberOfGuests() {
-    setEditNumerOfGuests(!editNumberOfGuests);
+    isOwner && setEditNumerOfGuests(!editNumberOfGuests);
   }
   return (
     <>

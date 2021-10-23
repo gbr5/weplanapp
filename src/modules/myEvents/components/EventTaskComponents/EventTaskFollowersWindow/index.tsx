@@ -20,7 +20,7 @@ export function EventTaskFollowersWindow() {
   return (
     <WindowContainer
       closeWindow={handleEventTaskFollowersWindow}
-      zIndex={8}
+      zIndex={9}
       top="5%"
       left="0%"
       height="90%"

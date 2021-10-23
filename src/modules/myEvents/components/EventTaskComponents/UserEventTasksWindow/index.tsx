@@ -1,14 +1,13 @@
 import React from 'react';
 import { SectionHeader } from '../../../../../components/SectionHeader';
 import WindowContainer from '../../../../../components/WindowContainer';
-import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useMyEvent } from '../../../../../hooks/myEvent';
 import { EventTask } from '../EventTask';
-import { EventTaskFollower } from '../EventTaskFollower';
 
 import {
   Container,
+  TasksContainer,
 } from './styles';
 
 interface IProps {
@@ -38,11 +37,17 @@ export function UserEventTasksWindow({
           handleAddButton={createTaskWindow}
           handleInfoButton={handleSectionDescriptionWindow}
         />
-        {selectedUserEventTasks.map(task => {
-          return (
-            <EventTask key={task.id} eventTask={task} />
-          );
-        })}
+      {selectedUserEventTasks.length > 0 && (
+        <TasksContainer
+          data={selectedUserEventTasks}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+              <EventTask key={item.id} eventTask={item} />
+            );
+          }}
+        />
+      )}
       </Container>
     </WindowContainer>
   );

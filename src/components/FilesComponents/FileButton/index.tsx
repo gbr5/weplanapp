@@ -3,7 +3,10 @@ import { Alert, Linking } from 'react-native';
 
 import IFileDTO from '../../../dtos/IFileDTO';
 import theme from '../../../global/styles/theme';
+import { useAuth } from '../../../hooks/auth';
+import { useEventVariables } from '../../../hooks/eventVariables';
 import { useFiles } from '../../../hooks/files';
+import { useTransaction } from '../../../hooks/transactions';
 import formatOnlyDateShort from '../../../utils/formatOnlyDateShort';
 import { FileButtonInfo } from '../FileButtonInfo';
 
@@ -29,9 +32,22 @@ export function FileButton({ file }: IProps) {
     shadowOpacity,
     shadowRadius,
   } = theme.objectButtonShadow;
+  const { user } = useAuth();
+  const { isOwner } = useEventVariables();
   const { handleSelectedFile, selectedFile } = useFiles();
+  const { selectedEventTransaction } = useTransaction();
+
+  const isAllowed = useMemo(() => {
+    if (
+      isOwner ||
+      user.id === selectedEventTransaction.transaction.payee_id ||
+      user.id === selectedEventTransaction.transaction.payer_id
+    ) return true;
+    return false;
+  }, [isOwner, selectedEventTransaction, user]);
 
   const handlePress = useCallback(async () => {
+    if (!isAllowed) return;
     // Checking if the link is supported for links with custom URL scheme.
     const supported = await Linking.canOpenURL(file.url);
 

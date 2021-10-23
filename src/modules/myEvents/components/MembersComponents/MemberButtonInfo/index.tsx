@@ -7,7 +7,6 @@ import IUserContactDTO from '../../../../../dtos/IUserContactDTO';
 
 import theme from '../../../../../global/styles/theme';
 import { useEventMembers } from '../../../../../hooks/eventMembers';
-import { useEventTasks } from '../../../../../hooks/eventTasks';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
 import { useFriends } from '../../../../../hooks/friends';
 import { useMyEvent } from '../../../../../hooks/myEvent';
@@ -122,7 +121,7 @@ export function MemberButtonInfo() {
       <SectionBorder />
 
       <MenuButtonSection horizontal >
-        <MenuButton
+        {/* <MenuButton
           style={{
             shadowColor,
             shadowOffset,
@@ -143,13 +142,9 @@ export function MemberButtonInfo() {
             }}
             color={theme.color.primary}
           >
-            {/* {selectedEventMember.userEventMember.avatar_url ? (
-
-            ) : ( */}
             <Icon name="user" />
-            {/* )} */}
           </IconContainer>
-        </MenuButton>
+        </MenuButton> */}
 
         <MenuButton
           style={{
@@ -205,7 +200,7 @@ export function MemberButtonInfo() {
             <Icon name="dollar-sign" />
           </IconContainer>
         </MenuButton>
-        <MenuButton
+        {/* <MenuButton
           style={{
             shadowColor,
             shadowOffset,
@@ -227,7 +222,7 @@ export function MemberButtonInfo() {
           >
             <Icon name="file-text" />
           </IconContainer>
-        </MenuButton>
+        </MenuButton> */}
 {/*
         <MenuButton
           style={{
@@ -253,7 +248,7 @@ export function MemberButtonInfo() {
           </IconContainer>
         </MenuButton> */}
 
-        <MenuButton
+        {/* <MenuButton
           style={{
             shadowColor,
             shadowOffset,
@@ -275,7 +270,7 @@ export function MemberButtonInfo() {
           >
             <Icon name="star" />
           </IconContainer>
-        </MenuButton>
+        </MenuButton> */}
 
         <MenuButton
           style={{
@@ -302,7 +297,7 @@ export function MemberButtonInfo() {
           </IconContainer>
         </MenuButton>
 
-        <MenuButton
+        {/* <MenuButton
           style={{
             shadowColor,
             shadowOffset,
@@ -324,24 +319,23 @@ export function MemberButtonInfo() {
           >
             <Icon name="plus" />
           </IconContainer>
-        </MenuButton>
+        </MenuButton> */}
 
       </MenuButtonSection>
 
       <SectionBorder />
 
       {selectedEventMember.userEventMember.userContacts.length > 0 &&
-        <ContactSection horizontal>
-          {selectedEventMember.userEventMember.userContacts.map(contact => {
-            return (
-              <WPFriendContact
-                goToContact={() => goToContact(contact)}
-                contact={contact}
-                key={contact.id}
-              />
-            );
-          })}
-        </ContactSection>
+        <>
+          <SectionBorder />
+          <ContactSection horizontal>
+            {selectedEventMember.userEventMember.userContacts.map(contact => {
+              return (
+                <WPFriendContact goToContact={() => goToContact(contact)} contact={contact} key={contact.id} />
+              );
+            })}
+          </ContactSection>
+        </>
       }
       <SectionBorder />
 

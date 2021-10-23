@@ -62,7 +62,7 @@ export function EventNumberOfGuestsButton() {
           }}
           onPress={handleEditNumberOfGuests}
         >
-          <Title>Limite de convidados do evento</Title>
+          <Title>Limite máximo de convidados</Title>
           <PercentageUnderline />
           <Value>
             {selectedEvent.number_of_guests}

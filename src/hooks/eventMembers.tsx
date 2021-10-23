@@ -24,6 +24,7 @@ interface EventMembersContextType {
   handleCreateEventMemberTaskWindow: () => void;
   handleEventMemberTaskWindow: () => void;
   addMultipleMembers: (data: IFriendDTO[]) => Promise<void>;
+  defineEventMembersNumberOfGuests: (number_of_guests: number) => Promise<void>;
   editEventMember: (data: IEventMemberDTO) => Promise<void>;
   editEventMembersNumberOfGuests: (number_of_guests: number) => Promise<void>;
   createEventMember: (data: ICreateEventMemberDTO) => void;
@@ -34,7 +35,7 @@ const EventMembersContext = createContext({} as EventMembersContextType);
 
 const EventMembersProvider: React.FC = ({ children }) => {
   const { getEventMembers } = useMyEvent();
-  const { selectedEvent } = useEventVariables();
+  const { selectedEvent, selectEvent } = useEventVariables();
 
   const [addMemberWindow, setAddMemberWindow] = useState(false);
   const [createEventMemberTaskWindow, setCreateEventMemberTaskWindow] = useState(false);
@@ -119,6 +120,21 @@ const EventMembersProvider: React.FC = ({ children }) => {
       throw new Error(err);
     }
   }
+  async function defineEventMembersNumberOfGuests(number_of_guests: number) {
+    try {
+      await api.put(`/define-event-members-number-of-guests`, {
+        event_id: selectedEvent.id,
+        number_of_guests,
+      });
+      await getEventMembers(selectedEvent.id);
+      selectEvent({
+        ...selectedEvent,
+        members_number_of_guests: number_of_guests,
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
 
   return (
     <EventMembersContext.Provider
@@ -142,6 +158,7 @@ const EventMembersProvider: React.FC = ({ children }) => {
         newMemberTransactionAgreementConfirmation,
         eventMemberTaskWindow,
         handleEventMemberTaskWindow,
+        defineEventMembersNumberOfGuests,
       }}
     >
       {children}

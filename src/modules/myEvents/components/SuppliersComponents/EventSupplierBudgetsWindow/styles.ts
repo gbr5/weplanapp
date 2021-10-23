@@ -7,7 +7,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 export const Container = styled.View`
   flex: 1;
-  padding-top: 40px;
+  padding-top: 64px;
   width: 100%;
 `;
 

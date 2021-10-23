@@ -113,7 +113,6 @@ const SignUp: React.FC = () => {
       Alert.alert('Ative a sua conta!', 'Eviamos o link para o seu e-mail.');
       navigation.navigate('SignIn');
     } catch (err) {
-      console.log(err);
       if (err instanceof Yup.ValidationError) {
         const error = getValidationErrors(err);
 

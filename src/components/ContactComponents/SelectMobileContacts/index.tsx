@@ -23,6 +23,9 @@ import {
   InputContainer,
   SearchButton,
 } from './styles';
+import { useEventVariables } from '../../../hooks/eventVariables';
+import { useAuth } from '../../../hooks/auth';
+import { useMyEvent } from '../../../hooks/myEvent';
 
 export function SelectMobileContacts() {
   const {
@@ -32,6 +35,16 @@ export function SelectMobileContacts() {
     shadowRadius,
   } = theme.iconButtonShadow;
   const inputRef = useRef<TextInput>(null);
+  const { user } = useAuth();
+  const {
+    selectedEvent,
+    isOwner,
+    eventOwners,
+    eventMembers,
+  } = useEventVariables();
+  const {
+    myNumberOfGuests,
+  } = useMyEvent();
   const { createMultipleMobileGuests, handleNewGuestWindow } = useEventGuests();
   const {
     handleSelectMobileContactsWindow,
@@ -43,6 +56,7 @@ export function SelectMobileContacts() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [backdrop, setBackdrop] = useState(false);
+  const [fullSelection, setFullSelection] = useState(false);
   const [filterString, setFilterString] = useState<string | undefined>(undefined);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>(mobileContacts);
 
@@ -50,8 +64,8 @@ export function SelectMobileContacts() {
     try {
       setIsLoading(true);
       await createMultipleMobileGuests(selectedMobileContacts);
-    } catch (err) {
-      throw new Error(err);
+    } catch {
+      throw new Error;
     } finally {
       setIsLoading(false);
       setFilterString(undefined);
@@ -63,6 +77,29 @@ export function SelectMobileContacts() {
   }
 
   const numberOfContacts = useMemo(() => {
+    if (selectedEvent.isNumberOfGuestsRestricted) {
+      const alreadySelected = myNumberOfGuests + selectedMobileContacts.length;
+      let limit = '';
+      if (isOwner) {
+        const owner = eventOwners.find(item => item.userEventOwner.id === user.id);
+        if (owner) {
+          const isFull = owner.number_of_guests - alreadySelected;
+          isFull <= 0 ? setFullSelection(true) : setFullSelection(false);
+          limit = `${isFull}`;
+        }
+      } else {
+        const member = eventMembers.find(item => item.userEventMember.id === user.id);
+        if (member) {
+          const isFull = member.number_of_guests - alreadySelected;
+          isFull <= 0 ? setFullSelection(true) : setFullSelection(false);
+          limit = `${isFull}`;
+        }
+      }
+      const contacts = filteredContacts.length;
+      const selected = selectedMobileContacts.length;
+      return `${selected} / ${contacts}
+      Você ainda pode selecionar ${limit} pessoas`;
+    }
     const contacts = filteredContacts.length;
     const selected = selectedMobileContacts.length;
     return `${selected} / ${contacts}`;
@@ -166,7 +203,7 @@ export function SelectMobileContacts() {
               keyExtractor={(item) => item.recordID}
               renderItem={({ item }) => {
                 return (
-                  <MobileContact key={item.recordID} contact={item} />
+                  <MobileContact fullSelection={fullSelection} key={item.recordID} contact={item} />
                 );
               }}
             />
