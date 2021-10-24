@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useEventVariables } from '../../../../../hooks/eventVariables';
 
 import {
@@ -17,6 +17,11 @@ export function MembersFooterMenu({
   section,
 }: IProps) {
   const { isOwner, selectedEvent } = useEventVariables();
+
+  const mainSectionAccess = useMemo(() => {
+    return isOwner || selectedEvent.isNumberOfGuestsRestricted;
+  }, [isOwner, selectedEvent.isNumberOfGuestsRestricted]);
+
   return (
     <Container>
       <MenuButton
@@ -25,7 +30,7 @@ export function MembersFooterMenu({
       >
         <MenuIcon isActive={section === 'Members'} name="users" />
       </MenuButton>
-      {isOwner || selectedEvent.isNumberOfGuestsRestricted && (
+      {mainSectionAccess && (
         <MenuButton
           isActive={section === 'Main'}
           onPress={() => handleSection('Main')}

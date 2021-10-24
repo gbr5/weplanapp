@@ -78,7 +78,7 @@ const SignUp: React.FC = () => {
         return Alert.alert(`O e-mail "${data.email}" já foi registrado`, 'Se este é o seu e-mail, faça o login ou troque a sua senha!');
       }
 
-      if (data.password.length > 8)
+      if (data.password.length < 8)
         return Alert.alert('A senha deve ter pelo menos 8 caracteres');
 
       const schema = Yup.object().shape({
@@ -86,7 +86,7 @@ const SignUp: React.FC = () => {
         email: Yup.string()
           .required('E-mail é obrigatório')
           .email('Digite um e-mail válido'),
-        password: Yup.string().min(6, 'Mínimo de 6 dígitos'),
+        password: Yup.string().min(8, 'Mínimo de 8 dígitos'),
         passwordConfirmation: Yup.string().oneOf(
           [Yup.ref('password'), undefined],
           'As senhas devem ser iguais.',
@@ -104,10 +104,10 @@ const SignUp: React.FC = () => {
         isCompany: false,
       };
 
-      await api.post('/users', validatedData);
+      const newUser = await api.post('/users', validatedData);
 
       await api.post('user/activation', {
-        email: data.email,
+        email: newUser.data.email,
       });
 
       Alert.alert('Ative a sua conta!', 'Eviamos o link para o seu e-mail.');

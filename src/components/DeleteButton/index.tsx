@@ -16,12 +16,6 @@ export function DeleteButton({
   left,
   right,
 }: IProps): JSX.Element {
-  const {
-    shadowColor,
-    shadowOffset,
-    shadowOpacity,
-    shadowRadius,
-  } = theme.objectButtonShadow;
   return (
     <Container
       onPress={handleDelete}
@@ -29,11 +23,6 @@ export function DeleteButton({
         top,
         left,
         right,
-        shadowColor,
-        shadowOffset,
-        shadowOpacity,
-        shadowRadius,
-        elevation: 5,
       }}
     >
       <Icon name="trash-2" />

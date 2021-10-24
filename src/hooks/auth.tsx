@@ -253,7 +253,7 @@ const AuthProvider: React.FC = ({ children }) => {
       await api.post('/password/forgot', {
         email,
       });
-    } catch (err) {
+    } catch (err: any | unknown) {
       throw new Error(err);
     }
   }

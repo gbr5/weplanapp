@@ -597,7 +597,7 @@
 				CODE_SIGN_ENTITLEMENTS = weplanapp/weplanapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 318;
+				CURRENT_PROJECT_VERSION = 322;
 				DEVELOPMENT_TEAM = 8GHG8T4LCM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = weplanapp/Info.plist;
@@ -631,7 +631,7 @@
 				CODE_SIGN_ENTITLEMENTS = weplanapp/weplanapp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 318;
+				CURRENT_PROJECT_VERSION = 322;
 				DEVELOPMENT_TEAM = 8GHG8T4LCM;
 				INFOPLIST_FILE = weplanapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

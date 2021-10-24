@@ -139,8 +139,8 @@ android {
         applicationId "com.weplanapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 42
-        versionName "WP-42"
+        versionCode 44
+        versionName "WP-44"
     }
     splits {
         abi {

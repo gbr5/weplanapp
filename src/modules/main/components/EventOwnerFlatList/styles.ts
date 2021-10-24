@@ -11,9 +11,8 @@ export const Container = styled(
     paddingBottom: getBottomSpace(),
   },
 })`
-margin-top: 4px;
-border-radius: 8px;
-width: 100%;
-height: 240px;
-
+  margin-top: 4px;
+  border-radius: 8px;
+  width: 100%;
+  height: 208px;
 `;

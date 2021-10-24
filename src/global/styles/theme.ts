@@ -33,19 +33,19 @@ export default {
   menuShadow: {
     shadowColor: '#757575',
     shadowOffset: { width: 2, height: 4},
-    shadowOpacity: 0.9,
+    shadowOpacity: 0.7,
     shadowRadius: 5,
   },
   buttonShadow: {
     shadowColor: '#757575',
     shadowOffset: { width: 2, height: 5},
-    shadowOpacity: 0.8,
+    shadowOpacity: 0.6,
     shadowRadius: 6,
   },
   objectButtonShadow: {
     shadowColor: '#757579',
     shadowOffset: { width: 0, height: 4},
-    shadowOpacity: 0.7,
+    shadowOpacity: 0.5,
     shadowRadius: 4,
   },
   iconButtonShadow: {

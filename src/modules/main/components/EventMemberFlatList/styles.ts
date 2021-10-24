@@ -14,5 +14,5 @@ export const Container = styled(
   margin-top: 4px;
   border-radius: 8px;
   width: 100%;
-  height: 240px;
+  height: 208px;
 `;

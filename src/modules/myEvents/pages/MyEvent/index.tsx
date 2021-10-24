@@ -551,11 +551,6 @@ const MyEvent: React.FC = () => {
           selectedDate={taskDate}
         />
       )}
-      {editTaskStatusWindow
-        && selectedEventTask
-        && selectedEventTask.id && (
-          <EditTaskStatusWindow />
-      )}
       {eventTaskNotesWindow
         && selectedEventTask
         && selectedEventTask.id && (

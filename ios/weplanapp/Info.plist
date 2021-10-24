@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0</string>
+	<string>2.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>318</string>
+	<string>322</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -60,6 +60,10 @@
 	<string>Visando uma melhor experiência para você, solicitamos a sua permissão para acessar e fazer o upload de arquivos do seu celular, selecionados por você. Estes arquivos serão armazenados nos nossos servidores para a sua comodidade. Para maiores informações acesse a nossa &apos;Política de Privacidade&apos; (www.weplan.world/pt/politica-de-privacidade) e nosso &apos;Termos de Uso&apos; (www.weplan.world/pt/termos-de-uso).</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Visando uma melhor experiência para você, solicitamos a sua permissão para acessar e fazer o upload de arquivos do seu celular, selecionados por você. Estes arquivos serão armazenados nos nossos servidores para a sua comodidade. Para maiores informações acesse a nossa &apos;Política de Privacidade&apos; (www.weplan.world/pt/politica-de-privacidade) e nosso &apos;Termos de Uso&apos; (www.weplan.world/pt/termos-de-uso).</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Visando uma melhor experiência para você, solicitamos a sua permissão para utilizar alarmes, lembretes, e demais acessos a calendários e/ou relogios. Para maiores informações acesse a nossa &apos;Política de Privacidade&apos; (www.weplan.world/pt/politica-de-privacidade) e nosso &apos;Termos de Uso&apos; (www.weplan.world/pt/termos-de-uso).</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Visando uma melhor experiência para você, solicitamos a sua permissão para utilizar alarmes, lembretes, e demais acessos a calendários e/ou relogios. Para maiores informações acesse a nossa &apos;Política de Privacidade&apos; (www.weplan.world/pt/politica-de-privacidade) e nosso &apos;Termos de Uso&apos; (www.weplan.world/pt/termos-de-uso).</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>RobotoSlab-Medium.ttf</string>

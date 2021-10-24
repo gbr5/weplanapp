@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Text } from 'react-native';
 
 import { useAuth } from '../../../../hooks/auth';
-import profilePlaceholder from '../../../../assets/profilePlaceholder.jpeg';
+import profilePlaceholder from '../../../../assets/placeholder.png';
 
 import Button from '../../../../components/Button';
 import BackButton from '../../../../components/BackButton';
@@ -22,6 +22,7 @@ import { EditUserNameWindow } from '../../components/EditUserNameWindow';
 import { EditUserEmailWindow } from '../../components/EditUserEmailWindow';
 import { EditGivenNameWindow } from '../../components/EditGivenNameWindow';
 import { EditFamilyNameWindow } from '../../components/EditFamilyNameWindow';
+import { useNavigation } from '@react-navigation/native';
 
 const Profile: React.FC = () => {
   const {
@@ -31,13 +32,12 @@ const Profile: React.FC = () => {
     shadowRadius,
   } = theme.objectButtonShadow;
   const { user, signOut } = useAuth();
+  const navigation = useNavigation();
   const {
-    loading,
     editFamilyNameWindow,
     editGivenNameWindow,
     editUserEmailWindow,
     editUserNameWindow,
-    editUserPasswordWindow,
     handleEditUserPasswordWindow,
     handleEditUserEmailWindow,
     handleEditGivenNameWindow,
@@ -52,6 +52,10 @@ const Profile: React.FC = () => {
 
   const elevation = 5;
 
+  function navigateBack() {
+    navigation.goBack();
+  }
+
   return (
     <>
       {editUserNameWindow && <EditUserNameWindow />}
@@ -59,7 +63,7 @@ const Profile: React.FC = () => {
       {editGivenNameWindow && <EditGivenNameWindow />}
       {editFamilyNameWindow && <EditFamilyNameWindow />}
       <Container>
-        <BackButton shadow={true} />
+        <BackButton onPress={navigateBack} />
         <AvatarButton
           onPress={updateUserAvatar}
           style={{
